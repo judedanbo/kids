@@ -25,7 +25,37 @@ Phase 1 builds the shared foundation that the platform shell (Phase 2) and all g
 
 ## 1A. Remaining Types
 
-Two new files in `shared/src/types/`:
+Two new files in `shared/src/types/`, plus updates to existing types.
+
+### Existing type updates
+
+**`game.ts`** — Update `GameProps` to include service dependencies (aligns with technical spec Section 3.1):
+```typescript
+interface GameProps {
+  config: GameConfig;
+  onScore: (points: number) => void;
+  onComplete: (result: GameResult) => void;
+  onExit: () => void;
+  audioManager: AudioManager;     // add
+  storageManager: StorageManager; // add
+}
+```
+
+**`game.ts`** — Define `GameSettings` to replace `Record<string, unknown>` in `GameConfig`:
+```typescript
+interface GameSettings {
+  soundEnabled: boolean;
+  musicEnabled: boolean;
+  language: string;
+  highContrastMode: boolean;
+}
+
+interface GameConfig {
+  difficulty: number;
+  profile: UserProfile;
+  settings: GameSettings;  // was Record<string, unknown>
+}
+```
 
 ### `platform.ts`
 
@@ -75,6 +105,7 @@ interface StorageManager {
   loadProgress(profileId: string, gameId: string): Promise<GameProgress | null>;
   saveCheckpoint(profileId: string, gameId: string, data: unknown): Promise<void>;
   loadCheckpoint(profileId: string, gameId: string): Promise<unknown | null>;
+  deleteProfile(profileId: string): Promise<void>;
   unlockReward(profileId: string, reward: Reward): Promise<void>;
   getRewards(profileId: string): Promise<Reward[]>;
   logEvent(event: AnalyticsEvent): Promise<void>;
@@ -83,7 +114,7 @@ interface StorageManager {
 
 interface AnalyticsEvent {
   id: string;
-  type: "game_start" | "game_end" | "level_complete" | "reward_unlocked" | "error" | "navigation";
+  type: "game_start" | "game_end" | "level_complete" | "reward_unlocked" | "game_error" | "error" | "navigation";
   profileId: string;
   gameId?: string;
   timestamp: string;
@@ -99,7 +130,7 @@ interface EventFilter {
 }
 ```
 
-All types re-exported through `shared/src/types/index.ts` and the root barrel `shared/src/index.ts`.
+All types re-exported through a new `shared/src/types/index.ts` barrel. The existing `shared/src/index.ts` will be updated to re-export from `./types` (replacing the current direct imports from `./types/game` and `./types/user`).
 
 ---
 
@@ -143,11 +174,13 @@ Minimal reset: `box-sizing: border-box`, margin/padding reset, `img { max-width:
 
 ### `breakpoints.css`
 
-Custom media queries:
+Breakpoint values defined as CSS custom properties for documentation/reference, plus concrete `@media` mixins as plain comments. Since native `@custom-media` lacks browser support and we're not adding PostCSS, components use hardcoded `@media (min-width: 768px)` queries with the breakpoint values documented in this file for consistency:
 - `--bp-mobile`: 320px
 - `--bp-tablet`: 768px
 - `--bp-desktop`: 1024px
 - `--bp-large`: 1440px
+
+**Fonts:** Baloo 2 and Nunito are already loaded via `<link>` tags in `platform/index.html`. No change needed — `tokens.css` references them via `--font-family-display` and `--font-family-body` but does not import them. Games that run inside the platform shell inherit the font loading. Font subsetting will be addressed in Phase 5 (performance optimization).
 
 Platform's `global.css` updated to `@import` from `shared/src/styles/tokens.css` instead of defining tokens inline.
 
@@ -179,6 +212,8 @@ Wrapper for every game. Provides consistent header with back/home navigation, ti
 - `onPause?: () => void` — pause button handler
 - `showPauseButton?: boolean` — default true
 - `children: ReactNode`
+
+> **Note:** The technical spec table lists `showTimer` as a GameShell prop. This design intentionally removes it — `<GameTimer>` is a separate component that games compose inside GameShell's children slot, giving games full control over timer placement and behavior.
 
 **Behavior:**
 - Header uses `--color-primary` background with white text
@@ -262,8 +297,9 @@ Full-screen celebration with canvas-confetti burst and Framer Motion overlay.
 
 **Behavior:**
 - Overlay entrance via Framer Motion `AnimatePresence` (fade + scale)
-- canvas-confetti fires on mount with particle count scaled by intensity (low: 50, medium: 100, high: 200)
+- canvas-confetti fires on mount with particle count scaled by intensity (low: 50, medium: 100, high: 200). Call `confetti.reset()` on unmount to clean up the canvas element and prevent memory leaks.
 - Auto-dismisses after `duration` with fade-out
+- **Z-index:** Uses `z-index: 100`. PauseMenu uses `z-index: 200` (higher, since pause takes priority). CelebrationOverlay and PauseMenu are mutually exclusive in practice (game is either completing or paused), but the stacking order handles edge cases.
 - Respects `prefers-reduced-motion`: no confetti, simple fade only
 - `aria-live="polite"` announces the celebration text
 
@@ -322,7 +358,7 @@ Speech bubble with optional audio trigger.
 
 **Behavior:**
 - Speech bubble shape via CSS (rounded corners, tail pointing to character)
-- Speaker icon (🔊) shown when `audioSrc` provided, triggers playback on click
+- Speaker SVG icon shown when `audioSrc` provided, triggers playback on click (use an SVG icon component, not a Unicode emoji)
 - Character name shown below bubble
 - `aria-label` on audio button: "Play instruction audio"
 
@@ -367,7 +403,7 @@ IDLE → LOADED → PLAYING ↔ PAUSED → COMPLETED → IDLE
 - `start(config)` calls `plugin.onStart(config)`, transitions LOADED → PLAYING
 - `pause()` calls `plugin.onPause()`, transitions PLAYING → PAUSED
 - `resume()` calls `plugin.onResume()`, transitions PAUSED → PLAYING
-- `end()` calls `plugin.onEnd()`, returns `GameResult`, transitions → COMPLETED
+- `end()` calls `plugin.onEnd()`, returns `GameResult`, transitions → COMPLETED. Valid from both PLAYING and PAUSED states (a player may exit while paused).
 - `reset()` calls `plugin.onUnload()`, transitions → IDLE
 - Invalid transitions are no-ops (e.g., calling `pause()` when not PLAYING)
 
@@ -395,7 +431,30 @@ Reads from `FeatureFlagContext`. Returns `{ enabled: false }` for unknown flags.
 
 **Context:** `FeatureFlagContext` defined in `shared/src/context/FeatureFlagContext.tsx`. Provider accepts a `flags: FeatureFlags` prop (loaded from bundled JSON config).
 
-**Tests:** Returns enabled state for known flags, returns false for unknown flags, respects ageTier filtering.
+**Rollout percentage:** Evaluated by hashing the profile ID against the flag name to produce a stable 0-99 value. If the hash is below `rolloutPercentage`, the flag is enabled for that profile. This ensures consistent behavior per-profile without server-side state.
+
+**Tests:** Returns enabled state for known flags, returns false for unknown flags, respects ageTier filtering, rollout percentage is stable per profile ID.
+
+---
+
+## Cross-Cutting Concerns
+
+### `prefers-reduced-motion`
+
+All animated components check `prefers-reduced-motion` via Framer Motion's built-in `useReducedMotion()` hook. This provides a single consistent pattern: when reduced motion is preferred, spring animations become instant, confetti is suppressed, and transitions use opacity-only fades. No custom utility needed — Framer Motion handles this natively.
+
+### Focus trapping (PauseMenu)
+
+`PauseMenu` needs focus trapping. Use `focus-trap-react` (~3KB) rather than implementing manually. Added to shared dependencies below.
+
+### Z-index scale
+
+| Layer | Z-index | Component |
+|-------|---------|-----------|
+| Game content | 0 | Default |
+| GameShell header | 10 | Sticky header |
+| CelebrationOverlay | 100 | End-of-game celebration |
+| PauseMenu backdrop | 200 | Pause takes priority |
 
 ---
 
@@ -406,7 +465,8 @@ Reads from `FeatureFlagContext`. Returns `{ enabled: false }` for unknown flags.
 ```json
 {
   "dependencies": {
-    "canvas-confetti": "^1.9.0"
+    "canvas-confetti": "^1.9.0",
+    "focus-trap-react": "^10.0.0"
   },
   "peerDependencies": {
     "react": "^19.0.0",
