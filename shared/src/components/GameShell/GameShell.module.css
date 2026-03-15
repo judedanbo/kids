@@ -1,0 +1,52 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-primary);
+  color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.backButton,
+.pauseButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target-size);
+  min-height: var(--touch-target-size);
+  color: #ffffff;
+  border-radius: var(--radius-small);
+  transition: opacity var(--transition-fast);
+}
+
+.backButton:hover,
+.pauseButton:hover {
+  opacity: 0.8;
+}
+
+.title {
+  font-family: var(--font-family-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  flex: 1;
+}
+
+.placeholder {
+  min-width: var(--touch-target-size);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
