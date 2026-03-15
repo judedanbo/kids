@@ -29,3 +29,16 @@ export { FeatureFlagProvider, FeatureFlagContext } from './context/FeatureFlagCo
 export { useAgeTier } from './hooks/useAgeTier';
 export { useFeatureFlag } from './hooks/useFeatureFlag';
 export { useGameLifecycle } from './hooks/useGameLifecycle';
+
+// Components
+export {
+  GameShell,
+  OptionButton,
+  ScoreDisplay,
+  ProgressBar,
+  CelebrationOverlay,
+  GameTimer,
+  DifficultySelector,
+  InstructionBubble,
+  PauseMenu,
+} from './components';

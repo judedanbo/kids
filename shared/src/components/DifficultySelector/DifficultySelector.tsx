@@ -1,3 +1,4 @@
+import type React from 'react';
 import styles from './DifficultySelector.module.css';
 
 interface DifficultySelectorProps {
@@ -42,9 +43,16 @@ export function DifficultySelector({
               key={level}
               className={`${styles.star} ${filled ? styles.starFilled : styles.starEmpty}`}
               role="radio"
+              tabIndex={level === current ? 0 : -1}
               aria-checked={level === current}
               aria-label={`Level ${level}${labels ? `: ${labels[i]}` : ''}`}
               onClick={() => onChange(level)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onChange(level);
+                }
+              }}
             >
               ★
             </span>
