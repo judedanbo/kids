@@ -1,0 +1,74 @@
+:root {
+  --color-primary: #4a90d9;
+  --color-secondary: #ff8c42;
+  --color-success: #4caf50;
+  --color-error: #e57373;
+  --color-bg-primary: #fff8f0;
+  --color-bg-secondary: #f0f4ff;
+
+  --radius-small: 8px;
+  --radius-medium: 16px;
+  --radius-large: 24px;
+  --radius-round: 50%;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  --font-family-display: 'Baloo 2', cursive;
+  --font-family-body: 'Nunito', sans-serif;
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-button: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-body);
+  background-color: var(--color-bg-primary);
+  color: #333;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-lg);
+}
+
+.app-header h1 {
+  font-family: var(--font-family-display);
+  font-size: 3rem;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.app-header p {
+  font-size: 1.25rem;
+  color: #666;
+  margin-bottom: var(--spacing-xl);
+}
+
+.app-main {
+  font-size: 1.1rem;
+  color: #888;
+}
