@@ -1,0 +1,33 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  background-color: var(--color-overlay);
+}
+
+.content {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.title {
+  font-family: var(--font-family-display);
+  font-size: 2rem;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.stars {
+  font-size: 2rem;
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.score {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+}
