@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 import type { UserProfile } from './user';
+import type { AudioManager, StorageManager } from './services';
 
 export type SkillCategory =
   | 'literacy'
@@ -31,10 +32,17 @@ export interface GameManifest {
   tags: string[];
 }
 
+export interface GameSettings {
+  soundEnabled: boolean;
+  musicEnabled: boolean;
+  language: string;
+  highContrastMode: boolean;
+}
+
 export interface GameConfig {
   difficulty: number;
   profile: UserProfile;
-  settings: Record<string, unknown>;
+  settings: GameSettings;
 }
 
 export interface GameProps {
@@ -42,6 +50,8 @@ export interface GameProps {
   onScore: (points: number) => void;
   onComplete: (result: GameResult) => void;
   onExit: () => void;
+  audioManager: AudioManager;
+  storageManager: StorageManager;
 }
 
 export interface GameResult {

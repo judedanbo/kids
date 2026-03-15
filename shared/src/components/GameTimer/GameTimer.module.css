@@ -1,0 +1,33 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring {
+  transform: rotate(-90deg);
+}
+
+.trackCircle {
+  fill: none;
+  stroke: var(--color-border);
+}
+
+.progressCircle {
+  fill: none;
+  stroke: var(--timer-color, var(--color-primary));
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear, stroke var(--transition-fast);
+}
+
+.progressCircle.warning {
+  stroke: var(--color-error);
+}
+
+.time {
+  fill: var(--color-text-primary);
+  font-family: var(--font-family-body);
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}

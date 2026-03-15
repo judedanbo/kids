@@ -1,0 +1,22 @@
+/* ============================================================
+   Breakpoint Reference
+   These values are documented here for consistency.
+   Use hardcoded @media queries in component CSS Modules:
+     @media (min-width: 768px) { ... }
+   Native @custom-media is not supported without PostCSS.
+   ============================================================ */
+
+:root {
+  --bp-mobile: 320px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1024px;
+  --bp-large: 1440px;
+}
+
+/*
+  Standard breakpoint queries for reference:
+  Mobile:  @media (min-width: 320px)  — small phones
+  Tablet:  @media (min-width: 768px)  — tablets (primary target)
+  Desktop: @media (min-width: 1024px) — desktop/laptop
+  Large:   @media (min-width: 1440px) — large screens
+*/

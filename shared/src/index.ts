@@ -1,18 +1,44 @@
-// Shared types
+// Types
 export type {
   GameManifest,
   GamePlugin,
   GameConfig,
+  GameSettings,
   GameProps,
   GameResult,
   SkillCategory,
   AgeTier,
-} from './types/game';
-
-export type {
   UserProfile,
   GameProgress,
   Reward,
   RewardType,
   RewardCriteria,
-} from './types/user';
+  TimeLimitConfig,
+  FeatureFlags,
+  AudioManager,
+  StorageManager,
+  AnalyticsEvent,
+  EventFilter,
+} from './types';
+
+// Context providers
+export { AgeTierProvider, AgeTierContext } from './context/AgeTierContext';
+export { FeatureFlagProvider, FeatureFlagContext } from './context/FeatureFlagContext';
+
+// Hooks
+export { useAgeTier } from './hooks/useAgeTier';
+export { useFeatureFlag } from './hooks/useFeatureFlag';
+export { useGameLifecycle } from './hooks/useGameLifecycle';
+
+// Components
+export {
+  GameShell,
+  OptionButton,
+  ScoreDisplay,
+  ProgressBar,
+  CelebrationOverlay,
+  GameTimer,
+  DifficultySelector,
+  InstructionBubble,
+  PauseMenu,
+} from './components';

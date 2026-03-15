@@ -1,0 +1,40 @@
+.container {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.bubble {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-medium) var(--radius-medium) var(--radius-medium) var(--spacing-xs);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-base);
+}
+
+.audioButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target-size);
+  min-height: var(--touch-target-size);
+  color: var(--color-primary);
+  border-radius: var(--radius-round);
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast);
+}
+
+.audioButton:hover {
+  background-color: var(--color-bg-secondary);
+}
+
+.character {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  padding-left: var(--spacing-xs);
+}

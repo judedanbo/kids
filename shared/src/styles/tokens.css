@@ -1,0 +1,83 @@
+/* ============================================================
+   Design Tokens — Kids Games Zone
+   Single source of truth for all visual design values.
+   Light mode is the default; dark mode via [data-theme="dark"].
+   ============================================================ */
+
+:root {
+  /* --- Brand colors --- */
+  --color-primary: #4a90d9;
+  --color-secondary: #ff8c42;
+  --color-success: #4caf50;
+  --color-error: #e57373;
+  --color-bg-primary: #fff8f0;
+  --color-bg-secondary: #f0f4ff;
+
+  /* --- Semantic surface tokens (light) --- */
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-text-primary: #333333;
+  --color-text-secondary: #666666;
+  --color-border: #e0d5c8;
+  --color-overlay: rgba(0, 0, 0, 0.5);
+
+  /* --- Border radii --- */
+  --radius-small: 8px;
+  --radius-medium: 16px;
+  --radius-large: 24px;
+  --radius-round: 50%;
+
+  /* --- Spacing scale --- */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* --- Typography --- */
+  --font-family-display: 'Baloo 2', cursive;
+  --font-family-body: 'Nunito', sans-serif;
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+
+  /* --- Shadows --- */
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-button: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+  /* --- Age-tier defaults (junior) --- */
+  --touch-target-size: 48px;
+  --font-size-base: 18px;
+}
+
+/* --- Dark theme overrides --- */
+[data-theme='dark'] {
+  --color-bg-primary: #1a1a2e;
+  --color-bg-secondary: #16213e;
+  --color-surface: #2a2a4a;
+  --color-surface-raised: #333360;
+  --color-text-primary: #eeeeee;
+  --color-text-secondary: #aaaaaa;
+  --color-border: #2a2a4a;
+  --color-overlay: rgba(0, 0, 0, 0.7);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-button: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Age-tier overrides --- */
+[data-age-tier='tiny'] {
+  --touch-target-size: 64px;
+  --font-size-base: 24px;
+}
+
+[data-age-tier='junior'] {
+  --touch-target-size: 48px;
+  --font-size-base: 18px;
+}
+
+[data-age-tier='explorer'] {
+  --touch-target-size: 48px;
+  --font-size-base: 16px;
+}
