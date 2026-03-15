@@ -1,4 +1,3 @@
-// Types
 export type {
   GameManifest,
   GamePlugin,
@@ -8,15 +7,21 @@ export type {
   GameResult,
   SkillCategory,
   AgeTier,
+} from './game';
+
+export type {
   UserProfile,
   GameProgress,
   Reward,
   RewardType,
   RewardCriteria,
-  TimeLimitConfig,
-  FeatureFlags,
+} from './user';
+
+export type { TimeLimitConfig, FeatureFlags } from './platform';
+
+export type {
   AudioManager,
   StorageManager,
   AnalyticsEvent,
   EventFilter,
-} from './types';
+} from './services';
