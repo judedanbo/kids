@@ -3,7 +3,7 @@ import { CelebrationOverlay } from './CelebrationOverlay';
 
 // Mock canvas-confetti
 vi.mock('canvas-confetti', () => {
-  const confettiFn = vi.fn();
+  const confettiFn = vi.fn() as ReturnType<typeof vi.fn> & { reset: ReturnType<typeof vi.fn> };
   confettiFn.reset = vi.fn();
   return { default: confettiFn };
 });
