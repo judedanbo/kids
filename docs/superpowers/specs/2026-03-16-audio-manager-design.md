@@ -117,7 +117,7 @@ The category is inferred from the method called (playSFX → sfx path, playMusic
 **Method implementations:**
 
 ### `playMusic(trackId, options?)`
-1. If music is currently playing, stop it (with fade-out if `options.fadeOut` from `stopMusic` applies, else immediate)
+1. If music is currently playing, stop it **immediately** (no fade — cross-fading is not supported in this version). Cancel any in-progress fade-out from a prior `stopMusic` call.
 2. Resolve path: `/audio/music/${trackId}.mp3`
 3. Load if not already loaded: `backend.load(trackId, path)`
 4. Play with `{ loop: options?.loop ?? true, volume: muted ? 0 : channels.music.volume }`
@@ -126,15 +126,15 @@ The category is inferred from the method called (playSFX → sfx path, playMusic
 
 ### `stopMusic(options?)`
 1. If no music playing, return
-2. If `options?.fadeOut`, fade to 0 over `fadeOut` ms, then stop
-3. Else, stop immediately
-4. Clear `channels.music.currentPlaybackId`
+2. Clear `channels.music.currentPlaybackId` immediately (prevents race conditions if `playMusic` is called during fade-out)
+3. If `options?.fadeOut`, fade to 0 over `fadeOut` ms, then call `backend.stop()` after fade completes
+4. Else, stop immediately via `backend.stop()`
 
 ### `playSFX(sfxId)`
 1. Resolve path: `/audio/sfx/${sfxId}.mp3`
 2. Load if not already loaded
 3. Play with `{ volume: muted ? 0 : channels.sfx.volume }`
-4. Fire-and-forget — no tracking of playback ID
+4. Fire-and-forget — no tracking of playback ID. **SFX channel note:** because SFX are fire-and-forget with no tracked playback ID, `setVolume('sfx', ...)` and `mute('sfx')` only affect **future** `playSFX` calls, not already-playing sounds. This is intentional — SFX are short enough that retroactive volume changes aren't meaningful.
 
 ### `playVoice(voiceId, onComplete?)`
 1. If voice is currently playing, stop it
@@ -158,14 +158,16 @@ The category is inferred from the method called (playSFX → sfx path, playMusic
 2. If no category, unmute all three channels
 
 ### `preload(assetIds)`
-1. For each asset ID, determine category by prefix convention (or default to sfx)
-2. Call `backend.load(id, resolvedPath)` for each
+1. For each asset ID, parse the prefix to determine category and canonical key
+2. Call `backend.load(canonicalKey, resolvedPath)` for each
 3. Return `Promise.all()` — resolves when all assets are loaded
 
-**Preload prefix convention:** Asset IDs can be prefixed to indicate category:
-- `music:track-name` → loads from `/audio/music/track-name.mp3`
-- `voice:instruction-1` → loads from `/audio/voice/instruction-1.mp3`
-- `click` (no prefix) → defaults to `/audio/sfx/click.mp3`
+**Preload prefix convention and canonical keys:** Asset IDs use a `category:name` prefix. The canonical backend key strips the prefix, matching what `playMusic`/`playSFX`/`playVoice` use:
+- `music:track-name` → key `track-name`, path `/audio/music/track-name.mp3`
+- `voice:instruction-1` → key `instruction-1`, path `/audio/voice/instruction-1.mp3`
+- `sfx:click` or `click` (no prefix) → key `click`, path `/audio/sfx/click.mp3`
+
+This ensures `preload(['music:main-theme'])` caches under key `main-theme`, and a subsequent `playMusic('main-theme')` finds the preloaded asset. All methods (`playMusic`, `playSFX`, `playVoice`, `preload`) resolve to the same canonical key for the same asset.
 
 ---
 
@@ -183,6 +185,8 @@ Four MP3 files, CC0-licensed or generated:
 | `celebrate.mp3` | Short celebration fanfare | ~1.5s | Generated tone |
 
 These are minimal synthesized tones. Real game-specific audio replaces or supplements them in Phase 3+.
+
+> **Deviation from development plan:** The dev plan specifies placeholder audio in `shared/assets/audio/sfx/`. This spec places them in `platform/public/audio/sfx/` instead — audio files are served as static assets by Vite's public directory, and games consume audio through the `AudioManager` API (via `GameProps`), never by importing files directly. The platform owns the audio infrastructure.
 
 ---
 
@@ -219,7 +223,7 @@ const audioManager = new RealAudioManager(new HowlerBackend());
 | Package | Location | Purpose |
 |---------|----------|---------|
 | `howler` | `platform/package.json` dependencies | Audio playback library |
-| `@types/howler` | root `package.json` devDependencies | TypeScript type definitions |
+| `@types/howler` | `platform/package.json` devDependencies | TypeScript type definitions (collocated with the package that uses them) |
 
 ---
 
