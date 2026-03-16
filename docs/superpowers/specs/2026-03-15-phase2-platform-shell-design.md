@@ -71,7 +71,11 @@ type PlatformAction =
 2. Sets the last active profile (or null if none)
 3. Loads game registry
 
-State changes that affect persistence (SET_PROFILE, ADD_PROFILE, UPDATE_PROGRESS, UNLOCK_REWARD) trigger async writes to IndexedDB via a `useEffect` that watches for dispatched actions. This keeps the reducer pure and synchronous.
+State changes that affect persistence (SET_PROFILE, ADD_PROFILE, UPDATE_PROGRESS, UNLOCK_REWARD) trigger async writes to IndexedDB. The pattern: `PlatformProvider` watches specific state slices via `useEffect` (e.g., `useEffect(() => { storage.saveProfile(state.currentProfile) }, [state.currentProfile])`). The reducer stays pure and synchronous; persistence is a side effect of state changes.
+
+On mount, the game registry is loaded from the static config file (`gameRegistry.ts`), not from IndexedDB. Game manifests are bundled with the app.
+
+**`PlatformSettings` vs. `UserProfile.preferences`:** `PlatformSettings` holds app-level defaults (theme, language). Per-profile `preferences` override these when a profile is active. The platform reads `currentProfile.preferences` when a profile is set, falling back to `PlatformSettings` for unset values.
 
 **`usePlatform()` hook:** Returns `{ state, dispatch }` from context. Used by all platform pages.
 
@@ -147,7 +151,11 @@ class StubAudioManager implements AudioManager {
 
 **Design for replaceability:** The stub is a class implementing the interface. The real AudioManager (built separately, later) will also implement the interface and use an internal adapter for the audio backend (Howler.js, Web Audio API, etc.). The platform creates the audio manager instance at startup and passes it through context — swapping the implementation is a one-line change at the creation site.
 
+> **Deviation from development plan:** The dev plan specifies a full Howler.js AudioManager in Phase 2. This spec intentionally defers it — a stub satisfies the plugin contract and avoids adding a dependency + audio files until Phase 3 when a real game needs audio. The dev plan acceptance criterion "Audio manager plays SFX on correct/incorrect actions" is revised to "Stub AudioManager logs SFX calls to console" for Phase 2.
+
 **Singleton:** Created once, provided alongside StorageManager via the `PlatformProvider`.
+
+**IndexedDB unavailability:** If IndexedDB initialization fails (private browsing, quota exceeded), the storage service catches the error and logs a warning. The app continues to function with in-memory state only — profiles and progress won't persist across sessions, but the app remains usable. A subtle banner ("Progress won't be saved in this browser mode") is shown.
 
 ---
 
@@ -159,12 +167,14 @@ Welcome + Grid layout.
 
 **Structure:**
 1. **Welcome header** — "Welcome back, {profile.name}!" centered at top
-2. **Filter pills** — horizontal scrollable row: "All" (default), then one pill per skill category present in the game registry. Active filter highlighted with `--color-primary`.
-3. **Game card grid** — CSS Grid, responsive columns:
+2. **Continue Playing** — horizontal scrollable row showing the last 3 played games (by `lastPlayedAt` from progress). Each card is a compact version of the game card with a progress indicator. Only shown if the profile has play history.
+3. **Search bar** — visible for junior (6-8) and explorer (9-12) profiles, hidden for tiny (3-5). Filters the game grid by name match. Uses `useAgeTier()` to determine visibility.
+4. **Filter pills** — horizontal scrollable row: "All" (default), then one pill per skill category present in the game registry. Active filter highlighted with `--color-primary`. Filter state resets on each Hub visit (no persistence needed).
+5. **Game card grid** — CSS Grid, responsive columns:
    - Mobile (< 768px): 2 columns
    - Tablet (768px+): 3 columns
-   - Desktop (1024px+): 4 columns
-4. **Empty state** — if no games match the filter or age tier, show a friendly message
+   - Desktop (1024px+): 4-5 columns (auto-fill with min 200px)
+6. **Empty state** — if no games match the filter or age tier, show a friendly message
 
 **Filtering logic:**
 - Age tier filter: `game.ageRange[0] <= profile.age && profile.age <= game.ageRange[1]`
@@ -264,7 +274,7 @@ Simple CSS-only bouncing animation shown during `<Suspense>` loading.
 
 ### `platform/src/App.tsx`
 
-React Router v7 setup.
+React Router v7 setup (the platform has `react-router-dom@^7.0.0` installed; the development plan references "v6" but v7 is what's actually in the codebase).
 
 ```tsx
 <BrowserRouter>
@@ -275,6 +285,7 @@ React Router v7 setup.
       <Route path="/game/:gameId" element={<GameWrapper />} />
       <Route path="/rewards" element={<Rewards />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/settings/parental" element={<Settings />} />
     </Routes>
     <NavBar />
   </PlatformProvider>
@@ -282,6 +293,8 @@ React Router v7 setup.
 ```
 
 **Note:** `NavBar` is rendered outside `<Routes>` so it persists across all pages. It is hidden on the `/game/:gameId` route (games have their own header via `<GameShell>`).
+
+The `/settings/parental` route renders the same placeholder `Settings` component for now. Phase 4 will replace it with the PIN-gated parental dashboard.
 
 ### `platform/src/components/NavBar/NavBar.tsx`
 
@@ -347,12 +360,21 @@ Rendered by `platform/src/components/ProfileCreator/ProfileCreator.tsx`.
 
 **On confirm:**
 - Auto-assign age tier: 3-5 → tiny, 6-8 → junior, 9-12 → explorer
-- Generate UUID for profile ID
+- Generate profile ID via `crypto.randomUUID()` (no `uuid` package needed — native browser API)
+- Initialize defaults:
+  - `parentPin: ''` (empty string — Phase 4 adds PIN setup)
+  - `preferences: { musicVolume: 0.7, sfxVolume: 1, voiceVolume: 1, language: 'en', theme: 'default' }`
+  - `progress: {}`
+  - `rewards: []`
+  - `stats: { totalPlayTime: 0, totalGamesPlayed: 0, currentStreak: 0, longestStreak: 0, lastPlayedAt: '' }`
+  - `createdAt: new Date().toISOString()`
 - Save to IndexedDB via `storageManager.saveProfile()`
 - Dispatch `ADD_PROFILE` and `SET_PROFILE`
 - Navigate to Hub
 
 **No PIN setup** — deferred to Phase 4 with parental controls.
+
+**First launch:** When the app starts with zero profiles, it automatically redirects to `/profile` for creation. The Hub's welcome header requires an active profile.
 
 ---
 
@@ -397,7 +419,15 @@ const plugin: GamePlugin = {
   onStart: () => {},
   onPause: () => {},
   onResume: () => {},
-  onEnd: () => ({ /* GameResult */ }),
+  onEnd: () => ({
+      gameId: 'dummy-game',
+      score: 5,
+      maxScore: 5,
+      timeSpent: 0, // calculated from session start
+      difficulty: 1,
+      completedAt: new Date().toISOString(),
+      metrics: { clicks: 5 },
+    }),
   onUnload: () => {},
   GameComponent: DummyGame,
 };
@@ -406,6 +436,14 @@ const plugin: GamePlugin = {
 **Package setup:**
 - `package.json`: workspace package `dummy-game` with peer deps on react and `@kids-games-zone/shared`
 - `tsconfig.json`: extends base, has `jsx: "react-jsx"`, references shared
+
+**Dynamic import mechanism:** Vite requires `import.meta.glob` for dynamic imports with variable paths. The `gameLoader.ts` will use a pre-built map of game IDs to lazy import functions:
+
+```typescript
+const gameModules = import.meta.glob('../../games/*/src/index.ts');
+```
+
+This lets Vite code-split each game at build time. The `loadGame` function matches `manifest.entryPoint` against this glob map.
 
 **Game registration:** A static `platform/src/config/gameRegistry.ts` file imports the dummy game's manifest and exports an array. The `PlatformProvider` uses this to populate `state.gameRegistry` on mount.
 
@@ -418,11 +456,15 @@ const plugin: GamePlugin = {
 | Package | Location | Purpose |
 |---------|----------|---------|
 | `idb` | `platform/package.json` dependencies | IndexedDB wrapper |
-| `uuid` | `platform/package.json` dependencies | Profile ID generation |
+| `framer-motion` | `platform/package.json` dependencies | GameCard hover animations (already a root devDep, needs to be a platform dep too) |
 
-### No new root devDependencies needed
+### No `uuid` package needed
 
-Framer Motion, testing-library, and vitest are already installed from Phase 1.
+Use `crypto.randomUUID()` (native browser API, available in all modern browsers) for profile ID generation.
+
+### Existing from Phase 1
+
+Framer Motion is already a root devDep and shared peer dep. Adding it to platform's `package.json` ensures it's available for platform components (GameCard animations).
 
 ---
 
@@ -480,7 +522,8 @@ games/dummy-game/
 - [ ] Profile creation, selection, and persistence work across browser restarts
 - [ ] Hub displays game cards filtered by the active profile's age tier
 - [ ] Dummy game loads via dynamic import, starts, receives `GameProps`, and reports results back to the platform
-- [ ] Game pause/resume triggers on browser visibility change
+- [ ] Game pause/resume triggers on browser visibility change (`visibilitychange` event — more reliable than blur/focus for tab switching)
+- [ ] Auto-save checkpoint fires every 30 seconds during active gameplay
 - [ ] `GameErrorBoundary` catches errors and shows a friendly screen
 - [ ] Stub AudioManager logs calls to console
 - [ ] All data persists in IndexedDB; clearing storage resets everything
