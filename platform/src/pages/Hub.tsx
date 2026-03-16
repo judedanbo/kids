@@ -15,16 +15,13 @@ export default function Hub() {
 
   const profile = state.currentProfile;
 
-  // Redirect to profile if none selected
-  if (!profile) {
-    navigate('/profile');
-    return null;
-  }
-
-  // Filter games by age
-  const ageFilteredGames = state.gameRegistry.filter(
-    (game) => game.ageRange[0] <= profile.age && profile.age <= game.ageRange[1],
-  );
+  // Filter games by age (empty when no profile)
+  const ageFilteredGames = useMemo(() => {
+    if (!profile) return [];
+    return state.gameRegistry.filter(
+      (game) => game.ageRange[0] <= profile.age && profile.age <= game.ageRange[1],
+    );
+  }, [profile, state.gameRegistry]);
 
   // Get available skill categories from filtered games
   const skillCategories = useMemo(() => {
@@ -57,6 +54,7 @@ export default function Hub() {
 
   // Recent games (last 3 played)
   const recentGames = useMemo(() => {
+    if (!profile) return [];
     const progressEntries = Object.entries(profile.progress);
     if (progressEntries.length === 0) return [];
 
@@ -67,9 +65,15 @@ export default function Hub() {
       .slice(0, 3)
       .map(([gameId]) => state.gameRegistry.find((g) => g.id === gameId))
       .filter((g): g is GameManifest => g !== undefined);
-  }, [profile.progress, state.gameRegistry]);
+  }, [profile, state.gameRegistry]);
 
   const showSearch = ageTier === 'junior' || ageTier === 'explorer';
+
+  // Redirect to profile if none selected — after all hooks
+  if (!profile) {
+    navigate('/profile');
+    return null;
+  }
 
   return (
     <div className={styles.hub}>

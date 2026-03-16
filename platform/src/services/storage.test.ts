@@ -5,7 +5,7 @@ import type { UserProfile, GameProgress, Reward, AnalyticsEvent } from '@kids-ga
 
 function makeProfile(overrides: Partial<UserProfile> = {}): UserProfile {
   return {
-    id: crypto.randomUUID(),
+    id: globalThis.crypto.randomUUID(),
     name: 'Test Kid',
     avatar: '🦊',
     age: 7,
@@ -51,7 +51,7 @@ describe('IndexedDBStorageManager', () => {
 
   beforeEach(async () => {
     // Each test gets a unique DB name to avoid conflicts
-    storage = new IndexedDBStorageManager(`test-db-${crypto.randomUUID()}`);
+    storage = new IndexedDBStorageManager(`test-db-${globalThis.crypto.randomUUID()}`);
     await storage.init();
   });
 
@@ -169,7 +169,7 @@ describe('IndexedDBStorageManager', () => {
   describe('events', () => {
     it('logs and retrieves events', async () => {
       const event: AnalyticsEvent = {
-        id: crypto.randomUUID(),
+        id: globalThis.crypto.randomUUID(),
         type: 'game_start',
         profileId: 'profile-1',
         gameId: 'test-game',
@@ -185,14 +185,14 @@ describe('IndexedDBStorageManager', () => {
 
     it('filters events by type', async () => {
       const e1: AnalyticsEvent = {
-        id: crypto.randomUUID(),
+        id: globalThis.crypto.randomUUID(),
         type: 'game_start',
         profileId: 'profile-1',
         timestamp: new Date().toISOString(),
         data: {},
       };
       const e2: AnalyticsEvent = {
-        id: crypto.randomUUID(),
+        id: globalThis.crypto.randomUUID(),
         type: 'game_end',
         profileId: 'profile-1',
         timestamp: new Date().toISOString(),

@@ -63,6 +63,18 @@ importers:
         specifier: ^3.0.0
         version: 3.2.4(jsdom@25.0.1)
 
+  games/dummy-game:
+    dependencies:
+      '@kids-games-zone/shared':
+        specifier: workspace:*
+        version: link:../../shared
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
+
   platform:
     dependencies:
       '@kids-games-zone/shared':

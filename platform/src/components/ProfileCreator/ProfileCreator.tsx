@@ -43,7 +43,7 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
     if (!age) return;
 
     const profile: UserProfile = {
-      id: crypto.randomUUID(),
+      id: globalThis.crypto.randomUUID(),
       name: name.trim(),
       avatar,
       age,
@@ -106,7 +106,6 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
             onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
             placeholder="Type your name..."
             maxLength={20}
-            autoFocus
             aria-label="Your name"
           />
           <button
