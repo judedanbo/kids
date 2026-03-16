@@ -143,7 +143,7 @@ function GameSession({
       });
 
       storageManager.logEvent({
-        id: crypto.randomUUID(),
+        id: globalThis.crypto.randomUUID(),
         type: 'game_end',
         profileId: profile.id,
         gameId,
