@@ -4,7 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { PlatformProvider } from './context/PlatformContext';
 import { IndexedDBStorageManager } from './services/storage';
-import { StubAudioManager } from './services/audio';
+import { RealAudioManager } from './services/audio-manager';
+import { HowlerBackend } from './services/audio-howler';
 import { gameRegistry } from './config/gameRegistry';
 import './styles/global.css';
 
@@ -13,7 +14,7 @@ storageManager.init().catch((err) => {
   console.warn('IndexedDB initialization failed. Running in-memory only:', err);
 });
 
-const audioManager = new StubAudioManager();
+const audioManager = new RealAudioManager(new HowlerBackend());
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

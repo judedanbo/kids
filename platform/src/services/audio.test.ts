@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { StubAudioManager } from './audio';
+import { StubAudioManager } from './audio-stub';
 
 describe('StubAudioManager', () => {
   let audio: StubAudioManager;
