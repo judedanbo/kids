@@ -1,0 +1,181 @@
+.creator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-xl);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.backButton {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  font-family: var(--font-family-body);
+}
+
+.stepContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  width: 100%;
+}
+
+.prompt {
+  font-family: var(--font-family-display);
+  font-size: 2rem;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.nameInput {
+  width: 100%;
+  max-width: 320px;
+  padding: var(--spacing-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  font-size: 1.5rem;
+  text-align: center;
+  font-family: var(--font-family-body);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.nameInput:focus {
+  border-color: var(--color-primary);
+}
+
+.nextButton,
+.confirmButton {
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--radius-medium);
+  background-color: var(--color-primary);
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: var(--font-family-body);
+  cursor: pointer;
+  border: none;
+  box-shadow: var(--shadow-button);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.nextButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nextButton:not(:disabled):hover,
+.confirmButton:hover {
+  transform: scale(1.02);
+}
+
+.cancelButton {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: var(--font-family-body);
+  margin-top: var(--spacing-sm);
+}
+
+.ageGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-md);
+  width: 100%;
+  max-width: 400px;
+}
+
+.ageButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: var(--radius-medium);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+  font-family: var(--font-family-body);
+}
+
+.ageButton:hover {
+  border-color: var(--color-primary);
+  transform: scale(1.05);
+}
+
+.ageButton.selected {
+  border-color: var(--color-primary);
+  background-color: var(--color-bg-secondary);
+}
+
+.avatarGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-md);
+  width: 100%;
+  max-width: 400px;
+}
+
+.avatarButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: var(--radius-medium);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.avatarButton:hover {
+  border-color: var(--color-primary);
+  transform: scale(1.05);
+}
+
+.avatarButton.selected {
+  border-color: var(--color-primary);
+  background-color: var(--color-bg-secondary);
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xl);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-card);
+}
+
+.summaryAvatar {
+  font-size: 4rem;
+}
+
+.summaryName {
+  font-family: var(--font-family-display);
+  font-size: 1.75rem;
+  color: var(--color-text-primary);
+}
+
+.summaryAge {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  text-transform: capitalize;
+}

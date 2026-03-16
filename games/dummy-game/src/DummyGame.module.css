@@ -1,0 +1,13 @@
+.gameArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-xl);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.buttonArea {
+  margin-top: var(--spacing-lg);
+}
