@@ -88,7 +88,7 @@ CSS-drawn colored dots grouped by operand:
 
 - 10 questions per round
 - Max score: 100
-- `GameResult.metrics`: `{ questionsCorrect, avgAttempts, operationBreakdown }`
+- `GameResult.metrics`: `{ questionsCorrect, avgAttempts, additionCount, subtractionCount, multiplicationCount }`
 
 ### Components
 
@@ -123,14 +123,17 @@ games/math-adventure/
   id: 'math-adventure',
   name: 'Math Adventure',
   description: 'Solve math problems and sharpen your number skills!',
+  thumbnail: '/images/games/math-adventure.webp',
   ageRange: [6, 8] as [number, number],
   skills: ['numeracy'] as SkillCategory[],
+  version: '1.0.0',
   minDifficulty: 1,
   maxDifficulty: 5,
   estimatedPlayTime: 5,
   offlineCapable: true,
   status: 'active',
-  entryPoint: 'math-adventure',
+  entryPoint: '../../games/math-adventure/src/index.ts',
+  releaseDate: '2026-03-16',
   tags: ['math', 'addition', 'subtraction', 'multiplication'],
 }
 ```
@@ -159,9 +162,9 @@ A scrambled-letter spelling game. Players see jumbled letters and tap them in or
 
 - **Tap-to-place** (not drag). Tap a scrambled letter → it animates to the next empty answer slot.
 - Tap an answer slot → letter returns to its original scramble position.
-- Framer Motion `layoutId` for smooth letter movement between rows.
+- Framer Motion `layout` prop on tiles for smooth position animation. Letters exist in one list and are repositioned between scramble row and answer slots via state, triggering layout animation.
 - Large tap targets: 56px minimum for the 6-8 age range.
-- Keyboard: Tab between tiles, Enter to place/remove, Escape to clear all.
+- Keyboard: Tab between tiles, Enter to place/remove, Escape to undo last placed letter.
 
 ### Word Data
 
@@ -178,6 +181,7 @@ Curated static lists in `data/words.ts`, organized by category and difficulty.
 - ~15-20 words per category per difficulty level
 - Each round picks 8 words from a selected category at the current difficulty
 - All words hand-curated for age-appropriateness
+- **Minimum constraint:** each category-difficulty pair must have at least 10 words (enforced by `words.test.ts`)
 
 ### Scramble Algorithm
 
@@ -196,7 +200,8 @@ In `utils/scramble.ts`:
 
 - 8 words per round
 - Max score: 80
-- `GameResult.metrics`: `{ wordsCorrect, avgAttempts, category }`
+- `GameResult.metrics`: `{ wordsCorrect, avgAttempts, categoryIndex }`
+  - Note: `GameResult.metrics` is `Record<string, number>` — all values must be numeric. `categoryIndex` is the numeric index of the selected category.
 
 ### Components
 
@@ -241,14 +246,17 @@ games/word-puzzle/
   id: 'word-puzzle',
   name: 'Word Puzzle',
   description: 'Unscramble the letters to spell the word!',
+  thumbnail: '/images/games/word-puzzle.webp',
   ageRange: [6, 8] as [number, number],
   skills: ['literacy'] as SkillCategory[],
+  version: '1.0.0',
   minDifficulty: 1,
   maxDifficulty: 5,
   estimatedPlayTime: 5,
   offlineCapable: true,
   status: 'active',
-  entryPoint: 'word-puzzle',
+  entryPoint: '../../games/word-puzzle/src/index.ts',
+  releaseDate: '2026-03-16',
   tags: ['spelling', 'words', 'vocabulary', 'literacy'],
 }
 ```
@@ -264,7 +272,7 @@ A card-matching game for the youngest players (ages 3-5, tiny tier). Tap cards t
 ### Game Flow
 
 1. Game loads → `<InstructionBubble>` says "Find the matching pictures!"
-2. Grid of face-down cards displayed. All cards briefly flip face-up for 1-2 seconds (preview), then flip back.
+2. Grid of face-down cards displayed. All cards briefly flip face-up for a preview (difficulty 1-2: 2 seconds, difficulty 3-4: 1.5 seconds, difficulty 5: 1 second), then flip back.
 3. Player taps a card → it flips face-up (`rotateY` animation)
 4. Player taps a second card → it flips face-up
 5. **Match:** both cards stay face-up, glow/bounce animation, happy SFX, encouraging message ("Great match!")
@@ -325,6 +333,8 @@ Simple, recognizable shapes built entirely with CSS — no image assets:
 - Each match found: 10 points
 - No deductions for mismatches (encouragement-first)
 - Max score: pairs × 10
+- A "turn" = one pair attempt (flipping two cards), regardless of match/mismatch
+- Time tracked internally (no visible timer for tiny tier — too young for time pressure)
 - `GameResult.metrics`: `{ turns, matchesFound, totalPairs }`
 
 ### Components
@@ -368,14 +378,17 @@ games/memory-match/
   id: 'memory-match',
   name: 'Memory Match',
   description: 'Find the matching pictures and train your memory!',
+  thumbnail: '/images/games/memory-match.webp',
   ageRange: [3, 5] as [number, number],
   skills: ['memory'] as SkillCategory[],
+  version: '1.0.0',
   minDifficulty: 1,
   maxDifficulty: 5,
   estimatedPlayTime: 3,
   offlineCapable: true,
   status: 'active',
-  entryPoint: 'memory-match',
+  entryPoint: '../../games/memory-match/src/index.ts',
+  releaseDate: '2026-03-16',
   tags: ['memory', 'matching', 'pairs', 'animals'],
 }
 ```
@@ -410,6 +423,23 @@ Each game gets a `tsconfig.json` extending `../../tsconfig.base.json` with the `
 
 No individual build step — Vite handles game modules via the game loader's `import.meta.glob`.
 
+### Plugin Lifecycle Hooks
+
+All games implement the `GamePlugin` lifecycle hooks following the dummy-game pattern:
+
+- **`onLoad()`** — Preload any assets (audio, data). Called once when the game module is first loaded.
+- **`onStart(config: GameConfig)`** — Initialize game state: reset score to 0, record `Date.now()` as start time, set difficulty from `config.difficulty`. Called each time a new round begins.
+- **`onPause()`** — Pause any timers or animations. Called on `visibilitychange` (blur) or pause button.
+- **`onResume()`** — Resume timers and animations. Called on `visibilitychange` (focus) or resume from pause menu.
+- **`onEnd(): GameResult`** — Must return a valid `GameResult` with `gameId`, `score`, `maxScore`, `timeSpent` (seconds elapsed since `onStart`), `difficulty`, `completedAt` (ISO string), and `metrics`. Called when the game completes or the player exits.
+- **`onUnload()`** — Clean up any resources. Called when navigating away from the game.
+
+Games should track `_startTime` and `_score` as plugin-level variables (not React state) so lifecycle hooks can access them outside the React render cycle.
+
+### Score Reporting
+
+Games call `props.onScore(points)` incrementally during gameplay (on each correct answer / match found) so the platform can update the real-time score display. The final score is also included in the `GameResult` returned by `onEnd()` and passed to `props.onComplete(result)`.
+
 ### Audio Integration
 
 All games use `props.audioManager` with existing platform SFX:
@@ -428,7 +458,7 @@ All games are fully keyboard-accessible:
 | Game | Tab | Enter | Escape | Arrow Keys |
 |------|-----|-------|--------|------------|
 | Math Adventure | Cycle option buttons | Select answer | — | — |
-| Word Puzzle | Cycle letter tiles | Place/remove letter | Clear all placed | — |
+| Word Puzzle | Cycle letter tiles | Place/remove letter | Undo last placed letter | — |
 | Memory Match | Cycle cards | Flip card | — | Navigate grid |
 
 ### Wrong Answer Handling
