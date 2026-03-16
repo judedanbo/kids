@@ -1,0 +1,120 @@
+.hub {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.welcome {
+  font-family: var(--font-family-display);
+  font-size: 2rem;
+  color: var(--color-primary);
+}
+
+.section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.sectionTitle {
+  font-family: var(--font-family-display);
+  font-size: 1.4rem;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.recentRow {
+  display: flex;
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  padding-bottom: var(--spacing-sm);
+  -webkit-overflow-scrolling: touch;
+}
+
+.recentRow > * {
+  min-width: 180px;
+  max-width: 220px;
+  flex-shrink: 0;
+}
+
+.searchContainer {
+  margin-bottom: var(--spacing-md);
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  font-size: 1rem;
+  font-family: var(--font-family-body);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.searchInput:focus {
+  border-color: var(--color-primary);
+}
+
+.filterRow {
+  display: flex;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  -webkit-overflow-scrolling: touch;
+}
+
+.filterPill {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-large);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-family: var(--font-family-body);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  text-transform: capitalize;
+}
+
+.filterPill:hover {
+  border-color: var(--color-primary);
+}
+
+.filterActive {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.gameGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .gameGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gameGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+}
