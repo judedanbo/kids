@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { PlatformProvider } from './context/PlatformContext';
 import { IndexedDBStorageManager } from './services/storage';
-import { StubAudioManager } from './services/audio';
+import { StubAudioManager } from './services/audio-stub';
 import { gameRegistry } from './config/gameRegistry';
 import './styles/global.css';
 
