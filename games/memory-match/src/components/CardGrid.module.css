@@ -1,0 +1,12 @@
+.gridWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  gap: 10px;
+  /* grid-template-columns set via inline style */
+}

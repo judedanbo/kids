@@ -1,0 +1,70 @@
+.cardWrapper {
+  /* perspective set via inline style from size prop */
+  perspective: 800px;
+  flex-shrink: 0;
+}
+
+.cardButton {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  /* transform-style must be on the animating element */
+  transform-style: preserve-3d;
+}
+
+.cardButton:focus-visible {
+  outline: 3px solid var(--color-focus, #4a90d9);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+.cardButton:disabled {
+  cursor: default;
+}
+
+.cardInner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.cardBack,
+.cardFront {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardBack {
+  background: linear-gradient(135deg, #4a90d9 0%, #2c5f8a 100%);
+  font-size: 2rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  user-select: none;
+}
+
+.cardFront {
+  /* Pre-rotated so it is invisible at rotateY(0) and visible at rotateY(180deg) */
+  transform: rotateY(180deg);
+  background: #fffbf0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cardMatched .cardFront {
+  background: #e8f8e8;
+  box-shadow: 0 0 0 3px #27ae60, 0 4px 16px rgba(39, 174, 96, 0.35);
+}
+
+.cardMatched .cardBack {
+  background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);
+}
