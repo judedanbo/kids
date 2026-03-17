@@ -1,3 +1,4 @@
+import type { FC } from 'react';
 import type { IllustrationName } from '../utils/gridUtils';
 import styles from './CSSIllustration.module.css';
 
@@ -144,7 +145,7 @@ function House() {
   );
 }
 
-const ILLUSTRATION_MAP: Record<IllustrationName, () => React.JSX.Element> = {
+const ILLUSTRATION_MAP: Record<IllustrationName, FC> = {
   cat: Cat,
   fish: Fish,
   butterfly: Butterfly,
