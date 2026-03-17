@@ -7,3 +7,41 @@
   max-width: 600px;
   margin: 0 auto;
 }
+
+.topBar {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.categoryLabel {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-secondary, #555);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.wordArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg, 16px);
+  width: 100%;
+}
+
+.clueText {
+  font-size: 1.125rem;
+  color: var(--color-text-primary, #1a1a2e);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.attemptHint {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary, #777);
+  font-style: italic;
+  margin: 0;
+}
