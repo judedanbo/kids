@@ -1,0 +1,60 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  flex-wrap: wrap;
+}
+
+.slot {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md, 8px);
+  font-family: var(--font-display, sans-serif);
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.empty {
+  background-color: transparent;
+  border: 2px dashed var(--color-border, #ccc);
+  color: transparent;
+  cursor: default;
+}
+
+.filled {
+  background-color: var(--color-surface, #f4f4f8);
+  border: 2px solid var(--color-primary, #5c6bc0);
+  color: var(--color-text-primary, #1a1a2e);
+}
+
+.correct .slot {
+  background-color: var(--color-success, #4caf50);
+  border-color: var(--color-success-dark, #388e3c);
+  color: #fff;
+}
+
+.incorrect .slot {
+  background-color: var(--color-error, #f44336);
+  border-color: var(--color-error-dark, #c62828);
+  color: #fff;
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .incorrect .slot {
+    animation: none;
+  }
+}
