@@ -1,0 +1,418 @@
+/* CSSIllustration — all illustrations fit within a 60×60px box */
+.illustration {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==================== CAT ==================== */
+.catFace {
+  width: 44px;
+  height: 40px;
+  background: #f4a535;
+  border-radius: 50%;
+  position: relative;
+  top: 6px;
+}
+
+.catEarLeft,
+.catEarRight {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 18px solid #f4a535;
+  top: -10px;
+}
+
+.catEarLeft {
+  left: 4px;
+}
+
+.catEarRight {
+  right: 4px;
+}
+
+.catEyeLeft,
+.catEyeRight {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #2d6a4f;
+  border-radius: 50%;
+  top: 12px;
+}
+
+.catEyeLeft {
+  left: 9px;
+}
+
+.catEyeRight {
+  right: 9px;
+}
+
+.catNose {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #e05c5c;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.catWhiskerLeft,
+.catWhiskerRight {
+  position: absolute;
+  height: 2px;
+  background: #8b5e3c;
+  top: 26px;
+  width: 14px;
+}
+
+.catWhiskerLeft {
+  left: 2px;
+}
+
+.catWhiskerRight {
+  right: 2px;
+}
+
+/* ==================== FISH ==================== */
+.fishBody {
+  width: 36px;
+  height: 22px;
+  background: #4a90d9;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  position: relative;
+  left: -6px;
+}
+
+.fishTail {
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  border-left: 16px solid #1e6fb5;
+}
+
+.fishEye {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: white;
+  border-radius: 50%;
+  top: 5px;
+  left: 6px;
+}
+
+.fishEye::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #1a1a2e;
+  border-radius: 50%;
+  top: 1px;
+  left: 1px;
+}
+
+/* ==================== BUTTERFLY ==================== */
+.butterflyBody {
+  width: 8px;
+  height: 30px;
+  background: #5b3a29;
+  border-radius: 4px;
+  position: relative;
+  z-index: 2;
+}
+
+.butterflyWingTL,
+.butterflyWingTR,
+.butterflyWingBL,
+.butterflyWingBR {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.butterflyWingTL {
+  width: 22px;
+  height: 18px;
+  background: #ff6b6b;
+  top: 1px;
+  right: 6px;
+  border-radius: 50% 0 50% 50%;
+  transform: rotate(-15deg);
+}
+
+.butterflyWingTR {
+  width: 22px;
+  height: 18px;
+  background: #ff6b6b;
+  top: 1px;
+  left: 6px;
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(15deg);
+}
+
+.butterflyWingBL {
+  width: 18px;
+  height: 14px;
+  background: #ffa07a;
+  top: 15px;
+  right: 6px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(15deg);
+}
+
+.butterflyWingBR {
+  width: 18px;
+  height: 14px;
+  background: #ffa07a;
+  top: 15px;
+  left: 6px;
+  border-radius: 50% 50% 0 50%;
+  transform: rotate(-15deg);
+}
+
+.butterflyAntennaLeft,
+.butterflyAntennaRight {
+  position: absolute;
+  width: 2px;
+  height: 12px;
+  background: #5b3a29;
+  top: -11px;
+  border-radius: 1px;
+}
+
+.butterflyAntennaLeft {
+  left: -3px;
+  transform: rotate(-20deg);
+}
+
+.butterflyAntennaRight {
+  right: -3px;
+  transform: rotate(20deg);
+}
+
+.butterflyAntennaLeft::after,
+.butterflyAntennaRight::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #5b3a29;
+  border-radius: 50%;
+  top: -4px;
+  left: -1px;
+}
+
+/* ==================== BIRD ==================== */
+.birdBody {
+  width: 30px;
+  height: 22px;
+  background: #ff8c42;
+  border-radius: 60% 40% 40% 60%;
+  position: relative;
+}
+
+.birdHead {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: #ff8c42;
+  border-radius: 50%;
+  top: -10px;
+  right: -2px;
+}
+
+.birdBeak {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 8px solid #f4c430;
+  top: 3px;
+  right: -8px;
+}
+
+.birdEye {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #1a1a2e;
+  border-radius: 50%;
+  top: 3px;
+  right: 3px;
+}
+
+.birdWing {
+  position: absolute;
+  width: 20px;
+  height: 12px;
+  background: #e06020;
+  border-radius: 50% 50% 0 50%;
+  top: 3px;
+  left: 2px;
+}
+
+.birdTail {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 12px solid #e06020;
+  top: 5px;
+  left: -10px;
+}
+
+/* ==================== FLOWER ==================== */
+.flowerCenter {
+  width: 18px;
+  height: 18px;
+  background: #f4c430;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
+
+.petal {
+  position: absolute;
+  width: 14px;
+  height: 22px;
+  background: #ff6b9d;
+  border-radius: 50%;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+}
+
+/* ==================== SUN ==================== */
+.sunCircle {
+  width: 28px;
+  height: 28px;
+  background: #f4c430;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 0 4px #fde68a;
+}
+
+.ray {
+  position: absolute;
+  width: 6px;
+  height: 12px;
+  background: #f4c430;
+  border-radius: 3px;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+}
+
+/* ==================== TREE ==================== */
+.treeCanopy {
+  width: 44px;
+  height: 38px;
+  background: #27ae60;
+  border-radius: 50%;
+  position: relative;
+  top: -4px;
+}
+
+.treeTrunk {
+  width: 12px;
+  height: 18px;
+  background: #8b5e3c;
+  border-radius: 2px;
+  position: relative;
+  margin-top: -4px;
+}
+
+/* ==================== STAR ==================== */
+.star {
+  width: 48px;
+  height: 48px;
+  background: #f4c430;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* ==================== HEART ==================== */
+.heart {
+  width: 44px;
+  height: 40px;
+  position: relative;
+  top: 4px;
+}
+
+.heart::before,
+.heart::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 28px;
+  background: #e74c3c;
+  border-radius: 22px 22px 0 0;
+  top: 0;
+}
+
+.heart::before {
+  left: 0;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.heart::after {
+  right: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+/* ==================== HOUSE ==================== */
+.houseWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.houseRoof {
+  width: 0;
+  height: 0;
+  border-left: 24px solid transparent;
+  border-right: 24px solid transparent;
+  border-bottom: 20px solid #e74c3c;
+  position: relative;
+  z-index: 2;
+}
+
+.houseBody {
+  width: 40px;
+  height: 28px;
+  background: #f5cba7;
+  position: relative;
+  margin-top: -2px;
+}
+
+.houseDoor {
+  position: absolute;
+  width: 12px;
+  height: 16px;
+  background: #8b5e3c;
+  border-radius: 6px 6px 0 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
