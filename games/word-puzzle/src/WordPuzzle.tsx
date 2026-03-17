@@ -37,6 +37,8 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
   const [answerState, setAnswerState] = useState<'default' | 'correct' | 'incorrect'>('default');
 
   const startTimeRef = useRef(Date.now());
+  const wordsCorrectRef = useRef(0);
+  const totalAttemptsRef = useRef<number[]>([]);
 
   const initWord = useCallback(
     (wordEntry: WordEntry) => {
@@ -72,10 +74,13 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
         const points = currentAttempts === 0 ? 10 : currentAttempts === 1 ? 5 : 2;
         setScore((prev) => prev + points);
         onScore(points);
+        wordsCorrectRef.current += 1;
+        totalAttemptsRef.current.push(currentAttempts + 1);
 
         setTimeout(() => {
           const nextIndex = currentIndex + 1;
           if (nextIndex >= TOTAL_WORDS) {
+            audioManager.playSFX('celebrate');
             setShowCelebration(true);
           } else {
             setCurrentIndex(nextIndex);
@@ -115,7 +120,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       setAnswerSlots(newSlots);
       setPlacedIndices(newPlaced);
       setPlacementOrder(newOrder);
-      audioManager.playSFX('tap');
+      audioManager.playSFX('click');
 
       // Auto-check when all slots filled
       if (firstEmpty === newSlots.length - 1) {
@@ -166,7 +171,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       setAnswerSlots(newSlots);
       setPlacedIndices(newPlaced);
       setPlacementOrder(newOrder);
-      audioManager.playSFX('tap');
+      audioManager.playSFX('click');
     },
     [answerState, answerSlots, placedIndices, placementOrder, audioManager],
   );
@@ -217,10 +222,16 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       timeSpent,
       difficulty: config.difficulty,
       completedAt: new Date().toISOString(),
-      metrics: {},
+      metrics: {
+        wordsCorrect: wordsCorrectRef.current,
+        avgAttempts: totalAttemptsRef.current.length > 0
+          ? Math.round((totalAttemptsRef.current.reduce((a, b) => a + b, 0) / totalAttemptsRef.current.length) * 100) / 100
+          : 1,
+        categoryIndex,
+      },
     };
     onComplete(result);
-  }, [score, config.difficulty, onComplete]);
+  }, [score, config.difficulty, onComplete, categoryIndex]);
 
   if (showCelebration) {
     return (

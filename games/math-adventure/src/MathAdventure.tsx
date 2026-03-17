@@ -47,7 +47,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
   const advanceQuestion = useCallback(() => {
     const nextIndex = currentIndex + 1;
     if (nextIndex >= TOTAL_QUESTIONS) {
-      questionsCorrectRef.current += 1;
+      audioManager.playSFX('celebrate');
       setShowCelebration(true);
     } else {
       setCurrentIndex(nextIndex);
@@ -55,7 +55,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
       setSelectedOption(null);
       setOptionStates({});
     }
-  }, [currentIndex]);
+  }, [currentIndex, audioManager]);
 
   const handleOptionSelect = useCallback(
     (option: number) => {
@@ -75,6 +75,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
         onScore(points);
 
         // Track metrics
+        questionsCorrectRef.current += 1;
         totalAttemptsRef.current.push(newAttempts);
         const op = currentQuestion.operation;
         opCountsRef.current[op] += 1;
