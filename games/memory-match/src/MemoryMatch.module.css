@@ -2,8 +2,43 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-xl);
-  padding: var(--spacing-xl);
-  max-width: 600px;
+  gap: var(--spacing-lg, 16px);
+  padding: var(--spacing-xl, 24px);
+  max-width: 700px;
   margin: 0 auto;
+  width: 100%;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: var(--spacing-lg, 16px);
+}
+
+.encourageMessage {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-primary, #4a90d9);
+  text-align: center;
+  min-height: 1.8rem;
+  animation: fadeInOut 1.5s ease-in-out forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
