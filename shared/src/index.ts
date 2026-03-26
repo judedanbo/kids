@@ -17,6 +17,7 @@ export type {
   FeatureFlags,
   AudioManager,
   StorageManager,
+  DailyChallenge,
   AnalyticsEvent,
   EventFilter,
 } from './types';

@@ -13,7 +13,7 @@ const plugin: GamePlugin = {
     ageRange: [3, 12],
     skills: ['motor_skills'],
     version: '1.0.0',
-    entryPoint: '../../games/dummy-game/src/index.ts',
+    entryPoint: '../../../games/dummy-game/src/index.ts',
     minDifficulty: 1,
     maxDifficulty: 1,
     estimatedPlayTime: 1,

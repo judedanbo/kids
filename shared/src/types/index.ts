@@ -7,6 +7,7 @@ export type {
   GameResult,
   SkillCategory,
   AgeTier,
+  DailyChallenge,
 } from './game';
 
 export type {

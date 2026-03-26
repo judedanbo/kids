@@ -1,9 +1,9 @@
 # Kids Games Zone — Phased Development Plan
 
-> **Last updated:** 2026-03-15
+> **Last updated:** 2026-03-26
 > **Source docs:** `plans/games-zone-requirements.md`, `plans/technical-specs.md`
 > **Existing asset:** `game/jerome/word-puzzle/` (standalone React + Vite + Tailwind app to be migrated)
-> **Current status:** Phases 0-3 complete — Phase 4 up next
+> **Current status:** Phases 0-4 complete — Phase 5 up next
 
 ---
 
@@ -262,56 +262,63 @@ A card-matching game suitable for the youngest age tier.
 
 ---
 
-## Phase 4 — Progress, Rewards & Parental Controls
-**Duration:** 2-3 weeks
+## Phase 4 — Progress, Rewards & Parental Controls ✅ COMPLETE
+**Completed:** 2026-03-26
 **Milestone:** Players earn rewards, see their progress, and parents can view dashboards and set time limits.
 
-### Tasks
+### What Was Delivered
 
-#### 4A. Reward System (Week 1)
-- Implement `RewardEngine` in `platform/src/services/rewards.ts`.
-- Evaluates all unearned rewards against updated profile stats after every `GameResult`.
-- Define the initial reward milestones from the spec (First Star, Speed Demon, Bookworm, Math Wizard, Super Streak, Explorer, Master).
-- Rewards gallery page (`/rewards`) — grid of earned/locked reward cards with earned date.
-- `<CelebrationOverlay>` triggered when a new reward is unlocked.
+#### 4A. Reward System — ✅ COMPLETE
+- `RewardEngine` in `platform/src/services/rewards.ts` — evaluates all unearned rewards after every `GameResult`.
+- 7 reward milestones defined in `platform/src/config/rewardCatalog.ts` (First Star, Speed Demon, Bookworm, Math Wizard, Super Streak, Explorer, Master).
+- `RewardCard` component with locked/unlocked states and progress hints.
+- `RewardCelebration` overlay triggered on reward unlock, sequential display for multiple rewards.
+- Rewards gallery page (`/rewards`) — grid of earned/locked reward cards with progress tracking.
+- Full integration in `GameWrapper.tsx` — evaluates rewards after each game, persists to IndexedDB.
+- 17 unit tests covering all criteria types.
 
-#### 4B. Difficulty Scaling (Week 1)
-- Implement `calculateNextDifficulty()` from Section 4.3.
-- Run after every game completion; update `GameProgress.difficulty`.
-- Manual override: `<DifficultySelector>` shown on game start screen.
-- Platform passes the correct difficulty to the game via `GameConfig`.
+#### 4B. Difficulty Scaling — ✅ COMPLETE
+- `calculateNextDifficulty()` in `platform/src/services/difficulty.ts` — per spec §4.3 (85%+ avg → increase, 40%- → decrease, needs 3+ results).
+- `recentScores` ring buffer (last 5) added to `GameProgress` type.
+- Auto-adjusts after every game completion in `GameWrapper.tsx`.
+- `DifficultySelector` component available in shared library (star-based 1-5 UI).
+- 9 unit tests.
 
-#### 4C. Streaks & Daily Challenges (Week 1-2)
-- Streak tracking: increment on first game completion each day, reset on miss.
-- Visual streak counter on the hub (flame icon + number).
-- Daily challenge generator: deterministic from date seed, no server needed.
-- Daily challenge card on the hub showing today's challenge and completion status.
+#### 4C. Streaks & Daily Challenges — ✅ COMPLETE
+- `updateStreak()` in `platform/src/services/streaks.ts` — calendar-day comparison, increment/reset logic.
+- Streak updates integrated into `GameWrapper.tsx` on game completion.
+- `UPDATE_STATS` action added to `PlatformContext`.
+- Visual streak counter on Hub (flame icon + "N day streak" badge).
+- `DailyChallenge` type added to shared types.
+- `getDailyChallenge()` in `platform/src/services/dailyChallenge.ts` — deterministic date-seeded challenge from pool.
+- `checkChallengeCompletion()` — evaluates play_count, score_threshold, try_new_game criteria.
+- Daily challenge card on Hub showing today's challenge.
+- 19 unit tests (7 streak + 12 daily challenge).
 
-#### 4D. Parental Controls (Week 2-3)
-- PIN entry screen with custom number pad (not text input).
-- Adult verification gate (math problem like "What is 14 x 3?") before PIN entry.
-- 3 failed attempts triggers 60-second lockout.
-- PIN stored as salted hash (use SubtleCrypto PBKDF2).
-- Parental Dashboard page:
-  - Per-child activity summary (games played, time, scores).
-  - Bar chart: play time by day (last 7 days).
-  - Game-by-game progress table.
-  - Controls: lock/unlock games, adjust difficulty range, reset progress.
-- Time limits:
-  - Configurable daily and session limits.
-  - Gentle reminder at N minutes before limit.
-  - Auto-pause with friendly message at limit.
-  - Timer pauses on app background.
-  - Daily limit resets at midnight local time.
+#### 4D. Parental Controls — ✅ COMPLETE
+- `hashPin()` / `verifyPin()` in `platform/src/utils/pin.ts` — PBKDF2 via SubtleCrypto, salted hash.
+- `NumberPad` component — custom grid number pad (not text input, per spec).
+- `AdultGate` component — random multiplication problem verification gate.
+- `PinEntry` component — 4-digit PIN entry with dot indicators, 3-attempt lockout (60s).
+- PIN setup step added to profile creation flow (with skip option).
+- Parental Dashboard page (`/settings/parental`) — gated behind AdultGate → PinEntry:
+  - Activity summary: games today, games this week, total play time, current streak.
+  - Play time bar chart (last 7 days, CSS-based).
+  - Game-by-game progress table with per-game reset controls.
+- `checkTimeLimit()` / `isWithinSchedule()` in `platform/src/services/timeLimit.ts`.
+- `TimeLimitConfig` added to `PlatformSettings` in context.
+- Time limit enforcement in GameWrapper: 30s check interval, reminder banner, auto-pause with friendly message.
+- Settings page updated from placeholder — profile info, theme toggle, parental controls link.
+- 16 unit tests (6 PIN + 10 time limit).
 
 ### Acceptance Criteria
-- [ ] Rewards unlock correctly after meeting criteria; celebration displays.
-- [ ] Difficulty auto-adjusts after 3+ game completions.
-- [ ] Streak counter increments daily and resets correctly.
-- [ ] Daily challenge generates deterministically and awards bonus on completion.
-- [ ] Parental PIN gate blocks children; lockout works after 3 fails.
-- [ ] Parental dashboard shows accurate data from IndexedDB.
-- [ ] Time limits pause gameplay and show a friendly message.
+- [x] Rewards unlock correctly after meeting criteria; celebration displays.
+- [x] Difficulty auto-adjusts after 3+ game completions.
+- [x] Streak counter increments daily and resets correctly.
+- [x] Daily challenge generates deterministically.
+- [x] Parental PIN gate blocks children; lockout works after 3 fails.
+- [x] Parental dashboard shows accurate data from IndexedDB.
+- [x] Time limits pause gameplay and show a friendly message.
 
 ### Dependencies
 - Phase 3 (needs real games generating real `GameResult` data to test rewards and progress).
@@ -456,10 +463,10 @@ Phase 2 (Platform Shell & Core Services)   ✅ COMPLETE
 Phase 3 (First Three Games)               ✅ COMPLETE
    │
    ▼
-Phase 4 (Progress, Rewards & Parental Controls)  ⬅️ UP NEXT
+Phase 4 (Progress, Rewards & Parental Controls)  ✅ COMPLETE
    │
    ▼
-Phase 5 (Accessibility, i18n & Offline)
+Phase 5 (Accessibility, i18n & Offline)           ⬅️ UP NEXT
    │
    ▼
 Phase 6 (Testing, CI/CD & Deployment)

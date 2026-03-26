@@ -1,0 +1,60 @@
+import type { Reward } from '@kids-games-zone/shared';
+
+export const REWARD_CATALOG: Reward[] = [
+  {
+    id: 'first-star',
+    type: 'star',
+    name: 'First Star',
+    description: 'Complete your very first game!',
+    icon: '⭐',
+    criteria: { type: 'completion', threshold: 1 },
+  },
+  {
+    id: 'speed-demon',
+    type: 'badge',
+    name: 'Speed Demon',
+    description: 'Finish a game in under 60 seconds!',
+    icon: '⚡',
+    criteria: { type: 'time', threshold: 60 },
+  },
+  {
+    id: 'bookworm',
+    type: 'badge',
+    name: 'Bookworm',
+    description: 'Play 5 literacy games!',
+    icon: '📚',
+    criteria: { type: 'category_mastery', gameId: 'literacy', threshold: 5 },
+  },
+  {
+    id: 'math-wizard',
+    type: 'badge',
+    name: 'Math Wizard',
+    description: 'Score 100% on a math game!',
+    icon: '🧙',
+    criteria: { type: 'score', gameId: 'numeracy', threshold: 100 },
+  },
+  {
+    id: 'super-streak',
+    type: 'avatar_item',
+    name: 'Super Streak',
+    description: 'Play for 7 days in a row!',
+    icon: '🔥',
+    criteria: { type: 'streak', threshold: 7 },
+  },
+  {
+    id: 'explorer',
+    type: 'theme_unlock',
+    name: 'Explorer',
+    description: 'Play every game at least once!',
+    icon: '🗺️',
+    criteria: { type: 'completion', threshold: 0 },
+  },
+  {
+    id: 'master',
+    type: 'character_unlock',
+    name: 'Master',
+    description: 'Reach max difficulty with a high score!',
+    icon: '👑',
+    criteria: { type: 'score', threshold: 0 },
+  },
+];

@@ -64,6 +64,16 @@ export interface GameResult {
   metrics: Record<string, number>;
 }
 
+export interface DailyChallenge {
+  id: string;
+  date: string;
+  type: 'play_count' | 'score_threshold' | 'try_new_game';
+  description: string;
+  target: number;
+  gameId?: string;
+  skillCategory?: SkillCategory;
+}
+
 export interface GamePlugin {
   manifest: GameManifest;
   onLoad(): Promise<void>;

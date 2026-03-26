@@ -11,6 +11,7 @@ import type { AgeTier } from '@kids-games-zone/shared';
 const Hub = lazy(() => import('./pages/Hub'));
 const ProfileSelect = lazy(() => import('./pages/ProfileSelect'));
 const GameWrapper = lazy(() => import('./pages/GameWrapper'));
+const ParentalDashboard = lazy(() => import('./pages/ParentalDashboard'));
 
 function getAgeTier(age: number | undefined): AgeTier {
   if (!age || age <= 5) return 'tiny';
@@ -32,7 +33,7 @@ function App() {
             <Route path="/game/:gameId" element={<GameWrapper />} />
             <Route path="/rewards" element={<Rewards />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/settings/parental" element={<Settings />} />
+            <Route path="/settings/parental" element={<ParentalDashboard />} />
           </Routes>
         </Suspense>
       </div>

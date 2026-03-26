@@ -1,0 +1,48 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm);
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: var(--font-family-display);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.key:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.key:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.key:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.deleteKey {
+  font-size: 1.8rem;
+}
+
+.spacer {
+  /* Empty cell */
+}

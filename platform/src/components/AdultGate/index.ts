@@ -1,0 +1,1 @@
+export { AdultGate } from './AdultGate';

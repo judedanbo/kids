@@ -118,3 +118,59 @@
   color: var(--color-text-secondary);
   font-size: 1.1rem;
 }
+
+/* Streak display */
+.streakBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  background-color: var(--color-warning, #ff9800);
+  color: white;
+  border-radius: var(--radius-large);
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-family: var(--font-family-display);
+}
+
+.streakIcon {
+  font-size: 1.2rem;
+}
+
+/* Daily challenge card */
+.challengeCard {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary, #7c4dff));
+  border-radius: var(--radius-large);
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: white;
+  margin-bottom: var(--spacing-lg);
+}
+
+.challengeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+.challengeTitle {
+  font-family: var(--font-family-display);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.challengeDescription {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.challengeComplete {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-medium);
+  font-size: 0.85rem;
+  font-weight: 700;
+}

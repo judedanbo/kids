@@ -14,7 +14,7 @@ const plugin: GamePlugin = {
     ageRange: [6, 8],
     skills: ['literacy'],
     version: '1.0.0',
-    entryPoint: '../../games/word-puzzle/src/index.ts',
+    entryPoint: '../../../games/word-puzzle/src/index.ts',
     minDifficulty: 1,
     maxDifficulty: 5,
     estimatedPlayTime: 5,

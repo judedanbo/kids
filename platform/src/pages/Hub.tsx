@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAgeTier } from '@kids-games-zone/shared';
 import { usePlatform } from '../context/PlatformContext';
 import { GameCard } from '../components/GameCard/GameCard';
+import { getDailyChallenge } from '../services/dailyChallenge';
 import type { GameManifest, SkillCategory } from '@kids-games-zone/shared';
 import styles from './Hub.module.css';
 
@@ -69,6 +70,12 @@ export default function Hub() {
 
   const showSearch = ageTier === 'junior' || ageTier === 'explorer';
 
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const dailyChallenge = useMemo(
+    () => getDailyChallenge(todayStr, state.gameRegistry),
+    [todayStr, state.gameRegistry],
+  );
+
   // Redirect to profile if none selected — after all hooks
   if (!profile) {
     navigate('/profile');
@@ -82,7 +89,21 @@ export default function Hub() {
         <h1 className={styles.welcome}>
           Welcome back, {profile.name}!
         </h1>
+        {profile.stats.currentStreak >= 1 && (
+          <div className={styles.streakBadge} aria-label={`${profile.stats.currentStreak} day streak`}>
+            <span className={styles.streakIcon}>🔥</span>
+            {profile.stats.currentStreak} day streak
+          </div>
+        )}
       </header>
+
+      {/* Daily Challenge */}
+      <div className={styles.challengeCard} role="region" aria-label="Daily challenge">
+        <div className={styles.challengeHeader}>
+          <span className={styles.challengeTitle}>Daily Challenge</span>
+        </div>
+        <p className={styles.challengeDescription}>{dailyChallenge.description}</p>
+      </div>
 
       {/* Continue Playing */}
       {recentGames.length > 0 && (

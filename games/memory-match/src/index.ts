@@ -15,7 +15,7 @@ const plugin: GamePlugin = {
     ageRange: [3, 5],
     skills: ['memory'],
     version: '1.0.0',
-    entryPoint: '../../games/memory-match/src/index.ts',
+    entryPoint: '../../../games/memory-match/src/index.ts',
     minDifficulty: 1,
     maxDifficulty: 5,
     estimatedPlayTime: 3,

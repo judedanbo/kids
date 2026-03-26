@@ -10,6 +10,7 @@ import type {
   GameManifest,
   GameProgress,
   Reward,
+  TimeLimitConfig,
   StorageManager,
   AudioManager,
 } from '@kids-games-zone/shared';
@@ -19,6 +20,7 @@ import type {
 export interface PlatformSettings {
   theme: 'light' | 'dark';
   language: string;
+  timeLimits: TimeLimitConfig;
 }
 
 export interface GlobalState {
@@ -43,6 +45,7 @@ export type PlatformAction =
   | { type: 'START_SESSION'; payload: { gameId: string } }
   | { type: 'END_SESSION' }
   | { type: 'UNLOCK_REWARD'; payload: { profileId: string; reward: Reward } }
+  | { type: 'UPDATE_STATS'; payload: { profileId: string; stats: Partial<UserProfile['stats']> } }
   | { type: 'LOAD_PROFILES'; payload: UserProfile[] }
   | { type: 'SET_SETTINGS'; payload: Partial<PlatformSettings> };
 
@@ -98,6 +101,20 @@ function platformReducer(state: GlobalState, action: PlatformAction): GlobalStat
           elapsedTime: 0,
         },
       };
+
+    case 'UPDATE_STATS': {
+      const { profileId, stats } = action.payload;
+      if (state.currentProfile && state.currentProfile.id === profileId) {
+        return {
+          ...state,
+          currentProfile: {
+            ...state.currentProfile,
+            stats: { ...state.currentProfile.stats, ...stats },
+          },
+        };
+      }
+      return state;
+    }
 
     case 'UNLOCK_REWARD': {
       const { profileId, reward } = action.payload;
@@ -159,6 +176,13 @@ const initialState: GlobalState = {
   settings: {
     theme: 'light',
     language: 'en',
+    timeLimits: {
+      enabled: false,
+      dailyLimitMinutes: 60,
+      sessionLimitMinutes: 30,
+      reminderBeforeEndMinutes: 5,
+      cooldownMinutes: 15,
+    },
   },
 };
 

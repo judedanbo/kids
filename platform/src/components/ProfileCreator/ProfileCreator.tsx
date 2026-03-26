@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import type { UserProfile, AgeTier } from '@kids-games-zone/shared';
+import { NumberPad } from '../NumberPad';
+import { hashPin } from '../../utils/pin';
 import styles from './ProfileCreator.module.css';
 
 interface ProfileCreatorProps {
@@ -7,7 +9,7 @@ interface ProfileCreatorProps {
   onCancel?: () => void;
 }
 
-type Step = 'name' | 'age' | 'avatar' | 'confirm';
+type Step = 'name' | 'age' | 'avatar' | 'pin' | 'pin_confirm' | 'confirm';
 
 const AVATARS = ['🦉', '🦊', '🐱', '🐶', '🐸', '🦁', '🐼', '🐰', '🦄', '🐙'];
 
@@ -22,6 +24,10 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
   const [name, setName] = useState('');
   const [age, setAge] = useState<number | null>(null);
   const [avatar, setAvatar] = useState('');
+  const [pinDigits, setPinDigits] = useState<string[]>([]);
+  const [pinFirst, setPinFirst] = useState('');
+  const [pinError, setPinError] = useState('');
+  const [hashedPin, setHashedPin] = useState('');
 
   function handleNameSubmit() {
     if (name.trim().length >= 1 && name.trim().length <= 20) {
@@ -36,6 +42,48 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
 
   function handleAvatarSelect(selectedAvatar: string) {
     setAvatar(selectedAvatar);
+    setStep('pin');
+  }
+
+  function handlePinDigit(digit: string) {
+    setPinError('');
+    setPinDigits((prev) => {
+      if (prev.length >= 4) return prev;
+      const next = [...prev, digit];
+      if (next.length === 4) {
+        const pin = next.join('');
+        if (step === 'pin') {
+          setPinFirst(pin);
+          setTimeout(() => {
+            setPinDigits([]);
+            setStep('pin_confirm');
+          }, 200);
+        } else if (step === 'pin_confirm') {
+          if (pin === pinFirst) {
+            hashPin(pin).then((hash) => {
+              setHashedPin(hash);
+              setStep('confirm');
+            });
+          } else {
+            setPinError('PINs do not match. Try again.');
+            setTimeout(() => {
+              setPinDigits([]);
+              setStep('pin');
+              setPinFirst('');
+            }, 1000);
+          }
+        }
+      }
+      return next;
+    });
+  }
+
+  function handlePinDelete() {
+    setPinDigits((prev) => prev.slice(0, -1));
+  }
+
+  function handleSkipPin() {
+    setHashedPin('');
     setStep('confirm');
   }
 
@@ -49,7 +97,7 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
       age,
       ageTier: getAgeTier(age),
       createdAt: new Date().toISOString(),
-      parentPin: '',
+      parentPin: hashedPin,
       preferences: {
         musicVolume: 0.7,
         sfxVolume: 1,
@@ -79,8 +127,17 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
       case 'avatar':
         setStep('age');
         break;
-      case 'confirm':
+      case 'pin':
+        setPinDigits([]);
         setStep('avatar');
+        break;
+      case 'pin_confirm':
+        setPinDigits([]);
+        setPinFirst('');
+        setStep('pin');
+        break;
+      case 'confirm':
+        setStep('pin');
         break;
       default:
         onCancel?.();
@@ -155,6 +212,43 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
               </button>
             ))}
           </div>
+        </div>
+      )}
+
+      {(step === 'pin' || step === 'pin_confirm') && (
+        <div className={styles.stepContainer}>
+          <h2 className={styles.prompt}>
+            {step === 'pin' ? 'Set a Parent PIN' : 'Confirm your PIN'}
+          </h2>
+          <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--spacing-md)', fontSize: '0.9rem' }}>
+            {step === 'pin'
+              ? 'This 4-digit PIN protects parental controls.'
+              : 'Enter the same PIN again to confirm.'}
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-lg)' }}>
+            {Array.from({ length: 4 }, (_, i) => (
+              <div
+                key={i}
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: '50%',
+                  border: '2px solid var(--color-border)',
+                  backgroundColor: i < pinDigits.length ? 'var(--color-primary)' : 'transparent',
+                  transition: 'background-color 0.15s',
+                }}
+              />
+            ))}
+          </div>
+          {pinError && <p style={{ color: 'var(--color-error, #e53935)', fontWeight: 600, marginBottom: 'var(--spacing-md)' }}>{pinError}</p>}
+          <NumberPad onDigit={handlePinDigit} onDelete={handlePinDelete} />
+          <button
+            className={styles.cancelButton}
+            onClick={handleSkipPin}
+            style={{ marginTop: 'var(--spacing-md)' }}
+          >
+            Skip (set up later)
+          </button>
         </div>
       )}
 

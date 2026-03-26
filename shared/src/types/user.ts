@@ -27,6 +27,7 @@ export interface GameProgress {
   totalTimePlayed: number;
   lastPlayedAt: string;
   difficulty: number;
+  recentScores?: Array<{ score: number; maxScore: number }>;
   checkpointData?: unknown;
 }
 
