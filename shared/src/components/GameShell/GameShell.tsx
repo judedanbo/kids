@@ -1,4 +1,5 @@
 import { useEffect, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SkipLink } from '../SkipLink/SkipLink';
 import { Announcer } from '../Announcer/Announcer';
 import styles from './GameShell.module.css';
@@ -18,6 +19,7 @@ export function GameShell({
   showPauseButton = true,
   children,
 }: GameShellProps) {
+  const { t } = useTranslation('common');
   useEffect(() => {
     if (!onPause) return;
 
@@ -34,13 +36,13 @@ export function GameShell({
   return (
     <Announcer>
       <div className={styles.shell}>
-        <SkipLink targetId="game-content" label="Skip to game" />
+        <SkipLink targetId="game-content" label={t('gameShell.skipToGame')} />
         <header className={styles.header}>
           {onBack ? (
             <button
               className={styles.backButton}
               onClick={onBack}
-              aria-label="Go back"
+              aria-label={t('gameShell.goBack')}
             >
               ← Back
             </button>
@@ -54,7 +56,7 @@ export function GameShell({
             <button
               className={styles.pauseButton}
               onClick={onPause}
-              aria-label="Pause game"
+              aria-label={t('gameShell.pauseGame')}
             >
               ⏸
             </button>

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import FocusTrap from 'focus-trap-react';
+import { useTranslation } from 'react-i18next';
 import styles from './PauseMenu.module.css';
 
 interface PauseMenuProps {
@@ -10,6 +11,7 @@ interface PauseMenuProps {
 }
 
 export function PauseMenu({ onResume, onRestart, onExit }: PauseMenuProps) {
+  const { t } = useTranslation('common');
   const onResumeRef = useRef(onResume);
   onResumeRef.current = onResume;
   const shouldReduceMotion = useReducedMotion();
@@ -32,23 +34,23 @@ export function PauseMenu({ onResume, onRestart, onExit }: PauseMenuProps) {
           className={styles.menu}
           role="dialog"
           aria-modal="true"
-          aria-label="Game paused"
+          aria-label={t('pause.ariaLabel')}
           tabIndex={-1}
           initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
           animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
           exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
           transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
         >
-          <div className={styles.title}>⏸ Paused</div>
+          <div className={styles.title}>⏸ {t('pause.title')}</div>
           <div className={styles.buttons}>
             <button className={styles.resumeButton} onClick={onResume}>
-              ▶ Resume
+              ▶ {t('pause.resume')}
             </button>
             <button className={styles.secondaryButton} onClick={onRestart}>
-              ↺ Restart
+              ↺ {t('pause.restart')}
             </button>
             <button className={styles.secondaryButton} onClick={onExit}>
-              🏠 Exit to Hub
+              🏠 {t('pause.exitToHub')}
             </button>
           </div>
         </motion.div>
