@@ -43,4 +43,7 @@ export {
   DifficultySelector,
   InstructionBubble,
   PauseMenu,
+  Announcer,
+  useAnnounce,
+  SkipLink,
 } from './components';
