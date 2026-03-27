@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ProgressBar } from '@kids-games-zone/shared';
 import type { GameManifest, GameProgress } from '@kids-games-zone/shared';
@@ -33,6 +34,7 @@ const SKILL_ICONS: Record<string, string> = {
 };
 
 export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
+  const { t } = useTranslation('common');
   const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
   const isLocked = manifest.status === 'coming_soon' || manifest.status === 'retired';
@@ -57,13 +59,13 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
         !isLocked && !shouldReduceMotion ? { scale: 0.98 } : undefined
       }
       transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-      aria-label={`${manifest.name}${isLocked ? ' (locked)' : ''}`}
+      aria-label={`${manifest.name}${isLocked ? ` ${t('gameCard.locked')}` : ''}`}
       disabled={isLocked}
     >
       <div className={styles.thumbnail} style={{ backgroundColor: bgColor }}>
         <span className={styles.thumbnailIcon}>{skillIcon}</span>
         {isLocked && <span className={styles.lockOverlay}>🔒</span>}
-        {!progress && !isLocked && <span className={styles.newBadge}>New!</span>}
+        {!progress && !isLocked && <span className={styles.newBadge}>{t('gameCard.new')}</span>}
       </div>
 
       <div className={styles.info}>
@@ -71,7 +73,7 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
 
         <div className={styles.pills}>
           <span className={styles.agePill}>
-            Ages {manifest.ageRange[0]}-{manifest.ageRange[1]}
+            {t('gameCard.ages', { min: manifest.ageRange[0], max: manifest.ageRange[1] })}
           </span>
           {manifest.skills.slice(0, 2).map((skill) => (
             <span key={skill} className={styles.skillPill}>
