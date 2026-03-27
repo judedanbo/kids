@@ -331,16 +331,20 @@ A card-matching game suitable for the youngest age tier.
 
 ### Tasks
 
-#### 5A. Accessibility Audit & Fixes (Week 1)
-- Run axe-core automated audit across all pages and games.
-- Fix all critical and serious violations.
-- Ensure all interactive elements have `aria-label`.
-- Add `aria-live` regions for score changes, timer updates, game state transitions.
-- Verify visible focus indicators on all interactive elements.
-- Test full keyboard navigation flow: hub -> game selection -> gameplay -> results -> back to hub.
-- Verify `prefers-reduced-motion` disables all animations.
-- Add high-contrast mode toggle in settings.
-- Verify color contrast ratios meet WCAG AA (4.5:1 text, 3:1 UI elements).
+#### 5A. Accessibility Audit & Fixes — ✅ COMPLETE
+**Completed:** 2026-03-27
+
+**What was delivered:**
+- axe-core dev overlay and vitest-axe test integration across all packages
+- Global focus-visible indicators with focus ring design tokens
+- High-contrast mode with OS detection (`prefers-contrast: more`) and manual toggle in Settings
+- `useRovingTabindex` hook for 1D/2D keyboard grid navigation
+- `Announcer` component for centralized screen reader announcements
+- `SkipLink` component for keyboard navigation
+- ARIA fixes across all 9 shared components (aria-live, progressbar roles, reduced motion)
+- Landmark roles and labels across all platform pages
+- Game-specific ARIA labels, keyboard navigation, and announcements for Memory Match, Math Adventure, and Word Puzzle
+- axe violation checks added to component test suites
 
 #### 5B. Internationalization (Week 1-2)
 - Set up i18next + react-i18next in the platform.
@@ -373,8 +377,8 @@ A card-matching game suitable for the youngest age tier.
 - Lighthouse CI integration in GitHub Actions.
 
 ### Acceptance Criteria
-- [ ] axe-core reports zero critical/serious accessibility violations.
-- [ ] Full keyboard-only navigation works end-to-end.
+- [x] axe-core reports zero critical/serious accessibility violations.
+- [x] Full keyboard-only navigation works end-to-end.
 - [ ] App renders correctly in English and French (or chosen second language).
 - [ ] App works fully offline after first load (all three games playable).
 - [ ] All performance budgets met (Lighthouse scores 90+).
@@ -466,7 +470,7 @@ Phase 3 (First Three Games)               ✅ COMPLETE
 Phase 4 (Progress, Rewards & Parental Controls)  ✅ COMPLETE
    │
    ▼
-Phase 5 (Accessibility, i18n & Offline)           ⬅️ UP NEXT
+Phase 5 (Accessibility, i18n & Offline)           ⬅️ IN PROGRESS (5A complete)
    │
    ▼
 Phase 6 (Testing, CI/CD & Deployment)
