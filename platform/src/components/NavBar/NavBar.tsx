@@ -18,21 +18,25 @@ export function NavBar() {
 
   return (
     <nav className={styles.navbar} aria-label="Main navigation">
-      {tabs.map((tab) => (
-        <NavLink
-          key={tab.path}
-          to={tab.path}
-          className={({ isActive }) =>
-            `${styles.tab} ${isActive ? styles.active : ''}`
-          }
-          end={tab.path === '/'}
-        >
-          <span className={styles.icon} aria-hidden="true">
-            {tab.icon}
-          </span>
-          <span className={styles.label}>{tab.label}</span>
-        </NavLink>
-      ))}
+      {tabs.map((tab) => {
+        const isActive = tab.path === '/'
+          ? location.pathname === '/'
+          : location.pathname.startsWith(tab.path);
+        return (
+          <NavLink
+            key={tab.path}
+            to={tab.path}
+            className={`${styles.tab} ${isActive ? styles.active : ''}`}
+            end={tab.path === '/'}
+            aria-current={isActive ? 'page' : undefined}
+          >
+            <span className={styles.icon} aria-hidden="true">
+              {tab.icon}
+            </span>
+            <span className={styles.label}>{tab.label}</span>
+          </NavLink>
+        );
+      })}
     </nav>
   );
 }
