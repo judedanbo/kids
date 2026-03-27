@@ -31,6 +31,7 @@ export { useAgeTier } from './hooks/useAgeTier';
 export { useFeatureFlag } from './hooks/useFeatureFlag';
 export { useGameLifecycle } from './hooks/useGameLifecycle';
 export { useHighContrast } from './hooks/useHighContrast';
+export { useRovingTabindex } from './hooks/useRovingTabindex';
 
 // Components
 export {
