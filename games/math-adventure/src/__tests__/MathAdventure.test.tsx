@@ -71,20 +71,20 @@ describe('MathAdventure', () => {
   it('shows instruction bubble initially', () => {
     const props = createMockProps();
     render(<MathAdventure {...props} />);
-    expect(screen.getByText("Solve the math problems!")).toBeTruthy();
+    expect(screen.getByText('instruction')).toBeTruthy();
   });
 
   it('shows a question with "= ?" after dismissing instruction', () => {
     const props = createMockProps();
     render(<MathAdventure {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
     expect(screen.getByText(/= \?/)).toBeTruthy();
   });
 
   it('shows 4 numeric answer options after dismissing instruction', () => {
     const props = createMockProps();
     render(<MathAdventure {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
     // OptionButtons render as buttons; check we have at least 4 with numeric labels
     const buttons = screen.getAllByRole('button');
     const numericButtons = buttons.filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''));
@@ -94,21 +94,21 @@ describe('MathAdventure', () => {
   it('shows visual aid (role="img") at difficulty 1', () => {
     const props = createMockProps({ config: { ...createMockProps().config, difficulty: 1 } });
     render(<MathAdventure {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
     expect(screen.getByRole('img')).toBeTruthy();
   });
 
   it('hides visual aid at difficulty 3', () => {
     const props = createMockProps({ config: { ...createMockProps().config, difficulty: 3 } });
     render(<MathAdventure {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
     expect(screen.queryByRole('img')).toBeNull();
   });
 
   it('calls onScore when correct answer is clicked', () => {
     const props = createMockProps();
     render(<MathAdventure {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
 
     // Iterate through option buttons until one triggers onScore (correct answer)
     const buttons = screen.getAllByRole('button');
@@ -123,7 +123,7 @@ describe('MathAdventure', () => {
   it('plays SFX("correct") on correct answer', () => {
     const props = createMockProps();
     render(<MathAdventure {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
 
     const buttons = screen.getAllByRole('button');
     const numericButtons = buttons.filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''));
@@ -138,7 +138,7 @@ describe('MathAdventure', () => {
   it('shows progress bar (role="progressbar")', () => {
     const props = createMockProps();
     render(<MathAdventure {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
     expect(screen.getByRole('progressbar')).toBeTruthy();
   });
 

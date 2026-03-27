@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GameShell,
   OptionButton,
@@ -20,6 +21,7 @@ const TOTAL_QUESTIONS = 10;
 type OptionState = 'default' | 'correct' | 'incorrect';
 
 export function MathAdventure({ config, onScore, onComplete, onExit, audioManager }: GameProps) {
+  const { t } = useTranslation('math-adventure');
   const announce = useAnnounce();
   const [showInstruction, setShowInstruction] = useState(true);
   const [questions] = useState<Question[]>(() => generateRound(config.difficulty, TOTAL_QUESTIONS));
@@ -44,9 +46,9 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
 
   useEffect(() => {
     if (!showInstruction) {
-      announce(`Question ${currentIndex + 1} of ${questions.length}: ${currentQuestion.displayText}`);
+      announce(t('questionOf', { current: currentIndex + 1, total: questions.length, text: currentQuestion.displayText }));
     }
-  }, [currentIndex, showInstruction, announce, currentQuestion.displayText, questions.length]);
+  }, [currentIndex, showInstruction, announce, t, currentQuestion.displayText, questions.length]);
 
   const handleDismissInstruction = useCallback(() => {
     setShowInstruction(false);
@@ -77,7 +79,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
         setSelectedOption(option);
         setOptionStates((prev) => ({ ...prev, [option]: 'correct' }));
         audioManager.playSFX('correct');
-        announce('Correct!');
+        announce(t('correct'));
 
         const points = newAttempts === 1 ? 10 : newAttempts === 2 ? 5 : 2;
         setScore((prev) => prev + points);
@@ -95,7 +97,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
       } else {
         setOptionStates((prev) => ({ ...prev, [option]: 'incorrect' }));
         audioManager.playSFX('incorrect');
-        announce('Incorrect, try again');
+        announce(t('incorrect'));
 
         setTimeout(() => {
           setOptionStates((prev) => {
@@ -105,7 +107,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
         }, 600);
       }
     },
-    [selectedOption, attempts, currentQuestion, audioManager, onScore, advanceQuestion, announce],
+    [selectedOption, attempts, currentQuestion, audioManager, onScore, advanceQuestion, announce, t],
   );
 
   const handleCelebrationComplete = useCallback(() => {
@@ -138,7 +140,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
     return (
       <GameShell title="Math Adventure" onBack={onExit}>
         <CelebrationOverlay
-          title="Amazing!"
+          title={t('celebrationTitle')}
           score={score}
           maxScore={TOTAL_QUESTIONS * 10}
           onComplete={handleCelebrationComplete}
@@ -151,8 +153,8 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
     return (
       <GameShell title="Math Adventure" onBack={onExit}>
         <div className={styles.gameArea}>
-          <InstructionBubble text="Solve the math problems!" character="🧮" />
-          <OptionButton label="Let's Go!" state="default" onSelect={handleDismissInstruction} size="large" />
+          <InstructionBubble text={t('instruction')} character="🧮" />
+          <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
         </div>
       </GameShell>
     );
@@ -173,9 +175,9 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
           {attempts > 1 && (
             <p
               className={styles.attemptHint}
-              aria-label={`Attempt ${attempts} — keep trying!`}
+              aria-label={t('attempt', { count: attempts })}
             >
-              Attempt {attempts} — keep trying!
+              {t('attempt', { count: attempts })}
             </p>
           )}
         </div>
