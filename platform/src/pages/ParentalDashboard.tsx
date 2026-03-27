@@ -165,7 +165,7 @@ function Dashboard({
       </section>
 
       {/* Play Time Chart */}
-      <section className={styles.section}>
+      <section className={styles.section} aria-label="Play time over the last 7 days">
         <h2 className={styles.sectionTitle}>Play Time (Last 7 Days)</h2>
         <div className={styles.chart}>
           {dailyPlayTime.map(([day, time]) => (
@@ -193,11 +193,11 @@ function Dashboard({
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>Game</th>
-                  <th>High Score</th>
-                  <th>Attempts</th>
-                  <th>Difficulty</th>
-                  <th>Actions</th>
+                  <th scope="col">Game</th>
+                  <th scope="col">High Score</th>
+                  <th scope="col">Attempts</th>
+                  <th scope="col">Difficulty</th>
+                  <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>

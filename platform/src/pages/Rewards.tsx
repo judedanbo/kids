@@ -14,30 +14,30 @@ export function Rewards() {
 
   if (!profile) {
     return (
-      <div className={styles.page}>
+      <main className={styles.page}>
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>🏆</div>
           <h2 className={styles.emptyTitle}>No profile selected</h2>
           <p className={styles.emptyText}>Select a profile to see your rewards!</p>
         </div>
-      </div>
+      </main>
     );
   }
 
   if (totalCount === 0) {
     return (
-      <div className={styles.page}>
+      <main className={styles.page}>
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>🌟</div>
           <h2 className={styles.emptyTitle}>Rewards coming soon!</h2>
           <p className={styles.emptyText}>Keep playing to earn awesome rewards.</p>
         </div>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className={styles.page}>
+    <main className={styles.page}>
       <div className={styles.header}>
         <h1 className={styles.title}>My Rewards</h1>
         <span className={styles.badge}>
@@ -55,7 +55,7 @@ export function Rewards() {
         </div>
       )}
 
-      <div className={styles.grid}>
+      <ul role="list" aria-label="Your rewards" className={styles.grid}>
         {REWARD_CATALOG.map((reward) => {
           const unlocked = unlockedIds.has(reward.id);
           const matchedReward = unlocked
@@ -66,15 +66,16 @@ export function Rewards() {
             : getRewardProgress(reward, profile, state.gameRegistry);
 
           return (
-            <RewardCard
-              key={reward.id}
-              reward={matchedReward}
-              unlocked={unlocked}
-              progress={progress}
-            />
+            <li key={reward.id}>
+              <RewardCard
+                reward={matchedReward}
+                unlocked={unlocked}
+                progress={progress}
+              />
+            </li>
           );
         })}
-      </div>
-    </div>
+      </ul>
+    </main>
   );
 }

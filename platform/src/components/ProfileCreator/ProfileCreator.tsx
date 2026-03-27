@@ -182,36 +182,42 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
 
       {step === 'age' && (
         <div className={styles.stepContainer}>
-          <h2 className={styles.prompt}>How old are you?</h2>
-          <div className={styles.ageGrid}>
-            {Array.from({ length: 10 }, (_, i) => i + 3).map((ageOption) => (
-              <button
-                key={ageOption}
-                className={`${styles.ageButton} ${age === ageOption ? styles.selected : ''}`}
-                onClick={() => handleAgeSelect(ageOption)}
-              >
-                {ageOption}
-              </button>
-            ))}
-          </div>
+          <fieldset className={styles.ageFieldset}>
+            <legend className={styles.prompt}>How old are you?</legend>
+            <div className={styles.ageGrid}>
+              {Array.from({ length: 10 }, (_, i) => i + 3).map((ageOption) => (
+                <button
+                  key={ageOption}
+                  className={`${styles.ageButton} ${age === ageOption ? styles.selected : ''}`}
+                  onClick={() => handleAgeSelect(ageOption)}
+                  aria-pressed={age === ageOption}
+                >
+                  {ageOption}
+                </button>
+              ))}
+            </div>
+          </fieldset>
         </div>
       )}
 
       {step === 'avatar' && (
         <div className={styles.stepContainer}>
-          <h2 className={styles.prompt}>Pick your avatar!</h2>
-          <div className={styles.avatarGrid}>
-            {AVATARS.map((emoji) => (
-              <button
-                key={emoji}
-                className={`${styles.avatarButton} ${avatar === emoji ? styles.selected : ''}`}
-                onClick={() => handleAvatarSelect(emoji)}
-                aria-label={`Select ${emoji} avatar`}
-              >
-                {emoji}
-              </button>
-            ))}
-          </div>
+          <fieldset className={styles.avatarFieldset}>
+            <legend className={styles.prompt}>Choose your avatar</legend>
+            <div className={styles.avatarGrid}>
+              {AVATARS.map((emoji) => (
+                <button
+                  key={emoji}
+                  className={`${styles.avatarButton} ${avatar === emoji ? styles.selected : ''}`}
+                  onClick={() => handleAvatarSelect(emoji)}
+                  aria-label={`Select ${emoji} avatar`}
+                  aria-pressed={avatar === emoji}
+                >
+                  {emoji}
+                </button>
+              ))}
+            </div>
+          </fieldset>
         </div>
       )}
 
