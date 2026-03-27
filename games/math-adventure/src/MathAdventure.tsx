@@ -7,6 +7,7 @@ import {
   CelebrationOverlay,
   InstructionBubble,
   GameTimer,
+  useAnnounce,
 } from '@kids-games-zone/shared';
 import type { GameProps, GameResult } from '@kids-games-zone/shared';
 import { generateRound } from './utils/questionGenerator';
@@ -19,6 +20,7 @@ const TOTAL_QUESTIONS = 10;
 type OptionState = 'default' | 'correct' | 'incorrect';
 
 export function MathAdventure({ config, onScore, onComplete, onExit, audioManager }: GameProps) {
+  const announce = useAnnounce();
   const [showInstruction, setShowInstruction] = useState(true);
   const [questions] = useState<Question[]>(() => generateRound(config.difficulty, TOTAL_QUESTIONS));
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -39,6 +41,12 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
   }, []);
 
   const currentQuestion = questions[currentIndex];
+
+  useEffect(() => {
+    if (!showInstruction) {
+      announce(`Question ${currentIndex + 1} of ${questions.length}: ${currentQuestion.displayText}`);
+    }
+  }, [currentIndex, showInstruction, announce, currentQuestion.displayText, questions.length]);
 
   const handleDismissInstruction = useCallback(() => {
     setShowInstruction(false);
@@ -69,6 +77,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
         setSelectedOption(option);
         setOptionStates((prev) => ({ ...prev, [option]: 'correct' }));
         audioManager.playSFX('correct');
+        announce('Correct!');
 
         const points = newAttempts === 1 ? 10 : newAttempts === 2 ? 5 : 2;
         setScore((prev) => prev + points);
@@ -86,6 +95,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
       } else {
         setOptionStates((prev) => ({ ...prev, [option]: 'incorrect' }));
         audioManager.playSFX('incorrect');
+        announce('Incorrect, try again');
 
         setTimeout(() => {
           setOptionStates((prev) => {
@@ -95,7 +105,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
         }, 600);
       }
     },
-    [selectedOption, attempts, currentQuestion, audioManager, onScore, advanceQuestion],
+    [selectedOption, attempts, currentQuestion, audioManager, onScore, advanceQuestion, announce],
   );
 
   const handleCelebrationComplete = useCallback(() => {
@@ -159,9 +169,14 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
         </div>
         <ProgressBar current={currentIndex} total={TOTAL_QUESTIONS} showLabel />
         <div className={styles.questionArea}>
-          <p className={styles.questionText}>{currentQuestion.displayText}</p>
+          <p aria-live="assertive" aria-atomic="true" className={styles.questionText}>{currentQuestion.displayText}</p>
           {attempts > 1 && (
-            <p className={styles.attemptHint}>Attempt {attempts} — keep trying!</p>
+            <p
+              className={styles.attemptHint}
+              aria-label={`Attempt ${attempts} — keep trying!`}
+            >
+              Attempt {attempts} — keep trying!
+            </p>
           )}
         </div>
         {showVisualAid && (

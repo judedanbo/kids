@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { MathAdventure } from '../MathAdventure';
 import type { GameProps } from '@kids-games-zone/shared';
 
@@ -139,5 +140,11 @@ describe('MathAdventure', () => {
     render(<MathAdventure {...props} />);
     fireEvent.click(screen.getByText("Let's Go!"));
     expect(screen.getByRole('progressbar')).toBeTruthy();
+  });
+
+  it('has no accessibility violations', async () => {
+    const props = createMockProps();
+    const { container } = render(<MathAdventure {...props} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
