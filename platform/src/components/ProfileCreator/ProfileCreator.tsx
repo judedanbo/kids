@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { UserProfile, AgeTier } from '@kids-games-zone/shared';
 import { NumberPad } from '../NumberPad';
 import { hashPin } from '../../utils/pin';
@@ -20,6 +21,7 @@ function getAgeTier(age: number): AgeTier {
 }
 
 export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
+  const { t } = useTranslation('common');
   const [step, setStep] = useState<Step>('name');
   const [name, setName] = useState('');
   const [age, setAge] = useState<number | null>(null);
@@ -65,7 +67,7 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
               setStep('confirm');
             });
           } else {
-            setPinError('PINs do not match. Try again.');
+            setPinError(t('profile.pinMismatch'));
             setTimeout(() => {
               setPinDigits([]);
               setStep('pin');
@@ -154,14 +156,14 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
 
       {step === 'name' && (
         <div className={styles.stepContainer}>
-          <h2 className={styles.prompt}>What&apos;s your name?</h2>
+          <h2 className={styles.prompt}>{t('profile.whatsYourName')}</h2>
           <input
             className={styles.nameInput}
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
-            placeholder="Type your name..."
+            placeholder={t('profile.typeName')}
             maxLength={20}
             aria-label="Your name"
           />
@@ -170,11 +172,11 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
             onClick={handleNameSubmit}
             disabled={name.trim().length < 1}
           >
-            Next
+            {t('profile.next')}
           </button>
           {onCancel && (
             <button className={styles.cancelButton} onClick={onCancel}>
-              Cancel
+              {t('profile.cancel')}
             </button>
           )}
         </div>
@@ -183,7 +185,7 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
       {step === 'age' && (
         <div className={styles.stepContainer}>
           <fieldset className={styles.ageFieldset}>
-            <legend className={styles.prompt}>How old are you?</legend>
+            <legend className={styles.prompt}>{t('profile.howOld')}</legend>
             <div className={styles.ageGrid}>
               {Array.from({ length: 10 }, (_, i) => i + 3).map((ageOption) => (
                 <button
@@ -203,7 +205,7 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
       {step === 'avatar' && (
         <div className={styles.stepContainer}>
           <fieldset className={styles.avatarFieldset}>
-            <legend className={styles.prompt}>Choose your avatar</legend>
+            <legend className={styles.prompt}>{t('profile.chooseAvatar')}</legend>
             <div className={styles.avatarGrid}>
               {AVATARS.map((emoji) => (
                 <button
@@ -224,12 +226,12 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
       {(step === 'pin' || step === 'pin_confirm') && (
         <div className={styles.stepContainer}>
           <h2 className={styles.prompt}>
-            {step === 'pin' ? 'Set a Parent PIN' : 'Confirm your PIN'}
+            {step === 'pin' ? t('profile.setPin') : t('profile.confirmPin')}
           </h2>
           <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--spacing-md)', fontSize: '0.9rem' }}>
             {step === 'pin'
-              ? 'This 4-digit PIN protects parental controls.'
-              : 'Enter the same PIN again to confirm.'}
+              ? t('profile.pinInstruction')
+              : t('profile.confirmPinInstruction')}
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-lg)' }}>
             {Array.from({ length: 4 }, (_, i) => (
@@ -253,23 +255,23 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
             onClick={handleSkipPin}
             style={{ marginTop: 'var(--spacing-md)' }}
           >
-            Skip (set up later)
+            {t('profile.skipPin')}
           </button>
         </div>
       )}
 
       {step === 'confirm' && (
         <div className={styles.stepContainer}>
-          <h2 className={styles.prompt}>Ready to play?</h2>
+          <h2 className={styles.prompt}>{t('profile.readyToPlay')}</h2>
           <div className={styles.summary}>
             <div className={styles.summaryAvatar}>{avatar}</div>
             <div className={styles.summaryName}>{name.trim()}</div>
             <div className={styles.summaryAge}>
-              Age {age} • {age ? getAgeTier(age) : ''} tier
+              {age ? t('profile.ageTier', { age, tier: getAgeTier(age) }) : ''}
             </div>
           </div>
           <button className={styles.confirmButton} onClick={handleConfirm}>
-            Let&apos;s go!
+            {t('profile.letsGo')}
           </button>
         </div>
       )}
