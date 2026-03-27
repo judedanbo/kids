@@ -7,6 +7,7 @@ import { IndexedDBStorageManager } from './services/storage';
 import { RealAudioManager } from './services/audio-manager';
 import { HowlerBackend } from './services/audio-howler';
 import { gameRegistry } from './config/gameRegistry';
+import './i18n';
 import './styles/global.css';
 
 // Accessibility dev overlay — logs a11y violations to browser console
