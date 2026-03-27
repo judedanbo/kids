@@ -6,6 +6,8 @@ import {
   ScoreDisplay,
   CelebrationOverlay,
   InstructionBubble,
+  useAnnounce,
+  useRovingTabindex,
 } from '@kids-games-zone/shared';
 import type { GameProps, GameResult } from '@kids-games-zone/shared';
 import { ScrambleRow } from './components/ScrambleRow';
@@ -36,6 +38,12 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
   const [score, setScore] = useState(0);
   const [answerState, setAnswerState] = useState<'default' | 'correct' | 'incorrect'>('default');
 
+  const announce = useAnnounce();
+  const { getItemProps: getLetterProps } = useRovingTabindex({
+    itemCount: scrambledLetters.length,
+    orientation: 'horizontal',
+  });
+
   const startTimeRef = useRef(Date.now());
   const wordsCorrectRef = useRef(0);
   const totalAttemptsRef = useRef<number[]>([]);
@@ -55,9 +63,12 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
 
   useEffect(() => {
     if (!showInstruction && words.length > 0) {
-      initWord(words[currentIndex]);
+      const entry = words[currentIndex];
+      initWord(entry);
+      const categoryName = categories[categoryIndex].name;
+      announce(`Unscramble the word! Category: ${categoryName}, Clue: ${entry.clue}`);
     }
-  }, [showInstruction, currentIndex, words, initWord]);
+  }, [showInstruction, currentIndex, words, initWord, announce, categoryIndex]);
 
   const handleDismissInstruction = useCallback(() => {
     setShowInstruction(false);
@@ -70,6 +81,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       if (answer === word) {
         setAnswerState('correct');
         audioManager.playSFX('correct');
+        announce(`Correct! The word is ${word}`);
 
         const points = currentAttempts === 0 ? 10 : currentAttempts === 1 ? 5 : 2;
         setScore((prev) => prev + points);
@@ -89,6 +101,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       } else {
         setAnswerState('incorrect');
         audioManager.playSFX('incorrect');
+        announce('Not quite, try again');
         setAttempts((prev) => prev + 1);
 
         setTimeout(() => {
@@ -100,7 +113,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
         }, 600);
       }
     },
-    [currentIndex, audioManager, onScore],
+    [currentIndex, audioManager, onScore, announce],
   );
 
   const handleLetterClick = useCallback(
@@ -121,6 +134,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       setPlacedIndices(newPlaced);
       setPlacementOrder(newOrder);
       audioManager.playSFX('click');
+      announce(`Placed letter ${letter}`);
 
       // Auto-check when all slots filled
       if (firstEmpty === newSlots.length - 1) {
@@ -134,6 +148,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       answerSlots,
       placementOrder,
       audioManager,
+      announce,
       checkAnswer,
       words,
       currentIndex,
@@ -168,12 +183,16 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       newPlaced.delete(scrambleIdx);
       const newOrder = placementOrder.filter((_, i) => i !== filledCount);
 
+      const removedLetter = answerSlots[slotIndex];
       setAnswerSlots(newSlots);
       setPlacedIndices(newPlaced);
       setPlacementOrder(newOrder);
       audioManager.playSFX('click');
+      if (removedLetter) {
+        announce(`Removed letter ${removedLetter}`);
+      }
     },
-    [answerState, answerSlots, placedIndices, placementOrder, audioManager],
+    [answerState, answerSlots, placedIndices, placementOrder, audioManager, announce],
   );
 
   const handleKeyDown = useCallback(
@@ -287,6 +306,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
             letters={scrambledLetters}
             placedIndices={placedIndices}
             onLetterClick={handleLetterClick}
+            getLetterProps={getLetterProps}
           />
         </div>
       </div>

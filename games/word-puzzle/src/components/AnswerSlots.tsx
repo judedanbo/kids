@@ -22,7 +22,7 @@ export function AnswerSlots({ slots, state, onSlotClick }: AnswerSlotsProps) {
           onClick={() => letter && onSlotClick(i)}
           disabled={!letter}
           layout={!shouldReduceMotion}
-          aria-label={letter ? `Remove letter ${letter}` : `Empty slot ${i + 1}`}
+          aria-label={`Slot ${i + 1} of ${slots.length}${letter ? `, filled with letter ${letter}` : ', empty'}`}
         >
           {letter?.toUpperCase() ?? ''}
         </motion.button>

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { WordPuzzle } from '../WordPuzzle';
 import type { GameProps } from '@kids-games-zone/shared';
 
@@ -139,5 +140,11 @@ describe('WordPuzzle', () => {
     }
 
     expect(props.audioManager.playSFX).toHaveBeenCalled();
+  });
+
+  it('has no accessibility violations', async () => {
+    const props = createMockProps();
+    const { container } = render(<WordPuzzle {...props} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
