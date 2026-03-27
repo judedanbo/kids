@@ -34,7 +34,7 @@ export function InstructionBubble({
   onAudioPlay,
 }: InstructionBubbleProps) {
   return (
-    <div className={styles.container}>
+    <div className={styles.container} role="status" aria-live="polite">
       <div className={styles.bubble}>
         <span>{text}</span>
         {audioSrc && (

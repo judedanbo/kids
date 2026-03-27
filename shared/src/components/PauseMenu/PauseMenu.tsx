@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import FocusTrap from 'focus-trap-react';
 import styles from './PauseMenu.module.css';
 
@@ -12,6 +12,7 @@ interface PauseMenuProps {
 export function PauseMenu({ onResume, onRestart, onExit }: PauseMenuProps) {
   const onResumeRef = useRef(onResume);
   onResumeRef.current = onResume;
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -33,10 +34,10 @@ export function PauseMenu({ onResume, onRestart, onExit }: PauseMenuProps) {
           aria-modal="true"
           aria-label="Game paused"
           tabIndex={-1}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.2 }}
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
+          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
+          exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
         >
           <div className={styles.title}>⏸ Paused</div>
           <div className={styles.buttons}>

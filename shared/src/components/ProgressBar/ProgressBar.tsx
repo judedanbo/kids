@@ -32,6 +32,7 @@ export function ProgressBar({
         aria-valuenow={current}
         aria-valuemin={0}
         aria-valuemax={total}
+        aria-label={displayLabel}
         style={style}
       >
         <div className={styles.fill} style={{ width: `${percentage}%` }} />

@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { PauseMenu } from './PauseMenu';
 
 describe('PauseMenu', () => {
@@ -59,5 +60,12 @@ describe('PauseMenu', () => {
     expect(document.activeElement).toBe(buttons[0]);
     // Verify focus is contained within the dialog
     expect(dialog.contains(document.activeElement)).toBe(true);
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <PauseMenu onResume={() => {}} onRestart={() => {}} onExit={() => {}} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

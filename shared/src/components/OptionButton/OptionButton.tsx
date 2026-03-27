@@ -7,6 +7,7 @@ interface OptionButtonProps {
   icon?: ReactNode;
   state?: 'default' | 'correct' | 'incorrect';
   disabled?: boolean;
+  selected?: boolean;
   onSelect?: () => void;
   size?: 'normal' | 'large';
 }
@@ -16,6 +17,7 @@ export function OptionButton({
   icon,
   state = 'default',
   disabled = false,
+  selected,
   onSelect,
   size = 'normal',
 }: OptionButtonProps) {
@@ -40,7 +42,8 @@ export function OptionButton({
     <motion.button
       className={classNames}
       onClick={handleClick}
-      aria-disabled={disabled}
+      disabled={disabled}
+      aria-pressed={selected}
       whileTap={
         !disabled && !shouldReduceMotion ? { scale: 0.95 } : undefined
       }

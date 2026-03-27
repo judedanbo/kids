@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { ProgressBar } from './ProgressBar';
 
 describe('ProgressBar', () => {
@@ -37,5 +38,10 @@ describe('ProgressBar', () => {
     const { container } = render(<ProgressBar current={15} total={10} />);
     const fill = container.querySelector('[class*="fill"]');
     expect(fill).toHaveStyle({ width: '100%' });
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ProgressBar current={3} total={10} showLabel />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
