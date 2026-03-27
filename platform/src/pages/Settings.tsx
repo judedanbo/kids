@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useHighContrast } from '@kids-games-zone/shared';
 import { usePlatform } from '../context/PlatformContext';
 import styles from './Settings.module.css';
 
@@ -10,6 +11,16 @@ export function Settings() {
   const handleThemeToggle = () => {
     const next = state.settings.theme === 'light' ? 'dark' : 'light';
     dispatch({ type: 'SET_SETTINGS', payload: { theme: next } });
+  };
+
+  const { isHighContrast, setHighContrast } = useHighContrast(
+    state.settings.highContrast,
+  );
+
+  const handleHighContrastToggle = () => {
+    const next = !isHighContrast;
+    setHighContrast(next);
+    dispatch({ type: 'SET_SETTINGS', payload: { highContrast: next } });
   };
 
   return (
@@ -43,6 +54,22 @@ export function Settings() {
           <span>Theme</span>
           <button className={styles.toggleBtn} onClick={handleThemeToggle}>
             {state.settings.theme === 'light' ? 'Light' : 'Dark'}
+          </button>
+        </div>
+      </section>
+
+      {/* Accessibility */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Accessibility</h2>
+        <div className={styles.settingRow}>
+          <label htmlFor="high-contrast-toggle">High Contrast</label>
+          <button
+            id="high-contrast-toggle"
+            className={styles.toggleBtn}
+            onClick={handleHighContrastToggle}
+            aria-pressed={isHighContrast}
+          >
+            {isHighContrast ? 'On' : 'Off'}
           </button>
         </div>
       </section>
