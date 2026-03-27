@@ -33,6 +33,7 @@ export default [
         Event: 'readonly',
         MouseEvent: 'readonly',
         KeyboardEvent: 'readonly',
+        MediaQueryListEvent: 'readonly',
         TextEncoder: 'readonly',
         CryptoKey: 'readonly',
         btoa: 'readonly',

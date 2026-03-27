@@ -55,7 +55,7 @@ export function Rewards() {
         </div>
       )}
 
-      <ul role="list" aria-label="Your rewards" className={styles.grid}>
+      <ul aria-label="Your rewards" className={styles.grid}>
         {REWARD_CATALOG.map((reward) => {
           const unlocked = unlockedIds.has(reward.id);
           const matchedReward = unlocked

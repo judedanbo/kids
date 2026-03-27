@@ -1,5 +1,6 @@
 import { render, screen, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { axe } from 'vitest-axe';
 import { RewardCelebration } from './RewardCelebration';
 import type { Reward } from '@kids-games-zone/shared';
 
@@ -98,5 +99,11 @@ describe('RewardCelebration', () => {
     });
 
     expect(onComplete).toHaveBeenCalledTimes(1);
+  });
+
+  it('has no accessibility violations', async () => {
+    const onComplete = vi.fn();
+    const { container } = render(<RewardCelebration rewards={mockRewards} onComplete={onComplete} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

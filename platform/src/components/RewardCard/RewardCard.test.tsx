@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
+import { axe } from 'vitest-axe';
 import { RewardCard } from './RewardCard';
 import type { Reward } from '@kids-games-zone/shared';
 
@@ -42,5 +43,10 @@ describe('RewardCard', () => {
   it('does not show progress when unlocked', () => {
     render(<RewardCard reward={reward} unlocked={true} progress="some progress" />);
     expect(screen.queryByText('some progress')).not.toBeInTheDocument();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<RewardCard reward={reward} unlocked={true} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

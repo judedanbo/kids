@@ -50,7 +50,6 @@ export function Card({
     <div
       className={styles.cardWrapper}
       style={{ width: size, height: size, perspective: 800 }}
-      role="gridcell"
     >
       <motion.button
         className={`${styles.cardButton} ${isMatched ? styles.cardMatched : ''}`}

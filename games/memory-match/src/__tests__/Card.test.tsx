@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { Card } from '../components/Card';
 
 describe('Card', () => {
@@ -56,5 +57,10 @@ describe('Card', () => {
     // The illustration is rendered (aria-label on button reflects the name)
     const button = screen.getByRole('button');
     expect(button.getAttribute('aria-label')).toContain('cat');
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Card {...defaultProps} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
