@@ -84,6 +84,7 @@ export default function Hub() {
 
   return (
     <div className={styles.hub}>
+      <main>
       {/* Welcome header */}
       <header className={styles.header}>
         <h1 className={styles.welcome}>
@@ -107,7 +108,7 @@ export default function Hub() {
 
       {/* Continue Playing */}
       {recentGames.length > 0 && (
-        <section className={styles.section}>
+        <section className={styles.section} aria-label="Continue Playing">
           <h2 className={styles.sectionTitle}>Continue Playing</h2>
           <div className={styles.recentRow}>
             {recentGames.map((game) => (
@@ -142,6 +143,7 @@ export default function Hub() {
           <button
             className={`${styles.filterPill} ${activeFilter === 'all' ? styles.filterActive : ''}`}
             onClick={() => setActiveFilter('all')}
+            aria-pressed={activeFilter === 'all'}
           >
             All
           </button>
@@ -150,6 +152,7 @@ export default function Hub() {
               key={category}
               className={`${styles.filterPill} ${activeFilter === category ? styles.filterActive : ''}`}
               onClick={() => setActiveFilter(category)}
+              aria-pressed={activeFilter === category}
             >
               {category.replace('_', ' ')}
             </button>
@@ -158,21 +161,24 @@ export default function Hub() {
       )}
 
       {/* Game grid */}
-      {filteredGames.length > 0 ? (
-        <div className={styles.gameGrid}>
-          {filteredGames.map((game) => (
-            <GameCard
-              key={game.id}
-              manifest={game}
-              progress={profile.progress[game.id]}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className={styles.emptyState}>
-          <p>No games found! Try a different search or filter.</p>
-        </div>
-      )}
+      <section aria-label="All Games">
+        {filteredGames.length > 0 ? (
+          <div className={styles.gameGrid}>
+            {filteredGames.map((game) => (
+              <GameCard
+                key={game.id}
+                manifest={game}
+                progress={profile.progress[game.id]}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.emptyState}>
+            <p>No games found! Try a different search or filter.</p>
+          </div>
+        )}
+      </section>
+      </main>
     </div>
   );
 }
