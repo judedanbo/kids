@@ -1,4 +1,6 @@
 import { useEffect, type ReactNode } from 'react';
+import { SkipLink } from '../SkipLink/SkipLink';
+import { Announcer } from '../Announcer/Announcer';
 import styles from './GameShell.module.css';
 
 interface GameShellProps {
@@ -30,36 +32,41 @@ export function GameShell({
   }, [onPause]);
 
   return (
-    <div className={styles.shell}>
-      <header className={styles.header}>
-        {onBack ? (
-          <button
-            className={styles.backButton}
-            onClick={onBack}
-            aria-label="Go back"
-          >
-            ← Back
-          </button>
-        ) : (
-          <div className={styles.placeholder} />
-        )}
+    <Announcer>
+      <div className={styles.shell}>
+        <SkipLink targetId="game-content" label="Skip to game" />
+        <header className={styles.header}>
+          {onBack ? (
+            <button
+              className={styles.backButton}
+              onClick={onBack}
+              aria-label="Go back"
+            >
+              ← Back
+            </button>
+          ) : (
+            <div className={styles.placeholder} />
+          )}
 
-        <h1 className={styles.title}>{title}</h1>
+          <h1 className={styles.title}>{title}</h1>
 
-        {showPauseButton && onPause ? (
-          <button
-            className={styles.pauseButton}
-            onClick={onPause}
-            aria-label="Pause game"
-          >
-            ⏸
-          </button>
-        ) : (
-          <div className={styles.placeholder} />
-        )}
-      </header>
+          {showPauseButton && onPause ? (
+            <button
+              className={styles.pauseButton}
+              onClick={onPause}
+              aria-label="Pause game"
+            >
+              ⏸
+            </button>
+          ) : (
+            <div className={styles.placeholder} />
+          )}
+        </header>
 
-      <main className={styles.content}>{children}</main>
-    </div>
+        <main id="game-content" className={styles.content}>
+          {children}
+        </main>
+      </div>
+    </Announcer>
   );
 }

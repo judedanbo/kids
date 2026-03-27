@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { GameShell } from './GameShell';
 
 describe('GameShell', () => {
@@ -52,5 +53,14 @@ describe('GameShell', () => {
     );
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(onPause).toHaveBeenCalledOnce();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <GameShell title="Test Game" onBack={() => {}} onPause={() => {}}>
+        <div>Game content</div>
+      </GameShell>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
