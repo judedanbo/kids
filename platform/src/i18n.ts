@@ -5,6 +5,12 @@ import { SUPPORTED_LANGUAGES } from './config/languages';
 
 import enCommon from './locales/en/common.json';
 import frCommon from './locales/fr/common.json';
+import enMemoryMatch from '../../games/memory-match/src/locales/en/memory-match.json';
+import frMemoryMatch from '../../games/memory-match/src/locales/fr/memory-match.json';
+import enMathAdventure from '../../games/math-adventure/src/locales/en/math-adventure.json';
+import frMathAdventure from '../../games/math-adventure/src/locales/fr/math-adventure.json';
+import enWordPuzzle from '../../games/word-puzzle/src/locales/en/word-puzzle.json';
+import frWordPuzzle from '../../games/word-puzzle/src/locales/fr/word-puzzle.json';
 
 const supportedLngs = SUPPORTED_LANGUAGES.map((l) => l.code);
 
@@ -13,8 +19,18 @@ i18n
   .use(initReactI18next)
   .init({
     resources: {
-      en: { common: enCommon },
-      fr: { common: frCommon },
+      en: {
+        common: enCommon,
+        'memory-match': enMemoryMatch,
+        'math-adventure': enMathAdventure,
+        'word-puzzle': enWordPuzzle,
+      },
+      fr: {
+        common: frCommon,
+        'memory-match': frMemoryMatch,
+        'math-adventure': frMathAdventure,
+        'word-puzzle': frWordPuzzle,
+      },
     },
     supportedLngs,
     fallbackLng: 'en',

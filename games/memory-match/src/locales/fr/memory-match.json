@@ -1,0 +1,12 @@
+{
+  "title": "Jeu de mémoire",
+  "instruction": "Trouve les images identiques !",
+  "letsGo": "C'est parti !",
+  "preview": "Aperçu : mémorise les cartes !",
+  "matchFound": "Paire trouvée !",
+  "notAMatch": "Pas de correspondance, réessaie",
+  "greatMatch": "Bien joué !",
+  "keepTrying": "Continue !",
+  "complete": "Félicitations ! Toutes les paires trouvées !",
+  "celebrationTitle": "Bravo !"
+}

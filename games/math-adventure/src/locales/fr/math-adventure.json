@@ -1,0 +1,10 @@
+{
+  "title": "Aventure mathématique",
+  "instruction": "Résous les problèmes de maths !",
+  "letsGo": "C'est parti !",
+  "questionOf": "Question {{current}} sur {{total}} : {{text}}",
+  "correct": "Correct !",
+  "incorrect": "Incorrect, réessaie",
+  "attempt": "Tentative {{count}} — continue !",
+  "celebrationTitle": "Formidable !"
+}
