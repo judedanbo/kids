@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { MemoryMatch } from '../MemoryMatch';
 import type { GameProps } from '@kids-games-zone/shared';
 
@@ -201,4 +202,12 @@ describe('MemoryMatch', () => {
     // At least one SFX was played
     expect(props.audioManager.playSFX).toHaveBeenCalled();
   });
+
+  it('has no accessibility violations', async () => {
+    vi.useRealTimers();
+    const props = createMockProps();
+    const { container } = render(<MemoryMatch {...props} />);
+    expect(await axe(container)).toHaveNoViolations();
+    vi.useFakeTimers();
+  }, 15000);
 });

@@ -6,6 +6,7 @@ import {
   ScoreDisplay,
   CelebrationOverlay,
   InstructionBubble,
+  useAnnounce,
 } from '@kids-games-zone/shared';
 import type { GameProps, GameResult } from '@kids-games-zone/shared';
 import { generateCards, getGridConfig } from './utils/gridUtils';
@@ -14,6 +15,7 @@ import { CardGrid } from './components/CardGrid';
 import styles from './MemoryMatch.module.css';
 
 export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager }: GameProps) {
+  const announce = useAnnounce();
   const [showInstruction, setShowInstruction] = useState(true);
   const [cards, setCards] = useState<CardData[]>([]);
   const [gridConfig, setGridConfig] = useState<GridConfig>(() => getGridConfig(config.difficulty));
@@ -46,12 +48,13 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
   // Preview phase: show all cards, then flip them back
   useEffect(() => {
     if (!isPreview) return;
+    announce('Preview: memorize the cards!');
     const timer = setTimeout(() => {
       setIsPreview(false);
       setIsLocked(false);
     }, gridConfig.previewDuration);
     return () => clearTimeout(timer);
-  }, [isPreview, gridConfig.previewDuration]);
+  }, [isPreview, gridConfig.previewDuration, announce]);
 
   // Clear encourage message after a delay
   useEffect(() => {
@@ -94,13 +97,16 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
 
         // Check for all matched
         if (newMatched.size === gridConfig.pairs) {
+          announce('Congratulations! All pairs matched!');
           audioManager.playSFX('celebrate');
           setShowCelebration(true);
         } else {
+          announce('Match found!');
           setIsLocked(false);
         }
       } else {
         // MISMATCH
+        announce('Not a match, try again');
         audioManager.playSFX('incorrect');
         setEncourageMessage('Keep trying!');
         const newTurns = turns + 1;
@@ -111,7 +117,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
         }, 1000);
       }
     },
-    [isLocked, flippedIds, cards, matchedPairIds, turns, score, gridConfig.pairs, onScore, audioManager],
+    [isLocked, flippedIds, cards, matchedPairIds, turns, score, gridConfig.pairs, onScore, audioManager, announce],
   );
 
   const handleCelebrationComplete = useCallback(() => {
