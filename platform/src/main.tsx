@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
@@ -8,6 +8,15 @@ import { RealAudioManager } from './services/audio-manager';
 import { HowlerBackend } from './services/audio-howler';
 import { gameRegistry } from './config/gameRegistry';
 import './styles/global.css';
+
+// Accessibility dev overlay — logs a11y violations to browser console
+if (import.meta.env.DEV) {
+  import('@axe-core/react').then((axe) => {
+    import('react-dom').then((ReactDOM) => {
+      axe.default(React, ReactDOM, 1000);
+    });
+  });
+}
 
 const storageManager = new IndexedDBStorageManager();
 storageManager.init().catch((err) => {
