@@ -1,15 +1,17 @@
 import { NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import styles from './NavBar.module.css';
-
-const tabs = [
-  { icon: '🏠', label: 'Home', path: '/' },
-  { icon: '👤', label: 'Profile', path: '/profile' },
-  { icon: '🏆', label: 'Rewards', path: '/rewards' },
-  { icon: '⚙️', label: 'Settings', path: '/settings' },
-] as const;
 
 export function NavBar() {
   const location = useLocation();
+  const { t } = useTranslation('common');
+
+  const tabs = [
+    { icon: '🏠', label: t('nav.home'), path: '/' },
+    { icon: '👤', label: t('nav.profile'), path: '/profile' },
+    { icon: '🏆', label: t('nav.rewards'), path: '/rewards' },
+    { icon: '⚙️', label: t('nav.settings'), path: '/settings' },
+  ];
 
   // Hide NavBar on game routes
   if (location.pathname.startsWith('/game/')) {
