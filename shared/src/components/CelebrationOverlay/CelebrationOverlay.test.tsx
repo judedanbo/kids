@@ -1,4 +1,5 @@
 import { render, screen, act } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { CelebrationOverlay } from './CelebrationOverlay';
 
 // Mock canvas-confetti
@@ -68,4 +69,14 @@ describe('CelebrationOverlay', () => {
 
     expect(confetti).not.toHaveBeenCalled();
   });
+
+  it('has no accessibility violations', async () => {
+    vi.useRealTimers();
+    const { container } = render(
+      <CelebrationOverlay title="Great job!" score={8} maxScore={10} />,
+    );
+    const result = await axe(container);
+    vi.useFakeTimers();
+    expect(result).toHaveNoViolations();
+  }, 15000);
 });
