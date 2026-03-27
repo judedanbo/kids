@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GameShell,
   OptionButton,
@@ -15,6 +16,7 @@ import { CardGrid } from './components/CardGrid';
 import styles from './MemoryMatch.module.css';
 
 export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager }: GameProps) {
+  const { t } = useTranslation('memory-match');
   const announce = useAnnounce();
   const [showInstruction, setShowInstruction] = useState(true);
   const [cards, setCards] = useState<CardData[]>([]);
@@ -48,7 +50,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
   // Preview phase: show all cards, then flip them back
   useEffect(() => {
     if (!isPreview) return;
-    announce('Preview: memorize the cards!');
+    announce(t('preview'));
     const timer = setTimeout(() => {
       setIsPreview(false);
       setIsLocked(false);
@@ -93,22 +95,22 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
         setScore(newScore);
         onScore(10);
         audioManager.playSFX('correct');
-        setEncourageMessage('Great match!');
+        setEncourageMessage(t('greatMatch'));
 
         // Check for all matched
         if (newMatched.size === gridConfig.pairs) {
-          announce('Congratulations! All pairs matched!');
+          announce(t('complete'));
           audioManager.playSFX('celebrate');
           setShowCelebration(true);
         } else {
-          announce('Match found!');
+          announce(t('matchFound'));
           setIsLocked(false);
         }
       } else {
         // MISMATCH
-        announce('Not a match, try again');
+        announce(t('notAMatch'));
         audioManager.playSFX('incorrect');
-        setEncourageMessage('Keep trying!');
+        setEncourageMessage(t('keepTrying'));
         const newTurns = turns + 1;
         setTurns(newTurns);
         setTimeout(() => {
@@ -142,7 +144,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
     return (
       <GameShell title="Memory Match" onBack={onExit}>
         <CelebrationOverlay
-          title="You did it!"
+          title={t('celebrationTitle')}
           score={score}
           maxScore={gridConfig.pairs * 10}
           onComplete={handleCelebrationComplete}
@@ -155,8 +157,8 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
     return (
       <GameShell title="Memory Match" onBack={onExit}>
         <div className={styles.gameArea}>
-          <InstructionBubble text="Find the matching pictures!" character="🃏" />
-          <OptionButton label="Let's Go!" state="default" onSelect={handleDismissInstruction} size="large" />
+          <InstructionBubble text={t('instruction')} character="🃏" />
+          <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
         </div>
       </GameShell>
     );
