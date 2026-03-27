@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { usePlatform } from '../context/PlatformContext';
 import { REWARD_CATALOG } from '../config/rewardCatalog';
 import { getRewardProgress } from '../services/rewards';
@@ -6,6 +7,7 @@ import styles from './Rewards.module.css';
 
 export function Rewards() {
   const { state } = usePlatform();
+  const { t } = useTranslation('common');
   const profile = state.currentProfile;
 
   const unlockedIds = new Set(profile?.rewards.map((r) => r.id) ?? []);
@@ -17,8 +19,8 @@ export function Rewards() {
       <main className={styles.page}>
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>🏆</div>
-          <h2 className={styles.emptyTitle}>No profile selected</h2>
-          <p className={styles.emptyText}>Select a profile to see your rewards!</p>
+          <h2 className={styles.emptyTitle}>{t('rewards.noProfile')}</h2>
+          <p className={styles.emptyText}>{t('rewards.selectProfile')}</p>
         </div>
       </main>
     );
@@ -29,8 +31,8 @@ export function Rewards() {
       <main className={styles.page}>
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>🌟</div>
-          <h2 className={styles.emptyTitle}>Rewards coming soon!</h2>
-          <p className={styles.emptyText}>Keep playing to earn awesome rewards.</p>
+          <h2 className={styles.emptyTitle}>{t('rewards.comingSoon')}</h2>
+          <p className={styles.emptyText}>{t('rewards.keepPlaying')}</p>
         </div>
       </main>
     );
@@ -39,18 +41,18 @@ export function Rewards() {
   return (
     <main className={styles.page}>
       <div className={styles.header}>
-        <h1 className={styles.title}>My Rewards</h1>
+        <h1 className={styles.title}>{t('rewards.title')}</h1>
         <span className={styles.badge}>
-          {unlockedCount} / {totalCount} unlocked
+          {t('rewards.unlocked', { count: unlockedCount, total: totalCount })}
         </span>
       </div>
 
       {unlockedCount === 0 && (
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>🎯</div>
-          <h2 className={styles.emptyTitle}>Start your collection!</h2>
+          <h2 className={styles.emptyTitle}>{t('rewards.startCollection')}</h2>
           <p className={styles.emptyText}>
-            Play games to earn stars, badges, and special rewards.
+            {t('rewards.playToEarn')}
           </p>
         </div>
       )}

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAgeTier } from '@kids-games-zone/shared';
 import { usePlatform } from '../context/PlatformContext';
 import { GameCard } from '../components/GameCard/GameCard';
@@ -10,6 +11,7 @@ import styles from './Hub.module.css';
 export default function Hub() {
   const { state } = usePlatform();
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
   const ageTier = useAgeTier();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<string>('all');
@@ -88,28 +90,28 @@ export default function Hub() {
       {/* Welcome header */}
       <header className={styles.header}>
         <h1 className={styles.welcome}>
-          Welcome back, {profile.name}!
+          {t('hub.welcome', { name: profile.name })}
         </h1>
         {profile.stats.currentStreak >= 1 && (
-          <div className={styles.streakBadge} aria-label={`${profile.stats.currentStreak} day streak`}>
+          <div className={styles.streakBadge} aria-label={t('hub.streak', { count: profile.stats.currentStreak })}>
             <span className={styles.streakIcon}>🔥</span>
-            {profile.stats.currentStreak} day streak
+            {t('hub.streak', { count: profile.stats.currentStreak })}
           </div>
         )}
       </header>
 
       {/* Daily Challenge */}
-      <div className={styles.challengeCard} role="region" aria-label="Daily challenge">
+      <div className={styles.challengeCard} role="region" aria-label={t('hub.dailyChallenge')}>
         <div className={styles.challengeHeader}>
-          <span className={styles.challengeTitle}>Daily Challenge</span>
+          <span className={styles.challengeTitle}>{t('hub.dailyChallenge')}</span>
         </div>
         <p className={styles.challengeDescription}>{dailyChallenge.description}</p>
       </div>
 
       {/* Continue Playing */}
       {recentGames.length > 0 && (
-        <section className={styles.section} aria-label="Continue Playing">
-          <h2 className={styles.sectionTitle}>Continue Playing</h2>
+        <section className={styles.section} aria-label={t('hub.continuePlaying')}>
+          <h2 className={styles.sectionTitle}>{t('hub.continuePlaying')}</h2>
           <div className={styles.recentRow}>
             {recentGames.map((game) => (
               <GameCard
@@ -129,10 +131,10 @@ export default function Hub() {
           <input
             className={styles.searchInput}
             type="text"
-            placeholder="Search games..."
+            placeholder={t('hub.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            aria-label="Search games"
+            aria-label={t('hub.searchPlaceholder')}
           />
         </div>
       )}
@@ -145,7 +147,7 @@ export default function Hub() {
             onClick={() => setActiveFilter('all')}
             aria-pressed={activeFilter === 'all'}
           >
-            All
+            {t('hub.filterAll')}
           </button>
           {skillCategories.map((category) => (
             <button
@@ -174,7 +176,7 @@ export default function Hub() {
           </div>
         ) : (
           <div className={styles.emptyState}>
-            <p>No games found! Try a different search or filter.</p>
+            <p>{t('hub.noGamesFound')}</p>
           </div>
         )}
       </section>
