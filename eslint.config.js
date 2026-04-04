@@ -78,6 +78,28 @@ export default [
     },
   },
   {
+    files: ['scripts/**/*.ts'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+      },
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
+  {
+    files: ['e2e/**/*.ts'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+      },
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
+  {
     ignores: ['**/dist/**', '**/node_modules/**', '**/*.config.*'],
   },
 ];

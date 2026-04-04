@@ -209,7 +209,7 @@ function generateTsConfig(): string {
   );
 }
 
-function generateVitestConfig(name: string): string {
+function generateVitestConfig(_name: string): string {
   return `import { defineConfig } from 'vitest/config';
 import path from 'node:path';
 
@@ -346,7 +346,7 @@ export default plugin;
 `;
 }
 
-function generateComponent(name: string, displayName: string): string {
+function generateComponent(name: string, _displayName: string): string {
   const pascal = kebabToPascal(name);
   return `import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -384,7 +384,7 @@ export function ${pascal}({ config, onComplete, onExit }: GameProps) {
 `;
 }
 
-function generateComponentCss(name: string): string {
+function generateComponentCss(_name: string): string {
   return `.container {
   display: flex;
   flex-direction: column;

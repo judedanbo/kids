@@ -1,4 +1,4 @@
-import { test, expect, solveMathProblem } from './fixtures';
+import { test, expect } from './fixtures';
 import AxeBuilder from '@axe-core/playwright';
 
 /**
