@@ -1,0 +1,21 @@
+{
+  "title": "Plus ou Moins",
+  "instruction": "Lequel est le plus ? Lequel est le moins ? Trouve la réponse !",
+  "instructionTiny": "Quel groupe en a le plus ? Appuie pour choisir !",
+  "letsGo": "C'est parti !",
+  "whichMore": "Lequel est le PLUS ?",
+  "whichLess": "Lequel est le MOINS ?",
+  "whichMoreObjects": "Quel groupe a le PLUS de {{object}}s ?",
+  "whichLessObjects": "Quel groupe a le MOINS de {{object}}s ?",
+  "orderHint": "Appuie sur les nombres dans l'ordre du plus petit au plus grand",
+  "orderPrompt": "Mets dans l'ordre : plus petit → plus grand",
+  "correct": "Correct !",
+  "incorrect": "Pas tout à fait !",
+  "theAnswerWas": "La réponse était {{answer}}",
+  "next": "Suivant",
+  "undo": "Annuler",
+  "reset": "Recommencer",
+  "roundOf": "Question {{current}} sur {{total}}",
+  "celebrationTitle": "Champion des nombres !",
+  "finalScore": "Tu as obtenu {{score}} sur {{total}} correct !"
+}
