@@ -1,4 +1,8 @@
 {
+  "game.spelling-bee": {
+    "enabled": true,
+    "description": "Spelling Bee game — listen to words and spell them"
+  },
   "game.word-puzzle": {
     "enabled": true,
     "description": "Word Puzzle game — unscramble letters to spell words"
