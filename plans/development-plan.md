@@ -359,14 +359,17 @@ A card-matching game suitable for the youngest age tier.
 - Audio narration directory structure organized by locale (`public/audio/narration/en/`, `fr/`)
 - Stable react-i18next test mocks across all packages preventing infinite re-render loops
 
-#### 5C. Offline Support (Week 2-3)
-- Implement Service Worker using Workbox (`vite-plugin-pwa`).
-- Cache strategies: cache-first for shell, game modules, shared assets, game data.
-- Platform shell and all three games pre-cached on first load.
-- Offline indicator in the UI when network is unavailable.
-- Verify all user data operations work offline (IndexedDB).
-- Cache versioning: new Service Worker activates and refreshes stale caches on deploy.
-- Test: disable network in DevTools, verify full app usage including game play.
+#### 5C. Offline Support (Week 2-3) — ✅ COMPLETE
+**Completed:** 2026-04-04
+
+**What was delivered:**
+- vite-plugin-pwa with generateSW mode precaching 71 entries (~1.3MB)
+- Cache-first strategy for fonts, audio; navigateFallback for SPA routing
+- Self-hosted Google Fonts via @fontsource (Baloo 2 + Nunito), removing external CDN dependency
+- PWA manifest with icons (192x192, 512x512, apple-touch-icon), standalone display mode
+- OfflineBanner component with useOnlineStatus hook, internationalized (en/fr)
+- Auto-update SW registration (skipWaiting + clientsClaim) — no user prompts
+- IndexedDB persistence already in place from Phase 2 (5 stores, auto-save checkpoints)
 
 #### 5D. Performance Optimization (Week 2-3)
 - Measure against performance budgets:
@@ -383,7 +386,7 @@ A card-matching game suitable for the youngest age tier.
 - [x] axe-core reports zero critical/serious accessibility violations.
 - [x] Full keyboard-only navigation works end-to-end.
 - [x] App renders correctly in English and French (or chosen second language).
-- [ ] App works fully offline after first load (all three games playable).
+- [x] App works fully offline after first load (all three games playable).
 - [ ] All performance budgets met (Lighthouse scores 90+).
 - [ ] Bundle sizes within budget (verified by CI).
 
@@ -473,7 +476,7 @@ Phase 3 (First Three Games)               ✅ COMPLETE
 Phase 4 (Progress, Rewards & Parental Controls)  ✅ COMPLETE
    │
    ▼
-Phase 5 (Accessibility, i18n & Offline)           ⬅️ IN PROGRESS (5A, 5B complete)
+Phase 5 (Accessibility, i18n & Offline)           ⬅️ IN PROGRESS (5A, 5B, 5C complete)
    │
    ▼
 Phase 6 (Testing, CI/CD & Deployment)
