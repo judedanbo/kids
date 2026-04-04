@@ -346,15 +346,18 @@ A card-matching game suitable for the youngest age tier.
 - Game-specific ARIA labels, keyboard navigation, and announcements for Memory Match, Math Adventure, and Word Puzzle
 - axe violation checks added to component test suites
 
-#### 5B. Internationalization (Week 1-2)
-- Set up i18next + react-i18next in the platform.
-- Create namespace structure: `platform` namespace + one namespace per game.
-- Extract all hardcoded strings in platform and all three games to JSON locale files.
-- Create English (`en`) locale files as the baseline.
-- Create one additional locale (e.g., French `fr`) to validate the pipeline.
-- Language selector in settings (flag-based icons).
-- Verify RTL layout support with CSS logical properties.
-- Audio narration file structure organized by locale.
+#### 5B. Internationalization (Week 1-2) — ✅ COMPLETE
+**Completed:** 2026-04-04
+
+**What was delivered:**
+- i18next + react-i18next initialized with LanguageDetector and browser language detection
+- Namespace structure: `common` (platform) + per-game namespaces (`word-puzzle`, `math-adventure`, `memory-match`)
+- All hardcoded strings extracted to JSON locale files across platform, shared components, and all 3 games
+- English (`en`) and French (`fr`) locale files with full key coverage and translation completeness tests
+- Language selector in Settings page with flag-based button group
+- RTL layout readiness: dynamic `dir` attribute on `<html>`, CSS logical properties throughout
+- Audio narration directory structure organized by locale (`public/audio/narration/en/`, `fr/`)
+- Stable react-i18next test mocks across all packages preventing infinite re-render loops
 
 #### 5C. Offline Support (Week 2-3)
 - Implement Service Worker using Workbox (`vite-plugin-pwa`).
@@ -379,7 +382,7 @@ A card-matching game suitable for the youngest age tier.
 ### Acceptance Criteria
 - [x] axe-core reports zero critical/serious accessibility violations.
 - [x] Full keyboard-only navigation works end-to-end.
-- [ ] App renders correctly in English and French (or chosen second language).
+- [x] App renders correctly in English and French (or chosen second language).
 - [ ] App works fully offline after first load (all three games playable).
 - [ ] All performance budgets met (Lighthouse scores 90+).
 - [ ] Bundle sizes within budget (verified by CI).
@@ -470,7 +473,7 @@ Phase 3 (First Three Games)               ✅ COMPLETE
 Phase 4 (Progress, Rewards & Parental Controls)  ✅ COMPLETE
    │
    ▼
-Phase 5 (Accessibility, i18n & Offline)           ⬅️ IN PROGRESS (5A complete)
+Phase 5 (Accessibility, i18n & Offline)           ⬅️ IN PROGRESS (5A, 5B complete)
    │
    ▼
 Phase 6 (Testing, CI/CD & Deployment)
