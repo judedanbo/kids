@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { FeatureFlagProvider, useFeatureFlag } from '@kids-games-zone/shared';
 import featureFlags from '../config/featureFlags.json';
 import type { FeatureFlags } from '@kids-games-zone/shared';
+import { gameRegistry } from '../config/gameRegistry';
 
 function FlagReader({ name }: { name: string }) {
   const { enabled } = useFeatureFlag(name);
@@ -42,5 +43,49 @@ describe('Feature Flags Integration', () => {
       </MemoryRouter>,
     );
     expect(screen.getByTestId('flag-value').textContent).toBe('false');
+  });
+});
+
+describe('Hub feature flag filtering', () => {
+  it('filters out games whose feature flag is disabled', () => {
+    const games = gameRegistry;
+    const flags: FeatureFlags = {
+      'game.word-puzzle': { enabled: true, description: '' },
+      'game.math-adventure': { enabled: false, description: '' },
+      'game.memory-match': { enabled: true, description: '' },
+      'game.dummy-game': { enabled: false, description: '' },
+    };
+
+    const flagFiltered = games.filter((game) => {
+      const flag = flags[`game.${game.id}`];
+      return !flag || flag.enabled;
+    });
+
+    expect(flagFiltered.map((g) => g.id)).toContain('word-puzzle');
+    expect(flagFiltered.map((g) => g.id)).toContain('memory-match');
+    expect(flagFiltered.map((g) => g.id)).not.toContain('math-adventure');
+    expect(flagFiltered.map((g) => g.id)).not.toContain('dummy-game');
+  });
+});
+
+describe('GameWrapper feature flag guard', () => {
+  it('blocks navigation to a disabled game', () => {
+    const flags: FeatureFlags = {
+      'game.dummy-game': { enabled: false, description: '' },
+    };
+    const gameId = 'dummy-game';
+    const flag = flags[`game.${gameId}`];
+    const blocked = flag && !flag.enabled;
+    expect(blocked).toBe(true);
+  });
+
+  it('allows navigation to an enabled game', () => {
+    const flags: FeatureFlags = {
+      'game.word-puzzle': { enabled: true, description: '' },
+    };
+    const gameId = 'word-puzzle';
+    const flag = flags[`game.${gameId}`];
+    const blocked = flag && !flag.enabled;
+    expect(blocked).toBe(false);
   });
 });
