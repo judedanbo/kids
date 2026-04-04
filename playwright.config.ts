@@ -1,5 +1,15 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// Ensure Chromium can find system libraries extracted for Playwright
+const extraLibPath = '/tmp/libs/extracted/usr/lib/x86_64-linux-gnu';
+if (process.env.LD_LIBRARY_PATH) {
+  if (!process.env.LD_LIBRARY_PATH.includes(extraLibPath)) {
+    process.env.LD_LIBRARY_PATH = `${extraLibPath}:${process.env.LD_LIBRARY_PATH}`;
+  }
+} else {
+  process.env.LD_LIBRARY_PATH = extraLibPath;
+}
+
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
