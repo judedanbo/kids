@@ -1,4 +1,8 @@
 {
+  "game.safety-scout": {
+    "enabled": true,
+    "description": "Safety Scout game — identify safe and harmful objects"
+  },
   "game.spelling-bee": {
     "enabled": true,
     "description": "Spelling Bee game — listen to words and spell them"
