@@ -1,0 +1,458 @@
+[
+  {
+    "id": "kitchen-knife",
+    "name": "Kitchen Knife",
+    "category": "kitchen",
+    "image": "kitchen-knife.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Knives are very sharp and can hurt you. Only grown-ups use knives.",
+      "junior": "Kitchen knives have very sharp blades that can cause serious cuts. They should only be handled by adults or older children with adult supervision."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "spoon",
+    "name": "Spoon",
+    "category": "kitchen",
+    "image": "spoon.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A spoon is safe to use! We use it to eat our food.",
+      "junior": "Spoons are safe eating utensils with no sharp edges. They are great for eating soups, cereals, and other foods."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "stove",
+    "name": "Stove",
+    "category": "kitchen",
+    "image": "stove.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "The stove gets very hot and can burn you. Ask a grown-up for help.",
+      "junior": "Stove burners reach very high temperatures and can cause severe burns. Children should never use the stove without adult supervision."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "cup",
+    "name": "Cup",
+    "category": "kitchen",
+    "image": "cup.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A cup is safe! We drink water and juice from cups.",
+      "junior": "Cups are safe containers used for drinking. They are made of plastic, glass, or ceramic and are safe when handled carefully."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "blender",
+    "name": "Blender",
+    "category": "kitchen",
+    "image": "blender.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "The blender has sharp spinning blades inside. Only grown-ups can use it.",
+      "junior": "Blenders contain very sharp rotating blades that spin at high speed. They must only be operated by adults to avoid serious injuries."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "fork",
+    "name": "Fork",
+    "category": "kitchen",
+    "image": "fork.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A fork helps us eat our food. It is safe when we are careful.",
+      "junior": "Forks are eating utensils that are safe to use when handled properly. Avoid poking yourself or others with the tines."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "microwave",
+    "name": "Microwave",
+    "category": "kitchen",
+    "image": "microwave.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "The microwave makes food very hot. Always ask a grown-up for help.",
+      "junior": "Microwaves heat food using radiation and can make containers extremely hot. Metal objects should never go inside, and children need adult supervision to use one safely."
+    },
+    "difficulty": 3
+  },
+  {
+    "id": "oven-mitt",
+    "name": "Oven Mitt",
+    "category": "kitchen",
+    "image": "oven-mitt.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "An oven mitt keeps your hands safe from hot things.",
+      "junior": "Oven mitts are thick protective gloves that shield your hands from heat. They are a safety tool used when handling hot pots, pans, or baking trays."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "medicine-bottle",
+    "name": "Medicine Bottle",
+    "category": "bathroom",
+    "image": "medicine-bottle.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Medicine is only for sick people and grown-ups give it to you. Never touch it alone.",
+      "junior": "Medicine bottles contain drugs that can be dangerous if taken in the wrong amount or by the wrong person. Only adults should handle and administer medicine."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "toothbrush",
+    "name": "Toothbrush",
+    "category": "bathroom",
+    "image": "toothbrush.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A toothbrush keeps your teeth clean and healthy!",
+      "junior": "Toothbrushes are safe personal hygiene tools used to clean your teeth and gums twice a day to prevent cavities."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "razor",
+    "name": "Razor",
+    "category": "bathroom",
+    "image": "razor.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "A razor is very sharp and only for grown-ups. Never touch it!",
+      "junior": "Razors have extremely sharp blades designed for adults to shave. Children should never handle razors as they can cause deep cuts."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "soap",
+    "name": "Soap",
+    "category": "bathroom",
+    "image": "soap.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Soap cleans your hands and keeps you healthy!",
+      "junior": "Soap is a safe cleaning product used to wash away germs from your hands and body. Regular handwashing with soap helps prevent illness."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "hair-dryer",
+    "name": "Hair Dryer",
+    "category": "bathroom",
+    "image": "hair-dryer.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "A hair dryer uses electricity near water, which is dangerous. Ask a grown-up.",
+      "junior": "Hair dryers use electricity and can cause electrocution if they get wet. They should never be used near water, and children need adult supervision."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "shampoo",
+    "name": "Shampoo",
+    "category": "bathroom",
+    "image": "shampoo.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Shampoo cleans your hair. Keep it out of your eyes!",
+      "junior": "Shampoo is a safe hair-cleaning product. It should not be swallowed or get in your eyes, but it is safe to use for washing hair."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "electrical-outlet",
+    "name": "Electrical Outlet",
+    "category": "living-room",
+    "image": "electrical-outlet.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Never put anything in the wall holes! It can give you a big shock.",
+      "junior": "Electrical outlets carry high-voltage electricity. Inserting fingers or objects into outlets can cause a dangerous electric shock or even death."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "remote-control",
+    "name": "Remote Control",
+    "category": "living-room",
+    "image": "remote-control.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A remote control changes the TV channel. It is safe to use!",
+      "junior": "Remote controls are safe electronic devices used to operate TVs and other appliances from a distance. They run on small batteries and are safe for children to use."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "candle",
+    "name": "Candle",
+    "category": "living-room",
+    "image": "candle.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Candles have fire on top. Fire can burn you and start big fires. Only grown-ups touch candles.",
+      "junior": "Lit candles produce an open flame that can cause burns and start house fires if left unattended or near flammable materials. Children should never light or handle candles."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "cushion",
+    "name": "Cushion",
+    "category": "living-room",
+    "image": "cushion.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A cushion is soft and comfy to sit on!",
+      "junior": "Cushions are soft padding used on sofas and chairs for comfort. They are safe and fun to use."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "lamp",
+    "name": "Lamp",
+    "category": "living-room",
+    "image": "lamp.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A lamp gives us light so we can see. Do not touch the hot bulb.",
+      "junior": "Lamps are safe lighting devices. The bulb can get hot after use, so it should not be touched, but using the lamp to light a room is perfectly safe."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "matches",
+    "name": "Matches",
+    "category": "living-room",
+    "image": "matches.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Matches make fire. Fire is dangerous. Only grown-ups use matches.",
+      "junior": "Matches are used to create fire and are extremely dangerous for children. They can cause burns and start uncontrolled fires if misused."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "busy-road",
+    "name": "Busy Road",
+    "category": "outdoor",
+    "image": "busy-road.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Never run into the road! Cars go very fast and cannot stop quickly.",
+      "junior": "Busy roads are dangerous because vehicles travel at high speeds. Always cross at designated crossings, look both ways, and never run into traffic."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "bicycle",
+    "name": "Bicycle",
+    "category": "outdoor",
+    "image": "bicycle.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A bicycle is fun to ride! Always wear your helmet to stay safe.",
+      "junior": "Bicycles are a safe and fun way to travel and exercise. Always wear a properly fitted helmet and follow traffic rules when riding."
+    },
+    "difficulty": 3
+  },
+  {
+    "id": "swing",
+    "name": "Swing",
+    "category": "outdoor",
+    "image": "swing.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Swings are so fun! Hold on tight and do not jump off when it is moving.",
+      "junior": "Swings are safe playground equipment when used correctly. Always hold on with both hands, sit properly, and slow down before getting off."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "stray-animal",
+    "name": "Stray Animal",
+    "category": "outdoor",
+    "image": "stray-animal.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Do not pet animals you do not know. They might bite or scratch.",
+      "junior": "Stray animals may be scared, sick, or aggressive. They can bite or scratch, spreading disease. Always tell an adult and never approach unknown animals."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "deep-puddle",
+    "name": "Deep Puddle",
+    "category": "outdoor",
+    "image": "deep-puddle.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Big puddles can be deeper than you think and you could fall in. Stay away!",
+      "junior": "Deep puddles can hide hazards like broken glass, deep holes, or strong currents after rain. Never jump into unknown puddles without an adult checking first."
+    },
+    "difficulty": 3
+  },
+  {
+    "id": "helmet",
+    "name": "Helmet",
+    "category": "outdoor",
+    "image": "helmet.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A helmet protects your head! Always wear it when riding your bike.",
+      "junior": "Helmets are essential safety gear that protect your head from injury during falls. They should always be worn when cycling, skateboarding, or rollerblading."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "ball",
+    "name": "Ball",
+    "category": "outdoor",
+    "image": "ball.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Balls are great for playing! Just make sure to play away from the road.",
+      "junior": "Balls are safe and fun toys for outdoor play. Always play in safe areas away from roads, and be aware of your surroundings."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "power-tools",
+    "name": "Power Tools",
+    "category": "garage",
+    "image": "power-tools.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Power tools make loud noises and can really hurt you. Only grown-ups use them.",
+      "junior": "Power tools like drills and saws have powerful motors and sharp parts. They can cause serious injuries and should only be used by trained adults."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "paint-cans",
+    "name": "Paint Cans",
+    "category": "garage",
+    "image": "paint-cans.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Paint cans have strong smells and chemicals that can make you sick. Do not open them.",
+      "junior": "Paint cans contain chemicals that can be toxic if inhaled or swallowed. They should be kept sealed and stored safely away from children."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "ladder",
+    "name": "Ladder",
+    "category": "garage",
+    "image": "ladder.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Ladders are tall and you can fall off. Only grown-ups climb ladders.",
+      "junior": "Ladders can be unstable and falling from height can cause serious injury. Children should never climb ladders without direct adult supervision."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "flashlight",
+    "name": "Flashlight",
+    "category": "garage",
+    "image": "flashlight.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A flashlight helps you see in the dark. It is safe to use!",
+      "junior": "Flashlights are safe battery-powered lights used to illuminate dark areas. They are handy tools that children can safely use."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "nails",
+    "name": "Nails",
+    "category": "garage",
+    "image": "nails.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Nails are sharp and can poke your skin. Leave them for grown-ups.",
+      "junior": "Nails have very sharp points and can cause puncture wounds if stepped on or handled carelessly. They should be kept stored safely and handled only by adults."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "broom",
+    "name": "Broom",
+    "category": "garage",
+    "image": "broom.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A broom sweeps up dirt and keeps things tidy. It is safe to use!",
+      "junior": "Brooms are safe cleaning tools used to sweep floors. Children can use brooms to help with chores under normal circumstances."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "broken-glass",
+    "name": "Broken Glass",
+    "category": "playground",
+    "image": "broken-glass.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Broken glass is very sharp and can cut you badly. Stay away and tell a grown-up.",
+      "junior": "Broken glass has razor-sharp edges that can cause deep lacerations. Never touch it — alert an adult to clean it up safely."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "slide",
+    "name": "Slide",
+    "category": "playground",
+    "image": "slide.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Slides are so fun! Go down one at a time and sit forward.",
+      "junior": "Slides are safe playground equipment when used properly. Always slide sitting up, facing forward, and wait your turn before going down."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "sandbox",
+    "name": "Sandbox",
+    "category": "playground",
+    "image": "sandbox.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A sandbox is great for digging and building. Have fun!",
+      "junior": "Sandboxes are safe play areas for building and digging. Wash your hands after playing and avoid throwing sand at others."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "rusty-nail",
+    "name": "Rusty Nail",
+    "category": "playground",
+    "image": "rusty-nail.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "A rusty nail is sharp and can make you very sick if it pokes you. Tell a grown-up right away.",
+      "junior": "Rusty nails can cause puncture wounds and may carry tetanus bacteria, which can cause serious illness. Never touch one — always inform an adult immediately."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "water-fountain",
+    "name": "Water Fountain",
+    "category": "playground",
+    "image": "water-fountain.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "A water fountain gives you clean water to drink when you are thirsty!",
+      "junior": "Water fountains provide clean drinking water in public spaces. They are safe to use and a great way to stay hydrated while playing."
+    },
+    "difficulty": 1
+  }
+]
