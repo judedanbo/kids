@@ -108,5 +108,7 @@
 
   "gameShell.goBack": "Go back",
   "gameShell.pauseGame": "Pause game",
-  "gameShell.skipToGame": "Skip to game"
+  "gameShell.skipToGame": "Skip to game",
+
+  "offline.banner": "You're offline — don't worry, everything still works!"
 }

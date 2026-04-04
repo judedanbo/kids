@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AgeTierProvider } from '@kids-games-zone/shared';
 import { NavBar } from './components/NavBar/NavBar';
+import { OfflineBanner } from './components/OfflineBanner/OfflineBanner';
 import { LoadingSpinner } from './components/LoadingSpinner/LoadingSpinner';
 import { Rewards } from './pages/Rewards';
 import { Settings } from './pages/Settings';
@@ -36,6 +37,7 @@ function App() {
 
   return (
     <AgeTierProvider tier={tier}>
+      <OfflineBanner />
       <div className="page-content" data-age-tier={tier}>
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
