@@ -38,6 +38,7 @@ export function useSpellingRound(options: UseSpellingRoundOptions): SpellingRoun
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(LIVES_COUNT);
+  const livesRef = useRef(LIVES_COUNT);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const wordsCorrectRef = useRef(0);
 
@@ -60,7 +61,8 @@ export function useSpellingRound(options: UseSpellingRoundOptions): SpellingRoun
         setScore((prev) => prev + 1);
         onScorePoint(1);
       } else if (!isTiny) {
-        setLives((prev) => prev - 1);
+        livesRef.current -= 1;
+        setLives(livesRef.current);
       }
     },
     [currentWord, isTiny, onScorePoint],
@@ -70,7 +72,7 @@ export function useSpellingRound(options: UseSpellingRoundOptions): SpellingRoun
     setIsCorrect(null);
 
     const isLastWord = currentWordIndex >= words.length - 1;
-    const outOfLives = !isTiny && lives <= 0;
+    const outOfLives = !isTiny && livesRef.current <= 0;
 
     if (isLastWord || outOfLives) {
       setPhase('complete');
@@ -79,7 +81,7 @@ export function useSpellingRound(options: UseSpellingRoundOptions): SpellingRoun
 
     setCurrentWordIndex((prev) => prev + 1);
     setPhase('playing');
-  }, [currentWordIndex, words.length, isTiny, lives]);
+  }, [currentWordIndex, words.length, isTiny]);
 
   return {
     phase,
