@@ -62,10 +62,10 @@ function createMockProps(overrides: Partial<GameProps> = {}): GameProps {
 }
 
 describe('MathAdventure', () => {
-  it('renders game shell with "Math Adventure" title', () => {
+  it('renders game shell with translated title', () => {
     const props = createMockProps();
     render(<MathAdventure {...props} />);
-    expect(screen.getByText('Math Adventure')).toBeTruthy();
+    expect(screen.getByText('title')).toBeTruthy();
   });
 
   it('shows instruction bubble initially', () => {

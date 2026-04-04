@@ -8,7 +8,7 @@
   cursor: pointer;
   border: 2px solid transparent;
   transition: border-color var(--transition-fast);
-  text-align: left;
+  text-align: start;
   width: 100%;
 }
 
@@ -36,7 +36,7 @@
 .lockOverlay {
   position: absolute;
   top: 50%;
-  left: 50%;
+  inset-inline-start: 50%;
   transform: translate(-50%, -50%);
   font-size: 2rem;
   background-color: rgba(0, 0, 0, 0.5);
@@ -51,7 +51,7 @@
 .newBadge {
   position: absolute;
   top: var(--spacing-xs);
-  right: var(--spacing-xs);
+  inset-inline-end: var(--spacing-xs);
   background-color: var(--color-secondary);
   color: white;
   padding: 2px 8px;

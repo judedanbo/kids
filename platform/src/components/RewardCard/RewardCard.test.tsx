@@ -19,7 +19,7 @@ describe('RewardCard', () => {
     render(<RewardCard reward={reward} unlocked={true} />);
     expect(screen.getByText('First Star')).toBeInTheDocument();
     expect(screen.getByText('Complete your very first game!')).toBeInTheDocument();
-    expect(screen.getByText(/Earned/)).toBeInTheDocument();
+    expect(screen.getByText(/rewardCard\.earned/)).toBeInTheDocument();
   });
 
   it('renders locked reward with progress', () => {
@@ -27,17 +27,17 @@ describe('RewardCard', () => {
     render(<RewardCard reward={lockedReward} unlocked={false} progress="0 / 1 games completed" />);
     expect(screen.getByText('First Star')).toBeInTheDocument();
     expect(screen.getByText('0 / 1 games completed')).toBeInTheDocument();
-    expect(screen.queryByText(/Earned/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/rewardCard\.earned/)).not.toBeInTheDocument();
   });
 
   it('shows lock overlay when locked', () => {
     render(<RewardCard reward={reward} unlocked={false} />);
-    expect(screen.getByLabelText(/Locked/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/rewardCard\.locked/)).toBeInTheDocument();
   });
 
   it('has correct aria-label for unlocked state', () => {
     render(<RewardCard reward={reward} unlocked={true} />);
-    expect(screen.getByLabelText('First Star — Unlocked')).toBeInTheDocument();
+    expect(screen.getByLabelText('First Star — rewardCard.unlocked')).toBeInTheDocument();
   });
 
   it('does not show progress when unlocked', () => {

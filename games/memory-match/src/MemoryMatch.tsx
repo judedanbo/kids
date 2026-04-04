@@ -56,7 +56,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
       setIsLocked(false);
     }, gridConfig.previewDuration);
     return () => clearTimeout(timer);
-  }, [isPreview, gridConfig.previewDuration, announce]);
+  }, [isPreview, gridConfig.previewDuration, announce, t]);
 
   // Clear encourage message after a delay
   useEffect(() => {
@@ -119,7 +119,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
         }, 1000);
       }
     },
-    [isLocked, flippedIds, cards, matchedPairIds, turns, score, gridConfig.pairs, onScore, audioManager, announce],
+    [isLocked, flippedIds, cards, matchedPairIds, turns, score, gridConfig.pairs, onScore, audioManager, announce, t],
   );
 
   const handleCelebrationComplete = useCallback(() => {
@@ -142,7 +142,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
 
   if (showCelebration) {
     return (
-      <GameShell title="Memory Match" onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit}>
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={score}
@@ -155,7 +155,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
 
   if (showInstruction) {
     return (
-      <GameShell title="Memory Match" onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit}>
         <div className={styles.gameArea}>
           <InstructionBubble text={t('instruction')} character="🃏" />
           <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
@@ -170,7 +170,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
     : flippedIds;
 
   return (
-    <GameShell title="Memory Match" onBack={onExit}>
+    <GameShell title={t('title')} onBack={onExit}>
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={score} maxScore={gridConfig.pairs * 10} showStars />

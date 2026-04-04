@@ -15,8 +15,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@kids-games-zone/shared': path.resolve(__dirname, '../../shared/src'),
-      'react-i18next': path.resolve(__dirname, '../../platform/node_modules/react-i18next'),
-      'i18next': path.resolve(__dirname, '../../platform/node_modules/i18next'),
+      'react-i18next': path.resolve(__dirname, 'src/__mocks__/react-i18next.ts'),
     },
   },
 });

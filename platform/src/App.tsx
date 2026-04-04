@@ -1,11 +1,13 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AgeTierProvider } from '@kids-games-zone/shared';
 import { NavBar } from './components/NavBar/NavBar';
 import { LoadingSpinner } from './components/LoadingSpinner/LoadingSpinner';
 import { Rewards } from './pages/Rewards';
 import { Settings } from './pages/Settings';
 import { usePlatform } from './context/PlatformContext';
+import { SUPPORTED_LANGUAGES } from './config/languages';
 import type { AgeTier } from '@kids-games-zone/shared';
 
 const Hub = lazy(() => import('./pages/Hub'));
@@ -21,7 +23,16 @@ function getAgeTier(age: number | undefined): AgeTier {
 
 function App() {
   const { state } = usePlatform();
+  const { i18n } = useTranslation();
   const tier = getAgeTier(state.currentProfile?.age);
+
+  useEffect(() => {
+    const lang = i18n.language;
+    const langConfig = SUPPORTED_LANGUAGES.find((l) => l.code === lang);
+    const dir = langConfig?.dir ?? 'ltr';
+    document.documentElement.lang = lang;
+    document.documentElement.dir = dir;
+  }, [i18n.language]);
 
   return (
     <AgeTierProvider tier={tier}>

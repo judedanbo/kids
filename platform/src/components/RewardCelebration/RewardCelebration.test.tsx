@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { axe } from 'vitest-axe';
 import { RewardCelebration } from './RewardCelebration';
@@ -60,7 +60,7 @@ describe('RewardCelebration', () => {
     expect(screen.getByText('1 / 2')).toBeInTheDocument();
   });
 
-  it('advances to next reward on celebration complete', () => {
+  it('advances to next reward on celebration complete', async () => {
     const onComplete = vi.fn();
     render(<RewardCelebration rewards={mockRewards} onComplete={onComplete} />);
 
@@ -68,7 +68,9 @@ describe('RewardCelebration', () => {
       screen.getByTestId('complete-celebration').click();
     });
 
-    expect(screen.getByText('Speed Demon')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Speed Demon')).toBeInTheDocument();
+    });
     expect(screen.getByText('2 / 2')).toBeInTheDocument();
     expect(onComplete).not.toHaveBeenCalled();
   });

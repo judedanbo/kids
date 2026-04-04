@@ -79,7 +79,7 @@ export function PinEntry({ storedHash, onSuccess, onCancel }: PinEntryProps) {
         return next;
       });
     },
-    [isLocked, verifying, storedHash, onSuccess, attempts],
+    [isLocked, verifying, storedHash, onSuccess, attempts, t],
   );
 
   const handleDelete = useCallback(() => {

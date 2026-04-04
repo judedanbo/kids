@@ -36,5 +36,5 @@
 .character {
   font-size: 0.75rem;
   color: var(--color-text-secondary);
-  padding-left: var(--spacing-xs);
+  padding-inline-start: var(--spacing-xs);
 }

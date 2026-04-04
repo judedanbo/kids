@@ -15,26 +15,26 @@ describe('PauseMenu', () => {
 
   it('renders all three buttons', () => {
     render(<PauseMenu {...defaultProps} />);
-    expect(screen.getByText(/Resume/)).toBeInTheDocument();
-    expect(screen.getByText(/Restart/)).toBeInTheDocument();
-    expect(screen.getByText(/Exit/)).toBeInTheDocument();
+    expect(screen.getByText(/pause\.resume/)).toBeInTheDocument();
+    expect(screen.getByText(/pause\.restart/)).toBeInTheDocument();
+    expect(screen.getByText(/pause\.exitToHub/)).toBeInTheDocument();
   });
 
   it('fires onResume when Resume is clicked', () => {
     render(<PauseMenu {...defaultProps} />);
-    fireEvent.click(screen.getByText(/Resume/));
+    fireEvent.click(screen.getByText(/pause\.resume/));
     expect(defaultProps.onResume).toHaveBeenCalledOnce();
   });
 
   it('fires onRestart when Restart is clicked', () => {
     render(<PauseMenu {...defaultProps} />);
-    fireEvent.click(screen.getByText(/Restart/));
+    fireEvent.click(screen.getByText(/pause\.restart/));
     expect(defaultProps.onRestart).toHaveBeenCalledOnce();
   });
 
   it('fires onExit when Exit is clicked', () => {
     render(<PauseMenu {...defaultProps} />);
-    fireEvent.click(screen.getByText(/Exit/));
+    fireEvent.click(screen.getByText(/pause\.exitToHub/));
     expect(defaultProps.onExit).toHaveBeenCalledOnce();
   });
 
@@ -48,7 +48,7 @@ describe('PauseMenu', () => {
     render(<PauseMenu {...defaultProps} />);
     const dialog = screen.getByRole('dialog');
     expect(dialog).toHaveAttribute('aria-modal', 'true');
-    expect(dialog).toHaveAttribute('aria-label', 'Game paused');
+    expect(dialog).toHaveAttribute('aria-label', 'pause.ariaLabel');
   });
 
   it('traps focus within the modal', () => {

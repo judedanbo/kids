@@ -68,28 +68,28 @@ describe('MemoryMatch', () => {
     vi.clearAllMocks();
   });
 
-  it('renders game shell with "Memory Match" title', () => {
+  it('renders game shell with translated title', () => {
     const props = createMockProps();
     render(<MemoryMatch {...props} />);
-    expect(screen.getByText('Memory Match')).toBeTruthy();
+    expect(screen.getByText('title')).toBeTruthy();
   });
 
   it('shows instruction bubble initially', () => {
     const props = createMockProps();
     render(<MemoryMatch {...props} />);
-    expect(screen.getByText('Find the matching pictures!')).toBeTruthy();
+    expect(screen.getByText('instruction')).toBeTruthy();
   });
 
   it('shows "Let\'s Go!" button in instruction phase', () => {
     const props = createMockProps();
     render(<MemoryMatch {...props} />);
-    expect(screen.getByText("Let's Go!")).toBeTruthy();
+    expect(screen.getByText('letsGo')).toBeTruthy();
   });
 
   it('after dismissing instruction, shows correct number of cards for difficulty 1 (4 cards)', () => {
     const props = createMockProps();
     render(<MemoryMatch {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
 
     // Advance past preview timer
     act(() => {
@@ -104,7 +104,7 @@ describe('MemoryMatch', () => {
   it('cards start face-down after preview phase', () => {
     const props = createMockProps();
     render(<MemoryMatch {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
 
     act(() => {
       vi.advanceTimersByTime(3000);
@@ -118,7 +118,7 @@ describe('MemoryMatch', () => {
   it('calls onScore on match', () => {
     const props = createMockProps();
     render(<MemoryMatch {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
 
     act(() => {
       vi.advanceTimersByTime(3000);
@@ -160,7 +160,7 @@ describe('MemoryMatch', () => {
   it('plays SFX("correct") on match', () => {
     const props = createMockProps();
     render(<MemoryMatch {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
 
     act(() => {
       vi.advanceTimersByTime(3000);
@@ -185,7 +185,7 @@ describe('MemoryMatch', () => {
   it('plays SFX("incorrect") on mismatch', () => {
     const props = createMockProps();
     render(<MemoryMatch {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
 
     act(() => {
       vi.advanceTimersByTime(3000);
