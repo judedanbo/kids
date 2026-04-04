@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ProgressBar } from '@kids-games-zone/shared';
+import { ProgressBar, useFeatureFlag } from '@kids-games-zone/shared';
 import type { GameManifest, GameProgress } from '@kids-games-zone/shared';
 import styles from './GameCard.module.css';
 
@@ -41,6 +41,8 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
   const primarySkill = manifest.skills[0];
   const bgColor = SKILL_COLORS[primarySkill] ?? '#4a90d9';
   const skillIcon = SKILL_ICONS[primarySkill] ?? '🎮';
+  const { enabled: flagEnabled } = useFeatureFlag(`game.${manifest.id}`);
+  const isBeta = manifest.status === 'beta' && flagEnabled;
 
   function handleClick() {
     if (!isLocked) {
@@ -66,6 +68,7 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
         <span className={styles.thumbnailIcon}>{skillIcon}</span>
         {isLocked && <span className={styles.lockOverlay}>🔒</span>}
         {!progress && !isLocked && <span className={styles.newBadge}>{t('gameCard.new')}</span>}
+        {isBeta && <span className={styles.betaBadge}>{t('gameCard.beta', 'BETA')}</span>}
       </div>
 
       <div className={styles.info}>

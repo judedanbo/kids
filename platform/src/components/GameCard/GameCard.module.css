@@ -102,3 +102,17 @@
 .progressContainer {
   margin-top: var(--spacing-xs);
 }
+
+.betaBadge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: var(--color-warning, #ff9800);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-small, 4px);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
