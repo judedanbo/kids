@@ -69,6 +69,18 @@ function createTinyProps(): GameProps {
   };
 }
 
+function _createExplorerProps(): GameProps {
+  const props = createMockProps();
+  return {
+    ...props,
+    config: {
+      ...props.config,
+      difficulty: 7,
+      profile: { ...props.config.profile, age: 10, ageTier: 'explorer' },
+    },
+  };
+}
+
 describe('MoreOrLess', () => {
   it('renders game shell with title', () => {
     render(<MoreOrLess {...createMockProps()} />);
