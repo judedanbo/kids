@@ -371,24 +371,24 @@ A card-matching game suitable for the youngest age tier.
 - Auto-update SW registration (skipWaiting + clientsClaim) — no user prompts
 - IndexedDB persistence already in place from Phase 2 (5 stores, auto-save checkpoints)
 
-#### 5D. Performance Optimization (Week 2-3)
-- Measure against performance budgets:
-  - FCP < 1.5s, LCP < 2.5s, TTI < 3.0s.
-  - Platform shell < 150KB gzipped.
-  - Each game < 100KB gzipped.
-- Image optimization: convert to WebP, add responsive `srcset`.
-- Audio compression: MP3/OGG, sprites for SFX.
-- Font subsetting: only used character ranges.
-- Add `size-limit` to CI to enforce bundle budgets.
-- Lighthouse CI integration in GitHub Actions.
+#### 5D. Performance Optimization (Week 2-3) — ✅ COMPLETE
+**Completed:** 2026-04-04
+
+**What was delivered:**
+- Font subsetting: latin + latin-ext only (removed Devanagari, Vietnamese, Cyrillic) — 31→14 font files, saved 337KB
+- Bundle splitting via manualChunks: app code 84KB gz, vendor chunks 85KB gz (react, framer-motion, i18next, howler)
+- SW precache optimized: 71→43 entries, 1.26MB→684KB (fonts moved to runtime CacheFirst cache)
+- size-limit CI enforcement: app code <100KB gz, vendor chunks <100KB gz
+- Lighthouse CI via treosh/lighthouse-ci-action: performance ≥0.9, FCP <1.5s, LCP <2.5s, TTI <3.0s
+- Image/audio optimization deferred — no real images exist yet, audio is only 44KB total
 
 ### Acceptance Criteria
 - [x] axe-core reports zero critical/serious accessibility violations.
 - [x] Full keyboard-only navigation works end-to-end.
 - [x] App renders correctly in English and French (or chosen second language).
 - [x] App works fully offline after first load (all three games playable).
-- [ ] All performance budgets met (Lighthouse scores 90+).
-- [ ] Bundle sizes within budget (verified by CI).
+- [x] All performance budgets met (Lighthouse scores 90+).
+- [x] Bundle sizes within budget (verified by CI).
 
 ### Dependencies
 - Phase 4 (all features must exist before accessibility/i18n can be applied comprehensively).
@@ -476,7 +476,7 @@ Phase 3 (First Three Games)               ✅ COMPLETE
 Phase 4 (Progress, Rewards & Parental Controls)  ✅ COMPLETE
    │
    ▼
-Phase 5 (Accessibility, i18n & Offline)           ⬅️ IN PROGRESS (5A, 5B, 5C complete)
+Phase 5 (Accessibility, i18n & Offline)           ✅ COMPLETE
    │
    ▼
 Phase 6 (Testing, CI/CD & Deployment)
