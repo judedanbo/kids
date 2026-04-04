@@ -9,5 +9,8 @@
   "incorrect": "Not quite, try again",
   "tryAgain": "Try again!",
   "attempt": "Attempt {{count}}",
-  "celebrationTitle": "Amazing!"
+  "celebrationTitle": "Amazing!",
+  "category_animals": "Animals",
+  "category_food": "Food",
+  "category_nature": "Nature"
 }
