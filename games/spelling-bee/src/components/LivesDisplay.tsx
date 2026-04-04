@@ -7,7 +7,7 @@ interface LivesDisplayProps {
 
 export function LivesDisplay({ lives, maxLives }: LivesDisplayProps) {
   return (
-    <div className={styles.container} aria-label={`${lives} of ${maxLives} lives remaining`}>
+    <div className={styles.container} role="img" aria-label={`${lives} of ${maxLives} lives remaining`}>
       {Array.from({ length: maxLives }, (_, i) => (
         <span
           key={i}
