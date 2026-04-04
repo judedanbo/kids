@@ -129,11 +129,11 @@ export const test = base.extend<GameFixtures>({
         await page.waitForTimeout(1000);
       }
 
-      // A reward overlay may appear — wait for it to auto-dismiss (up to 8s),
-      // then the result screen shows "Great job!" or score text.
+      // A reward overlay may appear and auto-dismiss after ~5s.
+      // Wait for the result screen which has "Play Again" and "Go Home" buttons.
       await expect(
-        page.locator('text=Great job!').or(page.locator('text=Score')),
-      ).toBeVisible({ timeout: 12_000 });
+        page.locator('button:has-text("Play Again")'),
+      ).toBeVisible({ timeout: 15_000 });
     };
     await use(helper);
   },
