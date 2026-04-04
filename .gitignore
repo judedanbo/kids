@@ -8,3 +8,8 @@ coverage
 .DS_Store
 .superpowers
 .worktrees
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
