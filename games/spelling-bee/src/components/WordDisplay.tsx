@@ -46,7 +46,6 @@ export function WordDisplay({ word, ageTier, audioManager }: WordDisplayProps) {
           src={`/images/spelling-bee/${word.image}`}
           alt={word.word}
           className={styles.wordImage}
-          role="img"
         />
       )}
 

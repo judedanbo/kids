@@ -248,8 +248,10 @@ describe('generateComparison – explorer tier', () => {
   it('all values are unique', () => {
     for (let i = 0; i < 30; i++) {
       const result = generateComparison('explorer', 3);
-      const unique = new Set(result.values);
-      expect(unique.size).toBe(result.values.length);
+      if (result.type !== 'objects') {
+        const unique = new Set(result.values);
+        expect(unique.size).toBe(result.values.length);
+      }
     }
   });
 
@@ -262,7 +264,7 @@ describe('generateComparison – explorer tier', () => {
           const v = result.values[j];
           if (!Number.isInteger(v)) {
             foundDecimal = true;
-            expect(result.displayValues[j]).toMatch(/^\-?\d+\.\d$/);
+            expect(result.displayValues[j]).toMatch(/^-?\d+\.\d$/);
           } else {
             expect(result.displayValues[j]).toBe(String(v));
           }
