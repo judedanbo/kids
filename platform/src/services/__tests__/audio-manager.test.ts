@@ -147,6 +147,71 @@ describe('RealAudioManager — graceful error handling', () => {
   });
 });
 
+describe('RealAudioManager — speech synthesis fallback', () => {
+  let backend: AudioBackend;
+  let manager: RealAudioManager;
+  let mockSpeak: ReturnType<typeof vi.fn>;
+  let mockCancel: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    backend = createMockBackend(new Set(['word-cat', 'encouragement-correct']));
+    manager = new RealAudioManager(backend);
+    mockSpeak = vi.fn();
+    mockCancel = vi.fn();
+    vi.stubGlobal('speechSynthesis', { speak: mockSpeak, cancel: mockCancel });
+    vi.stubGlobal('SpeechSynthesisUtterance', vi.fn().mockImplementation((text: string) => ({
+      text,
+      rate: 1,
+      volume: 1,
+      onend: null,
+      onerror: null,
+    })));
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('speaks the word when voice file is missing', async () => {
+    await manager.playVoice('voice:word-cat');
+    expect(mockSpeak).toHaveBeenCalledTimes(1);
+    const utterance = mockSpeak.mock.calls[0][0];
+    expect(utterance.text).toBe('cat');
+  });
+
+  it('speaks encouragement when voice file is missing', async () => {
+    await manager.playVoice('voice:encouragement-correct');
+    expect(mockSpeak).toHaveBeenCalledTimes(1);
+    const utterance = mockSpeak.mock.calls[0][0];
+    expect(utterance.text).toBe('Well done!');
+  });
+
+  it('does not speak for unrecognised key patterns', async () => {
+    backend = createMockBackend(new Set(['unknown-key']));
+    manager = new RealAudioManager(backend);
+    const onComplete = vi.fn();
+    await manager.playVoice('voice:unknown-key', onComplete);
+    expect(mockSpeak).not.toHaveBeenCalled();
+    expect(onComplete).toHaveBeenCalled();
+  });
+
+  it('calls onComplete when utterance ends', async () => {
+    const onComplete = vi.fn();
+    mockSpeak.mockImplementation((u: { onend: (() => void) | null }) => {
+      u.onend?.();
+    });
+    await manager.playVoice('voice:word-cat', onComplete);
+    expect(onComplete).toHaveBeenCalled();
+  });
+
+  it('does not speak when voice channel is muted', async () => {
+    manager.mute('voice');
+    await manager.playVoice('voice:word-cat');
+    expect(mockSpeak).not.toHaveBeenCalled();
+  });
+});
+
 describe('RealAudioManager — generator fallback', () => {
   let backend: AudioBackend;
   let generator: WebAudioMusicGenerator;

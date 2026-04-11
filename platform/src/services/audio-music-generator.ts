@@ -22,6 +22,8 @@ export class WebAudioMusicGenerator {
   private playing = false;
   private scheduleTimer: ReturnType<typeof setTimeout> | null = null;
   private activeOscillators: OscillatorNode[] = [];
+  private pendingOptions: { volume?: number; fadeIn?: number } | undefined;
+  private unlockBound = false;
 
   start(options?: { volume?: number; fadeIn?: number }): void {
     if (this.playing) {
@@ -33,13 +35,46 @@ export class WebAudioMusicGenerator {
       this.context = new AudioContext();
     }
 
+    this.pendingOptions = options;
+    this.playing = true;
+
     if (this.context.state === 'suspended') {
-      this.context.resume();
+      // Browser autoplay policy blocks AudioContext until a user gesture.
+      // Register a one-time interaction listener to resume and begin playback.
+      this.context.resume().then(() => {
+        if (this.playing) {
+          this.beginPlayback();
+        }
+      });
+      if (!this.unlockBound) {
+        this.unlockBound = true;
+        const unlock = () => {
+          if (this.context && this.context.state === 'suspended') {
+            this.context.resume();
+          }
+          document.removeEventListener('click', unlock);
+          document.removeEventListener('keydown', unlock);
+          document.removeEventListener('touchstart', unlock);
+        };
+        document.addEventListener('click', unlock, { once: false });
+        document.addEventListener('keydown', unlock, { once: false });
+        document.addEventListener('touchstart', unlock, { once: false });
+      }
+      return;
+    }
+
+    this.beginPlayback();
+  }
+
+  private beginPlayback(): void {
+    if (!this.context || this.masterGain) {
+      return;
     }
 
     this.masterGain = this.context.createGain();
     this.masterGain.connect(this.context.destination);
 
+    const options = this.pendingOptions;
     const targetVolume = options?.volume ?? 0.3;
     const fadeIn = options?.fadeIn ?? 0;
 
@@ -53,7 +88,6 @@ export class WebAudioMusicGenerator {
       this.masterGain.gain.value = targetVolume;
     }
 
-    this.playing = true;
     this.scheduleLoop(0);
   }
 
@@ -119,12 +153,12 @@ export class WebAudioMusicGenerator {
     oscillator.type = type;
     oscillator.frequency.value = frequency;
 
-    // Gentle envelope: quick attack, soft decay
-    noteGain.gain.value = relativeVolume;
-    noteGain.gain.linearRampToValueAtTime(
-      0,
-      this.context.currentTime + NOTE_DURATION / 1000,
-    );
+    // Gentle envelope: quick attack, soft decay.
+    // setValueAtTime anchors the ramp start — without it linearRamp has no
+    // defined origin and may hold a constant value on some browsers.
+    const now = this.context.currentTime;
+    noteGain.gain.setValueAtTime(relativeVolume, now);
+    noteGain.gain.linearRampToValueAtTime(0, now + NOTE_DURATION / 1000);
 
     oscillator.connect(noteGain);
     noteGain.connect(this.masterGain);

@@ -129,7 +129,8 @@ export class RealAudioManager implements AudioManager {
     await this.ensureLoaded(key, category);
 
     if (!this.loadedAssets.has(key)) {
-      onComplete?.();
+      // No audio file — try speech synthesis for word pronunciation
+      this.speakFallback(key, onComplete);
       return;
     }
 
@@ -148,6 +149,51 @@ export class RealAudioManager implements AudioManager {
         onComplete();
       });
     }
+  }
+
+  private speakFallback(key: string, onComplete?: () => void): void {
+    if (
+      this.channels.voice.muted ||
+      typeof speechSynthesis === 'undefined'
+    ) {
+      onComplete?.();
+      return;
+    }
+
+    // Extract the speakable text from the asset key.
+    // Keys follow patterns like "word-cat", "def-cat", "encouragement-correct".
+    const text = this.extractSpeechText(key);
+    if (!text) {
+      onComplete?.();
+      return;
+    }
+
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.85;
+    utterance.volume = this.channels.voice.volume;
+    if (onComplete) {
+      utterance.onend = () => onComplete();
+      utterance.onerror = () => onComplete();
+    }
+    speechSynthesis.speak(utterance);
+  }
+
+  private extractSpeechText(key: string): string | null {
+    // "word-cat" -> "cat"
+    if (key.startsWith('word-')) {
+      return key.slice(5);
+    }
+    // "def-cat" -> null (definitions need full text, not available here)
+    // "sentence-cat" -> null
+    // "encouragement-correct" -> "Well done!"
+    if (key === 'encouragement-correct') {
+      return 'Well done!';
+    }
+    if (key === 'encouragement-tryagain') {
+      return 'Try again!';
+    }
+    return null;
   }
 
   setVolume(category: AudioCategory, level: number): void {
