@@ -12,6 +12,7 @@ interface ChannelState {
 export class RealAudioManager implements AudioManager {
   private backend: AudioBackend;
   private loadedAssets = new Set<string>();
+  private failedAssets = new Set<string>();
   private channels: Record<AudioCategory, ChannelState> = {
     music: { volume: 0.3, muted: false, currentPlaybackId: null },
     sfx: { volume: 1.0, muted: false, currentPlaybackId: null },
@@ -32,14 +33,19 @@ export class RealAudioManager implements AudioManager {
       this.channels.music.currentPlaybackId = null;
     }
 
-    await this.ensureLoaded(trackId, 'music');
+    const { key, category } = this.parseAssetId(trackId);
+    await this.ensureLoaded(key, category);
+
+    if (!this.loadedAssets.has(key)) {
+      return;
+    }
 
     const loop = options?.loop ?? true;
     const channel = this.channels.music;
     const hasFadeIn = options?.fadeIn !== undefined && options.fadeIn > 0;
     const playVolume = hasFadeIn ? 0 : channel.muted ? 0 : channel.volume;
 
-    const playbackId = this.backend.play(trackId, {
+    const playbackId = this.backend.play(key, {
       loop,
       volume: playVolume,
     });
@@ -74,10 +80,15 @@ export class RealAudioManager implements AudioManager {
   }
 
   async playSFX(sfxId: string): Promise<void> {
-    await this.ensureLoaded(sfxId, 'sfx');
+    const { key, category } = this.parseAssetId(sfxId);
+    await this.ensureLoaded(key, category);
+
+    if (!this.loadedAssets.has(key)) {
+      return;
+    }
 
     const channel = this.channels.sfx;
-    this.backend.play(sfxId, {
+    this.backend.play(key, {
       volume: channel.muted ? 0 : channel.volume,
     });
     // Fire-and-forget — no playback ID tracking
@@ -90,10 +101,16 @@ export class RealAudioManager implements AudioManager {
       this.channels.voice.currentPlaybackId = null;
     }
 
-    await this.ensureLoaded(voiceId, 'voice');
+    const { key, category } = this.parseAssetId(voiceId);
+    await this.ensureLoaded(key, category);
+
+    if (!this.loadedAssets.has(key)) {
+      onComplete?.();
+      return;
+    }
 
     const channel = this.channels.voice;
-    const playbackId = this.backend.play(voiceId, {
+    const playbackId = this.backend.play(key, {
       volume: channel.muted ? 0 : channel.volume,
     });
 
@@ -189,9 +206,20 @@ export class RealAudioManager implements AudioManager {
     if (this.loadedAssets.has(id)) {
       return;
     }
+    if (this.failedAssets.has(id)) {
+      return;
+    }
     const path = `/audio/${category}/${id}.mp3`;
-    await this.backend.load(id, path);
-    this.loadedAssets.add(id);
+    try {
+      await this.backend.load(id, path);
+      this.loadedAssets.add(id);
+    } catch (error) {
+      this.failedAssets.add(id);
+      console.warn(
+        `[AudioManager] Failed to load "${id}" from ${path}:`,
+        error instanceof Error ? error.message : error,
+      );
+    }
   }
 
   private parseAssetId(assetId: string): {
