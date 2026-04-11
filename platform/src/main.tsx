@@ -9,6 +9,7 @@ import { IndexedDBStorageManager } from './services/storage';
 import featureFlags from './config/featureFlags.json';
 import { RealAudioManager } from './services/audio-manager';
 import { HowlerBackend } from './services/audio-howler';
+import { WebAudioMusicGenerator } from './services/audio-music-generator';
 import { gameRegistry } from './config/gameRegistry';
 import './i18n';
 import './styles/global.css';
@@ -27,7 +28,10 @@ storageManager.init().catch((err) => {
   console.warn('IndexedDB initialization failed. Running in-memory only:', err);
 });
 
-const audioManager = new RealAudioManager(new HowlerBackend());
+const audioManager = new RealAudioManager(
+  new HowlerBackend(),
+  new WebAudioMusicGenerator(),
+);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
