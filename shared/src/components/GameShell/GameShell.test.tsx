@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { GameShell } from './GameShell';
 
 describe('GameShell', () => {
@@ -19,7 +20,7 @@ describe('GameShell', () => {
         content
       </GameShell>,
     );
-    fireEvent.click(screen.getByLabelText('Go back'));
+    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
     expect(onBack).toHaveBeenCalledOnce();
   });
 
@@ -30,7 +31,7 @@ describe('GameShell', () => {
         content
       </GameShell>,
     );
-    fireEvent.click(screen.getByLabelText('Pause game'));
+    fireEvent.click(screen.getByLabelText('gameShell.pauseGame'));
     expect(onPause).toHaveBeenCalledOnce();
   });
 
@@ -40,7 +41,7 @@ describe('GameShell', () => {
         content
       </GameShell>,
     );
-    expect(screen.queryByLabelText('Pause game')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('gameShell.pauseGame')).not.toBeInTheDocument();
   });
 
   it('fires onPause on Escape key', () => {
@@ -52,5 +53,14 @@ describe('GameShell', () => {
     );
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(onPause).toHaveBeenCalledOnce();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <GameShell title="Test Game" onBack={() => {}} onPause={() => {}}>
+        <div>Game content</div>
+      </GameShell>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

@@ -25,6 +25,8 @@ export function GameTimer({
   size = 80,
 }: GameTimerProps) {
   const [elapsed, setElapsed] = useState(0);
+  const [announcedTime, setAnnouncedTime] = useState('');
+  const lastAnnouncedRef = useRef(0);
   const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
   const onExpireRef = useRef(onExpire);
   const onTickRef = useRef(onTick);
@@ -49,6 +51,18 @@ export function GameTimer({
         }
 
         onTickRef.current?.(mode === 'countdown' ? duration - next : next);
+
+        // Announce to screen readers every 10 seconds
+        const displaySecs = mode === 'countdown' ? duration - next : next;
+        if (Math.abs(displaySecs - lastAnnouncedRef.current) >= 10) {
+          lastAnnouncedRef.current = displaySecs;
+          setAnnouncedTime(
+            mode === 'countdown'
+              ? `${formatTime(displaySecs)} remaining`
+              : `${formatTime(displaySecs)} elapsed`,
+          );
+        }
+
         return next;
       });
     }, 1000);
@@ -108,6 +122,20 @@ export function GameTimer({
           {formatTime(displaySeconds)}
         </text>
       </svg>
+      <span
+        aria-live="polite"
+        aria-atomic="true"
+        style={{
+          position: 'absolute',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden',
+          clip: 'rect(0,0,0,0)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {announcedTime}
+      </span>
     </div>
   );
 }

@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.wordImage {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  border-radius: var(--radius-lg, 12px);
+  border: 3px solid var(--color-border, #ccc);
+}
+
+.playButton {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 2px solid var(--color-primary, #4a90d9);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-primary-light, #e8f0fe);
+  color: var(--color-text);
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.playButton:focus-visible {
+  outline: 3px solid var(--color-focus, #1a73e8);
+  outline-offset: 2px;
+}
+
+.clueButtons {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.clueButton {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid var(--color-border, #ccc);
+  border-radius: var(--radius-sm, 4px);
+  background: var(--color-surface, #fff);
+  color: var(--color-text-muted, #666);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.clueButton:hover {
+  background: var(--color-surface-alt, #f0f0f0);
+}
+
+.clueButton:focus-visible {
+  outline: 3px solid var(--color-focus, #1a73e8);
+  outline-offset: 2px;
+}
+
+.clueText {
+  font-size: 1rem;
+  color: var(--color-text-muted, #666);
+  text-align: center;
+  font-style: italic;
+  margin: 0;
+  padding: var(--spacing-sm);
+  background: var(--color-surface-alt, #f5f5f5);
+  border-radius: var(--radius-sm, 4px);
+  width: 100%;
+  max-width: 400px;
+}

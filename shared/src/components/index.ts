@@ -7,3 +7,5 @@ export { GameTimer } from './GameTimer/GameTimer';
 export { DifficultySelector } from './DifficultySelector/DifficultySelector';
 export { InstructionBubble } from './InstructionBubble/InstructionBubble';
 export { PauseMenu } from './PauseMenu/PauseMenu';
+export { Announcer, useAnnounce } from './Announcer/Announcer';
+export { SkipLink } from './SkipLink/SkipLink';

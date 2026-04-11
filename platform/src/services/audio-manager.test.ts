@@ -27,7 +27,7 @@ describe('RealAudioManager', () => {
 
   describe('playMusic', () => {
     it('loads and plays music with loop:true by default', async () => {
-      await audio.playMusic('main-theme');
+      await audio.playMusic('music:main-theme');
 
       expect(backend.load).toHaveBeenCalledWith('main-theme', '/audio/music/main-theme.mp3');
       expect(backend.play).toHaveBeenCalledWith('main-theme', {
@@ -158,7 +158,7 @@ describe('RealAudioManager', () => {
 
   describe('playVoice', () => {
     it('loads and plays voice with channel volume', async () => {
-      await audio.playVoice('welcome');
+      await audio.playVoice('voice:welcome');
 
       expect(backend.load).toHaveBeenCalledWith('welcome', '/audio/voice/welcome.mp3');
       expect(backend.play).toHaveBeenCalledWith('welcome', { volume: 1.0 });

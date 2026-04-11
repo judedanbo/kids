@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import styles from './RewardCard.module.css';
 import type { Reward } from '@kids-games-zone/shared';
 
@@ -9,6 +10,7 @@ interface RewardCardProps {
 }
 
 export function RewardCard({ reward, unlocked, progress }: RewardCardProps) {
+  const { t } = useTranslation('common');
   const formattedDate = reward.unlockedAt
     ? new Date(reward.unlockedAt).toLocaleDateString(undefined, {
         month: 'short',
@@ -23,7 +25,7 @@ export function RewardCard({ reward, unlocked, progress }: RewardCardProps) {
       whileHover={{ scale: 1.05 }}
       transition={{ type: 'spring', stiffness: 300 }}
       role="article"
-      aria-label={`${reward.name} — ${unlocked ? 'Unlocked' : 'Locked'}`}
+      aria-label={`${reward.name} — ${unlocked ? t('rewardCard.unlocked') : t('rewardCard.locked')}`}
     >
       <div className={styles.iconWrapper}>
         <span className={styles.icon}>{reward.icon}</span>
@@ -32,7 +34,7 @@ export function RewardCard({ reward, unlocked, progress }: RewardCardProps) {
       <h3 className={styles.name}>{reward.name}</h3>
       <p className={styles.description}>{reward.description}</p>
       {unlocked && formattedDate && (
-        <p className={styles.date}>Earned {formattedDate}</p>
+        <p className={styles.date}>{t('rewardCard.earned', { date: formattedDate })}</p>
       )}
       {!unlocked && progress && (
         <p className={styles.progress}>{progress}</p>

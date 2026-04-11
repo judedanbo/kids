@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './AdultGate.module.css';
 
 interface AdultGateProps {
@@ -6,13 +7,14 @@ interface AdultGateProps {
   onCancel: () => void;
 }
 
-function generateProblem(): { question: string; answer: number } {
+function generateProblem(): { a: number; b: number; answer: number } {
   const a = Math.floor(Math.random() * 15) + 5;  // 5-19
   const b = Math.floor(Math.random() * 9) + 2;   // 2-10
-  return { question: `What is ${a} x ${b}?`, answer: a * b };
+  return { a, b, answer: a * b };
 }
 
 export function AdultGate({ onVerified, onCancel }: AdultGateProps) {
+  const { t } = useTranslation('common');
   const problem = useMemo(() => generateProblem(), []);
   const [input, setInput] = useState('');
   const [error, setError] = useState(false);
@@ -30,11 +32,11 @@ export function AdultGate({ onVerified, onCancel }: AdultGateProps) {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h2 className={styles.title}>Adult Verification</h2>
+        <h2 className={styles.title}>{t('adultGate.title')}</h2>
         <p className={styles.description}>
-          Please solve this problem to continue:
+          {t('adultGate.description')}
         </p>
-        <p className={styles.question}>{problem.question}</p>
+        <p className={styles.question}>{t('adultGate.whatIs', { a: problem.a, b: problem.b })}</p>
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
             className={styles.input}
@@ -45,16 +47,16 @@ export function AdultGate({ onVerified, onCancel }: AdultGateProps) {
               setInput(e.target.value);
               setError(false);
             }}
-            placeholder="Your answer"
-            aria-label="Answer"
+            placeholder={t('adultGate.placeholder')}
+            aria-label={t('adultGate.placeholder')}
           />
-          {error && <p className={styles.error}>Incorrect answer. Try again.</p>}
+          {error && <p className={styles.error}>{t('adultGate.incorrect')}</p>}
           <div className={styles.actions}>
             <button type="submit" className={styles.submitBtn}>
-              Verify
+              {t('adultGate.verify')}
             </button>
             <button type="button" className={styles.cancelBtn} onClick={onCancel}>
-              Cancel
+              {t('adultGate.cancel')}
             </button>
           </div>
         </form>

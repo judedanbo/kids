@@ -1,0 +1,18 @@
+[
+  { "word": "house", "difficulty": 1, "image": "", "definition": "A building where people live", "origin": "Old English", "sentence": "They moved to a new house." },
+  { "word": "table", "difficulty": 1, "image": "", "definition": "A piece of furniture with a flat top", "origin": "Latin", "sentence": "Put the plates on the table." },
+  { "word": "ocean", "difficulty": 2, "image": "", "definition": "A very large body of salt water", "origin": "Greek", "sentence": "Whales live in the ocean." },
+  { "word": "forest", "difficulty": 2, "image": "", "definition": "A large area covered with trees", "origin": "Latin", "sentence": "The deer ran into the forest." },
+  { "word": "kitchen", "difficulty": 3, "image": "", "definition": "The room where food is prepared", "origin": "Latin", "sentence": "She baked cookies in the kitchen." },
+  { "word": "blanket", "difficulty": 3, "image": "", "definition": "A warm covering used on beds", "origin": "French", "sentence": "He pulled the blanket over himself." },
+  { "word": "dinosaur", "difficulty": 4, "image": "", "definition": "A large reptile that lived millions of years ago", "origin": "Greek", "sentence": "The museum has a dinosaur skeleton." },
+  { "word": "elephant", "difficulty": 4, "image": "", "definition": "The largest land animal with a trunk", "origin": "Greek", "sentence": "The elephant sprayed water with its trunk." },
+  { "word": "adventure", "difficulty": 5, "image": "", "definition": "An exciting and unusual experience", "origin": "Latin", "sentence": "They went on an adventure in the mountains." },
+  { "word": "geography", "difficulty": 5, "image": "", "definition": "The study of the Earth and its features", "origin": "Greek", "sentence": "In geography class we learned about rivers." },
+  { "word": "beautiful", "difficulty": 6, "image": "", "definition": "Very pleasing to look at or hear", "origin": "French", "sentence": "The sunset was beautiful." },
+  { "word": "celebration", "difficulty": 7, "image": "", "definition": "A special event to mark an occasion", "origin": "Latin", "sentence": "The birthday celebration was fun." },
+  { "word": "temperature", "difficulty": 7, "image": "", "definition": "How hot or cold something is", "origin": "Latin", "sentence": "The temperature dropped below zero." },
+  { "word": "magnificent", "difficulty": 8, "image": "", "definition": "Extremely beautiful or impressive", "origin": "Latin", "sentence": "The castle was magnificent." },
+  { "word": "encyclopedia", "difficulty": 9, "image": "", "definition": "A book or set of books containing information on many subjects", "origin": "Greek", "sentence": "She looked it up in the encyclopedia." },
+  { "word": "extraordinary", "difficulty": 10, "image": "", "definition": "Very unusual or remarkable", "origin": "Latin", "sentence": "The magician performed an extraordinary trick." }
+]

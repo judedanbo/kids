@@ -1,0 +1,16 @@
+{
+  "title": "Word Puzzle",
+  "instruction": "Unscramble the letters to spell the word!",
+  "letsGo": "Let's Go!",
+  "newRound": "Unscramble the word! Category: {{category}}, Clue: {{clue}}",
+  "placedLetter": "Placed letter {{letter}}",
+  "removedLetter": "Removed letter {{letter}}",
+  "correct": "Correct! The word is {{word}}",
+  "incorrect": "Not quite, try again",
+  "tryAgain": "Try again!",
+  "attempt": "Attempt {{count}}",
+  "celebrationTitle": "Amazing!",
+  "category_animals": "Animals",
+  "category_food": "Food",
+  "category_nature": "Nature"
+}

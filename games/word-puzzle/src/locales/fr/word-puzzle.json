@@ -1,0 +1,16 @@
+{
+  "title": "Casse-tête de mots",
+  "instruction": "Remets les lettres en ordre pour former le mot !",
+  "letsGo": "C'est parti !",
+  "newRound": "Remets en ordre ! Catégorie : {{category}}, Indice : {{clue}}",
+  "placedLetter": "Lettre {{letter}} placée",
+  "removedLetter": "Lettre {{letter}} retirée",
+  "correct": "Correct ! Le mot est {{word}}",
+  "incorrect": "Pas tout à fait, réessaie",
+  "tryAgain": "Réessaie !",
+  "attempt": "Tentative {{count}}",
+  "celebrationTitle": "Formidable !",
+  "category_animals": "Animaux",
+  "category_food": "Nourriture",
+  "category_nature": "Nature"
+}

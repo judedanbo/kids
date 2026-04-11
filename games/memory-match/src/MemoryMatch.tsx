@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GameShell,
   OptionButton,
@@ -6,6 +7,7 @@ import {
   ScoreDisplay,
   CelebrationOverlay,
   InstructionBubble,
+  useAnnounce,
 } from '@kids-games-zone/shared';
 import type { GameProps, GameResult } from '@kids-games-zone/shared';
 import { generateCards, getGridConfig } from './utils/gridUtils';
@@ -14,6 +16,8 @@ import { CardGrid } from './components/CardGrid';
 import styles from './MemoryMatch.module.css';
 
 export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager }: GameProps) {
+  const { t } = useTranslation('memory-match');
+  const announce = useAnnounce();
   const [showInstruction, setShowInstruction] = useState(true);
   const [cards, setCards] = useState<CardData[]>([]);
   const [gridConfig, setGridConfig] = useState<GridConfig>(() => getGridConfig(config.difficulty));
@@ -46,12 +50,13 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
   // Preview phase: show all cards, then flip them back
   useEffect(() => {
     if (!isPreview) return;
+    announce(t('preview'));
     const timer = setTimeout(() => {
       setIsPreview(false);
       setIsLocked(false);
     }, gridConfig.previewDuration);
     return () => clearTimeout(timer);
-  }, [isPreview, gridConfig.previewDuration]);
+  }, [isPreview, gridConfig.previewDuration, announce, t]);
 
   // Clear encourage message after a delay
   useEffect(() => {
@@ -90,19 +95,22 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
         setScore(newScore);
         onScore(10);
         audioManager.playSFX('correct');
-        setEncourageMessage('Great match!');
+        setEncourageMessage(t('greatMatch'));
 
         // Check for all matched
         if (newMatched.size === gridConfig.pairs) {
+          announce(t('complete'));
           audioManager.playSFX('celebrate');
           setShowCelebration(true);
         } else {
+          announce(t('matchFound'));
           setIsLocked(false);
         }
       } else {
         // MISMATCH
+        announce(t('notAMatch'));
         audioManager.playSFX('incorrect');
-        setEncourageMessage('Keep trying!');
+        setEncourageMessage(t('keepTrying'));
         const newTurns = turns + 1;
         setTurns(newTurns);
         setTimeout(() => {
@@ -111,7 +119,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
         }, 1000);
       }
     },
-    [isLocked, flippedIds, cards, matchedPairIds, turns, score, gridConfig.pairs, onScore, audioManager],
+    [isLocked, flippedIds, cards, matchedPairIds, turns, score, gridConfig.pairs, onScore, audioManager, announce, t],
   );
 
   const handleCelebrationComplete = useCallback(() => {
@@ -134,9 +142,9 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
 
   if (showCelebration) {
     return (
-      <GameShell title="Memory Match" onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit}>
         <CelebrationOverlay
-          title="You did it!"
+          title={t('celebrationTitle')}
           score={score}
           maxScore={gridConfig.pairs * 10}
           onComplete={handleCelebrationComplete}
@@ -147,10 +155,10 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
 
   if (showInstruction) {
     return (
-      <GameShell title="Memory Match" onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit}>
         <div className={styles.gameArea}>
-          <InstructionBubble text="Find the matching pictures!" character="🃏" />
-          <OptionButton label="Let's Go!" state="default" onSelect={handleDismissInstruction} size="large" />
+          <InstructionBubble text={t('instruction')} character="🃏" />
+          <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
         </div>
       </GameShell>
     );
@@ -162,7 +170,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
     : flippedIds;
 
   return (
-    <GameShell title="Memory Match" onBack={onExit}>
+    <GameShell title={t('title')} onBack={onExit}>
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={score} maxScore={gridConfig.pairs * 10} showStars />

@@ -1,0 +1,38 @@
+{
+  "game.safety-scout": {
+    "enabled": true,
+    "description": "Safety Scout game — identify safe and harmful objects"
+  },
+  "game.more-or-less": {
+    "enabled": true,
+    "description": "More or Less game — compare quantities and numbers"
+  },
+  "game.spelling-bee": {
+    "enabled": true,
+    "description": "Spelling Bee game — listen to words and spell them"
+  },
+  "game.word-puzzle": {
+    "enabled": true,
+    "description": "Word Puzzle game — unscramble letters to spell words"
+  },
+  "game.math-adventure": {
+    "enabled": true,
+    "description": "Math Adventure game — solve math problems"
+  },
+  "game.memory-match": {
+    "enabled": true,
+    "description": "Memory Match game — find matching card pairs"
+  },
+  "game.dummy-game": {
+    "enabled": false,
+    "description": "Developer test game — click counter"
+  },
+  "daily-challenge": {
+    "enabled": true,
+    "description": "Daily challenge card on the Hub"
+  },
+  "high-contrast-mode": {
+    "enabled": true,
+    "description": "High contrast mode toggle in Settings"
+  }
+}

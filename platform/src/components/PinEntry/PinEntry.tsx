@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NumberPad } from '../NumberPad';
 import { verifyPin } from '../../utils/pin';
 import styles from './PinEntry.module.css';
@@ -14,6 +15,7 @@ interface PinEntryProps {
 }
 
 export function PinEntry({ storedHash, onSuccess, onCancel }: PinEntryProps) {
+  const { t } = useTranslation('common');
   const [digits, setDigits] = useState<string[]>([]);
   const [error, setError] = useState('');
   const [attempts, setAttempts] = useState(0);
@@ -64,9 +66,9 @@ export function PinEntry({ storedHash, onSuccess, onCancel }: PinEntryProps) {
               setAttempts(newAttempts);
               if (newAttempts >= MAX_ATTEMPTS) {
                 setLockoutEnd(Date.now() + LOCKOUT_SECONDS * 1000);
-                setError(`Too many attempts. Please wait ${LOCKOUT_SECONDS} seconds.`);
+                setError(t('pin.tooManyAttempts', { seconds: LOCKOUT_SECONDS }));
               } else {
-                setError(`Incorrect PIN. ${MAX_ATTEMPTS - newAttempts} attempts remaining.`);
+                setError(t('pin.incorrectPin', { remaining: MAX_ATTEMPTS - newAttempts }));
               }
               setDigits([]);
             }
@@ -77,7 +79,7 @@ export function PinEntry({ storedHash, onSuccess, onCancel }: PinEntryProps) {
         return next;
       });
     },
-    [isLocked, verifying, storedHash, onSuccess, attempts],
+    [isLocked, verifying, storedHash, onSuccess, attempts, t],
   );
 
   const handleDelete = useCallback(() => {
@@ -88,10 +90,10 @@ export function PinEntry({ storedHash, onSuccess, onCancel }: PinEntryProps) {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h2 className={styles.title}>Enter PIN</h2>
+        <h2 className={styles.title}>{t('pin.enterPin')}</h2>
 
         {/* Dot indicators */}
-        <div className={styles.dots} aria-label={`${digits.length} of ${PIN_LENGTH} digits entered`}>
+        <div className={styles.dots} aria-label={t('pin.digitsEntered', { count: digits.length, total: PIN_LENGTH })}>
           {Array.from({ length: PIN_LENGTH }, (_, i) => (
             <div
               key={i}
@@ -103,7 +105,7 @@ export function PinEntry({ storedHash, onSuccess, onCancel }: PinEntryProps) {
         {error && <p className={styles.error}>{error}</p>}
         {isLocked && (
           <p className={styles.lockout}>
-            Locked for {lockoutRemaining}s
+            {t('pin.lockedFor', { seconds: lockoutRemaining })}
           </p>
         )}
 
@@ -114,7 +116,7 @@ export function PinEntry({ storedHash, onSuccess, onCancel }: PinEntryProps) {
         />
 
         <button type="button" className={styles.cancelBtn} onClick={onCancel}>
-          Cancel
+          {t('pin.cancel')}
         </button>
       </div>
     </div>

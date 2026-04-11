@@ -1,0 +1,21 @@
+{
+  "title": "More or Less",
+  "instruction": "Which is more? Which is less? Find the answer!",
+  "instructionTiny": "Which group has more? Tap to choose!",
+  "letsGo": "Let's Go!",
+  "whichMore": "Which is MORE?",
+  "whichLess": "Which is LESS?",
+  "whichMoreObjects": "Which group has MORE {{object}}s?",
+  "whichLessObjects": "Which group has FEWER {{object}}s?",
+  "orderHint": "Tap the numbers in order from smallest to biggest",
+  "orderPrompt": "Put these in order: smallest → biggest",
+  "correct": "Correct!",
+  "incorrect": "Not quite!",
+  "theAnswerWas": "The answer was {{answer}}",
+  "next": "Next",
+  "undo": "Undo",
+  "reset": "Reset",
+  "roundOf": "Question {{current}} of {{total}}",
+  "celebrationTitle": "Number Champion!",
+  "finalScore": "You got {{score}} of {{total}} correct!"
+}

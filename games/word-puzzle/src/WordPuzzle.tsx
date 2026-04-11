@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GameShell,
   OptionButton,
@@ -6,6 +7,8 @@ import {
   ScoreDisplay,
   CelebrationOverlay,
   InstructionBubble,
+  useAnnounce,
+  useRovingTabindex,
 } from '@kids-games-zone/shared';
 import type { GameProps, GameResult } from '@kids-games-zone/shared';
 import { ScrambleRow } from './components/ScrambleRow';
@@ -18,6 +21,7 @@ import styles from './WordPuzzle.module.css';
 const TOTAL_WORDS = 8;
 
 export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }: GameProps) {
+  const { t } = useTranslation('word-puzzle');
   const [showInstruction, setShowInstruction] = useState(true);
   const [showCelebration, setShowCelebration] = useState(false);
 
@@ -35,6 +39,12 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
   const [attempts, setAttempts] = useState(0);
   const [score, setScore] = useState(0);
   const [answerState, setAnswerState] = useState<'default' | 'correct' | 'incorrect'>('default');
+
+  const announce = useAnnounce();
+  const { getItemProps: getLetterProps } = useRovingTabindex({
+    itemCount: scrambledLetters.length,
+    orientation: 'horizontal',
+  });
 
   const startTimeRef = useRef(Date.now());
   const wordsCorrectRef = useRef(0);
@@ -55,9 +65,12 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
 
   useEffect(() => {
     if (!showInstruction && words.length > 0) {
-      initWord(words[currentIndex]);
+      const entry = words[currentIndex];
+      initWord(entry);
+      const categoryKey = `category_${categories[categoryIndex].name.toLowerCase()}`;
+      announce(t('newRound', { category: t(categoryKey), clue: entry.clue }));
     }
-  }, [showInstruction, currentIndex, words, initWord]);
+  }, [showInstruction, currentIndex, words, initWord, announce, categoryIndex, t]);
 
   const handleDismissInstruction = useCallback(() => {
     setShowInstruction(false);
@@ -70,6 +83,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       if (answer === word) {
         setAnswerState('correct');
         audioManager.playSFX('correct');
+        announce(t('correct', { word }));
 
         const points = currentAttempts === 0 ? 10 : currentAttempts === 1 ? 5 : 2;
         setScore((prev) => prev + points);
@@ -89,6 +103,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       } else {
         setAnswerState('incorrect');
         audioManager.playSFX('incorrect');
+        announce(t('incorrect'));
         setAttempts((prev) => prev + 1);
 
         setTimeout(() => {
@@ -100,7 +115,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
         }, 600);
       }
     },
-    [currentIndex, audioManager, onScore],
+    [currentIndex, audioManager, onScore, announce, t],
   );
 
   const handleLetterClick = useCallback(
@@ -121,6 +136,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       setPlacedIndices(newPlaced);
       setPlacementOrder(newOrder);
       audioManager.playSFX('click');
+      announce(t('placedLetter', { letter }));
 
       // Auto-check when all slots filled
       if (firstEmpty === newSlots.length - 1) {
@@ -134,10 +150,12 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       answerSlots,
       placementOrder,
       audioManager,
+      announce,
       checkAnswer,
       words,
       currentIndex,
       attempts,
+      t,
     ],
   );
 
@@ -168,12 +186,16 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       newPlaced.delete(scrambleIdx);
       const newOrder = placementOrder.filter((_, i) => i !== filledCount);
 
+      const removedLetter = answerSlots[slotIndex];
       setAnswerSlots(newSlots);
       setPlacedIndices(newPlaced);
       setPlacementOrder(newOrder);
       audioManager.playSFX('click');
+      if (removedLetter) {
+        announce(t('removedLetter', { letter: removedLetter }));
+      }
     },
-    [answerState, answerSlots, placedIndices, placementOrder, audioManager],
+    [answerState, answerSlots, placedIndices, placementOrder, audioManager, announce, t],
   );
 
   const handleKeyDown = useCallback(
@@ -235,9 +257,9 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
 
   if (showCelebration) {
     return (
-      <GameShell title="Word Puzzle" onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit}>
         <CelebrationOverlay
-          title="Amazing!"
+          title={t('celebrationTitle')}
           score={score}
           maxScore={TOTAL_WORDS * 10}
           onComplete={handleCelebrationComplete}
@@ -248,34 +270,34 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
 
   if (showInstruction) {
     return (
-      <GameShell title="Word Puzzle" onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit}>
         <div className={styles.gameArea}>
           <InstructionBubble
-            text="Unscramble the letters to spell the word!"
+            text={t('instruction')}
             character="🔤"
           />
-          <OptionButton label="Let's Go!" state="default" onSelect={handleDismissInstruction} size="large" />
+          <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
         </div>
       </GameShell>
     );
   }
 
   const currentWord = words[currentIndex];
-  const categoryName = categories[categoryIndex].name;
+  const categoryKey = `category_${categories[categoryIndex].name.toLowerCase()}`;
 
   return (
-    <GameShell title="Word Puzzle" onBack={onExit}>
+    <GameShell title={t('title')} onBack={onExit}>
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={score} maxScore={TOTAL_WORDS * 10} showStars />
         </div>
         <ProgressBar current={currentIndex} total={TOTAL_WORDS} showLabel />
-        <p className={styles.categoryLabel}>{categoryName}</p>
+        <p className={styles.categoryLabel}>{t(categoryKey)}</p>
         <div className={styles.wordArea}>
           <p className={styles.clueText}>{currentWord.clue}</p>
           {attempts > 0 && (
             <p className={styles.attemptHint}>
-              {attempts === 1 ? 'Try again!' : `Attempt ${attempts + 1}`}
+              {attempts === 1 ? t('tryAgain') : t('attempt', { count: attempts + 1 })}
             </p>
           )}
           <AnswerSlots
@@ -287,6 +309,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
             letters={scrambledLetters}
             placedIndices={placedIndices}
             onLetterClick={handleLetterClick}
+            getLetterProps={getLetterProps}
           />
         </div>
       </div>

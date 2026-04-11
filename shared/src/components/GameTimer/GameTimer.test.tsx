@@ -1,4 +1,5 @@
 import { render, screen, act } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { GameTimer } from './GameTimer';
 
 describe('GameTimer', () => {
@@ -63,5 +64,11 @@ describe('GameTimer', () => {
     });
 
     expect(screen.getByLabelText(/0:03 elapsed/)).toBeInTheDocument();
+  });
+
+  it('has no accessibility violations', async () => {
+    vi.useRealTimers();
+    const { container } = render(<GameTimer mode="countup" />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

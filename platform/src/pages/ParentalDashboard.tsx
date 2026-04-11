@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { usePlatform } from '../context/PlatformContext';
 import { AdultGate } from '../components/AdultGate';
 import { PinEntry } from '../components/PinEntry';
@@ -70,6 +71,7 @@ function Dashboard({
   storageManager: ReturnType<typeof usePlatform>['storageManager'];
   navigate: ReturnType<typeof useNavigate>;
 }) {
+  const { t } = useTranslation('common');
   // Activity summary
   const today = new Date().toISOString().slice(0, 10);
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -132,41 +134,41 @@ function Dashboard({
   return (
     <div className={styles.dashboard}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Parental Dashboard</h1>
-        <p className={styles.subtitle}>{profile.name}&apos;s Activity</p>
+        <h1 className={styles.title}>{t('parental.title')}</h1>
+        <p className={styles.subtitle}>{t('parental.activity', { name: profile.name })}</p>
         <button className={styles.backBtn} onClick={() => navigate('/settings')}>
-          Back to Settings
+          {t('parental.backToSettings')}
         </button>
       </header>
 
       {/* Activity Summary */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Activity Summary</h2>
+        <h2 className={styles.sectionTitle}>{t('parental.activitySummary')}</h2>
         <div className={styles.statsGrid}>
           <div className={styles.statCard}>
             <span className={styles.statValue}>{todayGames.length}</span>
-            <span className={styles.statLabel}>Games Today</span>
+            <span className={styles.statLabel}>{t('parental.gamesToday')}</span>
           </div>
           <div className={styles.statCard}>
             <span className={styles.statValue}>{weekGames.length}</span>
-            <span className={styles.statLabel}>Games This Week</span>
+            <span className={styles.statLabel}>{t('parental.gamesThisWeek')}</span>
           </div>
           <div className={styles.statCard}>
             <span className={styles.statValue}>
               {Math.round(profile.stats.totalPlayTime / 60)}m
             </span>
-            <span className={styles.statLabel}>Total Play Time</span>
+            <span className={styles.statLabel}>{t('parental.totalPlayTime')}</span>
           </div>
           <div className={styles.statCard}>
             <span className={styles.statValue}>{profile.stats.currentStreak}</span>
-            <span className={styles.statLabel}>Current Streak</span>
+            <span className={styles.statLabel}>{t('parental.currentStreak')}</span>
           </div>
         </div>
       </section>
 
       {/* Play Time Chart */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Play Time (Last 7 Days)</h2>
+      <section className={styles.section} aria-label="Play time over the last 7 days">
+        <h2 className={styles.sectionTitle}>{t('parental.playTimeLast7Days')}</h2>
         <div className={styles.chart}>
           {dailyPlayTime.map(([day, time]) => (
             <div key={day} className={styles.chartBar}>
@@ -185,19 +187,19 @@ function Dashboard({
 
       {/* Game Progress Table */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Game Progress</h2>
+        <h2 className={styles.sectionTitle}>{t('parental.gameProgress')}</h2>
         {gameProgress.length === 0 ? (
-          <p className={styles.empty}>No games played yet.</p>
+          <p className={styles.empty}>{t('parental.noGamesYet')}</p>
         ) : (
           <div className={styles.tableContainer}>
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>Game</th>
-                  <th>High Score</th>
-                  <th>Attempts</th>
-                  <th>Difficulty</th>
-                  <th>Actions</th>
+                  <th scope="col">{t('parental.headerGame')}</th>
+                  <th scope="col">{t('parental.headerHighScore')}</th>
+                  <th scope="col">{t('parental.headerAttempts')}</th>
+                  <th scope="col">{t('parental.headerDifficulty')}</th>
+                  <th scope="col">{t('parental.headerActions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -212,7 +214,7 @@ function Dashboard({
                         className={styles.resetBtn}
                         onClick={() => handleResetProgress(gp.gameId)}
                       >
-                        Reset
+                        {t('parental.reset')}
                       </button>
                     </td>
                   </tr>

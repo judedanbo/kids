@@ -9,10 +9,20 @@
     "typecheck": "pnpm -r --parallel run typecheck",
     "test": "pnpm -r --parallel run test",
     "format": "prettier --write \"**/*.{ts,tsx,css,json,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,css,json,md}\""
+    "format:check": "prettier --check \"**/*.{ts,tsx,css,json,md}\"",
+    "create-game": "tsx scripts/create-game.ts",
+    "test:coverage": "pnpm -r --parallel run test -- --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
+    "@changesets/cli": "^2.30.0",
     "@eslint/js": "^9.39.4",
+    "@playwright/test": "^1.59.1",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.0.0",
     "@types/canvas-confetti": "^1.6.0",
@@ -20,6 +30,7 @@
     "@types/react-dom": "^19.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.39.4",
     "eslint-plugin-jsx-a11y": "^6.10.0",
     "eslint-plugin-react": "^7.37.0",
@@ -28,8 +39,10 @@
     "framer-motion": "^11.0.0",
     "jsdom": "^25.0.0",
     "prettier": "^3.4.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.7.0",
-    "vitest": "^3.0.0"
+    "vitest": "^3.0.0",
+    "vitest-axe": "^0.1.0"
   },
   "engines": {
     "node": ">=20",

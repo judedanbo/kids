@@ -1,0 +1,18 @@
+[
+  { "word": "book", "difficulty": 1, "image": "", "definition": "A set of pages with words or pictures", "origin": "Old English", "sentence": "I read a book before bed." },
+  { "word": "fish", "difficulty": 1, "image": "", "definition": "An animal that lives in water", "origin": "Old English", "sentence": "The fish swam in the pond." },
+  { "word": "milk", "difficulty": 1, "image": "", "definition": "A white drink from cows", "origin": "Old English", "sentence": "She drank a glass of milk." },
+  { "word": "lamp", "difficulty": 2, "image": "", "definition": "A device that gives light", "origin": "Greek", "sentence": "Turn on the lamp please." },
+  { "word": "jump", "difficulty": 2, "image": "", "definition": "To push yourself up into the air", "origin": "Middle English", "sentence": "He can jump very high." },
+  { "word": "hand", "difficulty": 2, "image": "", "definition": "The part of your body at the end of your arm", "origin": "Old English", "sentence": "She raised her hand in class." },
+  { "word": "plant", "difficulty": 3, "image": "", "definition": "A living thing that grows in soil", "origin": "Latin", "sentence": "We planted a flower in the garden." },
+  { "word": "crane", "difficulty": 3, "image": "", "definition": "A large bird or a machine for lifting", "origin": "Old English", "sentence": "The crane lifted the heavy box." },
+  { "word": "stove", "difficulty": 3, "image": "", "definition": "A device used for cooking food", "origin": "Dutch", "sentence": "Dad cooked dinner on the stove." },
+  { "word": "brave", "difficulty": 4, "image": "", "definition": "Ready to face danger without fear", "origin": "French", "sentence": "The brave knight saved the village." },
+  { "word": "float", "difficulty": 4, "image": "", "definition": "To rest on top of water", "origin": "Old English", "sentence": "The leaf will float on the river." },
+  { "word": "bridge", "difficulty": 5, "image": "", "definition": "A structure built over a river or road so people can cross", "origin": "Old English", "sentence": "We walked across the bridge to get to the park." },
+  { "word": "frozen", "difficulty": 5, "image": "", "definition": "Turned into ice or very cold", "origin": "Old English", "sentence": "The lake was frozen in winter." },
+  { "word": "garden", "difficulty": 5, "image": "", "definition": "A piece of land where plants are grown", "origin": "French", "sentence": "She grows tomatoes in the garden." },
+  { "word": "market", "difficulty": 6, "image": "", "definition": "A place where people buy and sell things", "origin": "Latin", "sentence": "We bought fruit at the market." },
+  { "word": "winter", "difficulty": 6, "image": "", "definition": "The coldest season of the year", "origin": "Old English", "sentence": "Snow falls in winter." }
+]

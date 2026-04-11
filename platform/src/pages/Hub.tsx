@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAgeTier } from '@kids-games-zone/shared';
+import { useTranslation } from 'react-i18next';
+import { useAgeTier, FeatureFlagContext } from '@kids-games-zone/shared';
 import { usePlatform } from '../context/PlatformContext';
 import { GameCard } from '../components/GameCard/GameCard';
 import { getDailyChallenge } from '../services/dailyChallenge';
@@ -10,19 +11,24 @@ import styles from './Hub.module.css';
 export default function Hub() {
   const { state } = usePlatform();
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
   const ageTier = useAgeTier();
+  const { flags } = useContext(FeatureFlagContext);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<string>('all');
 
   const profile = state.currentProfile;
 
-  // Filter games by age (empty when no profile)
+  // Filter games by age and feature flag (empty when no profile)
   const ageFilteredGames = useMemo(() => {
     if (!profile) return [];
-    return state.gameRegistry.filter(
-      (game) => game.ageRange[0] <= profile.age && profile.age <= game.ageRange[1],
-    );
-  }, [profile, state.gameRegistry]);
+    return state.gameRegistry.filter((game) => {
+      const inAgeRange = game.ageRange[0] <= profile.age && profile.age <= game.ageRange[1];
+      const flag = flags[`game.${game.id}`];
+      const flagEnabled = !flag || flag.enabled;
+      return inAgeRange && flagEnabled;
+    });
+  }, [profile, state.gameRegistry, flags]);
 
   // Get available skill categories from filtered games
   const skillCategories = useMemo(() => {
@@ -84,31 +90,32 @@ export default function Hub() {
 
   return (
     <div className={styles.hub}>
+      <main>
       {/* Welcome header */}
       <header className={styles.header}>
         <h1 className={styles.welcome}>
-          Welcome back, {profile.name}!
+          {t('hub.welcome', { name: profile.name })}
         </h1>
         {profile.stats.currentStreak >= 1 && (
-          <div className={styles.streakBadge} aria-label={`${profile.stats.currentStreak} day streak`}>
+          <div className={styles.streakBadge} aria-label={t('hub.streak', { count: profile.stats.currentStreak })}>
             <span className={styles.streakIcon}>🔥</span>
-            {profile.stats.currentStreak} day streak
+            {t('hub.streak', { count: profile.stats.currentStreak })}
           </div>
         )}
       </header>
 
       {/* Daily Challenge */}
-      <div className={styles.challengeCard} role="region" aria-label="Daily challenge">
+      <div className={styles.challengeCard} role="region" aria-label={t('hub.dailyChallenge')}>
         <div className={styles.challengeHeader}>
-          <span className={styles.challengeTitle}>Daily Challenge</span>
+          <span className={styles.challengeTitle}>{t('hub.dailyChallenge')}</span>
         </div>
         <p className={styles.challengeDescription}>{dailyChallenge.description}</p>
       </div>
 
       {/* Continue Playing */}
       {recentGames.length > 0 && (
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Continue Playing</h2>
+        <section className={styles.section} aria-label={t('hub.continuePlaying')}>
+          <h2 className={styles.sectionTitle}>{t('hub.continuePlaying')}</h2>
           <div className={styles.recentRow}>
             {recentGames.map((game) => (
               <GameCard
@@ -128,10 +135,10 @@ export default function Hub() {
           <input
             className={styles.searchInput}
             type="text"
-            placeholder="Search games..."
+            placeholder={t('hub.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            aria-label="Search games"
+            aria-label={t('hub.searchPlaceholder')}
           />
         </div>
       )}
@@ -142,14 +149,16 @@ export default function Hub() {
           <button
             className={`${styles.filterPill} ${activeFilter === 'all' ? styles.filterActive : ''}`}
             onClick={() => setActiveFilter('all')}
+            aria-pressed={activeFilter === 'all'}
           >
-            All
+            {t('hub.filterAll')}
           </button>
           {skillCategories.map((category) => (
             <button
               key={category}
               className={`${styles.filterPill} ${activeFilter === category ? styles.filterActive : ''}`}
               onClick={() => setActiveFilter(category)}
+              aria-pressed={activeFilter === category}
             >
               {category.replace('_', ' ')}
             </button>
@@ -158,21 +167,24 @@ export default function Hub() {
       )}
 
       {/* Game grid */}
-      {filteredGames.length > 0 ? (
-        <div className={styles.gameGrid}>
-          {filteredGames.map((game) => (
-            <GameCard
-              key={game.id}
-              manifest={game}
-              progress={profile.progress[game.id]}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className={styles.emptyState}>
-          <p>No games found! Try a different search or filter.</p>
-        </div>
-      )}
+      <section aria-label="All Games">
+        {filteredGames.length > 0 ? (
+          <div className={styles.gameGrid}>
+            {filteredGames.map((game) => (
+              <GameCard
+                key={game.id}
+                manifest={game}
+                progress={profile.progress[game.id]}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.emptyState}>
+            <p>{t('hub.noGamesFound')}</p>
+          </div>
+        )}
+      </section>
+      </main>
     </div>
   );
 }

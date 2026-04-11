@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { DifficultySelector } from './DifficultySelector';
 
 describe('DifficultySelector', () => {
@@ -52,5 +53,12 @@ describe('DifficultySelector', () => {
     const radios = screen.getAllByRole('radio');
     expect(radios[1]).toHaveAttribute('aria-checked', 'true');
     expect(radios[0]).toHaveAttribute('aria-checked', 'false');
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(
+      <DifficultySelector current={3} onChange={() => {}} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

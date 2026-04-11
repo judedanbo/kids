@@ -6,7 +6,7 @@
     "paths": {
       "@shared/*": ["../shared/src/*"]
     },
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "vite-plugin-pwa/client"]
   },
   "include": ["src"],
   "references": [{ "path": "../shared" }]

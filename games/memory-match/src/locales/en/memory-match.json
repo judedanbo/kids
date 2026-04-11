@@ -1,0 +1,12 @@
+{
+  "title": "Memory Match",
+  "instruction": "Find the matching pictures!",
+  "letsGo": "Let's Go!",
+  "preview": "Preview: memorize the cards!",
+  "matchFound": "Match found!",
+  "notAMatch": "Not a match, try again",
+  "greatMatch": "Great match!",
+  "keepTrying": "Keep trying!",
+  "complete": "Congratulations! All pairs matched!",
+  "celebrationTitle": "You did it!"
+}

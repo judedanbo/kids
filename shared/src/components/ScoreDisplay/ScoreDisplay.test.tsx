@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { ScoreDisplay } from './ScoreDisplay';
 
 describe('ScoreDisplay', () => {
@@ -40,5 +41,10 @@ describe('ScoreDisplay', () => {
     expect(
       screen.getByLabelText('Score: 80 out of 100, 4 of 5 stars'),
     ).toBeInTheDocument();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<ScoreDisplay score={5} maxScore={10} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

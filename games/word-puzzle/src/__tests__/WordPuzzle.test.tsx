@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { WordPuzzle } from '../WordPuzzle';
 import type { GameProps } from '@kids-games-zone/shared';
 
@@ -61,46 +62,46 @@ function createMockProps(overrides: Partial<GameProps> = {}): GameProps {
 }
 
 describe('WordPuzzle', () => {
-  it('renders game shell with "Word Puzzle" title', () => {
+  it('renders game shell with translated title', () => {
     const props = createMockProps();
     render(<WordPuzzle {...props} />);
-    expect(screen.getByText('Word Puzzle')).toBeTruthy();
+    expect(screen.getByText('title')).toBeTruthy();
   });
 
-  it('shows instruction bubble initially ("Unscramble the letters...")', () => {
+  it('shows instruction bubble initially (instruction key)', () => {
     const props = createMockProps();
     render(<WordPuzzle {...props} />);
-    expect(screen.getByText(/Unscramble the letters/i)).toBeTruthy();
+    expect(screen.getByText('instruction')).toBeTruthy();
   });
 
-  it('shows scrambled letters (ScrambleRow group) after clicking "Let\'s Go!"', () => {
+  it('shows scrambled letters (ScrambleRow group) after clicking letsGo key', () => {
     const props = createMockProps();
     render(<WordPuzzle {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
     expect(screen.getByRole('group', { name: /scrambled letters/i })).toBeTruthy();
   });
 
   it('shows answer slots matching word length after dismissing instruction', () => {
     const props = createMockProps();
     render(<WordPuzzle {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
     expect(screen.getByRole('group', { name: /your answer/i })).toBeTruthy();
   });
 
   it('shows category label after dismissing instruction', () => {
     const props = createMockProps();
     render(<WordPuzzle {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
-    // Categories are Animals, Food, or Nature
-    const categoryNames = ['Animals', 'Food', 'Nature'];
-    const found = categoryNames.some((name) => screen.queryByText(name));
+    fireEvent.click(screen.getByText('letsGo'));
+    // With i18n mock, t() returns the key: category_animals, category_food, or category_nature
+    const categoryKeys = ['category_animals', 'category_food', 'category_nature'];
+    const found = categoryKeys.some((key) => screen.queryByText(key));
     expect(found).toBe(true);
   });
 
   it('tapping a scrambled letter places it in an answer slot', () => {
     const props = createMockProps();
     render(<WordPuzzle {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
 
     const scrambleGroup = screen.getByRole('group', { name: /scrambled letters/i });
     const letterButtons = scrambleGroup.querySelectorAll('button');
@@ -122,14 +123,14 @@ describe('WordPuzzle', () => {
   it('shows progress bar', () => {
     const props = createMockProps();
     render(<WordPuzzle {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
     expect(screen.getByRole('progressbar')).toBeTruthy();
   });
 
   it('calls audioManager.playSFX on interactions', () => {
     const props = createMockProps();
     render(<WordPuzzle {...props} />);
-    fireEvent.click(screen.getByText("Let's Go!"));
+    fireEvent.click(screen.getByText('letsGo'));
 
     const scrambleGroup = screen.getByRole('group', { name: /scrambled letters/i });
     const letterButtons = scrambleGroup.querySelectorAll('button');
@@ -139,5 +140,11 @@ describe('WordPuzzle', () => {
     }
 
     expect(props.audioManager.playSFX).toHaveBeenCalled();
+  });
+
+  it('has no accessibility violations', async () => {
+    const props = createMockProps();
+    const { container } = render(<WordPuzzle {...props} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

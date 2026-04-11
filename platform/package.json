@@ -8,20 +8,47 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "size": "size-limit",
+    "size:check": "size-limit --limit"
   },
+  "size-limit": [
+    {
+      "name": "App code",
+      "path": "dist/assets/index-*.js",
+      "limit": "100 KB",
+      "gzip": true
+    },
+    {
+      "name": "Vendor chunks",
+      "path": "dist/assets/vendor-*.js",
+      "limit": "100 KB",
+      "gzip": true
+    }
+  ],
   "dependencies": {
+    "@fontsource/baloo-2": "^5.2.7",
+    "@fontsource/nunito": "^5.2.7",
     "@kids-games-zone/shared": "workspace:*",
-    "howler": "^2.2.0",
-    "idb": "^8.0.0",
     "framer-motion": "^11.0.0",
+    "howler": "^2.2.0",
+    "i18next": "^25.10.10",
+    "i18next-browser-languagedetector": "^8.2.1",
+    "idb": "^8.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-i18next": "^16.6.6",
     "react-router-dom": "^7.0.0"
   },
   "devDependencies": {
+    "@axe-core/react": "^4.11.1",
+    "@size-limit/file": "^12.0.1",
     "@types/howler": "^2.2.0",
     "@vitejs/plugin-react": "^4.3.0",
-    "vite": "^6.0.0"
+    "axe-core": "^4.11.1",
+    "size-limit": "^12.0.1",
+    "vite": "^6.0.0",
+    "vite-plugin-pwa": "^1.2.0",
+    "vitest-axe": "^0.1.0"
   }
 }

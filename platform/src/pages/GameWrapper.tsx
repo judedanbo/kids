@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useGameLifecycle } from '@kids-games-zone/shared';
+import { useGameLifecycle, FeatureFlagContext } from '@kids-games-zone/shared';
 import { usePlatform } from '../context/PlatformContext';
 import { loadGame } from '../services/gameLoader';
 import { evaluateRewards } from '../services/rewards';
@@ -416,6 +416,10 @@ export default function GameWrapper() {
   // Find manifest in registry
   const manifest = state.gameRegistry.find((g) => g.id === gameId);
 
+  const { flags } = useContext(FeatureFlagContext);
+  const gameFlag = flags[`game.${gameId}`];
+  const flagDisabled = gameFlag && !gameFlag.enabled;
+
   // Load game plugin
   useEffect(() => {
     if (!manifest) {
@@ -447,6 +451,40 @@ export default function GameWrapper() {
       cancelled = true;
     };
   }, [manifest]);
+
+  // Feature flag guard
+  if (flagDisabled) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '80vh',
+          gap: '1rem',
+          textAlign: 'center',
+        }}
+      >
+        <h2>This game is not available</h2>
+        <button
+          onClick={() => navigate('/')}
+          style={{
+            padding: '12px 24px',
+            borderRadius: 'var(--radius-medium)',
+            backgroundColor: 'var(--color-primary)',
+            color: 'white',
+            fontSize: '1rem',
+            fontWeight: 600,
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          Go Home
+        </button>
+      </div>
+    );
+  }
 
   // Error state
   if (error) {

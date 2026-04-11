@@ -33,6 +33,7 @@ export default [
         Event: 'readonly',
         MouseEvent: 'readonly',
         KeyboardEvent: 'readonly',
+        MediaQueryListEvent: 'readonly',
         TextEncoder: 'readonly',
         CryptoKey: 'readonly',
         btoa: 'readonly',
@@ -74,6 +75,28 @@ export default [
         beforeAll: 'readonly',
         afterAll: 'readonly',
       },
+    },
+  },
+  {
+    files: ['scripts/**/*.ts'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+      },
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
+  {
+    files: ['e2e/**/*.ts'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+      },
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
     },
   },
   {

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { Card } from '../components/Card';
 
 describe('Card', () => {
@@ -10,6 +11,8 @@ describe('Card', () => {
     onClick: vi.fn(),
     disabled: false,
     size: 100,
+    index: 0,
+    totalCards: 4,
   };
 
   it('renders face-down by default (shows "?")', () => {
@@ -17,16 +20,16 @@ describe('Card', () => {
     expect(screen.getByText('?')).toBeTruthy();
   });
 
-  it('has aria-label "Card face down" when not flipped', () => {
+  it('has aria-label describing position when not flipped', () => {
     render(<Card {...defaultProps} />);
     const button = screen.getByRole('button');
-    expect(button.getAttribute('aria-label')).toBe('Card face down');
+    expect(button.getAttribute('aria-label')).toBe('Card 1 of 4, face down');
   });
 
   it('shows illustration name in aria-label when flipped', () => {
     render(<Card {...defaultProps} isFlipped={true} />);
     const button = screen.getByRole('button');
-    expect(button.getAttribute('aria-label')).toBe('Card: cat');
+    expect(button.getAttribute('aria-label')).toBe('cat, face up');
   });
 
   it('calls onClick when clicked', () => {
@@ -54,5 +57,10 @@ describe('Card', () => {
     // The illustration is rendered (aria-label on button reflects the name)
     const button = screen.getByRole('button');
     expect(button.getAttribute('aria-label')).toContain('cat');
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Card {...defaultProps} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

@@ -1,0 +1,10 @@
+{
+  "title": "Math Adventure",
+  "instruction": "Solve the math problems!",
+  "letsGo": "Let's Go!",
+  "questionOf": "Question {{current}} of {{total}}: {{text}}",
+  "correct": "Correct!",
+  "incorrect": "Incorrect, try again",
+  "attempt": "Attempt {{count}} — keep trying!",
+  "celebrationTitle": "Amazing!"
+}

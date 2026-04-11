@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { usePlatform } from '../context/PlatformContext';
 import { ProfileCreator } from '../components/ProfileCreator/ProfileCreator';
 import type { UserProfile } from '@kids-games-zone/shared';
@@ -8,6 +9,7 @@ import styles from './ProfileSelect.module.css';
 export default function ProfileSelect() {
   const { state, dispatch, storageManager } = usePlatform();
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
   const [showCreator, setShowCreator] = useState(state.profiles.length === 0);
 
   function handleSelectProfile(profile: UserProfile) {
@@ -33,7 +35,7 @@ export default function ProfileSelect() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Who&apos;s playing?</h1>
+      <h1 className={styles.title}>{t('profile.whoIsPlaying')}</h1>
       <div className={styles.profileGrid}>
         {state.profiles.map((profile) => (
           <button
@@ -52,7 +54,7 @@ export default function ProfileSelect() {
           onClick={() => setShowCreator(true)}
         >
           <span className={styles.createIcon}>+</span>
-          <span className={styles.createLabel}>New Player</span>
+          <span className={styles.createLabel}>{t('profile.newPlayer')}</span>
         </button>
       </div>
     </div>

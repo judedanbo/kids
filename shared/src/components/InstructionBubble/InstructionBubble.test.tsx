@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'vitest-axe';
 import { InstructionBubble } from './InstructionBubble';
 
 describe('InstructionBubble', () => {
@@ -39,5 +40,10 @@ describe('InstructionBubble', () => {
       <InstructionBubble text="Hello!" character="Owl Helper" />,
     );
     expect(screen.getByText('Owl Helper')).toBeInTheDocument();
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<InstructionBubble text="Find the word!" />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

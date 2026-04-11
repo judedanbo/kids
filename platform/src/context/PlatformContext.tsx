@@ -21,6 +21,7 @@ export interface PlatformSettings {
   theme: 'light' | 'dark';
   language: string;
   timeLimits: TimeLimitConfig;
+  highContrast: boolean;
 }
 
 export interface GlobalState {
@@ -183,6 +184,7 @@ const initialState: GlobalState = {
       reminderBeforeEndMinutes: 5,
       cooldownMinutes: 15,
     },
+    highContrast: false,
   },
 };
 

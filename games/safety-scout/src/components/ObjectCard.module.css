@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.image {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  border-radius: var(--radius-lg, 12px);
+  border: 3px solid var(--color-border, #ccc);
+}
+
+.imageLarge {
+  width: 180px;
+  height: 180px;
+}
+
+.name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+  text-align: center;
+}
+
+.playButton {
+  padding: var(--spacing-sm);
+  border: 2px solid var(--color-primary, #4a90d9);
+  border-radius: 50%;
+  background: var(--color-primary-light, #e8f0fe);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.playButton:focus-visible {
+  outline: 3px solid var(--color-focus, #1a73e8);
+  outline-offset: 2px;
+}

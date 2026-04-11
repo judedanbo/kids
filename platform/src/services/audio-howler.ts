@@ -5,9 +5,20 @@ export class HowlerBackend implements AudioBackend {
   private sounds = new Map<string, Howl>();
   private playbackMap = new Map<string, { howl: Howl; soundId: number }>();
 
-  load(id: string, src: string): Promise<void> {
+  async load(id: string, src: string): Promise<void> {
     if (this.sounds.has(id)) {
-      return Promise.resolve();
+      return;
+    }
+
+    // Pre-flight check: verify the file exists and is audio.
+    // Vite's SPA fallback serves index.html (200) for missing files,
+    // which causes Howler to fail with a misleading "Decoding audio data failed".
+    const res = await fetch(src, { method: 'HEAD' });
+    const contentType = res.headers.get('content-type') ?? '';
+    if (!res.ok || !contentType.startsWith('audio/')) {
+      throw new Error(
+        `Audio file not found: ${src}`,
+      );
     }
 
     return new Promise<void>((resolve, reject) => {

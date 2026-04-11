@@ -1,0 +1,20 @@
+[
+  { "word": "cat", "difficulty": 1, "image": "cat.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "dog", "difficulty": 1, "image": "dog.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "sun", "difficulty": 1, "image": "sun.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "hat", "difficulty": 1, "image": "hat.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "cup", "difficulty": 1, "image": "cup.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "bed", "difficulty": 1, "image": "bed.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "pen", "difficulty": 2, "image": "pen.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "bus", "difficulty": 2, "image": "bus.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "box", "difficulty": 2, "image": "box.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "map", "difficulty": 2, "image": "map.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "tree", "difficulty": 3, "image": "tree.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "ball", "difficulty": 3, "image": "ball.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "fish", "difficulty": 3, "image": "fish.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "bird", "difficulty": 3, "image": "bird.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "cake", "difficulty": 4, "image": "cake.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "frog", "difficulty": 4, "image": "frog.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "star", "difficulty": 4, "image": "star.webp", "definition": "", "origin": "", "sentence": "" },
+  { "word": "rain", "difficulty": 4, "image": "rain.webp", "definition": "", "origin": "", "sentence": "" }
+]

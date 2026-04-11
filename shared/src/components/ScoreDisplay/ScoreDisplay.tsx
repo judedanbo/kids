@@ -43,7 +43,7 @@ export function ScoreDisplay({
   if (showStars) ariaLabel += `, ${filledStars} of ${starCount} stars`;
 
   return (
-    <div className={styles.container} aria-label={ariaLabel}>
+    <div className={styles.container} aria-label={ariaLabel} aria-live="polite">
       <motion.span className={styles.score}>
         <AnimatedNumber value={score} animate={animate} />
       </motion.span>
