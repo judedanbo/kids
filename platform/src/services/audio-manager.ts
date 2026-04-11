@@ -1,5 +1,6 @@
 import type { AudioManager } from '@kids-games-zone/shared';
 import type { AudioBackend } from './audio-backend';
+import type { WebAudioMusicGenerator } from './audio-music-generator';
 
 type AudioCategory = 'music' | 'sfx' | 'voice';
 
@@ -13,30 +14,47 @@ export class RealAudioManager implements AudioManager {
   private backend: AudioBackend;
   private loadedAssets = new Set<string>();
   private failedAssets = new Set<string>();
+  private musicGenerator: WebAudioMusicGenerator | null;
+  private usingGenerator = false;
   private channels: Record<AudioCategory, ChannelState> = {
     music: { volume: 0.3, muted: false, currentPlaybackId: null },
     sfx: { volume: 1.0, muted: false, currentPlaybackId: null },
     voice: { volume: 1.0, muted: false, currentPlaybackId: null },
   };
 
-  constructor(backend: AudioBackend) {
+  constructor(backend: AudioBackend, musicGenerator?: WebAudioMusicGenerator) {
     this.backend = backend;
+    this.musicGenerator = musicGenerator ?? null;
   }
 
   async playMusic(
     trackId: string,
     options?: { loop?: boolean; fadeIn?: number },
   ): Promise<void> {
+    // Stop any current music (file-based or generated)
     const current = this.channels.music.currentPlaybackId;
     if (current !== null) {
       this.backend.stop(current);
       this.channels.music.currentPlaybackId = null;
+    }
+    if (this.usingGenerator && this.musicGenerator) {
+      this.musicGenerator.stop();
+      this.usingGenerator = false;
     }
 
     const { key, category } = this.parseAssetId(trackId);
     await this.ensureLoaded(key, category);
 
     if (!this.loadedAssets.has(key)) {
+      // File failed — fall back to generator if available
+      if (this.musicGenerator) {
+        const channel = this.channels.music;
+        this.musicGenerator.start({
+          volume: channel.muted ? 0 : channel.volume,
+          fadeIn: options?.fadeIn,
+        });
+        this.usingGenerator = true;
+      }
       return;
     }
 
@@ -58,6 +76,14 @@ export class RealAudioManager implements AudioManager {
   }
 
   stopMusic(options?: { fadeOut?: number }): void {
+    if (this.usingGenerator && this.musicGenerator) {
+      this.musicGenerator.stop(
+        options?.fadeOut ? { fadeOut: options.fadeOut } : undefined,
+      );
+      this.usingGenerator = false;
+      return;
+    }
+
     const channel = this.channels.music;
     const playbackId = channel.currentPlaybackId;
 
@@ -65,12 +91,10 @@ export class RealAudioManager implements AudioManager {
       return;
     }
 
-    // Clear immediately to prevent race conditions
     channel.currentPlaybackId = null;
 
     if (options?.fadeOut !== undefined && options.fadeOut > 0) {
       this.backend.fade(playbackId, channel.volume, 0, options.fadeOut);
-      // Stop after fade completes
       setTimeout(() => {
         this.backend.stop(playbackId);
       }, options.fadeOut);
@@ -131,6 +155,11 @@ export class RealAudioManager implements AudioManager {
     const channel = this.channels[category];
     channel.volume = clamped;
 
+    if (category === 'music' && this.usingGenerator && this.musicGenerator) {
+      this.musicGenerator.setVolume(channel.muted ? 0 : clamped);
+      return;
+    }
+
     // SFX is fire-and-forget — volume only affects future calls
     if (category === 'sfx') {
       return;
@@ -175,6 +204,11 @@ export class RealAudioManager implements AudioManager {
     const channel = this.channels[category];
     channel.muted = true;
 
+    if (category === 'music' && this.usingGenerator && this.musicGenerator) {
+      this.musicGenerator.setVolume(0);
+      return;
+    }
+
     // SFX is fire-and-forget — mute only affects future calls
     if (category === 'sfx') {
       return;
@@ -188,6 +222,11 @@ export class RealAudioManager implements AudioManager {
   private unmuteChannel(category: AudioCategory): void {
     const channel = this.channels[category];
     channel.muted = false;
+
+    if (category === 'music' && this.usingGenerator && this.musicGenerator) {
+      this.musicGenerator.setVolume(channel.volume);
+      return;
+    }
 
     // SFX is fire-and-forget — unmute only affects future calls
     if (category === 'sfx') {
