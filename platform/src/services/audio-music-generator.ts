@@ -1,0 +1,166 @@
+// Pentatonic scale frequencies (C4, D4, E4, G4, A4, C5)
+const MELODY_NOTES = [261.63, 293.66, 329.63, 392.0, 440.0, 523.25];
+
+// 8-bar melody pattern — indices into MELODY_NOTES
+const MELODY_PATTERN = [
+  0, 1, 2, 3, // bar 1: ascending walk up
+  2, 3, 4, 3, // bar 2: playful bounce
+  4, 5, 4, 3, // bar 3: peak and descend
+  2, 1, 2, 3, // bar 4: gentle return
+  3, 4, 3, 2, // bar 5: echo the bounce
+  1, 2, 3, 2, // bar 6: wandering
+  1, 0, 1, 2, // bar 7: settling down
+  1, 0, 0, 0, // bar 8: resolve to home
+];
+
+const NOTE_DURATION = 250; // ms per note
+const BASS_OCTAVE_DIVISOR = 2; // bass plays one octave below
+
+export class WebAudioMusicGenerator {
+  private context: AudioContext | null = null;
+  private masterGain: GainNode | null = null;
+  private playing = false;
+  private scheduleTimer: ReturnType<typeof setTimeout> | null = null;
+  private activeOscillators: OscillatorNode[] = [];
+
+  start(options?: { volume?: number; fadeIn?: number }): void {
+    if (this.playing) {
+      this.setVolume(options?.volume ?? 0.3);
+      return;
+    }
+
+    if (!this.context) {
+      this.context = new AudioContext();
+    }
+
+    if (this.context.state === 'suspended') {
+      this.context.resume();
+    }
+
+    this.masterGain = this.context.createGain();
+    this.masterGain.connect(this.context.destination);
+
+    const targetVolume = options?.volume ?? 0.3;
+    const fadeIn = options?.fadeIn ?? 0;
+
+    if (fadeIn > 0) {
+      this.masterGain.gain.value = 0;
+      this.masterGain.gain.linearRampToValueAtTime(
+        targetVolume,
+        this.context.currentTime + fadeIn / 1000,
+      );
+    } else {
+      this.masterGain.gain.value = targetVolume;
+    }
+
+    this.playing = true;
+    this.scheduleLoop(0);
+  }
+
+  stop(options?: { fadeOut?: number }): void {
+    if (!this.playing) {
+      return;
+    }
+
+    const fadeOut = options?.fadeOut ?? 0;
+
+    if (fadeOut > 0 && this.masterGain && this.context) {
+      this.masterGain.gain.linearRampToValueAtTime(
+        0,
+        this.context.currentTime + fadeOut / 1000,
+      );
+      setTimeout(() => this.cleanup(), fadeOut);
+    } else {
+      this.cleanup();
+    }
+
+    this.playing = false;
+  }
+
+  setVolume(level: number): void {
+    if (this.masterGain) {
+      this.masterGain.gain.value = Math.max(0, Math.min(1, level));
+    }
+  }
+
+  isActive(): boolean {
+    return this.playing;
+  }
+
+  private scheduleLoop(noteIndex: number): void {
+    if (!this.playing || !this.context || !this.masterGain) {
+      return;
+    }
+
+    const patternIndex = noteIndex % MELODY_PATTERN.length;
+    const melodyFreq = MELODY_NOTES[MELODY_PATTERN[patternIndex]];
+    const bassFreq = melodyFreq / BASS_OCTAVE_DIVISOR;
+
+    this.playNote(melodyFreq, 'triangle', 0.6);
+    this.playNote(bassFreq, 'sine', 0.3);
+
+    this.scheduleTimer = setTimeout(() => {
+      this.scheduleLoop(noteIndex + 1);
+    }, NOTE_DURATION);
+  }
+
+  private playNote(
+    frequency: number,
+    type: OscillatorType,
+    relativeVolume: number,
+  ): void {
+    if (!this.context || !this.masterGain) {
+      return;
+    }
+
+    const oscillator = this.context.createOscillator();
+    const noteGain = this.context.createGain();
+
+    oscillator.type = type;
+    oscillator.frequency.value = frequency;
+
+    // Gentle envelope: quick attack, soft decay
+    noteGain.gain.value = relativeVolume;
+    noteGain.gain.linearRampToValueAtTime(
+      0,
+      this.context.currentTime + NOTE_DURATION / 1000,
+    );
+
+    oscillator.connect(noteGain);
+    noteGain.connect(this.masterGain);
+
+    oscillator.start();
+    oscillator.stop(this.context.currentTime + NOTE_DURATION / 1000);
+
+    this.activeOscillators.push(oscillator);
+
+    // Remove from tracking after it finishes
+    setTimeout(() => {
+      const idx = this.activeOscillators.indexOf(oscillator);
+      if (idx !== -1) {
+        this.activeOscillators.splice(idx, 1);
+      }
+    }, NOTE_DURATION);
+  }
+
+  private cleanup(): void {
+    if (this.scheduleTimer !== null) {
+      clearTimeout(this.scheduleTimer);
+      this.scheduleTimer = null;
+    }
+
+    for (const osc of this.activeOscillators) {
+      try {
+        osc.stop();
+      } catch {
+        // Already stopped
+      }
+    }
+    this.activeOscillators = [];
+
+    if (this.masterGain) {
+      this.masterGain.disconnect();
+      this.masterGain = null;
+    }
+  }
+}
