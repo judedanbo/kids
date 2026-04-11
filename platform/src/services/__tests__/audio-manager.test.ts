@@ -1,6 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { RealAudioManager } from '../audio-manager';
 import type { AudioBackend } from '../audio-backend';
+import type { WebAudioMusicGenerator } from '../audio-music-generator';
+
+function createMockGenerator(): WebAudioMusicGenerator {
+  let active = false;
+  return {
+    start: vi.fn(() => { active = true; }),
+    stop: vi.fn(() => { active = false; }),
+    setVolume: vi.fn(),
+    isActive: vi.fn(() => active),
+  } as unknown as WebAudioMusicGenerator;
+}
 
 function createMockBackend(failIds: Set<string> = new Set()): AudioBackend {
   let playbackCounter = 0;
@@ -133,5 +144,65 @@ describe('RealAudioManager — graceful error handling', () => {
         volume: 0.3,
       });
     });
+  });
+});
+
+describe('RealAudioManager — generator fallback', () => {
+  let backend: AudioBackend;
+  let generator: WebAudioMusicGenerator;
+  let manager: RealAudioManager;
+
+  beforeEach(() => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    backend = createMockBackend(new Set(['game-bgm']));
+    generator = createMockGenerator();
+    manager = new RealAudioManager(backend, generator);
+  });
+
+  it('falls back to generator when music asset fails to load', async () => {
+    await manager.playMusic('music:game-bgm', { loop: true, fadeIn: 1000 });
+    expect(generator.start).toHaveBeenCalledWith({
+      volume: 0.3,
+      fadeIn: 1000,
+    });
+  });
+
+  it('stops generator when stopMusic is called', async () => {
+    await manager.playMusic('music:game-bgm');
+    manager.stopMusic();
+    expect(generator.stop).toHaveBeenCalled();
+  });
+
+  it('stops generator with fadeOut when specified', async () => {
+    await manager.playMusic('music:game-bgm');
+    manager.stopMusic({ fadeOut: 500 });
+    expect(generator.stop).toHaveBeenCalledWith({ fadeOut: 500 });
+  });
+
+  it('forwards setVolume to generator when generator is active', async () => {
+    await manager.playMusic('music:game-bgm');
+    manager.setVolume('music', 0.7);
+    expect(generator.setVolume).toHaveBeenCalledWith(0.7);
+  });
+
+  it('forwards mute to generator as setVolume(0)', async () => {
+    await manager.playMusic('music:game-bgm');
+    manager.mute('music');
+    expect(generator.setVolume).toHaveBeenCalledWith(0);
+  });
+
+  it('forwards unmute to generator with restored volume', async () => {
+    await manager.playMusic('music:game-bgm');
+    manager.mute('music');
+    manager.unmute('music');
+    expect(generator.setVolume).toHaveBeenLastCalledWith(0.3);
+  });
+
+  it('prefers file-based music when asset loads successfully', async () => {
+    const goodBackend = createMockBackend();
+    const mgr = new RealAudioManager(goodBackend, generator);
+    await mgr.playMusic('music:game-bgm');
+    expect(generator.start).not.toHaveBeenCalled();
+    expect(goodBackend.play).toHaveBeenCalled();
   });
 });
