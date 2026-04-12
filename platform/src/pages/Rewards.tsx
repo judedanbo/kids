@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { IconImage } from '@kids-games-zone/shared';
 import { usePlatform } from '../context/PlatformContext';
 import { REWARD_CATALOG } from '../config/rewardCatalog';
 import { getRewardProgress } from '../services/rewards';
@@ -18,7 +19,9 @@ export function Rewards() {
     return (
       <main className={styles.page}>
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>🏆</div>
+          <div className={styles.emptyIcon}>
+            <IconImage src="/images/ui/status-empty-trophy.webp" alt="" fallback="🏆" size={96} />
+          </div>
           <h2 className={styles.emptyTitle}>{t('rewards.noProfile')}</h2>
           <p className={styles.emptyText}>{t('rewards.selectProfile')}</p>
         </div>
@@ -30,7 +33,9 @@ export function Rewards() {
     return (
       <main className={styles.page}>
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>🌟</div>
+          <div className={styles.emptyIcon}>
+            <IconImage src="/images/ui/status-empty-stars.webp" alt="" fallback="🌟" size={96} />
+          </div>
           <h2 className={styles.emptyTitle}>{t('rewards.comingSoon')}</h2>
           <p className={styles.emptyText}>{t('rewards.keepPlaying')}</p>
         </div>
@@ -49,7 +54,9 @@ export function Rewards() {
 
       {unlockedCount === 0 && (
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>🎯</div>
+          <div className={styles.emptyIcon}>
+            <IconImage src="/images/ui/status-empty-target.webp" alt="" fallback="🎯" size={96} />
+          </div>
           <h2 className={styles.emptyTitle}>{t('rewards.startCollection')}</h2>
           <p className={styles.emptyText}>
             {t('rewards.playToEarn')}

@@ -78,7 +78,7 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
     return (
       <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <div className={styles.gameArea}>
-          <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character={'\u{1F41D}'} />
+          <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character={'\u{1F41D}'} characterSrc="/images/games/mascots/bee.webp" />
           <OptionButton label={t('letsGo')} state="default" onSelect={session.dismissInstruction} size="large" />
         </div>
       </GameShell>

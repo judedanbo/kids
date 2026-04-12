@@ -96,7 +96,7 @@ export function MoreOrLess({ config, onScore, onComplete, onExit, audioManager }
     return (
       <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <div className={styles.gameArea}>
-          <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character="🔢" />
+          <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character="🔢" characterSrc="/images/games/mascots/numbers.webp" />
           <OptionButton label={t('letsGo')} state="default" onSelect={round.dismissInstruction} size="large" />
         </div>
       </GameShell>

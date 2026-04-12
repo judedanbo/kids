@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { IconImage } from '@kids-games-zone/shared';
 import styles from './RewardCard.module.css';
 import type { Reward } from '@kids-games-zone/shared';
 
@@ -28,8 +29,18 @@ export function RewardCard({ reward, unlocked, progress }: RewardCardProps) {
       aria-label={`${reward.name} — ${unlocked ? t('rewardCard.unlocked') : t('rewardCard.locked')}`}
     >
       <div className={styles.iconWrapper}>
-        <span className={styles.icon}>{reward.icon}</span>
-        {!unlocked && <span className={styles.lockOverlay} aria-hidden="true">🔒</span>}
+        <span className={styles.icon}>
+          {reward.iconSrc ? (
+            <IconImage src={reward.iconSrc} alt="" fallback={reward.icon} size={72} />
+          ) : (
+            reward.icon
+          )}
+        </span>
+        {!unlocked && (
+          <span className={styles.lockOverlay} aria-hidden="true">
+            <IconImage src="/images/ui/status-lock.webp" alt="" fallback="🔒" size={28} />
+          </span>
+        )}
       </div>
       <h3 className={styles.name}>{reward.name}</h3>
       <p className={styles.description}>{reward.description}</p>

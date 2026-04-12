@@ -153,7 +153,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
     return (
       <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <div className={styles.gameArea}>
-          <InstructionBubble text={t('instruction')} character="🧮" />
+          <InstructionBubble text={t('instruction')} character="🧮" characterSrc="/images/games/mascots/calculator.webp" />
           <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
         </div>
       </GameShell>

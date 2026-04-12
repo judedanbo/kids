@@ -1,0 +1,22 @@
+{
+  "name": "@kids-games-zone/image-generator",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "OpenAI image-generation pipeline that renders child-friendly illustrations for games and platform UI. Run locally with OPENAI_API_KEY set.",
+  "scripts": {
+    "start": "node src/cli.mjs",
+    "pilot": "node src/cli.mjs --pilot",
+    "full": "node src/cli.mjs --full",
+    "estimate": "node src/cli.mjs --dry-run --full",
+    "list": "node src/cli.mjs --list"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "openai": "^4.73.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0"
+  }
+}
