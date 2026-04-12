@@ -11,8 +11,13 @@
   "hub.searchPlaceholder": "Search games...",
   "hub.filterAll": "All",
   "hub.noGamesFound": "No games found! Try a different search or filter.",
+  "hub.pauseMusic": "Pause music",
+  "hub.resumeMusic": "Play music",
 
   "settings.title": "Settings",
+  "settings.sound": "Sound",
+  "settings.backgroundMusic": "Background music",
+  "settings.musicDuringGameplay": "Play music during games",
   "settings.profile": "Profile",
   "settings.age": "Age {{age}}",
   "settings.switchProfile": "Switch Profile",
@@ -108,6 +113,8 @@
 
   "gameShell.goBack": "Go back",
   "gameShell.pauseGame": "Pause game",
+  "gameShell.pauseMusic": "Pause music",
+  "gameShell.resumeMusic": "Play music",
   "gameShell.skipToGame": "Skip to game",
 
   "offline.banner": "You're offline — don't worry, everything still works!"

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "provider": "elevenlabs-sfx",
+  "outputDir": "platform/public/audio/sfx",
+  "entries": [
+    {
+      "id": "click",
+      "prompt": "Short, soft UI button click for a kids' app. Warm plastic-toy pop or soft wood tap. Gentle and friendly, not sharp or digital. Under 200 ms.",
+      "durationSeconds": 0.5,
+      "promptInfluence": 0.6
+    },
+    {
+      "id": "correct",
+      "prompt": "Short positive chime for a correct answer in a children's game. Two or three ascending bell or glockenspiel notes in a major third, bright and friendly, rounded attack. Under 800 ms. No speech.",
+      "durationSeconds": 1.0,
+      "promptInfluence": 0.7
+    },
+    {
+      "id": "incorrect",
+      "prompt": "Short gentle negative feedback sound for a children's game. Two soft descending marimba notes, warm and mellow — NOT harsh, NOT a buzzer, NOT scary. Under 700 ms. No speech.",
+      "durationSeconds": 1.0,
+      "promptInfluence": 0.7
+    },
+    {
+      "id": "celebrate",
+      "prompt": "Joyful short celebration sound for a kids' game. Cheerful glockenspiel arpeggio flourish with a soft sparkle and a warm chime at the end. Bright and playful. About 1.5 seconds. No speech, no confetti-cannon, no dramatic orchestra.",
+      "durationSeconds": 2.0,
+      "promptInfluence": 0.7
+    }
+  ]
+}

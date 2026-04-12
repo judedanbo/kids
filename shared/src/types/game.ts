@@ -34,7 +34,18 @@ export interface GameManifest {
 
 export interface GameSettings {
   soundEnabled: boolean;
+  /**
+   * Whether in-game background music should play during gameplay. Combines the
+   * platform master toggle with the "music during gameplay" preference. Games
+   * guard their own playMusic calls behind this.
+   */
   musicEnabled: boolean;
+  /**
+   * Platform-wide master toggle for background music. Games use this to decide
+   * whether to render a music pause/play control in their shell even when
+   * `musicEnabled` is false (e.g. menu music playing on a game home screen).
+   */
+  backgroundMusicEnabled: boolean;
   language: string;
   highContrastMode: boolean;
 }

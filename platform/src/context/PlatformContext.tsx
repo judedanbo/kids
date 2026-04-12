@@ -22,6 +22,13 @@ export interface PlatformSettings {
   language: string;
   timeLimits: TimeLimitConfig;
   highContrast: boolean;
+  /** Master toggle for all background music. Default: true. */
+  backgroundMusicEnabled: boolean;
+  /**
+   * When true, games play their own background track during gameplay.
+   * When false, music stops during gameplay so the child can focus. Default: false.
+   */
+  musicDuringGameplay: boolean;
 }
 
 export interface GlobalState {
@@ -165,6 +172,37 @@ interface PlatformProviderProps {
   gameRegistry: GameManifest[];
 }
 
+const SETTINGS_STORAGE_KEY = 'kids-games-zone:platform-settings';
+
+const defaultSettings: PlatformSettings = {
+  theme: 'light',
+  language: 'en',
+  timeLimits: {
+    enabled: false,
+    dailyLimitMinutes: 60,
+    sessionLimitMinutes: 30,
+    reminderBeforeEndMinutes: 5,
+    cooldownMinutes: 15,
+  },
+  highContrast: false,
+  backgroundMusicEnabled: true,
+  musicDuringGameplay: false,
+};
+
+function loadPersistedSettings(): PlatformSettings {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return defaultSettings;
+  }
+  try {
+    const raw = window.localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (!raw) return defaultSettings;
+    const parsed = JSON.parse(raw) as Partial<PlatformSettings>;
+    return { ...defaultSettings, ...parsed };
+  } catch {
+    return defaultSettings;
+  }
+}
+
 const initialState: GlobalState = {
   currentProfile: null,
   profiles: [],
@@ -174,18 +212,7 @@ const initialState: GlobalState = {
     startedAt: null,
     elapsedTime: 0,
   },
-  settings: {
-    theme: 'light',
-    language: 'en',
-    timeLimits: {
-      enabled: false,
-      dailyLimitMinutes: 60,
-      sessionLimitMinutes: 30,
-      reminderBeforeEndMinutes: 5,
-      cooldownMinutes: 15,
-    },
-    highContrast: false,
-  },
+  settings: loadPersistedSettings(),
 };
 
 export function PlatformProvider({
@@ -230,6 +257,35 @@ export function PlatformProvider({
       });
     }
   }, [state.currentProfile, storageManager]);
+
+  // Follow the active profile's language into the audio manager so voice
+  // assets resolve under /audio/narration/{lang}/ for the right locale.
+  useEffect(() => {
+    const language = state.currentProfile?.preferences.language ?? 'en';
+    audioManager.setLanguage(language);
+  }, [state.currentProfile?.preferences.language, audioManager]);
+
+  // Persist platform settings to localStorage so music/theme/etc. choices
+  // survive a reload.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.localStorage) return;
+    try {
+      window.localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify(state.settings),
+      );
+    } catch {
+      // Full disk, private-mode Safari, etc. — acceptable to drop.
+    }
+  }, [state.settings]);
+
+  // When the master music toggle flips off, stop any currently-playing music
+  // immediately regardless of which screen the user is on.
+  useEffect(() => {
+    if (!state.settings.backgroundMusicEnabled) {
+      audioManager.stopMusic({ fadeOut: 300 });
+    }
+  }, [state.settings.backgroundMusicEnabled, audioManager]);
 
   return (
     <PlatformContext.Provider

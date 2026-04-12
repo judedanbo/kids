@@ -138,7 +138,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
 
   if (showCelebration) {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={score}
@@ -151,7 +151,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
 
   if (showInstruction) {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <div className={styles.gameArea}>
           <InstructionBubble text={t('instruction')} character="🧮" />
           <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
@@ -163,7 +163,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
   const showVisualAid = config.difficulty <= 2;
 
   return (
-    <GameShell title={t('title')} onBack={onExit}>
+    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={score} maxScore={TOTAL_QUESTIONS * 10} showStars />

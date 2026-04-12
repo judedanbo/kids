@@ -72,7 +72,7 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
   // Tiny-tier background music
   useEffect(() => {
     if (isTiny && config.settings.musicEnabled) {
-      audioManager.playMusic('music:game-bgm', { loop: true, fadeIn: 1000 });
+      audioManager.playMusic('music:safety-scout-bgm', { loop: true, fadeIn: 1000 });
     }
     return () => {
       audioManager.stopMusic({ fadeOut: 500 });
@@ -105,7 +105,7 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
 
   if (round.phase === 'category-select') {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <CategoryPicker categories={categories} onSelect={handleCategorySelect} />
       </GameShell>
     );
@@ -113,7 +113,7 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
 
   if (round.phase === 'instruction') {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <div className={styles.gameArea}>
           <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character="🛡️" />
           <OptionButton label={t('letsGo')} state="default" onSelect={round.dismissInstruction} size="large" />
@@ -124,7 +124,7 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
 
   if (round.phase === 'complete') {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={round.score}
@@ -139,7 +139,7 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
   const explanationTier = isTiny ? 'tiny' : 'junior';
 
   return (
-    <GameShell title={t('title')} onBack={onExit}>
+    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={round.score} maxScore={round.maxScore} showStars />

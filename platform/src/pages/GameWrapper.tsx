@@ -56,7 +56,11 @@ function GameSession({
         profile: profile!,
         settings: {
           soundEnabled: profile!.preferences.sfxVolume > 0,
-          musicEnabled: profile!.preferences.musicVolume > 0,
+          musicEnabled:
+            state.settings.backgroundMusicEnabled &&
+            state.settings.musicDuringGameplay &&
+            profile!.preferences.musicVolume > 0,
+          backgroundMusicEnabled: state.settings.backgroundMusicEnabled,
           language: profile!.preferences.language,
           highContrastMode: false,
         },
@@ -66,7 +70,14 @@ function GameSession({
     }
 
     startGame();
-  }, [lifecycle, manifest, profile, dispatch]);
+  }, [
+    lifecycle,
+    manifest,
+    profile,
+    dispatch,
+    state.settings.backgroundMusicEnabled,
+    state.settings.musicDuringGameplay,
+  ]);
 
   // Visibility change: pause/resume
   useEffect(() => {
@@ -390,7 +401,11 @@ function GameSession({
           profile,
           settings: {
             soundEnabled: profile.preferences.sfxVolume > 0,
-            musicEnabled: profile.preferences.musicVolume > 0,
+            musicEnabled:
+              state.settings.backgroundMusicEnabled &&
+              state.settings.musicDuringGameplay &&
+              profile.preferences.musicVolume > 0,
+            backgroundMusicEnabled: state.settings.backgroundMusicEnabled,
             language: profile.preferences.language,
             highContrastMode: false,
           },

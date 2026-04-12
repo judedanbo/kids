@@ -20,10 +20,13 @@ export class WebAudioMusicGenerator {
   private context: AudioContext | null = null;
   private masterGain: GainNode | null = null;
   private playing = false;
+  private paused = false;
   private scheduleTimer: ReturnType<typeof setTimeout> | null = null;
   private activeOscillators: OscillatorNode[] = [];
   private pendingOptions: { volume?: number; fadeIn?: number } | undefined;
   private unlockBound = false;
+  private nextNoteIndex = 0;
+  private volumeBeforePause = 0.3;
 
   start(options?: { volume?: number; fadeIn?: number }): void {
     if (this.playing) {
@@ -37,6 +40,9 @@ export class WebAudioMusicGenerator {
 
     this.pendingOptions = options;
     this.playing = true;
+    this.paused = false;
+    this.nextNoteIndex = 0;
+    this.volumeBeforePause = options?.volume ?? 0.3;
 
     if (this.context.state === 'suspended') {
       // Browser autoplay policy blocks AudioContext until a user gesture.
@@ -109,23 +115,57 @@ export class WebAudioMusicGenerator {
     }
 
     this.playing = false;
+    this.paused = false;
   }
 
   setVolume(level: number): void {
-    if (this.masterGain) {
-      this.masterGain.gain.value = Math.max(0, Math.min(1, level));
+    const clamped = Math.max(0, Math.min(1, level));
+    this.volumeBeforePause = clamped;
+    if (this.masterGain && !this.paused) {
+      this.masterGain.gain.value = clamped;
     }
+  }
+
+  pause(): void {
+    if (!this.playing || this.paused) {
+      return;
+    }
+    this.paused = true;
+    if (this.scheduleTimer !== null) {
+      clearTimeout(this.scheduleTimer);
+      this.scheduleTimer = null;
+    }
+    if (this.masterGain) {
+      this.volumeBeforePause = this.masterGain.gain.value;
+      this.masterGain.gain.value = 0;
+    }
+  }
+
+  resume(): void {
+    if (!this.playing || !this.paused) {
+      return;
+    }
+    this.paused = false;
+    if (this.masterGain) {
+      this.masterGain.gain.value = this.volumeBeforePause;
+    }
+    this.scheduleLoop(this.nextNoteIndex);
   }
 
   isActive(): boolean {
     return this.playing;
   }
 
+  isPaused(): boolean {
+    return this.paused;
+  }
+
   private scheduleLoop(noteIndex: number): void {
-    if (!this.playing || !this.context || !this.masterGain) {
+    if (!this.playing || this.paused || !this.context || !this.masterGain) {
       return;
     }
 
+    this.nextNoteIndex = noteIndex + 1;
     const patternIndex = noteIndex % MELODY_PATTERN.length;
     const melodyFreq = MELODY_NOTES[MELODY_PATTERN[patternIndex]];
     const bassFreq = melodyFreq / BASS_OCTAVE_DIVISOR;

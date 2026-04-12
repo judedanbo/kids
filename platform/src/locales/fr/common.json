@@ -11,8 +11,13 @@
   "hub.searchPlaceholder": "Rechercher des jeux...",
   "hub.filterAll": "Tous",
   "hub.noGamesFound": "Aucun jeu trouvé ! Essaie un autre filtre.",
+  "hub.pauseMusic": "Mettre la musique en pause",
+  "hub.resumeMusic": "Reprendre la musique",
 
   "settings.title": "Paramètres",
+  "settings.sound": "Son",
+  "settings.backgroundMusic": "Musique de fond",
+  "settings.musicDuringGameplay": "Musique pendant les jeux",
   "settings.profile": "Profil",
   "settings.age": "Âge {{age}}",
   "settings.switchProfile": "Changer de profil",
@@ -108,6 +113,8 @@
 
   "gameShell.goBack": "Retour",
   "gameShell.pauseGame": "Mettre en pause",
+  "gameShell.pauseMusic": "Mettre la musique en pause",
+  "gameShell.resumeMusic": "Reprendre la musique",
   "gameShell.skipToGame": "Aller au jeu",
 
   "offline.banner": "Vous êtes hors ligne — pas d'inquiétude, tout fonctionne encore !"

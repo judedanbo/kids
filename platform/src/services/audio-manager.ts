@@ -10,12 +10,21 @@ interface ChannelState {
   currentPlaybackId: string | null;
 }
 
+export type VoiceVariants = Record<string, Record<string, string[]>>;
+
 export class RealAudioManager implements AudioManager {
   private backend: AudioBackend;
   private loadedAssets = new Set<string>();
   private failedAssets = new Set<string>();
   private musicGenerator: WebAudioMusicGenerator | null;
   private usingGenerator = false;
+  private language = 'en';
+  private voiceVariants: VoiceVariants = {};
+  private lastVariantByBase = new Map<string, string>();
+  private pendingMusic: {
+    trackId: string;
+    options?: { loop?: boolean; fadeIn?: number };
+  } | null = null;
   private channels: Record<AudioCategory, ChannelState> = {
     music: { volume: 0.3, muted: false, currentPlaybackId: null },
     sfx: { volume: 1.0, muted: false, currentPlaybackId: null },
@@ -27,10 +36,49 @@ export class RealAudioManager implements AudioManager {
     this.musicGenerator = musicGenerator ?? null;
   }
 
+  setLanguage(language: string): void {
+    this.language = language;
+  }
+
+  setVoiceVariants(variants: VoiceVariants): void {
+    this.voiceVariants = variants;
+  }
+
+  private pickVariant(baseKey: string): string {
+    const langTable = this.voiceVariants[this.language];
+    const variants = langTable?.[baseKey];
+    if (!variants || variants.length === 0) {
+      return baseKey;
+    }
+    if (variants.length === 1) {
+      return variants[0];
+    }
+    const lastPick = this.lastVariantByBase.get(baseKey);
+    const pool = lastPick
+      ? variants.filter((v) => v !== lastPick)
+      : variants;
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    this.lastVariantByBase.set(baseKey, pick);
+    return pick;
+  }
+
   async playMusic(
     trackId: string,
     options?: { loop?: boolean; fadeIn?: number },
   ): Promise<void> {
+    // Browsers block audio until the user interacts with the page. Queue the
+    // request and retry once the backend reports it's ready.
+    if (!this.backend.isReady()) {
+      this.pendingMusic = { trackId, options };
+      this.backend.onReady(() => {
+        if (!this.pendingMusic) return;
+        const queued = this.pendingMusic;
+        this.pendingMusic = null;
+        void this.playMusic(queued.trackId, queued.options);
+      });
+      return;
+    }
+
     // Stop any current music (file-based or generated)
     const current = this.channels.music.currentPlaybackId;
     if (current !== null) {
@@ -75,7 +123,32 @@ export class RealAudioManager implements AudioManager {
     }
   }
 
+  pauseMusic(): void {
+    if (this.usingGenerator && this.musicGenerator) {
+      this.musicGenerator.pause();
+      return;
+    }
+    const playbackId = this.channels.music.currentPlaybackId;
+    if (playbackId !== null) {
+      this.backend.pause(playbackId);
+    }
+  }
+
+  resumeMusic(): void {
+    if (this.usingGenerator && this.musicGenerator) {
+      this.musicGenerator.resume();
+      return;
+    }
+    const playbackId = this.channels.music.currentPlaybackId;
+    if (playbackId !== null) {
+      this.backend.resume(playbackId);
+    }
+  }
+
   stopMusic(options?: { fadeOut?: number }): void {
+    // Any queued "play once ready" becomes stale the moment someone stops.
+    this.pendingMusic = null;
+
     if (this.usingGenerator && this.musicGenerator) {
       this.musicGenerator.stop(
         options?.fadeOut ? { fadeOut: options.fadeOut } : undefined,
@@ -125,17 +198,18 @@ export class RealAudioManager implements AudioManager {
       this.channels.voice.currentPlaybackId = null;
     }
 
-    const { key, category } = this.parseAssetId(voiceId);
-    await this.ensureLoaded(key, category);
+    const { key: baseKey } = this.parseAssetId(voiceId);
+    const key = this.pickVariant(baseKey);
+    const playbackKey = await this.ensureVoiceLoaded(key);
 
-    if (!this.loadedAssets.has(key)) {
+    if (playbackKey === null) {
       // No audio file — try speech synthesis for word pronunciation
       this.speakFallback(key, onComplete);
       return;
     }
 
     const channel = this.channels.voice;
-    const playbackId = this.backend.play(key, {
+    const playbackId = this.backend.play(playbackKey, {
       volume: channel.muted ? 0 : channel.volume,
     });
 
@@ -237,10 +311,22 @@ export class RealAudioManager implements AudioManager {
   }
 
   async preload(assetIds: string[]): Promise<void> {
-    const loadPromises = assetIds.map((assetId) => {
+    const loadPromises: Promise<unknown>[] = [];
+    for (const assetId of assetIds) {
       const { key, category } = this.parseAssetId(assetId);
-      return this.ensureLoaded(key, category);
-    });
+      if (category === 'voice') {
+        const variants = this.voiceVariants[this.language]?.[key];
+        if (variants && variants.length > 0) {
+          for (const variantKey of variants) {
+            loadPromises.push(this.ensureVoiceLoaded(variantKey));
+          }
+        } else {
+          loadPromises.push(this.ensureVoiceLoaded(key));
+        }
+      } else {
+        loadPromises.push(this.ensureLoaded(key, category));
+      }
+    }
     await Promise.all(loadPromises);
   }
 
@@ -288,23 +374,46 @@ export class RealAudioManager implements AudioManager {
     id: string,
     category: AudioCategory,
   ): Promise<void> {
-    if (this.loadedAssets.has(id)) {
-      return;
-    }
-    if (this.failedAssets.has(id)) {
-      return;
-    }
     const path = `/audio/${category}/${id}.mp3`;
+    await this.ensureLoadedAt(id, path);
+  }
+
+  private async ensureLoadedAt(
+    cacheKey: string,
+    path: string,
+  ): Promise<boolean> {
+    if (this.loadedAssets.has(cacheKey)) {
+      return true;
+    }
+    if (this.failedAssets.has(cacheKey)) {
+      return false;
+    }
     try {
-      await this.backend.load(id, path);
-      this.loadedAssets.add(id);
+      await this.backend.load(cacheKey, path);
+      this.loadedAssets.add(cacheKey);
+      return true;
     } catch (error) {
-      this.failedAssets.add(id);
+      this.failedAssets.add(cacheKey);
       console.warn(
-        `[AudioManager] Failed to load "${id}" from ${path}:`,
+        `[AudioManager] Failed to load "${cacheKey}" from ${path}:`,
         error instanceof Error ? error.message : error,
       );
+      return false;
     }
+  }
+
+  private async ensureVoiceLoaded(key: string): Promise<string | null> {
+    const narrationKey = `narration/${this.language}/${key}`;
+    const narrationPath = `/audio/narration/${this.language}/${key}.mp3`;
+    if (await this.ensureLoadedAt(narrationKey, narrationPath)) {
+      return narrationKey;
+    }
+    const voiceKey = `voice/${key}`;
+    const voicePath = `/audio/voice/${key}.mp3`;
+    if (await this.ensureLoadedAt(voiceKey, voicePath)) {
+      return voiceKey;
+    }
+    return null;
   }
 
   private parseAssetId(assetId: string): {

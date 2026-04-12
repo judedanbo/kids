@@ -17,7 +17,8 @@
 }
 
 .backButton,
-.pauseButton {
+.pauseButton,
+.musicButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,8 +30,15 @@
 }
 
 .backButton:hover,
-.pauseButton:hover {
+.pauseButton:hover,
+.musicButton:hover {
   opacity: 0.8;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
 }
 
 .title {

@@ -48,7 +48,7 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
 
   useEffect(() => {
     if (isTiny && config.settings.musicEnabled) {
-      audioManager.playMusic('music:game-bgm', { loop: true, fadeIn: 1000 });
+      audioManager.playMusic('music:spelling-bee-bgm', { loop: true, fadeIn: 1000 });
     }
     return () => {
       audioManager.stopMusic({ fadeOut: 500 });
@@ -76,7 +76,7 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
 
   if (session.sessionPhase === 'instruction') {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <div className={styles.gameArea}>
           <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character={'\u{1F41D}'} />
           <OptionButton label={t('letsGo')} state="default" onSelect={session.dismissInstruction} size="large" />
@@ -87,7 +87,7 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
 
   if (session.sessionPhase === 'level-transition') {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <LevelTransition
           levelCompleted={session.currentLevel}
           totalLevels={session.totalLevels}
@@ -106,7 +106,7 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
         : t('reachedLevel', { level: session.levelsCompleted });
 
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <CelebrationOverlay
           title={completionMessage}
           score={session.sessionScore}
@@ -118,7 +118,7 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
   }
 
   return (
-    <GameShell title={t('title')} onBack={onExit}>
+    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
       <div className={styles.gameArea}>
         <LevelIndicator current={session.currentLevel} total={session.totalLevels} />
         <LevelPlay

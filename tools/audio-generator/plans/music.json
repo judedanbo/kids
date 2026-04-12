@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "provider": "elevenlabs-music",
+  "modelId": "music_v1",
+  "outputDir": "platform/public/audio/music",
+  "tracks": [
+    {
+      "id": "menu-theme",
+      "prompt": "Warm, cheerful, child-friendly platform theme for a kids' educational games app. Soft marimba and mallet percussion lead the melody with gentle glockenspiel accents. Light pizzicato strings, soft upright bass, and a subtle shaker. Playful and inviting but calm — not hyperactive. Major key, around 95 BPM. Seamlessly loopable. No vocals, no lyrics, no sudden dynamics.",
+      "durationMs": 45000
+    },
+    {
+      "id": "spelling-bee-bgm",
+      "prompt": "Gentle, curious background music for a children's spelling game. Xylophone-led melody with soft mallet percussion and light woodblock. Soft bass line, minimal drums, plenty of space so spoken words stay clear. Warm, encouraging mood. Around 82 BPM, major key. Seamlessly loopable. No vocals, no lyrics, no abrupt changes.",
+      "durationMs": 60000
+    },
+    {
+      "id": "more-or-less-bgm",
+      "prompt": "Light, bouncy kids' background music for a simple counting and comparison game. Pizzicato strings with plucky staccato notes, glockenspiel accents, and a gentle bassoon or bass clarinet for low end. Cheerful and curious. Around 100 BPM, major key. Seamlessly loopable. No vocals, no lyrics, no big crescendos.",
+      "durationMs": 60000
+    },
+    {
+      "id": "safety-scout-bgm",
+      "prompt": "Friendly, exploratory kids' background music for a game about learning what's safe. Ukulele and acoustic guitar, soft hand percussion (shaker, light tambourine), mellow flute counter-melody. Warm and reassuring, not nervous. Around 88 BPM, major key. Seamlessly loopable. No vocals, no lyrics, no tense or dramatic elements.",
+      "durationMs": 60000
+    }
+  ]
+}

@@ -1,9 +1,80 @@
-import { Howl } from 'howler';
+import { Howl, Howler } from 'howler';
 import type { AudioBackend } from './audio-backend';
+
+const UNLOCK_EVENTS = ['pointerdown', 'keydown', 'touchstart'] as const;
 
 export class HowlerBackend implements AudioBackend {
   private sounds = new Map<string, Howl>();
   private playbackMap = new Map<string, { howl: Howl; soundId: number }>();
+  private ready = false;
+  private readyCallbacks: Array<() => void> = [];
+  private unlockBound = false;
+
+  constructor() {
+    // Howler lazily creates the shared AudioContext on first .play() call. If
+    // the document has already been interacted with (e.g. returning from a
+    // route change), we're good; otherwise we wait for a gesture before
+    // reporting ready so callers can queue their first play.
+    if (typeof document === 'undefined') {
+      this.ready = true;
+      return;
+    }
+    const ctx = this.getContext();
+    if (ctx && ctx.state === 'running') {
+      this.ready = true;
+      return;
+    }
+    this.bindUnlockListeners();
+  }
+
+  private getContext(): AudioContext | null {
+    // Howler.ctx is typed as AudioContext on modern builds; guard for safety.
+    const ctx = (Howler as unknown as { ctx?: AudioContext }).ctx;
+    return ctx ?? null;
+  }
+
+  private bindUnlockListeners(): void {
+    if (this.unlockBound || typeof document === 'undefined') return;
+    this.unlockBound = true;
+    const unlock = () => {
+      const ctx = this.getContext();
+      if (ctx && ctx.state === 'suspended') {
+        void ctx.resume();
+      }
+      this.markReady();
+      for (const event of UNLOCK_EVENTS) {
+        document.removeEventListener(event, unlock);
+      }
+    };
+    for (const event of UNLOCK_EVENTS) {
+      document.addEventListener(event, unlock, { once: true });
+    }
+  }
+
+  private markReady(): void {
+    if (this.ready) return;
+    this.ready = true;
+    const pending = this.readyCallbacks.splice(0);
+    for (const cb of pending) {
+      try {
+        cb();
+      } catch (error) {
+        console.warn('[HowlerBackend] onReady callback threw:', error);
+      }
+    }
+  }
+
+  isReady(): boolean {
+    return this.ready;
+  }
+
+  onReady(callback: () => void): void {
+    if (this.ready) {
+      callback();
+      return;
+    }
+    this.readyCallbacks.push(callback);
+  }
 
   async load(id: string, src: string): Promise<void> {
     if (this.sounds.has(id)) {
@@ -67,6 +138,20 @@ export class HowlerBackend implements AudioBackend {
     for (const [playbackId, entry] of this.playbackMap) {
       entry.howl.stop(entry.soundId);
       this.playbackMap.delete(playbackId);
+    }
+  }
+
+  pause(playbackId: string): void {
+    const entry = this.playbackMap.get(playbackId);
+    if (entry) {
+      entry.howl.pause(entry.soundId);
+    }
+  }
+
+  resume(playbackId: string): void {
+    const entry = this.playbackMap.get(playbackId);
+    if (entry) {
+      entry.howl.play(entry.soundId);
     }
   }
 

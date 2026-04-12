@@ -36,6 +36,7 @@ function createMockProps(overrides: Partial<GameProps> = {}): GameProps {
       settings: {
         soundEnabled: true,
         musicEnabled: true,
+        backgroundMusicEnabled: true,
         language: 'en',
         highContrastMode: false,
       },
@@ -46,12 +47,15 @@ function createMockProps(overrides: Partial<GameProps> = {}): GameProps {
     audioManager: {
       playMusic: vi.fn(),
       stopMusic: vi.fn(),
+      pauseMusic: vi.fn(),
+      resumeMusic: vi.fn(),
       playSFX: vi.fn(),
       playVoice: vi.fn(),
       setVolume: vi.fn(),
       mute: vi.fn(),
       unmute: vi.fn(),
       preload: vi.fn().mockResolvedValue(undefined),
+      setLanguage: vi.fn(),
     } as unknown as GameProps['audioManager'],
     storageManager: {} as unknown as GameProps['storageManager'],
     ...overrides,

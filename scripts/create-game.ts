@@ -498,6 +498,7 @@ function createMockProps(overrides: Partial<GameProps> = {}): GameProps {
       settings: {
         soundEnabled: true,
         musicEnabled: true,
+        backgroundMusicEnabled: true,
         language: 'en',
         highContrastMode: false,
       },

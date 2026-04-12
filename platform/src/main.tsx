@@ -10,6 +10,7 @@ import featureFlags from './config/featureFlags.json';
 import { RealAudioManager } from './services/audio-manager';
 import { HowlerBackend } from './services/audio-howler';
 import { WebAudioMusicGenerator } from './services/audio-music-generator';
+import { voiceVariants } from './generated/voice-variants';
 import { gameRegistry } from './config/gameRegistry';
 import './i18n';
 import './styles/global.css';
@@ -32,6 +33,7 @@ const audioManager = new RealAudioManager(
   new HowlerBackend(),
   new WebAudioMusicGenerator(),
 );
+audioManager.setVoiceVariants(voiceVariants);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
