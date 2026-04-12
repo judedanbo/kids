@@ -26,6 +26,7 @@
 import 'dotenv/config';
 import { mkdir, writeFile, access } from 'node:fs/promises';
 import { dirname, relative } from 'node:path';
+import { setTimeout as sleep } from 'node:timers/promises';
 import { buildManifest, REPO_ROOT } from './manifest.mjs';
 
 // --- Arg parsing -----------------------------------------------------------
@@ -182,12 +183,16 @@ async function main() {
   const { default: OpenAI } = await import('openai');
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-  console.log(`Generating with model=${opts.model} quality=${opts.quality} concurrency=${opts.concurrency}...\n`);
+  console.log(`Generating with model=${opts.model} quality=${opts.quality} concurrency=${opts.concurrency} delay=${opts.delay}ms...\n`);
   const start = Date.now();
   const results = await runPool(todo, opts.concurrency, async (entry) => {
     process.stdout.write(`  → ${entry.id}... `);
-    await generateOne(openai, entry, opts);
-    process.stdout.write('ok\n');
+    try {
+      await generateOne(openai, entry, opts);
+      process.stdout.write('ok\n');
+    } finally {
+      if (opts.delay > 0) await sleep(opts.delay);
+    }
   });
 
   const failures = results.filter((r) => !r.ok);
