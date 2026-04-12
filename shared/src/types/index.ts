@@ -26,3 +26,9 @@ export type {
   AnalyticsEvent,
   EventFilter,
 } from './services';
+
+export type {
+  SpellingWordEntry,
+  SpellingWordList,
+  SpellingTierFile,
+} from './spelling';

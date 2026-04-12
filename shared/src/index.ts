@@ -20,6 +20,9 @@ export type {
   DailyChallenge,
   AnalyticsEvent,
   EventFilter,
+  SpellingWordEntry,
+  SpellingWordList,
+  SpellingTierFile,
 } from './types';
 
 // Context providers
