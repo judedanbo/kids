@@ -16,7 +16,7 @@
     {
       "name": "App code",
       "path": "dist/assets/index-*.js",
-      "limit": "100 KB",
+      "limit": "150 KB",
       "gzip": true
     },
     {

@@ -43,4 +43,24 @@ describe('selectWords', () => {
       expect(word.difficulty).toBeLessThanOrEqual(10);
     }
   });
+
+  it('excludes specified words from selection', () => {
+    const result = selectWords(wordsTiny, { difficulty: 4, count: 10, exclude: ['cat', 'dog', 'sun'] });
+    const words = result.map((w) => w.word);
+    expect(words).not.toContain('cat');
+    expect(words).not.toContain('dog');
+    expect(words).not.toContain('sun');
+  });
+
+  it('returns empty array when all eligible words are excluded', () => {
+    const allDiff1 = wordsTiny.filter((w) => w.difficulty <= 1);
+    const excludeAll = allDiff1.map((w) => w.word);
+    const result = selectWords(wordsTiny, { difficulty: 1, count: 5, exclude: excludeAll });
+    expect(result).toHaveLength(0);
+  });
+
+  it('works normally when exclude is omitted', () => {
+    const result = selectWords(wordsTiny, { difficulty: 2, count: 4 });
+    expect(result).toHaveLength(4);
+  });
 });

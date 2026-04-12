@@ -20,6 +20,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Lint
         run: pnpm lint
+      - name: Build shared types
+        run: pnpm --filter @kids-games-zone/shared build
       - name: Type check
         run: pnpm typecheck
       - name: Run tests
@@ -45,12 +47,14 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Build shared types
+        run: pnpm --filter @kids-games-zone/shared build
       - name: Build
         run: pnpm build
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
       - name: Run E2E tests
-        run: pnpm test:e2e -- --project=desktop --project=mobile
+        run: pnpm test:e2e --project=desktop --project=mobile
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
         if: always()
@@ -78,12 +82,14 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Build shared types
+        run: pnpm --filter @kids-games-zone/shared build
       - name: Build
         run: pnpm build
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
       - name: Run accessibility tests
-        run: pnpm test:e2e -- --project=desktop e2e/a11y.spec.ts
+        run: pnpm test:e2e --project=desktop e2e/a11y.spec.ts
       - name: Upload a11y report
         uses: actions/upload-artifact@v4
         if: always()

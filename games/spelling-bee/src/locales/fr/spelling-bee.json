@@ -22,5 +22,15 @@
   "finalScore": "Tu as épelé {{score}} mots sur {{total}} correctement !",
   "encourageTiny": "Bien joué !",
   "encourageJunior": "Belle orthographe !",
-  "gameOver": "Fin de partie"
+  "gameOver": "Fin de partie",
+  "levelOf": "Niveau {{current}} sur {{total}}",
+  "levelComplete": "Niveau {{level}} terminé !",
+  "levelUp": "Niveau supérieur !",
+  "nextLevel": "Niveau suivant",
+  "scoreSoFar": "Score : {{score}}",
+  "levelEncourageTiny": "Super travail !",
+  "levelEncourageJunior": "Continue, tu es formidable !",
+  "levelEncourageExplorer": "Beau travail ! Prêt pour le prochain défi ?",
+  "sessionComplete": "Tu as complété {{levels}} niveaux !",
+  "reachedLevel": "Tu as atteint le niveau {{level}} !"
 }

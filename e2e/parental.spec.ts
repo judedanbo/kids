@@ -32,6 +32,9 @@ test.describe('Parental Controls', () => {
     await page.locator('a:has-text("Settings")').click();
     await page.locator('button:has-text("Open Parental Dashboard")').click();
 
+    // Wait for the adult gate modal to render before reading page text
+    await expect(page.locator('text=Adult Verification')).toBeVisible();
+
     // Get the math problem text ("What is X × Y?")
     const problemText = await page.evaluate(() => {
       const text = document.body.innerText;

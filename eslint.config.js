@@ -38,6 +38,13 @@ export default [
         CryptoKey: 'readonly',
         btoa: 'readonly',
         atob: 'readonly',
+        AudioContext: 'readonly',
+        AudioContextState: 'readonly',
+        GainNode: 'readonly',
+        OscillatorNode: 'readonly',
+        OscillatorType: 'readonly',
+        speechSynthesis: 'readonly',
+        SpeechSynthesisUtterance: 'readonly',
       },
     },
     plugins: {
