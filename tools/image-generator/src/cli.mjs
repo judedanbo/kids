@@ -40,6 +40,7 @@ function parseArgs(argv) {
     list: false,
     force: false,
     concurrency: 3,
+    delay: 1000,
     model: 'gpt-image-1',
     quality: 'medium',
   };
@@ -54,6 +55,7 @@ function parseArgs(argv) {
       case '--category': opts.category = argv[++i]; break;
       case '--only':     opts.only = argv[++i].split(',').map((s) => s.trim()); break;
       case '--concurrency': opts.concurrency = Number(argv[++i]); break;
+      case '--delay': opts.delay = Number(argv[++i]); break;
       case '--model': opts.model = argv[++i]; break;
       case '--quality': opts.quality = argv[++i]; break;
       case '-h': case '--help': printHelp(); process.exit(0);
@@ -68,7 +70,7 @@ function printHelp() {
 
 Flags: --pilot | --full | --category <x> | --only a,b,c
        --dry-run | --list | --force
-       --concurrency <n> | --model <name> | --quality <low|medium|high>`);
+       --concurrency <n> | --delay <ms> | --model <name> | --quality <low|medium|high>`);
 }
 
 // --- Cost estimate (rough; real prices vary — treat as a guardrail) ---------
