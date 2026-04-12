@@ -2,12 +2,15 @@ import { useState, useCallback, useRef } from 'react';
 import type { AgeTier } from '@kids-games-zone/shared';
 import type { WordEntry } from '../utils/wordSelector';
 
-export type RoundPhase = 'instruction' | 'playing' | 'feedback' | 'complete';
+export type RoundPhase = 'playing' | 'feedback' | 'complete';
 
 interface UseSpellingRoundOptions {
   words: WordEntry[];
   ageTier: AgeTier;
   onScorePoint: (points: number) => void;
+  lives: number;
+  onLifeLost: () => void;
+  onRoundComplete: (wordsCorrect: number, wordsAttempted: number) => void;
 }
 
 interface SpellingRoundState {
@@ -16,39 +19,33 @@ interface SpellingRoundState {
   currentWord: WordEntry;
   score: number;
   maxScore: number;
-  lives: number;
-  maxLives: number;
   isCorrect: boolean | null;
   wordsCorrect: number;
 }
 
 interface SpellingRoundActions {
-  dismissInstruction: () => void;
   submitAnswer: (answer: string) => void;
   nextWord: () => void;
 }
 
-const LIVES_COUNT = 3;
-
-export function useSpellingRound(options: UseSpellingRoundOptions): SpellingRoundState & SpellingRoundActions {
-  const { words, ageTier, onScorePoint } = options;
+export function useSpellingRound(
+  options: UseSpellingRoundOptions,
+): SpellingRoundState & SpellingRoundActions {
+  const { words, ageTier, onScorePoint, lives, onLifeLost, onRoundComplete } = options;
   const isTiny = ageTier === 'tiny';
 
-  const [phase, setPhase] = useState<RoundPhase>('instruction');
+  const [phase, setPhase] = useState<RoundPhase>('playing');
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [lives, setLives] = useState(LIVES_COUNT);
-  const livesRef = useRef(LIVES_COUNT);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const wordsCorrectRef = useRef(0);
 
-  const maxScore = words.length;
-  const maxLives = LIVES_COUNT;
-  const currentWord = words[currentWordIndex] ?? words[0];
+  // Sync lives from props into a ref for reliable reads in callbacks
+  const livesRef = useRef(lives);
+  livesRef.current = lives;
 
-  const dismissInstruction = useCallback(() => {
-    setPhase('playing');
-  }, []);
+  const maxScore = words.length;
+  const currentWord = words[currentWordIndex] ?? words[0];
 
   const submitAnswer = useCallback(
     (answer: string) => {
@@ -61,11 +58,10 @@ export function useSpellingRound(options: UseSpellingRoundOptions): SpellingRoun
         setScore((prev) => prev + 1);
         onScorePoint(1);
       } else if (!isTiny) {
-        livesRef.current -= 1;
-        setLives(livesRef.current);
+        onLifeLost();
       }
     },
-    [currentWord, isTiny, onScorePoint],
+    [currentWord, isTiny, onScorePoint, onLifeLost],
   );
 
   const nextWord = useCallback(() => {
@@ -76,12 +72,13 @@ export function useSpellingRound(options: UseSpellingRoundOptions): SpellingRoun
 
     if (isLastWord || outOfLives) {
       setPhase('complete');
+      onRoundComplete(wordsCorrectRef.current, currentWordIndex + 1);
       return;
     }
 
     setCurrentWordIndex((prev) => prev + 1);
     setPhase('playing');
-  }, [currentWordIndex, words.length, isTiny]);
+  }, [currentWordIndex, words.length, isTiny, onRoundComplete]);
 
   return {
     phase,
@@ -89,11 +86,8 @@ export function useSpellingRound(options: UseSpellingRoundOptions): SpellingRoun
     currentWord,
     score,
     maxScore,
-    lives,
-    maxLives,
     isCorrect,
     wordsCorrect: wordsCorrectRef.current,
-    dismissInstruction,
     submitAnswer,
     nextWord,
   };
