@@ -13,7 +13,10 @@ export interface Reward {
   type: RewardType;
   name: string;
   description: string;
+  /** Emoji fallback (shown before the image loads or if generation is pending). */
   icon: string;
+  /** Optional pre-generated illustration URL, e.g. "/images/ui/reward-first-star.webp". */
+  iconSrc?: string;
   unlockedAt?: string;
   criteria: RewardCriteria;
 }

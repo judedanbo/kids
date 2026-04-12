@@ -7,6 +7,7 @@ export const REWARD_CATALOG: Reward[] = [
     name: 'First Star',
     description: 'Complete your very first game!',
     icon: '⭐',
+    iconSrc: '/images/ui/reward-first-star.webp',
     criteria: { type: 'completion', threshold: 1 },
   },
   {
@@ -15,6 +16,7 @@ export const REWARD_CATALOG: Reward[] = [
     name: 'Speed Demon',
     description: 'Finish a game in under 60 seconds!',
     icon: '⚡',
+    iconSrc: '/images/ui/reward-speed-demon.webp',
     criteria: { type: 'time', threshold: 60 },
   },
   {
@@ -23,6 +25,7 @@ export const REWARD_CATALOG: Reward[] = [
     name: 'Bookworm',
     description: 'Play 5 literacy games!',
     icon: '📚',
+    iconSrc: '/images/ui/reward-bookworm.webp',
     criteria: { type: 'category_mastery', gameId: 'literacy', threshold: 5 },
   },
   {
@@ -31,6 +34,7 @@ export const REWARD_CATALOG: Reward[] = [
     name: 'Math Wizard',
     description: 'Score 100% on a math game!',
     icon: '🧙',
+    iconSrc: '/images/ui/reward-math-wizard.webp',
     criteria: { type: 'score', gameId: 'numeracy', threshold: 100 },
   },
   {
@@ -39,6 +43,7 @@ export const REWARD_CATALOG: Reward[] = [
     name: 'Super Streak',
     description: 'Play for 7 days in a row!',
     icon: '🔥',
+    iconSrc: '/images/ui/reward-super-streak.webp',
     criteria: { type: 'streak', threshold: 7 },
   },
   {
@@ -47,6 +52,7 @@ export const REWARD_CATALOG: Reward[] = [
     name: 'Explorer',
     description: 'Play every game at least once!',
     icon: '🗺️',
+    iconSrc: '/images/ui/reward-explorer.webp',
     criteria: { type: 'completion', threshold: 0 },
   },
   {
@@ -55,6 +61,7 @@ export const REWARD_CATALOG: Reward[] = [
     name: 'Master',
     description: 'Reach max difficulty with a high score!',
     icon: '👑',
+    iconSrc: '/images/ui/reward-master.webp',
     criteria: { type: 'score', threshold: 0 },
   },
 ];

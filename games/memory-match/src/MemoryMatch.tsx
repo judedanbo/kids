@@ -157,7 +157,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
     return (
       <GameShell title={t('title')} onBack={onExit}>
         <div className={styles.gameArea}>
-          <InstructionBubble text={t('instruction')} character="🃏" />
+          <InstructionBubble text={t('instruction')} character="🃏" characterSrc="/images/games/mascots/card-deck.webp" />
           <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
         </div>
       </GameShell>

@@ -50,4 +50,5 @@ export {
   Announcer,
   useAnnounce,
   SkipLink,
+  IconImage,
 } from './components';

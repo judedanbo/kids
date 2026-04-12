@@ -1,9 +1,17 @@
+import { IconImage } from '../IconImage/IconImage';
 import styles from './InstructionBubble.module.css';
 
 interface InstructionBubbleProps {
   text: string;
   audioSrc?: string;
+  /** Emoji fallback or legacy-only character glyph. */
   character?: string;
+  /**
+   * URL of a generated mascot image (e.g. /images/games/mascots/bee.webp).
+   * When provided, the image is shown and `character` is used as a fallback
+   * if the image fails to load (e.g. hasn't been generated yet).
+   */
+  characterSrc?: string;
   onAudioPlay?: () => void;
 }
 
@@ -31,6 +39,7 @@ export function InstructionBubble({
   text,
   audioSrc,
   character,
+  characterSrc,
   onAudioPlay,
 }: InstructionBubbleProps) {
   return (
@@ -47,7 +56,15 @@ export function InstructionBubble({
           </button>
         )}
       </div>
-      {character && <span className={styles.character}>{character}</span>}
+      {(characterSrc || character) && (
+        <span className={styles.character}>
+          {characterSrc ? (
+            <IconImage src={characterSrc} alt="" fallback={character ?? ''} size={48} />
+          ) : (
+            character
+          )}
+        </span>
+      )}
     </div>
   );
 }

@@ -275,6 +275,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
           <InstructionBubble
             text={t('instruction')}
             character="🔤"
+            characterSrc="/images/games/mascots/letters.webp"
           />
           <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
         </div>

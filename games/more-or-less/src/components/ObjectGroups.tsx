@@ -1,4 +1,4 @@
-import { useAnnounce } from '@kids-games-zone/shared';
+import { useAnnounce, IconImage } from '@kids-games-zone/shared';
 import styles from './ObjectGroups.module.css';
 
 const EMOJI_MAP: Record<string, string> = {
@@ -8,6 +8,15 @@ const EMOJI_MAP: Record<string, string> = {
   butterfly: '🦋',
   fish: '🐟',
   flower: '🌸',
+};
+
+const IMAGE_MAP: Record<string, string> = {
+  apple: '/images/games/more-or-less/apple.webp',
+  star: '/images/games/more-or-less/star.webp',
+  block: '/images/games/more-or-less/block.webp',
+  butterfly: '/images/games/more-or-less/butterfly.webp',
+  fish: '/images/games/more-or-less/fish.webp',
+  flower: '/images/games/more-or-less/flower.webp',
 };
 
 interface ObjectGroup {
@@ -41,11 +50,19 @@ export function ObjectGroups({ groups, onSelect, disabled = false }: ObjectGroup
           aria-label={`Group with ${group.count} ${group.objectType}s`}
         >
           <div className={styles.objects}>
-            {Array.from({ length: group.count }, (_, i) => (
-              <span key={i} className={styles.object} aria-hidden="true">
-                {EMOJI_MAP[group.objectType] ?? '⬛'}
-              </span>
-            ))}
+            {Array.from({ length: group.count }, (_, i) => {
+              const src = IMAGE_MAP[group.objectType];
+              const fallback = EMOJI_MAP[group.objectType] ?? '⬛';
+              return (
+                <span key={i} className={styles.object} aria-hidden="true">
+                  {src ? (
+                    <IconImage src={src} alt="" fallback={fallback} size={48} />
+                  ) : (
+                    fallback
+                  )}
+                </span>
+              );
+            })}
           </div>
           <span className={styles.count}>{group.count}</span>
         </button>

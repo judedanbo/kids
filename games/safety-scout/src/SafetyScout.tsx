@@ -115,7 +115,7 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
     return (
       <GameShell title={t('title')} onBack={onExit}>
         <div className={styles.gameArea}>
-          <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character="🛡️" />
+          <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character="🛡️" characterSrc="/images/games/mascots/shield.webp" />
           <OptionButton label={t('letsGo')} state="default" onSelect={round.dismissInstruction} size="large" />
         </div>
       </GameShell>

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ProgressBar, useFeatureFlag } from '@kids-games-zone/shared';
+import { ProgressBar, useFeatureFlag, IconImage } from '@kids-games-zone/shared';
 import type { GameManifest, GameProgress } from '@kids-games-zone/shared';
 import styles from './GameCard.module.css';
 
@@ -33,6 +33,19 @@ const SKILL_ICONS: Record<string, string> = {
   social_skills: '🤝',
 };
 
+const SKILL_ICON_SRC: Record<string, string> = {
+  literacy: '/images/ui/skill-literacy.webp',
+  numeracy: '/images/ui/skill-numeracy.webp',
+  logic: '/images/ui/skill-logic.webp',
+  memory: '/images/ui/skill-memory.webp',
+  creativity: '/images/ui/skill-creativity.webp',
+  motor_skills: '/images/ui/skill-motor.webp',
+  science: '/images/ui/skill-science.webp',
+  social_skills: '/images/ui/skill-social.webp',
+};
+
+const DEFAULT_SKILL_SRC = '/images/ui/skill-default-game.webp';
+
 export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
   const { t } = useTranslation('common');
   const navigate = useNavigate();
@@ -41,6 +54,7 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
   const primarySkill = manifest.skills[0];
   const bgColor = SKILL_COLORS[primarySkill] ?? '#4a90d9';
   const skillIcon = SKILL_ICONS[primarySkill] ?? '🎮';
+  const thumbnailSrc = manifest.thumbnail;
   const { enabled: flagEnabled } = useFeatureFlag(`game.${manifest.id}`);
   const isBeta = manifest.status === 'beta' && flagEnabled;
 
@@ -65,8 +79,14 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
       disabled={isLocked}
     >
       <div className={styles.thumbnail} style={{ backgroundColor: bgColor }}>
-        <span className={styles.thumbnailIcon}>{skillIcon}</span>
-        {isLocked && <span className={styles.lockOverlay}>🔒</span>}
+        <span className={styles.thumbnailIcon}>
+          <IconImage src={thumbnailSrc} alt="" fallback={skillIcon} size={96} />
+        </span>
+        {isLocked && (
+          <span className={styles.lockOverlay}>
+            <IconImage src="/images/ui/status-lock.webp" alt="" fallback="🔒" size={40} />
+          </span>
+        )}
         {!progress && !isLocked && <span className={styles.newBadge}>{t('gameCard.new')}</span>}
         {isBeta && <span className={styles.betaBadge}>{t('gameCard.beta', 'BETA')}</span>}
       </div>
@@ -80,7 +100,12 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
           </span>
           {manifest.skills.slice(0, 2).map((skill) => (
             <span key={skill} className={styles.skillPill}>
-              {SKILL_ICONS[skill] ?? '🎮'}
+              <IconImage
+                src={SKILL_ICON_SRC[skill] ?? DEFAULT_SKILL_SRC}
+                alt=""
+                fallback={SKILL_ICONS[skill] ?? '🎮'}
+                size={20}
+              />
             </span>
           ))}
         </div>

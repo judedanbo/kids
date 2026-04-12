@@ -9,3 +9,4 @@ export { InstructionBubble } from './InstructionBubble/InstructionBubble';
 export { PauseMenu } from './PauseMenu/PauseMenu';
 export { Announcer, useAnnounce } from './Announcer/Announcer';
 export { SkipLink } from './SkipLink/SkipLink';
+export { IconImage } from './IconImage/IconImage';

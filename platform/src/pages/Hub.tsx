@@ -1,7 +1,7 @@
 import { useState, useMemo, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAgeTier, FeatureFlagContext } from '@kids-games-zone/shared';
+import { useAgeTier, FeatureFlagContext, IconImage } from '@kids-games-zone/shared';
 import { usePlatform } from '../context/PlatformContext';
 import { GameCard } from '../components/GameCard/GameCard';
 import { getDailyChallenge } from '../services/dailyChallenge';
@@ -98,7 +98,9 @@ export default function Hub() {
         </h1>
         {profile.stats.currentStreak >= 1 && (
           <div className={styles.streakBadge} aria-label={t('hub.streak', { count: profile.stats.currentStreak })}>
-            <span className={styles.streakIcon}>🔥</span>
+            <span className={styles.streakIcon}>
+              <IconImage src="/images/ui/reward-super-streak.webp" alt="" fallback="🔥" size={28} />
+            </span>
             {t('hub.streak', { count: profile.stats.currentStreak })}
           </div>
         )}
