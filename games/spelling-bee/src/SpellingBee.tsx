@@ -37,12 +37,13 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
     wordPool,
   });
 
+  const { addScore } = session;
   const handleScorePoint = useCallback(
     (points: number) => {
       onScore(points);
-      session.addScore(points);
+      addScore(points);
     },
-    [onScore, session.addScore],
+    [onScore, addScore],
   );
 
   useEffect(() => {
