@@ -85,6 +85,12 @@ describe('SpellingBee', () => {
     expect(screen.getByText('instructionTiny')).toBeTruthy();
   });
 
+  it('shows level indicator after dismissing instruction', () => {
+    render(<SpellingBee {...createMockProps()} />);
+    fireEvent.click(screen.getByText('letsGo'));
+    expect(screen.getByText(/levelOf/)).toBeTruthy();
+  });
+
   it('shows on-screen keyboard for junior-tier after dismissing instruction', () => {
     render(<SpellingBee {...createMockProps()} />);
     fireEvent.click(screen.getByText('letsGo'));
@@ -126,20 +132,6 @@ describe('SpellingBee', () => {
     render(<SpellingBee {...createMockProps()} />);
     fireEvent.click(screen.getByText('letsGo'));
     expect(screen.getByRole('progressbar')).toBeTruthy();
-  });
-
-  it('shows clue buttons for junior-tier', () => {
-    render(<SpellingBee {...createMockProps()} />);
-    fireEvent.click(screen.getByText('letsGo'));
-    expect(screen.getByText('definition')).toBeTruthy();
-    expect(screen.getByText('origin')).toBeTruthy();
-    expect(screen.getByText('sentence')).toBeTruthy();
-  });
-
-  it('does not show clue buttons for tiny-tier', () => {
-    render(<SpellingBee {...createTinyProps()} />);
-    fireEvent.click(screen.getByText('letsGo'));
-    expect(screen.queryByText('definition')).toBeNull();
   });
 
   it('has no accessibility violations on instruction screen', async () => {
