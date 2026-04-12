@@ -1,11 +1,7 @@
 import { Howl, Howler } from 'howler';
 import type { AudioBackend } from './audio-backend';
 
-const UNLOCK_EVENTS: Array<keyof DocumentEventMap> = [
-  'pointerdown',
-  'keydown',
-  'touchstart',
-];
+const UNLOCK_EVENTS = ['pointerdown', 'keydown', 'touchstart'] as const;
 
 export class HowlerBackend implements AudioBackend {
   private sounds = new Map<string, Howl>();

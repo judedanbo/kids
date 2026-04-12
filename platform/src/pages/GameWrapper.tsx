@@ -70,7 +70,14 @@ function GameSession({
     }
 
     startGame();
-  }, [lifecycle, manifest, profile, dispatch]);
+  }, [
+    lifecycle,
+    manifest,
+    profile,
+    dispatch,
+    state.settings.backgroundMusicEnabled,
+    state.settings.musicDuringGameplay,
+  ]);
 
   // Visibility change: pause/resume
   useEffect(() => {
