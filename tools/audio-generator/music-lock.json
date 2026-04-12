@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "entries": {
+    "music:menu-theme": {
+      "hash": "cd3df10746efbb33",
+      "path": "C:\\code\\kids\\platform\\public\\audio\\music\\menu-theme.mp3",
+      "bytes": 720606,
+      "generatedAt": "2026-04-12T16:49:53.624Z"
+    },
+    "music:spelling-bee-bgm": {
+      "hash": "91dfb4b96fc053bd",
+      "path": "C:\\code\\kids\\platform\\public\\audio\\music\\spelling-bee-bgm.mp3",
+      "bytes": 960515,
+      "generatedAt": "2026-04-12T16:50:05.966Z"
+    },
+    "music:more-or-less-bgm": {
+      "hash": "e433d1d3d4536d8e",
+      "path": "C:\\code\\kids\\platform\\public\\audio\\music\\more-or-less-bgm.mp3",
+      "bytes": 960515,
+      "generatedAt": "2026-04-12T16:50:19.722Z"
+    },
+    "music:safety-scout-bgm": {
+      "hash": "7553591a508e295c",
+      "path": "C:\\code\\kids\\platform\\public\\audio\\music\\safety-scout-bgm.mp3",
+      "bytes": 960515,
+      "generatedAt": "2026-04-12T16:50:33.279Z"
+    }
+  }
+}

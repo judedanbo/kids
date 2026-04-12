@@ -51,12 +51,15 @@ const mockStorage: StorageManager = {
 const mockAudio: AudioManager = {
   playMusic: vi.fn(),
   stopMusic: vi.fn(),
+  pauseMusic: vi.fn(),
+  resumeMusic: vi.fn(),
   playSFX: vi.fn(),
   playVoice: vi.fn(),
   setVolume: vi.fn(),
   mute: vi.fn(),
   unmute: vi.fn(),
   preload: vi.fn().mockResolvedValue(undefined),
+  setLanguage: vi.fn(),
 };
 
 function TestConsumer() {

@@ -257,7 +257,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
 
   if (showCelebration) {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={score}
@@ -270,7 +270,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
 
   if (showInstruction) {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <div className={styles.gameArea}>
           <InstructionBubble
             text={t('instruction')}
@@ -286,7 +286,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
   const categoryKey = `category_${categories[categoryIndex].name.toLowerCase()}`;
 
   return (
-    <GameShell title={t('title')} onBack={onExit}>
+    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={score} maxScore={TOTAL_WORDS * 10} showStars />

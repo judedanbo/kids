@@ -1,11 +1,22 @@
 import 'dotenv/config';
+import { join } from 'node:path';
 import { Command } from 'commander';
 import type { AgeTier } from '@kids-games-zone/shared';
 import { runContentGeneration } from './content/generate-content.js';
 import { runAudioGeneration } from './generate-audio.js';
+import { runMusicGeneration } from './generate-music.js';
+import { runSFXGeneration } from './generate-sfx.js';
+import { runEncouragementGeneration } from './generate-encouragement.js';
 import { buildSpellingManifest } from './spelling/manifest-builder.js';
 import { loadAllTierFiles } from './spelling/tier-files.js';
-import { CACHE_DIR, LOCK_PATH, REPO_ROOT } from './paths.js';
+import {
+  CACHE_DIR,
+  LOCK_PATH,
+  MUSIC_LOCK_PATH,
+  PLANS_DIR,
+  REPO_ROOT,
+  SFX_LOCK_PATH,
+} from './paths.js';
 
 const program = new Command();
 program
@@ -79,6 +90,111 @@ program
         `chars=${summary.totalChars} ~$${summary.estimatedUsd.toFixed(4)}`,
     );
   });
+
+program
+  .command('music')
+  .description('Generate background music via ElevenLabs Music API')
+  .option(
+    '--plan <path>',
+    'path to music plan JSON',
+    join(PLANS_DIR, 'music.json'),
+  )
+  .option('--force', 'ignore cache and regenerate', false)
+  .option('--dry-run', 'list tracks without calling the API', false)
+  .action(async (raw: MusicArgs) => {
+    const summary = await runMusicGeneration({
+      repoRoot: REPO_ROOT,
+      manifestPath: raw.plan,
+      cacheDir: CACHE_DIR,
+      lockPath: MUSIC_LOCK_PATH,
+      force: raw.force,
+      dryRun: raw.dryRun,
+    });
+    console.log(
+      `\nMusic: generated=${summary.generated} cached=${summary.cached} ` +
+        `total=${summary.totalSeconds.toFixed(1)}s`,
+    );
+  });
+
+interface MusicArgs {
+  plan: string;
+  force: boolean;
+  dryRun: boolean;
+}
+
+program
+  .command('sfx')
+  .description('Generate sound effects via ElevenLabs Sound Generation API')
+  .option(
+    '--plan <path>',
+    'path to SFX plan JSON',
+    join(PLANS_DIR, 'sfx.json'),
+  )
+  .option('--force', 'ignore cache and regenerate', false)
+  .option('--dry-run', 'list entries without calling the API', false)
+  .action(async (raw: SFXArgs) => {
+    const summary = await runSFXGeneration({
+      repoRoot: REPO_ROOT,
+      manifestPath: raw.plan,
+      cacheDir: CACHE_DIR,
+      lockPath: SFX_LOCK_PATH,
+      force: raw.force,
+      dryRun: raw.dryRun,
+    });
+    console.log(
+      `\nSFX: generated=${summary.generated} cached=${summary.cached}`,
+    );
+  });
+
+interface SFXArgs {
+  plan: string;
+  force: boolean;
+  dryRun: boolean;
+}
+
+program
+  .command('encouragement')
+  .description(
+    'Generate multi-variant encouragement voice lines (OpenAI TTS) and emit the variant registry',
+  )
+  .option(
+    '--plan <path>',
+    'path to encouragement plan JSON',
+    join(PLANS_DIR, 'encouragement.json'),
+  )
+  .option(
+    '--registry <path>',
+    'path where the variant registry TS file is written',
+    join(REPO_ROOT, 'platform/src/generated/voice-variants.ts'),
+  )
+  .option('--force', 'ignore cache and regenerate', false)
+  .option('--dry-run', 'estimate cost without calling the API', false)
+  .action(async (raw: EncouragementArgs) => {
+    const summary = await runEncouragementGeneration({
+      repoRoot: REPO_ROOT,
+      planPath: raw.plan,
+      cacheDir: CACHE_DIR,
+      lockPath: LOCK_PATH,
+      registryPath: raw.registry,
+      force: raw.force,
+      dryRun: raw.dryRun,
+    });
+    console.log(
+      `\nEncouragement: variants=${summary.variants} generated=${summary.generated} ` +
+        `cached=${summary.cached} chars=${summary.totalChars} ` +
+        `~$${summary.estimatedUsd.toFixed(4)}`,
+    );
+    if (!raw.dryRun) {
+      console.log(`Registry written: ${summary.registryPath}`);
+    }
+  });
+
+interface EncouragementArgs {
+  plan: string;
+  registry: string;
+  force: boolean;
+  dryRun: boolean;
+}
 
 interface ContentArgs {
   game: string;

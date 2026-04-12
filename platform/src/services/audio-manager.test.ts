@@ -8,11 +8,15 @@ function createMockBackend(): AudioBackend {
     play: vi.fn<AudioBackend['play']>().mockReturnValue('playback-1'),
     stop: vi.fn<AudioBackend['stop']>(),
     stopAll: vi.fn<AudioBackend['stopAll']>(),
+    pause: vi.fn<AudioBackend['pause']>(),
+    resume: vi.fn<AudioBackend['resume']>(),
     fade: vi.fn<AudioBackend['fade']>(),
     volume: vi.fn<AudioBackend['volume']>(),
     isPlaying: vi.fn<AudioBackend['isPlaying']>().mockReturnValue(false),
     onEnd: vi.fn<AudioBackend['onEnd']>(),
     unload: vi.fn<AudioBackend['unload']>(),
+    isReady: vi.fn<AudioBackend['isReady']>().mockReturnValue(true),
+    onReady: vi.fn<AudioBackend['onReady']>((cb: () => void) => cb()),
   };
 }
 

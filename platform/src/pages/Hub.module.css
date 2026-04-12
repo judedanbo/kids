@@ -7,6 +7,47 @@
 .header {
   text-align: center;
   margin-bottom: var(--spacing-xl);
+  position: relative;
+}
+
+.musicToggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+    border-color var(--transition-fast);
+  min-height: 44px;
+}
+
+.musicToggle:hover,
+.musicToggle:focus-visible {
+  background-color: var(--color-surface-alt, var(--color-surface));
+  border-color: var(--color-primary);
+}
+
+.musicToggleIcon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .musicToggleLabel {
+    display: none;
+  }
+  .musicToggle {
+    padding: var(--spacing-xs);
+  }
 }
 
 .welcome {

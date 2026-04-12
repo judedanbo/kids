@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "lang": "en-US",
+  "voice": "nova",
+  "provider": "openai",
+  "outputDir": "platform/public/audio/narration/{langShort}",
+  "entries": [
+    {
+      "baseId": "encouragement-correct",
+      "texts": [
+        "Great job!",
+        "Well done!",
+        "Excellent!",
+        "You got it!",
+        "Perfect!"
+      ]
+    },
+    {
+      "baseId": "encouragement-tryagain",
+      "texts": [
+        "Let's try again!",
+        "Not quite — give it another go!",
+        "Have another try, you can do it!",
+        "Almost — try once more!"
+      ]
+    },
+    {
+      "baseId": "encouragement-almost",
+      "texts": [
+        "So close!",
+        "Almost there!",
+        "Very close — keep going!",
+        "You're nearly there!"
+      ]
+    },
+    {
+      "baseId": "encouragement-amazing",
+      "texts": [
+        "Amazing work!",
+        "Incredible!",
+        "You're a superstar!",
+        "Way to go, champion!"
+      ]
+    },
+    {
+      "baseId": "encouragement-streak",
+      "texts": [
+        "You're on a roll!",
+        "What a streak!",
+        "Keep it up, superstar!",
+        "You're unstoppable!"
+      ]
+    }
+  ]
+}

@@ -57,7 +57,7 @@ export function MoreOrLess({ config, onScore, onComplete, onExit, audioManager }
   // Background music for tiny-tier
   useEffect(() => {
     if (isTiny && config.settings.musicEnabled) {
-      audioManager.playMusic('music:game-bgm', { loop: true, fadeIn: 1000 });
+      audioManager.playMusic('music:more-or-less-bgm', { loop: true, fadeIn: 1000 });
     }
     return () => {
       audioManager.stopMusic({ fadeOut: 500 });
@@ -94,7 +94,7 @@ export function MoreOrLess({ config, onScore, onComplete, onExit, audioManager }
 
   if (round.phase === 'instruction') {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <div className={styles.gameArea}>
           <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character="🔢" />
           <OptionButton label={t('letsGo')} state="default" onSelect={round.dismissInstruction} size="large" />
@@ -105,7 +105,7 @@ export function MoreOrLess({ config, onScore, onComplete, onExit, audioManager }
 
   if (round.phase === 'complete') {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={round.score}
@@ -119,7 +119,7 @@ export function MoreOrLess({ config, onScore, onComplete, onExit, audioManager }
   const showFeedback = round.phase === 'feedback';
 
   return (
-    <GameShell title={t('title')} onBack={onExit}>
+    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={round.score} maxScore={round.maxScore} showStars />

@@ -3,12 +3,16 @@ import type { UserProfile, GameProgress, Reward } from './user';
 export interface AudioManager {
   playMusic(trackId: string, options?: { loop?: boolean; fadeIn?: number }): void;
   stopMusic(options?: { fadeOut?: number }): void;
+  pauseMusic(): void;
+  resumeMusic(): void;
   playSFX(sfxId: string): void;
   playVoice(voiceId: string, onComplete?: () => void): void;
   setVolume(category: 'music' | 'sfx' | 'voice', level: number): void;
   mute(category?: 'music' | 'sfx' | 'voice'): void;
   unmute(category?: 'music' | 'sfx' | 'voice'): void;
   preload(assetIds: string[]): Promise<void>;
+  /** Sets the active locale used to resolve voice asset paths (narration/{lang}/). */
+  setLanguage(language: string): void;
 }
 
 export interface StorageManager {

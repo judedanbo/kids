@@ -5,11 +5,25 @@ import type { WebAudioMusicGenerator } from '../audio-music-generator';
 
 function createMockGenerator(): WebAudioMusicGenerator {
   let active = false;
+  let paused = false;
   return {
-    start: vi.fn(() => { active = true; }),
-    stop: vi.fn(() => { active = false; }),
+    start: vi.fn(() => {
+      active = true;
+      paused = false;
+    }),
+    stop: vi.fn(() => {
+      active = false;
+      paused = false;
+    }),
+    pause: vi.fn(() => {
+      paused = true;
+    }),
+    resume: vi.fn(() => {
+      paused = false;
+    }),
     setVolume: vi.fn(),
     isActive: vi.fn(() => active),
+    isPaused: vi.fn(() => paused),
   } as unknown as WebAudioMusicGenerator;
 }
 
@@ -35,11 +49,15 @@ function createMockBackend(failIds: Set<string> = new Set()): AudioBackend {
     }),
     stop: vi.fn(),
     stopAll: vi.fn(),
+    pause: vi.fn(),
+    resume: vi.fn(),
     fade: vi.fn(),
     volume: vi.fn(),
     isPlaying: vi.fn(() => false),
     onEnd: vi.fn(),
     unload: vi.fn(),
+    isReady: vi.fn(() => true),
+    onReady: vi.fn((cb: () => void) => cb()),
   };
 }
 
@@ -280,5 +298,176 @@ describe('RealAudioManager — generator fallback', () => {
     await mgr.playMusic('music:game-bgm');
     expect(generator.start).not.toHaveBeenCalled();
     expect(goodBackend.play).toHaveBeenCalled();
+  });
+
+  it('pauses generator when pauseMusic is called on generator-backed track', async () => {
+    await manager.playMusic('music:game-bgm');
+    manager.pauseMusic();
+    expect(generator.pause).toHaveBeenCalled();
+  });
+
+  it('resumes generator when resumeMusic is called on generator-backed track', async () => {
+    await manager.playMusic('music:game-bgm');
+    manager.pauseMusic();
+    manager.resumeMusic();
+    expect(generator.resume).toHaveBeenCalled();
+  });
+});
+
+describe('RealAudioManager — autoplay gating', () => {
+  let backend: AudioBackend;
+  let manager: RealAudioManager;
+  let readyCallback: (() => void) | null;
+
+  beforeEach(() => {
+    readyCallback = null;
+    backend = createMockBackend();
+    (backend.isReady as ReturnType<typeof vi.fn>).mockReturnValue(false);
+    (backend.onReady as ReturnType<typeof vi.fn>).mockImplementation(
+      (cb: () => void) => {
+        readyCallback = cb;
+      },
+    );
+    manager = new RealAudioManager(backend);
+  });
+
+  it('does not call backend.play while the backend is not ready', async () => {
+    await manager.playMusic('music:main-theme');
+    expect(backend.load).not.toHaveBeenCalled();
+    expect(backend.play).not.toHaveBeenCalled();
+  });
+
+  it('flushes the queued play once the backend reports ready', async () => {
+    await manager.playMusic('music:main-theme');
+    expect(backend.play).not.toHaveBeenCalled();
+
+    (backend.isReady as ReturnType<typeof vi.fn>).mockReturnValue(true);
+    readyCallback!();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(backend.load).toHaveBeenCalledWith(
+      'main-theme',
+      '/audio/music/main-theme.mp3',
+    );
+  });
+
+  it('drops the pending play if stopMusic is called before ready', async () => {
+    await manager.playMusic('music:main-theme');
+    manager.stopMusic();
+
+    (backend.isReady as ReturnType<typeof vi.fn>).mockReturnValue(true);
+    readyCallback!();
+    await Promise.resolve();
+
+    expect(backend.play).not.toHaveBeenCalled();
+  });
+});
+
+describe('RealAudioManager — voice variant rotation', () => {
+  let backend: AudioBackend;
+  let manager: RealAudioManager;
+
+  beforeEach(() => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    backend = createMockBackend();
+    manager = new RealAudioManager(backend);
+    manager.setVoiceVariants({
+      en: {
+        'encouragement-correct': [
+          'encouragement-correct-1',
+          'encouragement-correct-2',
+          'encouragement-correct-3',
+        ],
+      },
+    });
+  });
+
+  it('uses the base id when no variants are registered for that key', async () => {
+    await manager.playVoice('voice:word-cat');
+    expect(backend.load).toHaveBeenCalledWith(
+      'narration/en/word-cat',
+      '/audio/narration/en/word-cat.mp3',
+    );
+  });
+
+  it('picks one of the registered variants when base id has variants', async () => {
+    await manager.playVoice('voice:encouragement-correct');
+    const loadCalls = (backend.load as ReturnType<typeof vi.fn>).mock.calls;
+    const narrationCall = loadCalls.find((c: string[]) =>
+      c[0].startsWith('narration/en/encouragement-correct-'),
+    );
+    expect(narrationCall).toBeDefined();
+  });
+
+  it('avoids picking the same variant twice in a row', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    await manager.playVoice('voice:encouragement-correct');
+    const firstKey = (backend.load as ReturnType<typeof vi.fn>).mock.calls.at(
+      -1,
+    )?.[0];
+
+    await manager.playVoice('voice:encouragement-correct');
+    const secondKey = (backend.load as ReturnType<typeof vi.fn>).mock.calls.at(
+      -1,
+    )?.[0];
+
+    expect(secondKey).not.toBe(firstKey);
+    vi.restoreAllMocks();
+  });
+
+  it('preload expands base id to all registered variants', async () => {
+    await manager.preload(['voice:encouragement-correct']);
+    expect(backend.load).toHaveBeenCalledWith(
+      'narration/en/encouragement-correct-1',
+      '/audio/narration/en/encouragement-correct-1.mp3',
+    );
+    expect(backend.load).toHaveBeenCalledWith(
+      'narration/en/encouragement-correct-2',
+      '/audio/narration/en/encouragement-correct-2.mp3',
+    );
+    expect(backend.load).toHaveBeenCalledWith(
+      'narration/en/encouragement-correct-3',
+      '/audio/narration/en/encouragement-correct-3.mp3',
+    );
+  });
+});
+
+describe('RealAudioManager — pause/resume (file-backed)', () => {
+  let backend: AudioBackend;
+  let manager: RealAudioManager;
+
+  beforeEach(() => {
+    backend = createMockBackend();
+    manager = new RealAudioManager(backend);
+  });
+
+  it('pauseMusic delegates to backend.pause with the active playback id', async () => {
+    (backend.play as ReturnType<typeof vi.fn>).mockReturnValue('music-pb');
+    await manager.playMusic('music:main-theme');
+
+    manager.pauseMusic();
+
+    expect(backend.pause).toHaveBeenCalledWith('music-pb');
+  });
+
+  it('resumeMusic delegates to backend.resume with the active playback id', async () => {
+    (backend.play as ReturnType<typeof vi.fn>).mockReturnValue('music-pb');
+    await manager.playMusic('music:main-theme');
+    manager.pauseMusic();
+
+    manager.resumeMusic();
+
+    expect(backend.resume).toHaveBeenCalledWith('music-pb');
+  });
+
+  it('pauseMusic is a no-op when no music is playing', () => {
+    manager.pauseMusic();
+    expect(backend.pause).not.toHaveBeenCalled();
+  });
+
+  it('resumeMusic is a no-op when no music is playing', () => {
+    manager.resumeMusic();
+    expect(backend.resume).not.toHaveBeenCalled();
   });
 });

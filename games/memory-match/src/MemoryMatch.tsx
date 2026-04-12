@@ -142,7 +142,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
 
   if (showCelebration) {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={score}
@@ -155,7 +155,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
 
   if (showInstruction) {
     return (
-      <GameShell title={t('title')} onBack={onExit}>
+      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <div className={styles.gameArea}>
           <InstructionBubble text={t('instruction')} character="🃏" />
           <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
@@ -170,7 +170,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
     : flippedIds;
 
   return (
-    <GameShell title={t('title')} onBack={onExit}>
+    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={score} maxScore={gridConfig.pairs * 10} showStars />

@@ -31,6 +31,23 @@ export function Settings() {
     dispatch({ type: 'SET_SETTINGS', payload: { language: code } });
   };
 
+  const backgroundMusicEnabled = state.settings.backgroundMusicEnabled;
+  const musicDuringGameplay = state.settings.musicDuringGameplay;
+
+  const handleBackgroundMusicToggle = () => {
+    dispatch({
+      type: 'SET_SETTINGS',
+      payload: { backgroundMusicEnabled: !backgroundMusicEnabled },
+    });
+  };
+
+  const handleMusicDuringGameplayToggle = () => {
+    dispatch({
+      type: 'SET_SETTINGS',
+      payload: { musicDuringGameplay: !musicDuringGameplay },
+    });
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{t('settings.title')}</h1>
@@ -78,6 +95,42 @@ export function Settings() {
               </button>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Sound */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>
+          {t('settings.sound', { defaultValue: 'Sound' })}
+        </h2>
+        <div className={styles.settingRow}>
+          <label htmlFor="bg-music-toggle">
+            {t('settings.backgroundMusic', { defaultValue: 'Background music' })}
+          </label>
+          <button
+            id="bg-music-toggle"
+            className={styles.toggleBtn}
+            onClick={handleBackgroundMusicToggle}
+            aria-pressed={backgroundMusicEnabled}
+          >
+            {backgroundMusicEnabled ? t('settings.on') : t('settings.off')}
+          </button>
+        </div>
+        <div className={styles.settingRow}>
+          <label htmlFor="music-during-gameplay-toggle">
+            {t('settings.musicDuringGameplay', {
+              defaultValue: 'Play music during games',
+            })}
+          </label>
+          <button
+            id="music-during-gameplay-toggle"
+            className={styles.toggleBtn}
+            onClick={handleMusicDuringGameplayToggle}
+            aria-pressed={musicDuringGameplay}
+            disabled={!backgroundMusicEnabled}
+          >
+            {musicDuringGameplay ? t('settings.on') : t('settings.off')}
+          </button>
         </div>
       </section>
 

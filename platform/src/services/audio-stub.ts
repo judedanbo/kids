@@ -9,6 +9,14 @@ export class StubAudioManager implements AudioManager {
     console.log('[AudioManager] stopMusic:', options);
   }
 
+  pauseMusic(): void {
+    console.log('[AudioManager] pauseMusic');
+  }
+
+  resumeMusic(): void {
+    console.log('[AudioManager] resumeMusic');
+  }
+
   playSFX(sfxId: string): void {
     console.log('[AudioManager] playSFX:', sfxId);
   }
@@ -32,5 +40,9 @@ export class StubAudioManager implements AudioManager {
 
   async preload(assetIds: string[]): Promise<void> {
     console.log('[AudioManager] preload:', assetIds);
+  }
+
+  setLanguage(language: string): void {
+    console.log('[AudioManager] setLanguage:', language);
   }
 }

@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "entries": {
+    "sfx:click": {
+      "hash": "95d127966a80ecd8",
+      "path": "C:\\code\\kids\\platform\\public\\audio\\sfx\\click.mp3",
+      "bytes": 8821,
+      "generatedAt": "2026-04-12T16:50:45.578Z"
+    },
+    "sfx:correct": {
+      "hash": "71e84984c8496cef",
+      "path": "C:\\code\\kids\\platform\\public\\audio\\sfx\\correct.mp3",
+      "bytes": 17180,
+      "generatedAt": "2026-04-12T16:50:47.336Z"
+    },
+    "sfx:incorrect": {
+      "hash": "7bb5b00e487c5efb",
+      "path": "C:\\code\\kids\\platform\\public\\audio\\sfx\\incorrect.mp3",
+      "bytes": 17180,
+      "generatedAt": "2026-04-12T16:50:49.308Z"
+    },
+    "sfx:celebrate": {
+      "hash": "f790a30b00ccab61",
+      "path": "C:\\code\\kids\\platform\\public\\audio\\sfx\\celebrate.mp3",
+      "bytes": 33062,
+      "generatedAt": "2026-04-12T16:50:51.547Z"
+    }
+  }
+}

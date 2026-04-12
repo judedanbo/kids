@@ -15,3 +15,12 @@ export const CACHE_DIR = resolve(PACKAGE_ROOT, '.audio-cache');
 
 /** Lockfile: maps phrase lock keys to content hashes. */
 export const LOCK_PATH = resolve(PACKAGE_ROOT, 'audio-lock.json');
+
+/** Lockfile: maps music track ids to content hashes. */
+export const MUSIC_LOCK_PATH = resolve(PACKAGE_ROOT, 'music-lock.json');
+
+/** Lockfile: maps SFX ids to content hashes. */
+export const SFX_LOCK_PATH = resolve(PACKAGE_ROOT, 'sfx-lock.json');
+
+/** Where content plans (music.json, sfx.json, encouragement.json) live. */
+export const PLANS_DIR = resolve(PACKAGE_ROOT, 'plans');

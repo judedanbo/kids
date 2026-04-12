@@ -12,7 +12,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
     "content": "tsx src/cli.ts content",
-    "audio": "tsx src/cli.ts audio"
+    "audio": "tsx src/cli.ts audio",
+    "audio:music": "tsx src/cli.ts music",
+    "audio:sfx": "tsx src/cli.ts sfx",
+    "audio:encouragement": "tsx src/cli.ts encouragement"
   },
   "dependencies": {
     "commander": "^12.1.0",

@@ -11,7 +11,7 @@ import styles from './DummyGame.module.css';
 
 const TOTAL_ROUNDS = 5;
 
-export function DummyGame({ config: _config, onScore, onComplete, onExit, audioManager }: GameProps) {
+export function DummyGame({ config, onScore, onComplete, onExit, audioManager }: GameProps) {
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
@@ -59,7 +59,7 @@ export function DummyGame({ config: _config, onScore, onComplete, onExit, audioM
 
   if (showCelebration) {
     return (
-      <GameShell title="Click Counter" onBack={onExit}>
+      <GameShell title="Click Counter" onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
         <CelebrationOverlay
           title="Amazing!"
           score={score}
@@ -71,7 +71,7 @@ export function DummyGame({ config: _config, onScore, onComplete, onExit, audioM
   }
 
   return (
-    <GameShell title="Click Counter" onBack={onExit}>
+    <GameShell title="Click Counter" onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
       <div className={styles.gameArea}>
         <ScoreDisplay score={score} maxScore={TOTAL_ROUNDS} showStars />
         <ProgressBar current={round} total={TOTAL_ROUNDS} showLabel />

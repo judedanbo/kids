@@ -1,4 +1,4 @@
-import { useState, useMemo, useContext } from 'react';
+import { useState, useMemo, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAgeTier, FeatureFlagContext } from '@kids-games-zone/shared';
@@ -9,13 +9,15 @@ import type { GameManifest, SkillCategory } from '@kids-games-zone/shared';
 import styles from './Hub.module.css';
 
 export default function Hub() {
-  const { state } = usePlatform();
+  const { state, audioManager } = usePlatform();
   const navigate = useNavigate();
   const { t } = useTranslation('common');
   const ageTier = useAgeTier();
   const { flags } = useContext(FeatureFlagContext);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [musicPaused, setMusicPaused] = useState(false);
+  const musicEnabled = state.settings.backgroundMusicEnabled;
 
   const profile = state.currentProfile;
 
@@ -82,6 +84,26 @@ export default function Hub() {
     [todayStr, state.gameRegistry],
   );
 
+  // Menu background music: play on mount (if enabled), stop on unmount/route-change.
+  useEffect(() => {
+    if (!musicEnabled) return;
+    audioManager.playMusic('music:menu-theme', { loop: true, fadeIn: 800 });
+    setMusicPaused(false);
+    return () => {
+      audioManager.stopMusic({ fadeOut: 400 });
+    };
+  }, [musicEnabled, audioManager]);
+
+  const handleToggleMusic = () => {
+    if (musicPaused) {
+      audioManager.resumeMusic();
+      setMusicPaused(false);
+    } else {
+      audioManager.pauseMusic();
+      setMusicPaused(true);
+    }
+  };
+
   // Redirect to profile if none selected — after all hooks
   if (!profile) {
     navigate('/profile');
@@ -101,6 +123,28 @@ export default function Hub() {
             <span className={styles.streakIcon}>🔥</span>
             {t('hub.streak', { count: profile.stats.currentStreak })}
           </div>
+        )}
+        {musicEnabled && (
+          <button
+            type="button"
+            className={styles.musicToggle}
+            onClick={handleToggleMusic}
+            aria-pressed={musicPaused}
+            aria-label={
+              musicPaused
+                ? t('hub.resumeMusic', { defaultValue: 'Play music' })
+                : t('hub.pauseMusic', { defaultValue: 'Pause music' })
+            }
+          >
+            <span className={styles.musicToggleIcon} aria-hidden="true">
+              {musicPaused ? '▶' : '⏸'}
+            </span>
+            <span className={styles.musicToggleLabel}>
+              {musicPaused
+                ? t('hub.resumeMusic', { defaultValue: 'Play music' })
+                : t('hub.pauseMusic', { defaultValue: 'Pause music' })}
+            </span>
+          </button>
         )}
       </header>
 

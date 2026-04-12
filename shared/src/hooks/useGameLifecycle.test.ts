@@ -33,7 +33,7 @@ const mockConfig: GameConfig = {
     progress: {}, rewards: [],
     stats: { totalPlayTime: 0, totalGamesPlayed: 0, currentStreak: 0, longestStreak: 0, lastPlayedAt: '' },
   },
-  settings: { soundEnabled: true, musicEnabled: true, language: 'en', highContrastMode: false },
+  settings: { soundEnabled: true, musicEnabled: true, backgroundMusicEnabled: true, language: 'en', highContrastMode: false },
 };
 
 describe('useGameLifecycle', () => {
