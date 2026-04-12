@@ -36,7 +36,15 @@ pnpm --filter @kids-games-zone/image-generator start --category games/mascots
 
 # regenerate a specific asset
 pnpm --filter @kids-games-zone/image-generator start --only ui/nav-home --force
+
+# lower the per-call pacing (default is 1000ms between requests per worker)
+pnpm --filter @kids-games-zone/image-generator start --full --delay 500
 ```
+
+The CLI paces itself with a per-worker delay between API calls (default
+1000 ms via `--delay <ms>`) to stay under OpenAI's rate limits on long
+runs. Lower it if you're confident you have headroom; raise it if a batch
+still hits 429s.
 
 Outputs land under `platform/public/images/…`. The script is idempotent — it
 skips files that already exist unless you pass `--force`.
@@ -61,15 +69,15 @@ the look — every entry picks it up on the next run.
 The manifest is assembled in `src/manifest.mjs`. Static entries are
 hand-authored; content entries are derived from the game data files:
 
-| Category           | Count | Source                                  |
-|--------------------|-------|-----------------------------------------|
-| `ui/*`             | ~24   | hand-authored (nav, skills, rewards)    |
-| `games/thumbnails` | 6     | hand-authored                           |
-| `games/mascots`    | 6     | hand-authored                           |
-| `games/more-or-less` | 6   | hand-authored                           |
-| `games/spelling-bee` | 3   | hand-authored (hearts, speaker)         |
-| `spelling-bee/*`   | ~80+  | `games/spelling-bee/src/data/words-*.json` |
-| `safety-scout/*`   | 38    | `games/safety-scout/src/data/objects.json` |
+| Category             | Count | Source                                     |
+| -------------------- | ----- | ------------------------------------------ |
+| `ui/*`               | ~24   | hand-authored (nav, skills, rewards)       |
+| `games/thumbnails`   | 6     | hand-authored                              |
+| `games/mascots`      | 6     | hand-authored                              |
+| `games/more-or-less` | 6     | hand-authored                              |
+| `games/spelling-bee` | 3     | hand-authored (hearts, speaker)            |
+| `spelling-bee/*`     | ~80+  | `games/spelling-bee/src/data/words-*.json` |
+| `safety-scout/*`     | 38    | `games/safety-scout/src/data/objects.json` |
 
 Adding a new Safety Scout object? Just add it to `objects.json` with a
 `image: "my-thing.webp"` field and re-run `start --category safety-scout`. New
