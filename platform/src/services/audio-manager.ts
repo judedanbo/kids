@@ -16,6 +16,7 @@ export class RealAudioManager implements AudioManager {
   private failedAssets = new Set<string>();
   private musicGenerator: WebAudioMusicGenerator | null;
   private usingGenerator = false;
+  private language = 'en';
   private channels: Record<AudioCategory, ChannelState> = {
     music: { volume: 0.3, muted: false, currentPlaybackId: null },
     sfx: { volume: 1.0, muted: false, currentPlaybackId: null },
@@ -25,6 +26,10 @@ export class RealAudioManager implements AudioManager {
   constructor(backend: AudioBackend, musicGenerator?: WebAudioMusicGenerator) {
     this.backend = backend;
     this.musicGenerator = musicGenerator ?? null;
+  }
+
+  setLanguage(language: string): void {
+    this.language = language;
   }
 
   async playMusic(
@@ -125,17 +130,17 @@ export class RealAudioManager implements AudioManager {
       this.channels.voice.currentPlaybackId = null;
     }
 
-    const { key, category } = this.parseAssetId(voiceId);
-    await this.ensureLoaded(key, category);
+    const { key } = this.parseAssetId(voiceId);
+    const playbackKey = await this.ensureVoiceLoaded(key);
 
-    if (!this.loadedAssets.has(key)) {
+    if (playbackKey === null) {
       // No audio file — try speech synthesis for word pronunciation
       this.speakFallback(key, onComplete);
       return;
     }
 
     const channel = this.channels.voice;
-    const playbackId = this.backend.play(key, {
+    const playbackId = this.backend.play(playbackKey, {
       volume: channel.muted ? 0 : channel.volume,
     });
 
@@ -239,6 +244,9 @@ export class RealAudioManager implements AudioManager {
   async preload(assetIds: string[]): Promise<void> {
     const loadPromises = assetIds.map((assetId) => {
       const { key, category } = this.parseAssetId(assetId);
+      if (category === 'voice') {
+        return this.ensureVoiceLoaded(key);
+      }
       return this.ensureLoaded(key, category);
     });
     await Promise.all(loadPromises);
@@ -288,23 +296,46 @@ export class RealAudioManager implements AudioManager {
     id: string,
     category: AudioCategory,
   ): Promise<void> {
-    if (this.loadedAssets.has(id)) {
-      return;
-    }
-    if (this.failedAssets.has(id)) {
-      return;
-    }
     const path = `/audio/${category}/${id}.mp3`;
+    await this.ensureLoadedAt(id, path);
+  }
+
+  private async ensureLoadedAt(
+    cacheKey: string,
+    path: string,
+  ): Promise<boolean> {
+    if (this.loadedAssets.has(cacheKey)) {
+      return true;
+    }
+    if (this.failedAssets.has(cacheKey)) {
+      return false;
+    }
     try {
-      await this.backend.load(id, path);
-      this.loadedAssets.add(id);
+      await this.backend.load(cacheKey, path);
+      this.loadedAssets.add(cacheKey);
+      return true;
     } catch (error) {
-      this.failedAssets.add(id);
+      this.failedAssets.add(cacheKey);
       console.warn(
-        `[AudioManager] Failed to load "${id}" from ${path}:`,
+        `[AudioManager] Failed to load "${cacheKey}" from ${path}:`,
         error instanceof Error ? error.message : error,
       );
+      return false;
     }
+  }
+
+  private async ensureVoiceLoaded(key: string): Promise<string | null> {
+    const narrationKey = `narration/${this.language}/${key}`;
+    const narrationPath = `/audio/narration/${this.language}/${key}.mp3`;
+    if (await this.ensureLoadedAt(narrationKey, narrationPath)) {
+      return narrationKey;
+    }
+    const voiceKey = `voice/${key}`;
+    const voicePath = `/audio/voice/${key}.mp3`;
+    if (await this.ensureLoadedAt(voiceKey, voicePath)) {
+      return voiceKey;
+    }
+    return null;
   }
 
   private parseAssetId(assetId: string): {

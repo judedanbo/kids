@@ -157,11 +157,50 @@ describe('RealAudioManager', () => {
   });
 
   describe('playVoice', () => {
-    it('loads and plays voice with channel volume', async () => {
+    it('loads and plays voice from narration path for active language', async () => {
       await audio.playVoice('voice:welcome');
 
-      expect(backend.load).toHaveBeenCalledWith('welcome', '/audio/voice/welcome.mp3');
-      expect(backend.play).toHaveBeenCalledWith('welcome', { volume: 1.0 });
+      expect(backend.load).toHaveBeenCalledWith(
+        'narration/en/welcome',
+        '/audio/narration/en/welcome.mp3',
+      );
+      expect(backend.play).toHaveBeenCalledWith('narration/en/welcome', {
+        volume: 1.0,
+      });
+    });
+
+    it('uses the configured language in the narration path', async () => {
+      audio.setLanguage('fr');
+      await audio.playVoice('voice:welcome');
+
+      expect(backend.load).toHaveBeenCalledWith(
+        'narration/fr/welcome',
+        '/audio/narration/fr/welcome.mp3',
+      );
+    });
+
+    it('falls back to /audio/voice/ when narration is missing', async () => {
+      (backend.load as ReturnType<typeof vi.fn>).mockImplementation(
+        async (id: string) => {
+          if (id.startsWith('narration/')) {
+            throw new Error('not found');
+          }
+        },
+      );
+
+      await audio.playVoice('voice:welcome');
+
+      expect(backend.load).toHaveBeenCalledWith(
+        'narration/en/welcome',
+        '/audio/narration/en/welcome.mp3',
+      );
+      expect(backend.load).toHaveBeenCalledWith(
+        'voice/welcome',
+        '/audio/voice/welcome.mp3',
+      );
+      expect(backend.play).toHaveBeenCalledWith('voice/welcome', {
+        volume: 1.0,
+      });
     });
 
     it('registers onEnd callback when onComplete provided', async () => {
@@ -188,7 +227,9 @@ describe('RealAudioManager', () => {
       audio.mute('voice');
       await audio.playVoice('welcome');
 
-      expect(backend.play).toHaveBeenCalledWith('welcome', { volume: 0 });
+      expect(backend.play).toHaveBeenCalledWith('narration/en/welcome', {
+        volume: 0,
+      });
     });
   });
 
@@ -305,7 +346,10 @@ describe('RealAudioManager', () => {
 
       expect(backend.load).toHaveBeenCalledWith('click', '/audio/sfx/click.mp3');
       expect(backend.load).toHaveBeenCalledWith('main-theme', '/audio/music/main-theme.mp3');
-      expect(backend.load).toHaveBeenCalledWith('welcome', '/audio/voice/welcome.mp3');
+      expect(backend.load).toHaveBeenCalledWith(
+        'narration/en/welcome',
+        '/audio/narration/en/welcome.mp3',
+      );
     });
 
     it('defaults to sfx category when no prefix', async () => {

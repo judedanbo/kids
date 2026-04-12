@@ -101,7 +101,9 @@ describe('RealAudioManager — graceful error handling', () => {
 
   describe('playVoice with missing asset', () => {
     beforeEach(() => {
-      backend = createMockBackend(new Set(['missing-voice']));
+      backend = createMockBackend(
+        new Set(['narration/en/missing-voice', 'voice/missing-voice']),
+      );
       manager = new RealAudioManager(backend);
     });
 
@@ -155,7 +157,14 @@ describe('RealAudioManager — speech synthesis fallback', () => {
 
   beforeEach(() => {
     vi.spyOn(console, 'warn').mockImplementation(() => {});
-    backend = createMockBackend(new Set(['word-cat', 'encouragement-correct']));
+    backend = createMockBackend(
+      new Set([
+        'narration/en/word-cat',
+        'voice/word-cat',
+        'narration/en/encouragement-correct',
+        'voice/encouragement-correct',
+      ]),
+    );
     manager = new RealAudioManager(backend);
     mockSpeak = vi.fn();
     mockCancel = vi.fn();
@@ -188,7 +197,9 @@ describe('RealAudioManager — speech synthesis fallback', () => {
   });
 
   it('does not speak for unrecognised key patterns', async () => {
-    backend = createMockBackend(new Set(['unknown-key']));
+    backend = createMockBackend(
+      new Set(['narration/en/unknown-key', 'voice/unknown-key']),
+    );
     manager = new RealAudioManager(backend);
     const onComplete = vi.fn();
     await manager.playVoice('voice:unknown-key', onComplete);
