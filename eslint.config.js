@@ -100,6 +100,20 @@ export default [
     },
   },
   {
+    files: ['tools/**/*.ts'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
+  {
     ignores: ['**/dist/**', '**/node_modules/**', '**/*.config.*'],
   },
 ];

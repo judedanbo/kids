@@ -1,0 +1,31 @@
+{
+  "name": "@kids-games-zone/audio-generator",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AI-driven content + TTS pipeline that generates pre-recorded audio for games.",
+  "bin": {
+    "gen-audio": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "content": "tsx src/cli.ts content",
+    "audio": "tsx src/cli.ts audio"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "execa": "^9.5.1",
+    "openai": "^4.73.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@kids-games-zone/shared": "workspace:*",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}
