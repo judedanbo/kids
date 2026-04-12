@@ -28,6 +28,7 @@ function makeProfile(overrides: Partial<UserProfile> = {}): UserProfile {
       longestStreak: 0,
       lastPlayedAt: '',
     },
+    deletedAt: null,
     ...overrides,
   };
 }

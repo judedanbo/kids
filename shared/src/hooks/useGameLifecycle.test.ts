@@ -32,6 +32,7 @@ const mockConfig: GameConfig = {
     preferences: { musicVolume: 0.5, sfxVolume: 0.7, voiceVolume: 1, language: 'en', theme: 'default' },
     progress: {}, rewards: [],
     stats: { totalPlayTime: 0, totalGamesPlayed: 0, currentStreak: 0, longestStreak: 0, lastPlayedAt: '' },
+    deletedAt: null,
   },
   settings: { soundEnabled: true, musicEnabled: true, backgroundMusicEnabled: true, language: 'en', highContrastMode: false },
 };
