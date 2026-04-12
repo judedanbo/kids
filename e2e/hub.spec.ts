@@ -109,10 +109,13 @@ test.describe('Hub Browsing and Filtering', () => {
   }) => {
     await createProfile({ name: 'TestKid', age: '7' });
 
-    await expect(
-      page.locator('[aria-label="Daily Challenge"]'),
-    ).toBeVisible();
-    await expect(page.locator('text=Play 3 games today')).toBeVisible();
+    // The challenge card always renders; its description is
+    // date-deterministic so we match any of the known templates.
+    const card = page.locator('[aria-label="Daily Challenge"]');
+    await expect(card).toBeVisible();
+    await expect(card).toContainText(
+      /(Play \d+ games today|Score \d+%\+ on|Try a game you haven't played before)/,
+    );
   });
 
   test('disabled feature flag game does not appear', async ({
