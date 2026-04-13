@@ -1,8 +1,48 @@
 import { render, screen, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { PlatformProvider, usePlatform } from './PlatformContext';
-import type { UserProfile } from '@kids-games-zone/shared';
+import {
+  PlatformProvider,
+  platformReducer,
+  usePlatform,
+  type GlobalState,
+} from './PlatformContext';
+import type { UserProfile, GameProgress } from '@kids-games-zone/shared';
 import type { StorageManager, AudioManager } from '@kids-games-zone/shared';
+
+function makeProgress(overrides: Partial<GameProgress> = {}): GameProgress {
+  return {
+    gameId: 'g1',
+    highScore: 0,
+    currentLevel: 1,
+    maxLevelReached: 1,
+    totalAttempts: 0,
+    totalTimePlayed: 0,
+    lastPlayedAt: new Date().toISOString(),
+    difficulty: 1,
+    ...overrides,
+  };
+}
+
+const initialTestState: GlobalState = {
+  currentProfile: null,
+  profiles: [],
+  gameRegistry: [],
+  session: { activeGameId: null, startedAt: null, elapsedTime: 0 },
+  settings: {
+    theme: 'light',
+    language: 'en',
+    timeLimits: {
+      enabled: false,
+      dailyLimitMinutes: 60,
+      sessionLimitMinutes: 30,
+      reminderBeforeEndMinutes: 5,
+      cooldownMinutes: 15,
+    },
+    highContrast: false,
+    backgroundMusicEnabled: true,
+    musicDuringGameplay: false,
+  },
+};
 
 function makeProfile(overrides: Partial<UserProfile> = {}): UserProfile {
   return {
@@ -174,5 +214,98 @@ describe('PlatformContext', () => {
       screen.getByText('End Session').click();
     });
     expect(screen.getByTestId('active-game').textContent).toBe('none');
+  });
+
+  describe('SOFT_DELETE_PROFILE', () => {
+    it('sets deletedAt on the matching profile in state', () => {
+      const p = makeProfile({ id: 'p1' });
+      const state = { ...initialTestState, profiles: [p] };
+      const next = platformReducer(state, {
+        type: 'SOFT_DELETE_PROFILE',
+        payload: { profileId: 'p1' },
+      });
+      expect(next.profiles[0].deletedAt).toBeTypeOf('string');
+    });
+
+    it('clears currentProfile if it matches the deleted profile', () => {
+      const p = makeProfile({ id: 'p1' });
+      const state = { ...initialTestState, profiles: [p], currentProfile: p };
+      const next = platformReducer(state, {
+        type: 'SOFT_DELETE_PROFILE',
+        payload: { profileId: 'p1' },
+      });
+      expect(next.currentProfile).toBeNull();
+    });
+
+    it('does not clear currentProfile when a different profile is deleted', () => {
+      const a = makeProfile({ id: 'a' });
+      const b = makeProfile({ id: 'b' });
+      const state = { ...initialTestState, profiles: [a, b], currentProfile: a };
+      const next = platformReducer(state, {
+        type: 'SOFT_DELETE_PROFILE',
+        payload: { profileId: 'b' },
+      });
+      expect(next.currentProfile?.id).toBe('a');
+    });
+  });
+
+  describe('RESTORE_PROFILE', () => {
+    it('clears deletedAt on the matching profile', () => {
+      const p = makeProfile({ id: 'p1', deletedAt: new Date().toISOString() });
+      const state = { ...initialTestState, profiles: [p] };
+      const next = platformReducer(state, {
+        type: 'RESTORE_PROFILE',
+        payload: { profileId: 'p1' },
+      });
+      expect(next.profiles[0].deletedAt).toBeNull();
+    });
+  });
+
+  describe('PURGE_PROFILE', () => {
+    it('removes the profile from the list', () => {
+      const a = makeProfile({ id: 'a' });
+      const b = makeProfile({ id: 'b' });
+      const state = { ...initialTestState, profiles: [a, b] };
+      const next = platformReducer(state, {
+        type: 'PURGE_PROFILE',
+        payload: { profileId: 'a' },
+      });
+      expect(next.profiles).toHaveLength(1);
+      expect(next.profiles[0].id).toBe('b');
+    });
+
+    it('clears currentProfile if it was purged', () => {
+      const a = makeProfile({ id: 'a' });
+      const state = { ...initialTestState, profiles: [a], currentProfile: a };
+      const next = platformReducer(state, {
+        type: 'PURGE_PROFILE',
+        payload: { profileId: 'a' },
+      });
+      expect(next.currentProfile).toBeNull();
+    });
+  });
+
+  describe('RESET_PROFILE_PROGRESS', () => {
+    it('clears progress on the matching profile in the list', () => {
+      const p = makeProfile({ id: 'p1' });
+      p.progress = { g1: makeProgress() };
+      const state = { ...initialTestState, profiles: [p] };
+      const next = platformReducer(state, {
+        type: 'RESET_PROFILE_PROGRESS',
+        payload: { profileId: 'p1' },
+      });
+      expect(next.profiles[0].progress).toEqual({});
+    });
+
+    it('also clears progress on currentProfile if it matches', () => {
+      const p = makeProfile({ id: 'p1' });
+      p.progress = { g1: makeProgress() };
+      const state = { ...initialTestState, profiles: [p], currentProfile: p };
+      const next = platformReducer(state, {
+        type: 'RESET_PROFILE_PROGRESS',
+        payload: { profileId: 'p1' },
+      });
+      expect(next.currentProfile?.progress).toEqual({});
+    });
   });
 });
