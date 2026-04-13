@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { usePlatform } from '../context/PlatformContext';
@@ -10,7 +10,13 @@ export default function ProfileSelect() {
   const { state, dispatch, storageManager } = usePlatform();
   const navigate = useNavigate();
   const { t } = useTranslation('common');
-  const [showCreator, setShowCreator] = useState(state.profiles.length === 0);
+
+  const activeProfiles = useMemo(
+    () => state.profiles.filter((p) => p.deletedAt === null),
+    [state.profiles],
+  );
+
+  const [showCreator, setShowCreator] = useState(activeProfiles.length === 0);
 
   function handleSelectProfile(profile: UserProfile) {
     dispatch({ type: 'SET_PROFILE', payload: profile });
@@ -24,11 +30,11 @@ export default function ProfileSelect() {
     navigate('/');
   }
 
-  if (showCreator) {
+  if (showCreator || activeProfiles.length === 0) {
     return (
       <ProfileCreator
         onComplete={handleCreateProfile}
-        onCancel={state.profiles.length > 0 ? () => setShowCreator(false) : undefined}
+        onCancel={activeProfiles.length > 0 ? () => setShowCreator(false) : undefined}
       />
     );
   }
@@ -37,7 +43,7 @@ export default function ProfileSelect() {
     <div className={styles.container}>
       <h1 className={styles.title}>{t('profile.whoIsPlaying')}</h1>
       <div className={styles.profileGrid}>
-        {state.profiles.map((profile) => (
+        {activeProfiles.map((profile) => (
           <button
             key={profile.id}
             className={`${styles.profileCard} ${
