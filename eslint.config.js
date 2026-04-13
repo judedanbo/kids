@@ -30,6 +30,7 @@ export default [
         fetch: 'readonly',
         URL: 'readonly',
         HTMLElement: 'readonly',
+        HTMLInputElement: 'readonly',
         Event: 'readonly',
         MouseEvent: 'readonly',
         KeyboardEvent: 'readonly',
@@ -45,6 +46,7 @@ export default [
         OscillatorType: 'readonly',
         speechSynthesis: 'readonly',
         SpeechSynthesisUtterance: 'readonly',
+        IDBKeyRange: 'readonly',
       },
     },
     plugins: {

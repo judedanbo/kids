@@ -1,4 +1,4 @@
-import { useId, useState, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './TypedConfirmModal.module.css';
 
@@ -27,9 +27,14 @@ export function TypedConfirmModal({
   const { t } = useTranslation('common');
   const [value, setValue] = useState('');
   const inputId = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
   const matches = value.trim().toLowerCase() === expected.trim().toLowerCase();
 
-  function handleSubmit(e: React.FormEvent) {
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (matches) onConfirm();
   }
@@ -52,13 +57,13 @@ export function TypedConfirmModal({
             {t('typedConfirm.typeToConfirm', { expected })}
           </label>
           <input
+            ref={inputRef}
             id={inputId}
             className={styles.input}
             type="text"
             value={value}
             onChange={(e) => setValue(e.target.value)}
             autoComplete="off"
-            autoFocus
           />
           <div className={styles.actions}>
             <button type="button" className={styles.cancelBtn} onClick={onCancel}>
