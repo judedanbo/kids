@@ -117,5 +117,8 @@
   "gameShell.resumeMusic": "Reprendre la musique",
   "gameShell.skipToGame": "Aller au jeu",
 
-  "offline.banner": "Vous êtes hors ligne — pas d'inquiétude, tout fonctionne encore !"
+  "offline.banner": "Vous êtes hors ligne — pas d'inquiétude, tout fonctionne encore !",
+
+  "typedConfirm.typeToConfirm": "Tapez {{expected}} pour confirmer :",
+  "typedConfirm.cancel": "Annuler"
 }

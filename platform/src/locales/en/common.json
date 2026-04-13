@@ -117,5 +117,8 @@
   "gameShell.resumeMusic": "Play music",
   "gameShell.skipToGame": "Skip to game",
 
-  "offline.banner": "You're offline — don't worry, everything still works!"
+  "offline.banner": "You're offline — don't worry, everything still works!",
+
+  "typedConfirm.typeToConfirm": "Type {{expected}} to confirm:",
+  "typedConfirm.cancel": "Cancel"
 }
