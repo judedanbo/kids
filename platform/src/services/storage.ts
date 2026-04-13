@@ -35,36 +35,48 @@ export class IndexedDBStorageManager implements StorageManager {
   }
 
   async init(): Promise<void> {
-    this.db = await openDB(this.dbName, 1, {
-      upgrade(db) {
-        // Profiles store
-        const profileStore = db.createObjectStore('profiles', { keyPath: 'id' });
-        profileStore.createIndex('name', 'name');
+    this.db = await openDB(this.dbName, 2, {
+      upgrade(db, oldVersion, _newVersion, tx) {
+        if (oldVersion < 1) {
+          const profileStore = db.createObjectStore('profiles', { keyPath: 'id' });
+          profileStore.createIndex('name', 'name');
 
-        // Progress store (compound key)
-        const progressStore = db.createObjectStore('progress', {
-          keyPath: ['profileId', 'gameId'],
-        });
-        progressStore.createIndex('profileId', 'profileId');
-        progressStore.createIndex('gameId', 'gameId');
+          const progressStore = db.createObjectStore('progress', {
+            keyPath: ['profileId', 'gameId'],
+          });
+          progressStore.createIndex('profileId', 'profileId');
+          progressStore.createIndex('gameId', 'gameId');
 
-        // Checkpoints store (compound key)
-        db.createObjectStore('checkpoints', {
-          keyPath: ['profileId', 'gameId'],
-        });
+          db.createObjectStore('checkpoints', {
+            keyPath: ['profileId', 'gameId'],
+          });
 
-        // Rewards store (auto-increment)
-        const rewardStore = db.createObjectStore('rewards', {
-          keyPath: 'id',
-          autoIncrement: true,
-        });
-        rewardStore.createIndex('profileId', 'profileId');
+          const rewardStore = db.createObjectStore('rewards', {
+            keyPath: 'id',
+            autoIncrement: true,
+          });
+          rewardStore.createIndex('profileId', 'profileId');
 
-        // Events store
-        const eventStore = db.createObjectStore('events', { keyPath: 'id' });
-        eventStore.createIndex('profileId', 'profileId');
-        eventStore.createIndex('timestamp', 'timestamp');
-        eventStore.createIndex('type', 'type');
+          const eventStore = db.createObjectStore('events', { keyPath: 'id' });
+          eventStore.createIndex('profileId', 'profileId');
+          eventStore.createIndex('timestamp', 'timestamp');
+          eventStore.createIndex('type', 'type');
+        }
+
+        if (oldVersion < 2) {
+          // Backfill `deletedAt: null` on every existing profile row.
+          (async () => {
+            const profileStore = tx.objectStore('profiles');
+            let cursor = await profileStore.openCursor();
+            while (cursor) {
+              const value = cursor.value as UserProfile;
+              if (value.deletedAt === undefined) {
+                await cursor.update({ ...value, deletedAt: null });
+              }
+              cursor = await cursor.continue();
+            }
+          })();
+        }
       },
     });
   }
@@ -89,8 +101,96 @@ export class IndexedDBStorageManager implements StorageManager {
     return this.getDB().getAll('profiles');
   }
 
-  async deleteProfile(profileId: string): Promise<void> {
-    await this.getDB().delete('profiles', profileId);
+  async listActiveProfiles(): Promise<UserProfile[]> {
+    const all = await this.listProfiles();
+    return all.filter((p) => p.deletedAt === null);
+  }
+
+  async softDeleteProfile(profileId: string): Promise<void> {
+    const profile = await this.loadProfile(profileId);
+    if (!profile) {
+      throw new Error(`Profile ${profileId} not found`);
+    }
+    const updated: UserProfile = {
+      ...profile,
+      deletedAt: new Date().toISOString(),
+    };
+    await this.saveProfile(updated);
+  }
+
+  async restoreProfile(profileId: string): Promise<void> {
+    const profile = await this.loadProfile(profileId);
+    if (!profile) {
+      throw new Error(`Profile ${profileId} not found`);
+    }
+    const updated: UserProfile = { ...profile, deletedAt: null };
+    await this.saveProfile(updated);
+  }
+
+  async purgeProfile(profileId: string): Promise<void> {
+    const db = this.getDB();
+    const tx = db.transaction(
+      ['profiles', 'progress', 'checkpoints', 'rewards', 'events'],
+      'readwrite',
+    );
+
+    // Profile row
+    await tx.objectStore('profiles').delete(profileId);
+
+    // Progress + checkpoints: compound key [profileId, gameId]. Iterate a
+    // bound key range that matches all entries for this profileId.
+    const profileKeyRange = IDBKeyRange.bound([profileId], [profileId, []]);
+    for (const storeName of ['progress', 'checkpoints'] as const) {
+      const store = tx.objectStore(storeName);
+      let cursor = await store.openCursor(profileKeyRange);
+      while (cursor) {
+        await cursor.delete();
+        cursor = await cursor.continue();
+      }
+    }
+
+    // Rewards: scan the `profileId` index.
+    const rewardStore = tx.objectStore('rewards');
+    const rewardIndex = rewardStore.index('profileId');
+    let rewardCursor = await rewardIndex.openCursor(profileId);
+    while (rewardCursor) {
+      await rewardCursor.delete();
+      rewardCursor = await rewardCursor.continue();
+    }
+
+    // Events: scan the `profileId` index.
+    const eventStore = tx.objectStore('events');
+    const eventIndex = eventStore.index('profileId');
+    let eventCursor = await eventIndex.openCursor(profileId);
+    while (eventCursor) {
+      await eventCursor.delete();
+      eventCursor = await eventCursor.continue();
+    }
+
+    await tx.done;
+  }
+
+  async resetProfileProgress(profileId: string): Promise<void> {
+    const db = this.getDB();
+
+    // Delete all progress + checkpoints for this profile.
+    const tx = db.transaction(['progress', 'checkpoints'], 'readwrite');
+    const profileKeyRange = IDBKeyRange.bound([profileId], [profileId, []]);
+    for (const storeName of ['progress', 'checkpoints'] as const) {
+      const store = tx.objectStore(storeName);
+      let cursor = await store.openCursor(profileKeyRange);
+      while (cursor) {
+        await cursor.delete();
+        cursor = await cursor.continue();
+      }
+    }
+    await tx.done;
+
+    // Clear `progress` on the profile row itself.
+    const profile = await this.loadProfile(profileId);
+    if (profile) {
+      await this.saveProfile({ ...profile, progress: {} });
+    }
   }
 
   async saveProgress(

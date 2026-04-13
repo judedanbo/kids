@@ -81,13 +81,55 @@ describe('IndexedDBStorageManager', () => {
       expect(profiles.map((p) => p.name).sort()).toEqual(['Alice', 'Bob']);
     });
 
-    it('deletes a profile', async () => {
+    it('purgeProfile deletes the profile row', async () => {
       const profile = makeProfile();
       await storage.saveProfile(profile);
-      await storage.deleteProfile(profile.id);
+      await storage.purgeProfile(profile.id);
 
       const loaded = await storage.loadProfile(profile.id);
       expect(loaded).toBeNull();
+    });
+
+    it('listActiveProfiles excludes soft-deleted profiles', async () => {
+      const active = makeProfile({ name: 'Active Kid' });
+      const deleted = makeProfile({
+        name: 'Deleted Kid',
+        deletedAt: new Date().toISOString(),
+      });
+      await storage.saveProfile(active);
+      await storage.saveProfile(deleted);
+
+      const activeList = await storage.listActiveProfiles();
+      expect(activeList).toHaveLength(1);
+      expect(activeList[0].name).toBe('Active Kid');
+
+      const allList = await storage.listProfiles();
+      expect(allList).toHaveLength(2);
+    });
+
+    it('softDeleteProfile sets deletedAt but keeps row', async () => {
+      const profile = makeProfile();
+      await storage.saveProfile(profile);
+
+      await storage.softDeleteProfile(profile.id);
+
+      const loaded = await storage.loadProfile(profile.id);
+      expect(loaded).not.toBeNull();
+      expect(loaded?.deletedAt).toBeTypeOf('string');
+    });
+
+    it('restoreProfile clears deletedAt', async () => {
+      const profile = makeProfile({ deletedAt: new Date().toISOString() });
+      await storage.saveProfile(profile);
+
+      await storage.restoreProfile(profile.id);
+
+      const loaded = await storage.loadProfile(profile.id);
+      expect(loaded?.deletedAt).toBeNull();
+    });
+
+    it('softDeleteProfile on a missing profile throws', async () => {
+      await expect(storage.softDeleteProfile('nope')).rejects.toThrow();
     });
 
     it('overwrites existing profile on save', async () => {
@@ -211,6 +253,85 @@ describe('IndexedDBStorageManager', () => {
     it('returns empty array with no matching events', async () => {
       const events = await storage.getEvents({ profileId: 'nonexistent' });
       expect(events).toEqual([]);
+    });
+  });
+
+  describe('cascade operations', () => {
+    it('purgeProfile deletes profile and all related data', async () => {
+      const profile = makeProfile();
+      await storage.saveProfile(profile);
+      await storage.saveProgress(profile.id, 'g1', makeProgress());
+      await storage.saveCheckpoint(profile.id, 'g1', { foo: 'bar' });
+      await storage.unlockReward(profile.id, {
+        id: 'r1',
+        type: 'star',
+        name: 'Star',
+        description: '',
+        icon: '⭐',
+        criteria: { type: 'completion', threshold: 1 },
+      });
+      await storage.logEvent({
+        id: globalThis.crypto.randomUUID(),
+        type: 'game_start',
+        profileId: profile.id,
+        timestamp: new Date().toISOString(),
+        data: {},
+      });
+
+      await storage.purgeProfile(profile.id);
+
+      expect(await storage.loadProfile(profile.id)).toBeNull();
+      expect(await storage.loadProgress(profile.id, 'g1')).toBeNull();
+      expect(await storage.loadCheckpoint(profile.id, 'g1')).toBeNull();
+      expect(await storage.getRewards(profile.id)).toEqual([]);
+      expect(await storage.getEvents({ profileId: profile.id })).toEqual([]);
+    });
+
+    it('purgeProfile does not touch other profiles data', async () => {
+      const a = makeProfile({ name: 'A' });
+      const b = makeProfile({ name: 'B' });
+      await storage.saveProfile(a);
+      await storage.saveProfile(b);
+      await storage.saveProgress(a.id, 'g1', makeProgress());
+      await storage.saveProgress(b.id, 'g1', makeProgress());
+
+      await storage.purgeProfile(a.id);
+
+      expect(await storage.loadProfile(b.id)).not.toBeNull();
+      expect(await storage.loadProgress(b.id, 'g1')).not.toBeNull();
+    });
+
+    it('resetProfileProgress wipes progress and checkpoints only', async () => {
+      const profile = makeProfile();
+      profile.progress = { g1: makeProgress() };
+      await storage.saveProfile(profile);
+      await storage.saveProgress(profile.id, 'g1', makeProgress());
+      await storage.saveCheckpoint(profile.id, 'g1', { level: 5 });
+      await storage.unlockReward(profile.id, {
+        id: 'r1',
+        type: 'star',
+        name: 'Star',
+        description: '',
+        icon: '⭐',
+        criteria: { type: 'completion', threshold: 1 },
+      });
+      await storage.logEvent({
+        id: globalThis.crypto.randomUUID(),
+        type: 'game_end',
+        profileId: profile.id,
+        timestamp: new Date().toISOString(),
+        data: {},
+      });
+
+      await storage.resetProfileProgress(profile.id);
+
+      expect(await storage.loadProgress(profile.id, 'g1')).toBeNull();
+      expect(await storage.loadCheckpoint(profile.id, 'g1')).toBeNull();
+      expect(await storage.getRewards(profile.id)).toHaveLength(1);
+      expect(await storage.getEvents({ profileId: profile.id })).toHaveLength(1);
+
+      const reloaded = await storage.loadProfile(profile.id);
+      expect(reloaded?.progress).toEqual({});
     });
   });
 });
