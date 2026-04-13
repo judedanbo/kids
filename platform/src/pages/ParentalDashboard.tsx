@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { usePlatform } from '../context/PlatformContext';
 import { AdultGate } from '../components/AdultGate';
 import { PinEntry } from '../components/PinEntry';
-import type { AnalyticsEvent } from '@kids-games-zone/shared';
+import { TypedConfirmModal } from '../components/TypedConfirmModal';
+import type { AnalyticsEvent, UserProfile } from '@kids-games-zone/shared';
 import styles from './ParentalDashboard.module.css';
 
 type GateState = 'adult_gate' | 'pin_entry' | 'dashboard';
@@ -72,6 +73,8 @@ function Dashboard({
   navigate: ReturnType<typeof useNavigate>;
 }) {
   const { t } = useTranslation('common');
+  const { state } = usePlatform();
+  const allProfiles = state.profiles;
   // Activity summary
   const today = new Date().toISOString().slice(0, 10);
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -112,6 +115,73 @@ function Dashboard({
 
   // Game progress table
   const gameProgress = Object.values(profile.progress);
+
+  // --- Profile management ---
+  // Reset and restore use window.confirm (non-destructive / reversible).
+  // Delete and permanent delete use TypedConfirmModal (require typing name).
+  type PendingAction =
+    | { kind: 'delete'; profile: UserProfile }
+    | { kind: 'purge'; profile: UserProfile }
+    | null;
+
+  const [pending, setPending] = useState<PendingAction>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+
+  function formatLastPlayed(iso: string): string {
+    if (!iso) return t('parental.profiles.never');
+    const d = new Date(iso);
+    return d.toLocaleDateString();
+  }
+
+  async function handleReset(p: UserProfile) {
+    const ok = window.confirm(
+      t('parental.profiles.confirmResetTitle', { name: p.name }) +
+        '\n\n' +
+        t('parental.profiles.confirmResetBody'),
+    );
+    if (!ok) return;
+    setActionError(null);
+    try {
+      await storageManager.resetProfileProgress(p.id);
+      dispatch({ type: 'RESET_PROFILE_PROGRESS', payload: { profileId: p.id } });
+    } catch (err) {
+      setActionError((err as Error).message);
+    }
+  }
+
+  async function handleRestore(p: UserProfile) {
+    const ok = window.confirm(
+      t('parental.profiles.confirmRestoreTitle', { name: p.name }) +
+        '\n\n' +
+        t('parental.profiles.confirmRestoreBody', { name: p.name }),
+    );
+    if (!ok) return;
+    setActionError(null);
+    try {
+      await storageManager.restoreProfile(p.id);
+      dispatch({ type: 'RESTORE_PROFILE', payload: { profileId: p.id } });
+    } catch (err) {
+      setActionError((err as Error).message);
+    }
+  }
+
+  async function confirmPending() {
+    if (!pending) return;
+    setActionError(null);
+    const { kind, profile: p } = pending;
+    try {
+      if (kind === 'delete') {
+        await storageManager.softDeleteProfile(p.id);
+        dispatch({ type: 'SOFT_DELETE_PROFILE', payload: { profileId: p.id } });
+      } else {
+        await storageManager.purgeProfile(p.id);
+        dispatch({ type: 'PURGE_PROFILE', payload: { profileId: p.id } });
+      }
+      setPending(null);
+    } catch (err) {
+      setActionError((err as Error).message);
+    }
+  }
 
   const handleResetProgress = (gameId: string) => {
     const resetProgress = {
@@ -224,6 +294,104 @@ function Dashboard({
           </div>
         )}
       </section>
+
+      {/* Profiles */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>{t('parental.profiles.title')}</h2>
+        {actionError && <p className={styles.error}>{actionError}</p>}
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th scope="col">{t('parental.profiles.headerProfile')}</th>
+                <th scope="col">{t('parental.profiles.headerStatus')}</th>
+                <th scope="col">{t('parental.profiles.headerLastPlayed')}</th>
+                <th scope="col">{t('parental.profiles.headerActions')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allProfiles.map((p) => {
+                const isDeleted = p.deletedAt !== null;
+                return (
+                  <tr key={p.id}>
+                    <td>
+                      <span className={styles.profileRow}>
+                        <span className={styles.profileAvatar}>{p.avatar}</span>
+                        <span className={styles.profileName}>{p.name}</span>
+                      </span>
+                    </td>
+                    <td>
+                      <span
+                        className={`${styles.statusBadge} ${
+                          isDeleted ? styles.statusDeleted : styles.statusActive
+                        }`}
+                      >
+                        {isDeleted
+                          ? t('parental.profiles.statusDeleted')
+                          : t('parental.profiles.statusActive')}
+                      </span>
+                    </td>
+                    <td>{isDeleted ? '—' : formatLastPlayed(p.stats.lastPlayedAt)}</td>
+                    <td>
+                      <div className={styles.profileActions}>
+                        {!isDeleted && (
+                          <>
+                            <button onClick={() => handleReset(p)}>
+                              {t('parental.profiles.resetProgress')}
+                            </button>
+                            <button
+                              className={styles.dangerBtn}
+                              onClick={() => setPending({ kind: 'delete', profile: p })}
+                            >
+                              {t('parental.profiles.delete')}
+                            </button>
+                          </>
+                        )}
+                        {isDeleted && (
+                          <>
+                            <button onClick={() => handleRestore(p)}>
+                              {t('parental.profiles.restore')}
+                            </button>
+                            <button
+                              className={styles.dangerBtn}
+                              onClick={() => setPending({ kind: 'purge', profile: p })}
+                            >
+                              {t('parental.profiles.deletePermanently')}
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Typed-confirmation modals for destructive actions */}
+      {pending?.kind === 'delete' && (
+        <TypedConfirmModal
+          title={t('parental.profiles.confirmDeleteTitle', { name: pending.profile.name })}
+          description={t('parental.profiles.confirmDeleteBody', { name: pending.profile.name })}
+          expected={pending.profile.name}
+          confirmLabel={t('parental.profiles.confirmDeleteAction')}
+          onConfirm={confirmPending}
+          onCancel={() => setPending(null)}
+        />
+      )}
+      {pending?.kind === 'purge' && (
+        <TypedConfirmModal
+          title={t('parental.profiles.confirmPurgeTitle', { name: pending.profile.name })}
+          description={t('parental.profiles.confirmPurgeBody', { name: pending.profile.name })}
+          warning={t('parental.profiles.confirmPurgeWarning')}
+          expected={pending.profile.name}
+          confirmLabel={t('parental.profiles.confirmPurgeAction')}
+          onConfirm={confirmPending}
+          onCancel={() => setPending(null)}
+        />
+      )}
     </div>
   );
 }
