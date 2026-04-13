@@ -65,6 +65,11 @@ export class IndexedDBStorageManager implements StorageManager {
 
         if (oldVersion < 2) {
           // Backfill `deletedAt: null` on every existing profile row.
+          // Fire-and-forget is safe: `openCursor()` synchronously registers a
+          // request on the versionchange `tx`, so `openDB()` keeps `tx` alive
+          // until `tx.done` settles. idb bridges `await` across microtasks so
+          // the cursor loop doesn't lose the tx. Do NOT await anything else
+          // before the first openCursor call.
           (async () => {
             const profileStore = tx.objectStore('profiles');
             let cursor = await profileStore.openCursor();
@@ -173,7 +178,11 @@ export class IndexedDBStorageManager implements StorageManager {
   async resetProfileProgress(profileId: string): Promise<void> {
     const db = this.getDB();
 
-    // Delete all progress + checkpoints for this profile.
+    // Two separate transactions by design: the stores tx is scoped narrowly
+    // so adding `profiles` later (to fold the row write in) would require
+    // widening the tx. `profile.progress` is eventual-consistency over the
+    // progress store; a crash between the two writes leaves the profile row
+    // briefly stale but the store-of-record clean.
     const tx = db.transaction(['progress', 'checkpoints'], 'readwrite');
     const profileKeyRange = IDBKeyRange.bound([profileId], [profileId, []]);
     for (const storeName of ['progress', 'checkpoints'] as const) {
