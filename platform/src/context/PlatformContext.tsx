@@ -284,9 +284,12 @@ export function PlatformProvider({
         const profiles = await storageManager.listProfiles();
         dispatch({ type: 'LOAD_PROFILES', payload: profiles });
 
-        // Set last active profile if available
-        if (profiles.length > 0) {
-          const sorted = [...profiles].sort(
+        // Set last active profile among those not soft-deleted. A just-deleted
+        // profile still has the most recent lastPlayedAt, so filtering here is
+        // what keeps the soft-delete honoured across reloads.
+        const activeProfiles = profiles.filter((p) => p.deletedAt === null);
+        if (activeProfiles.length > 0) {
+          const sorted = [...activeProfiles].sort(
             (a, b) =>
               new Date(b.stats.lastPlayedAt || b.createdAt).getTime() -
               new Date(a.stats.lastPlayedAt || a.createdAt).getTime(),
