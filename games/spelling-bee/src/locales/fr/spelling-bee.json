@@ -33,5 +33,9 @@
   "levelEncourageExplorer": "Beau travail ! Prêt pour le prochain défi ?",
   "sessionComplete": "Tu as complété {{levels}} niveaux !",
   "reachedLevel": "Tu as atteint le niveau {{level}} !",
-  "imageFallbackLabel": "Image indisponible"
+  "imageFallbackLabel": "Image indisponible",
+  "gameOverTitle": "Bien essayé !",
+  "gameOverSubtitle": "Tu as atteint le niveau {{level}}",
+  "tryAgain": "Réessayer",
+  "backToHome": "Retour"
 }
