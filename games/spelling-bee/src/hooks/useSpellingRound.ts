@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { AgeTier } from '@kids-games-zone/shared';
 import type { WordEntry } from '../utils/wordSelector';
 
@@ -16,7 +16,11 @@ interface UseSpellingRoundOptions {
 interface SpellingRoundState {
   phase: RoundPhase;
   currentWordIndex: number;
-  currentWord: WordEntry;
+  /**
+   * Undefined only in the empty-words edge case (phase === 'complete' from
+   * the first render). Callers should guard by checking phase first.
+   */
+  currentWord: WordEntry | undefined;
   score: number;
   maxScore: number;
   isCorrect: boolean | null;
@@ -34,21 +38,40 @@ export function useSpellingRound(
   const { words, ageTier, onScorePoint, lives, onLifeLost, onRoundComplete } = options;
   const isTiny = ageTier === 'tiny';
 
-  const [phase, setPhase] = useState<RoundPhase>('playing');
+  const isEmpty = words.length === 0;
+  const [phase, setPhase] = useState<RoundPhase>(isEmpty ? 'complete' : 'playing');
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const wordsCorrectRef = useRef(0);
+  const hasNotifiedRef = useRef(false);
 
   // Sync lives from props into a ref for reliable reads in callbacks
   const livesRef = useRef(lives);
   livesRef.current = lives;
 
   const maxScore = words.length;
-  const currentWord = words[currentWordIndex] ?? words[0];
+  const currentWord = words[currentWordIndex];
+
+  // If constructed with an empty words array, notify the parent once
+  // (post-render, via effect) so the session hook can advance past the
+  // broken round instead of hanging on it. The hasNotifiedRef gate ensures
+  // this fires at most once per hook instance, so repeated empty→non-empty
+  // transitions (unusual) don't cascade into duplicate notifications.
+  useEffect(() => {
+    if (!isEmpty || hasNotifiedRef.current) return;
+    hasNotifiedRef.current = true;
+    if (import.meta.env.DEV) {
+      console.error(
+        '[spelling-bee] useSpellingRound received empty words array — check selectWords layered fallback or word-pool JSON',
+      );
+    }
+    onRoundComplete(0, 0);
+  }, [isEmpty, onRoundComplete]);
 
   const submitAnswer = useCallback(
     (answer: string) => {
+      if (!currentWord) return;
       const correct = answer.toLowerCase() === currentWord.word.toLowerCase();
       setIsCorrect(correct);
       setPhase('feedback');

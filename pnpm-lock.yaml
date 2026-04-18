@@ -164,6 +164,9 @@ importers:
       '@kids-games-zone/shared':
         specifier: workspace:*
         version: link:../../shared
+      focus-trap-react:
+        specifier: ^10.0.0
+        version: 10.3.1(prop-types@15.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.0.0
         version: 19.2.4

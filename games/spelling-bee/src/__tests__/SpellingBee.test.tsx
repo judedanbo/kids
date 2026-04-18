@@ -149,4 +149,14 @@ describe('SpellingBee', () => {
     fireEvent.click(screen.getByText('letsGo'));
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it('does not render the game-over dialog during normal play', () => {
+    render(<SpellingBee {...createMockProps()} />);
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('does not render a dialog while still on the instruction screen', () => {
+    render(<SpellingBee {...createTinyProps()} />);
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
 });

@@ -4,6 +4,8 @@ import { selectWords, type WordEntry } from '../utils/wordSelector';
 
 export type SessionPhase = 'instruction' | 'playing' | 'level-transition' | 'complete';
 
+export type SessionOutcome = 'victory' | 'out-of-lives' | null;
+
 export const TOTAL_LEVELS = 5;
 export const LEVEL_WORD_COUNTS = [3, 4, 5, 6, 7];
 export const ADVANCEMENT_THRESHOLD = 0.7;
@@ -57,6 +59,7 @@ export interface SessionState {
   sessionMaxScore: number;
   levelsCompleted: number;
   highestDifficulty: number;
+  outcome: SessionOutcome;
 }
 
 export interface SessionActions {
@@ -65,6 +68,7 @@ export interface SessionActions {
   loseLife: () => void;
   startNextLevel: () => void;
   addScore: (points: number) => void;
+  restart: () => void;
 }
 
 export function useSessionLevels(
@@ -85,6 +89,7 @@ export function useSessionLevels(
   const [sessionMaxScore, setSessionMaxScore] = useState(0);
   const [levelsCompleted, setLevelsCompleted] = useState(0);
   const [highestDifficulty, setHighestDifficulty] = useState(startingDifficulty);
+  const [outcome, setOutcome] = useState<SessionOutcome>(null);
 
   const [levelWords, setLevelWords] = useState<WordEntry[]>(() => {
     const plan = ladderRef.current[0];
@@ -121,7 +126,15 @@ export function useSessionLevels(
       const currentDiff = ladderRef.current[currentLevelRef.current - 1].difficulty;
       setHighestDifficulty((prev) => Math.max(prev, currentDiff));
 
-      if (currentLevelRef.current >= TOTAL_LEVELS || livesRef.current <= 0) {
+      // Victory takes precedence over out-of-lives: if the player reached
+      // the final level (even on their last life), reward the completion.
+      if (currentLevelRef.current >= TOTAL_LEVELS) {
+        setOutcome('victory');
+        setSessionPhase('complete');
+        return;
+      }
+      if (livesRef.current <= 0) {
+        setOutcome('out-of-lives');
         setSessionPhase('complete');
         return;
       }
@@ -160,6 +173,31 @@ export function useSessionLevels(
     setSessionPhase('playing');
   }, [wordPool]);
 
+  const restart = useCallback(() => {
+    ladderRef.current = buildLadder(startingDifficulty);
+    usedWordsRef.current = [];
+    livesRef.current = isTiny ? Infinity : SESSION_LIVES;
+    currentLevelRef.current = 1;
+
+    const plan = ladderRef.current[0];
+    const words = selectWords(wordPool, {
+      difficulty: plan.difficulty,
+      count: plan.wordCount,
+      exclude: [],
+    });
+    usedWordsRef.current = words.map((w) => w.word);
+
+    setCurrentLevel(1);
+    setLives(isTiny ? Infinity : SESSION_LIVES);
+    setSessionScore(0);
+    setSessionMaxScore(0);
+    setLevelsCompleted(0);
+    setHighestDifficulty(startingDifficulty);
+    setLevelWords(words);
+    setOutcome(null);
+    setSessionPhase('playing');
+  }, [startingDifficulty, isTiny, wordPool]);
+
   return {
     sessionPhase,
     currentLevel,
@@ -172,10 +210,12 @@ export function useSessionLevels(
     sessionMaxScore,
     levelsCompleted,
     highestDifficulty,
+    outcome,
     dismissInstruction,
     completeLevel,
     loseLife,
     startNextLevel,
     addScore,
+    restart,
   };
 }
