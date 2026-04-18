@@ -16,6 +16,10 @@ interface UseSpellingRoundOptions {
 interface SpellingRoundState {
   phase: RoundPhase;
   currentWordIndex: number;
+  /**
+   * Undefined only in the empty-words edge case (phase === 'complete' from
+   * the first render). Callers should guard by checking phase first.
+   */
   currentWord: WordEntry | undefined;
   score: number;
   maxScore: number;
@@ -40,6 +44,7 @@ export function useSpellingRound(
   const [score, setScore] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const wordsCorrectRef = useRef(0);
+  const hasNotifiedRef = useRef(false);
 
   // Sync lives from props into a ref for reliable reads in callbacks
   const livesRef = useRef(lives);
@@ -48,21 +53,21 @@ export function useSpellingRound(
   const maxScore = words.length;
   const currentWord = words[currentWordIndex];
 
-  // If constructed with no words, notify the parent once (post-render, via
-  // effect) so the session hook can advance past the broken round instead
-  // of hanging on it. Calling parent callbacks during render is a React
-  // anti-pattern; the effect defers it safely.
+  // If constructed with an empty words array, notify the parent once
+  // (post-render, via effect) so the session hook can advance past the
+  // broken round instead of hanging on it. The hasNotifiedRef gate ensures
+  // this fires at most once per hook instance, so repeated empty→non-empty
+  // transitions (unusual) don't cascade into duplicate notifications.
   useEffect(() => {
-    if (!isEmpty) return;
+    if (!isEmpty || hasNotifiedRef.current) return;
+    hasNotifiedRef.current = true;
     if (import.meta.env.DEV) {
-      console.error('[spelling-bee] useSpellingRound received empty words array');
+      console.error(
+        '[spelling-bee] useSpellingRound received empty words array — check selectWords layered fallback or word-pool JSON',
+      );
     }
     onRoundComplete(0, 0);
-    // Intentionally only runs on the first render that sees an empty words
-    // array. If the parent re-renders with a non-empty array later, this
-    // effect correctly stays idle.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEmpty]);
+  }, [isEmpty, onRoundComplete]);
 
   const submitAnswer = useCallback(
     (answer: string) => {
