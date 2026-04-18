@@ -126,8 +126,10 @@ export function useSessionLevels(
       const currentDiff = ladderRef.current[currentLevelRef.current - 1].difficulty;
       setHighestDifficulty((prev) => Math.max(prev, currentDiff));
 
-      // Victory takes precedence over out-of-lives: if the player reached
-      // the final level (even on their last life), reward the completion.
+      // Any completion at level 5 is treated as a victory, regardless of
+      // that level's accuracy — reaching level 5 is itself an achievement
+      // for kids, and tightening to require a passing score would punish
+      // players who got unlucky on their final-life attempt.
       if (currentLevelRef.current >= TOTAL_LEVELS) {
         setOutcome('victory');
         setSessionPhase('complete');
