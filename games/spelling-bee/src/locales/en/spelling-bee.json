@@ -32,5 +32,6 @@
   "levelEncourageJunior": "Keep going, you're doing great!",
   "levelEncourageExplorer": "Nice work! Ready for the next challenge?",
   "sessionComplete": "You completed {{levels}} levels!",
-  "reachedLevel": "You reached Level {{level}}!"
+  "reachedLevel": "You reached Level {{level}}!",
+  "imageFallbackLabel": "Picture unavailable"
 }
