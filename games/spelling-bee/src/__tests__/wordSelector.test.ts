@@ -25,7 +25,7 @@ describe('selectWords', () => {
 
   it('returns fewer words if pool is smaller than count', () => {
     const result = selectWords(wordsTiny, { difficulty: 1, count: 100 });
-    expect(result.length).toBeLessThanOrEqual(wordsTiny.filter((w) => w.difficulty <= 1).length);
+    expect(result.length).toBeLessThanOrEqual(wordsTiny.length);
   });
 
   it('shuffles the result (non-deterministic, run multiple times)', () => {
@@ -52,11 +52,39 @@ describe('selectWords', () => {
     expect(words).not.toContain('sun');
   });
 
-  it('returns empty array when all eligible words are excluded', () => {
+  it('widens difficulty when the at-or-below pool is fully excluded', () => {
     const allDiff1 = wordsTiny.filter((w) => w.difficulty <= 1);
     const excludeAll = allDiff1.map((w) => w.word);
     const result = selectWords(wordsTiny, { difficulty: 1, count: 5, exclude: excludeAll });
-    expect(result).toHaveLength(0);
+    expect(result).toHaveLength(5);
+    for (const word of result) {
+      expect(word.difficulty).toBeLessThanOrEqual(3);
+      expect(excludeAll).not.toContain(word.word);
+    }
+  });
+
+  it('allows repeats when widening is still not enough', () => {
+    const narrowPool = [
+      { word: 'a', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
+      { word: 'b', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
+    ];
+    const result = selectWords(narrowPool, {
+      difficulty: 1,
+      count: 5,
+      exclude: ['a', 'b'],
+    });
+    expect(result).toHaveLength(2);
+    const words = result.map((w) => w.word).sort();
+    expect(words).toEqual(['a', 'b']);
+  });
+
+  it('primary path prefers words at-or-below target and keeps exclude honored', () => {
+    const result = selectWords(wordsJunior, { difficulty: 4, count: 3, exclude: ['book'] });
+    expect(result).toHaveLength(3);
+    for (const word of result) {
+      expect(word.difficulty).toBeLessThanOrEqual(4);
+      expect(word.word).not.toBe('book');
+    }
   });
 
   it('works normally when exclude is omitted', () => {
