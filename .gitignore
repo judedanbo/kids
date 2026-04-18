@@ -8,6 +8,7 @@ coverage
 .DS_Store
 .superpowers
 .worktrees
+.claude/
 
 # Playwright
 test-results/
