@@ -30,7 +30,7 @@ A review of the Spelling Bee game surfaced three player-visible bugs worth fixin
 |----------|--------|------------------------|
 | Game-over UX | Distinct overlay variant with "Try again" button | Same overlay with different copy; full separate `GameOverOverlay` component |
 | Retry semantics | Full restart from level 1 at original `startDifficulty` | Retry current level only; user-choose |
-| Overlay implementation | Add `variant: 'victory' \| 'tryAgain'` prop to existing `CelebrationOverlay` | Fork new `GameOverOverlay` |
+| Overlay implementation | New game-local `GameOverOverlay` component in `games/spelling-bee/src/components/` | Extend shared `CelebrationOverlay` with a variant prop |
 | Image fallback | Neutral placeholder (🐝 glyph) sized to match the image slot | Hide image area; show word text; cascading fallback URLs |
 | Image fallback location | Local state in `WordDisplay` | Lift into hook; preload check |
 | Empty-pool fallback | Layered relaxation inside `selectWords` (widen difficulty → allow repeats → whole pool) | Session-start guard; end-game-as-win; hook-level guard only |
@@ -57,18 +57,39 @@ The hook also exposes `restart(): void`:
 - Resets lives (`Infinity` for tiny, `3` otherwise), score, `excludeRef.current`, `currentLevel`, `outcome`.
 - Sets `phase` to `'playing'` for all tiers on restart. Non-tiny sessions normally start in `'instruction'`, but on retry the player has already played once; skipping instructions is deliberate.
 
-### Overlay changes
+### New `GameOverOverlay` component
 
-Add a `variant: 'victory' | 'tryAgain'` prop to `CelebrationOverlay`. Same layout, different content driven by variant:
+A new game-local component at `games/spelling-bee/src/components/GameOverOverlay.tsx`. It is **not** a variant of the shared `CelebrationOverlay` — that component auto-dismisses and fires confetti, which are wrong behaviors for game-over. Keeping them separate preserves `CelebrationOverlay`'s single purpose and avoids ripples to other games.
 
-| Variant | Title key | Subtitle key | Emoji | Buttons |
-|---------|-----------|--------------|-------|---------|
-| `victory` | existing `celebrationTitle` | existing `celebrationSubtitle` | 🌟 (existing) | existing exit/home button |
-| `tryAgain` | new `gameOverTitle` → "Good try!" | new `gameOverSubtitle` → "You reached Level {{level}}" | 🐝 | new `tryAgain` button + existing exit/home button |
+Props:
 
-### Wiring
+```ts
+interface GameOverOverlayProps {
+  levelReached: number;
+  score: number;
+  maxScore: number;
+  onRetry: () => void;
+  onExit: () => void;
+}
+```
 
-`SpellingBee.tsx` (around line 106) reads `session.outcome` and passes the variant plus an `onRetry={session.restart}` callback when variant is `'tryAgain'`. The `variant='victory'` path is unchanged.
+Behavior:
+
+- No confetti, no auto-dismiss. The kid controls when to leave.
+- Renders title (`gameOverTitle` i18n key → "Good try!"), subtitle (`gameOverSubtitle` → "You reached Level {{level}}"), score, 🐝 emoji.
+- Two buttons: "Try again" (new `tryAgain` key) wired to `onRetry`; "Back" (reuse existing `back` key if present, otherwise new `exit` key) wired to `onExit`.
+- `role="dialog"`, `aria-modal="true"`, `aria-labelledby` pointing to the title element.
+- On mount, move focus to the "Try again" button (default primary action).
+- CSS: match the visual language of `CelebrationOverlay` (same overlay backdrop, centered content card) using its own CSS module; respect `prefers-reduced-motion` for any entrance animation.
+
+### Wiring in `SpellingBee.tsx`
+
+Inside the `sessionPhase === 'complete'` branch (currently around line 102-118), switch on `session.outcome`:
+
+- `'victory'` → render existing `CelebrationOverlay` (unchanged).
+- `'out-of-lives'` → render the new `GameOverOverlay` with `onRetry={session.restart}` and `onExit={onExit}`.
+
+The victory path stays as-is end-to-end.
 
 ## Fix 2: Image Fallback
 
@@ -123,10 +144,15 @@ Even with the fallback, defensive check: if `words.length === 0` reaches the hoo
 
 ### Component tests — `SpellingBee`
 
-- When `outcome === 'out-of-lives'`, `CelebrationOverlay` renders with the `tryAgain` variant (assert via button's key/`aria-label`).
-- Clicking "Try again" invokes `restart()` and the overlay disappears (game returns to playing state).
-- Existing victory path still renders the `victory` variant.
+- When `outcome === 'out-of-lives'`, `GameOverOverlay` is rendered and `CelebrationOverlay` is not (assert by role/aria).
+- When `outcome === 'victory'`, `CelebrationOverlay` is rendered and `GameOverOverlay` is not.
+- Clicking "Try again" in the `GameOverOverlay` invokes `session.restart()` and the game returns to the playing state (overlay gone).
 - Axe check on the game-over state, matching the existing axe test at `SpellingBee.test.tsx:142-151`.
+
+### Component tests — `GameOverOverlay`
+
+- Renders title, subtitle, score, and both buttons; `role="dialog"` and `aria-modal` are set; "Try again" has initial focus.
+- `onRetry` fires when "Try again" is clicked; `onExit` fires when "Back" is clicked.
 
 ### Component tests — `WordDisplay`
 
