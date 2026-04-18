@@ -162,20 +162,30 @@ describe('SpellingBee', () => {
   });
 
   it('plays word audio exactly once after dismissing instruction, even in StrictMode', () => {
-    const props = createMockProps();
-    render(
-      <StrictMode>
-        <SpellingBee {...props} />
-      </StrictMode>,
-    );
+    // Fake timers prevent the shared Announcer's uncleaned setTimeout from
+    // firing after jsdom teardown (Announcer.tsx:28 schedules setMessage
+    // without a cleanup; not our bug to fix here).
+    vi.useFakeTimers();
+    try {
+      const props = createMockProps();
+      render(
+        <StrictMode>
+          <SpellingBee {...props} />
+        </StrictMode>,
+      );
 
-    // Dismiss instruction → phase becomes 'playing', the play-word
-    // effect fires. Without the guard, StrictMode fires it twice.
-    fireEvent.click(screen.getByText('letsGo'));
+      // Dismiss instruction → phase becomes 'playing', the play-word
+      // effect fires. Without the guard, StrictMode fires it twice.
+      fireEvent.click(screen.getByText('letsGo'));
 
-    const wordPlays = (props.audioManager.playVoice as ReturnType<typeof vi.fn>).mock.calls.filter(
-      (call: unknown[]) => typeof call[0] === 'string' && call[0].startsWith('voice:word-'),
-    );
-    expect(wordPlays).toHaveLength(1);
+      const wordPlays = (
+        props.audioManager.playVoice as ReturnType<typeof vi.fn>
+      ).mock.calls.filter(
+        (call: unknown[]) => typeof call[0] === 'string' && call[0].startsWith('voice:word-'),
+      );
+      expect(wordPlays).toHaveLength(1);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
