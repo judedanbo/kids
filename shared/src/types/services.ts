@@ -19,11 +19,32 @@ export interface StorageManager {
   saveProfile(profile: UserProfile): Promise<void>;
   loadProfile(profileId: string): Promise<UserProfile | null>;
   listProfiles(): Promise<UserProfile[]>;
+  /** Returns only profiles where `deletedAt === null`. */
+  listActiveProfiles(): Promise<UserProfile[]>;
   saveProgress(profileId: string, gameId: string, progress: GameProgress): Promise<void>;
   loadProgress(profileId: string, gameId: string): Promise<GameProgress | null>;
   saveCheckpoint(profileId: string, gameId: string, data: unknown): Promise<void>;
   loadCheckpoint(profileId: string, gameId: string): Promise<unknown | null>;
-  deleteProfile(profileId: string): Promise<void>;
+  /**
+   * Marks the profile as deleted by setting `deletedAt`. The profile row and
+   * all its progress/checkpoints/rewards/events are retained until
+   * `purgeProfile` is called.
+   */
+  softDeleteProfile(profileId: string): Promise<void>;
+  /** Clears `deletedAt`, making the profile active again. */
+  restoreProfile(profileId: string): Promise<void>;
+  /**
+   * Permanently removes the profile row plus cascades: deletes all rows in
+   * `progress`, `checkpoints`, `rewards`, and `events` matching the given
+   * `profileId`. Irreversible.
+   */
+  purgeProfile(profileId: string): Promise<void>;
+  /**
+   * Wipes progress + checkpoints for a profile and clears
+   * `profile.progress` on the profile row. Leaves rewards, events, stats,
+   * and preferences untouched.
+   */
+  resetProfileProgress(profileId: string): Promise<void>;
   unlockReward(profileId: string, reward: Reward): Promise<void>;
   getRewards(profileId: string): Promise<Reward[]>;
   logEvent(event: AnalyticsEvent): Promise<void>;

@@ -55,11 +55,15 @@ export type PlatformAction =
   | { type: 'UNLOCK_REWARD'; payload: { profileId: string; reward: Reward } }
   | { type: 'UPDATE_STATS'; payload: { profileId: string; stats: Partial<UserProfile['stats']> } }
   | { type: 'LOAD_PROFILES'; payload: UserProfile[] }
-  | { type: 'SET_SETTINGS'; payload: Partial<PlatformSettings> };
+  | { type: 'SET_SETTINGS'; payload: Partial<PlatformSettings> }
+  | { type: 'SOFT_DELETE_PROFILE'; payload: { profileId: string } }
+  | { type: 'RESTORE_PROFILE'; payload: { profileId: string } }
+  | { type: 'PURGE_PROFILE'; payload: { profileId: string } }
+  | { type: 'RESET_PROFILE_PROGRESS'; payload: { profileId: string } };
 
 // --- Reducer ---
 
-function platformReducer(state: GlobalState, action: PlatformAction): GlobalState {
+export function platformReducer(state: GlobalState, action: PlatformAction): GlobalState {
   switch (action.type) {
     case 'SET_PROFILE':
       return { ...state, currentProfile: action.payload };
@@ -147,6 +151,53 @@ function platformReducer(state: GlobalState, action: PlatformAction): GlobalStat
         settings: { ...state.settings, ...action.payload },
       };
 
+    case 'SOFT_DELETE_PROFILE': {
+      const { profileId } = action.payload;
+      const now = new Date().toISOString();
+      return {
+        ...state,
+        profiles: state.profiles.map((p) =>
+          p.id === profileId ? { ...p, deletedAt: now } : p,
+        ),
+        currentProfile:
+          state.currentProfile?.id === profileId ? null : state.currentProfile,
+      };
+    }
+
+    case 'RESTORE_PROFILE': {
+      const { profileId } = action.payload;
+      return {
+        ...state,
+        profiles: state.profiles.map((p) =>
+          p.id === profileId ? { ...p, deletedAt: null } : p,
+        ),
+      };
+    }
+
+    case 'PURGE_PROFILE': {
+      const { profileId } = action.payload;
+      return {
+        ...state,
+        profiles: state.profiles.filter((p) => p.id !== profileId),
+        currentProfile:
+          state.currentProfile?.id === profileId ? null : state.currentProfile,
+      };
+    }
+
+    case 'RESET_PROFILE_PROGRESS': {
+      const { profileId } = action.payload;
+      return {
+        ...state,
+        profiles: state.profiles.map((p) =>
+          p.id === profileId ? { ...p, progress: {} } : p,
+        ),
+        currentProfile:
+          state.currentProfile?.id === profileId
+            ? { ...state.currentProfile, progress: {} }
+            : state.currentProfile,
+      };
+    }
+
     default:
       return state;
   }
@@ -233,9 +284,12 @@ export function PlatformProvider({
         const profiles = await storageManager.listProfiles();
         dispatch({ type: 'LOAD_PROFILES', payload: profiles });
 
-        // Set last active profile if available
-        if (profiles.length > 0) {
-          const sorted = [...profiles].sort(
+        // Set last active profile among those not soft-deleted. A just-deleted
+        // profile still has the most recent lastPlayedAt, so filtering here is
+        // what keeps the soft-delete honoured across reloads.
+        const activeProfiles = profiles.filter((p) => p.deletedAt === null);
+        if (activeProfiles.length > 0) {
+          const sorted = [...activeProfiles].sort(
             (a, b) =>
               new Date(b.stats.lastPlayedAt || b.createdAt).getTime() -
               new Date(a.stats.lastPlayedAt || a.createdAt).getTime(),

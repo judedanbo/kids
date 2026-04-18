@@ -58,4 +58,6 @@ export interface UserProfile {
     longestStreak: number;
     lastPlayedAt: string;
   };
+  /** ISO timestamp set when the profile is soft-deleted. `null` for active profiles. */
+  deletedAt: string | null;
 }

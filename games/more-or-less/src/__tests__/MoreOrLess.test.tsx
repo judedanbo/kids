@@ -32,6 +32,7 @@ function createMockProps(overrides: Partial<GameProps> = {}): GameProps {
           longestStreak: 0,
           lastPlayedAt: '',
         },
+        deletedAt: null,
       },
       settings: {
         soundEnabled: true,

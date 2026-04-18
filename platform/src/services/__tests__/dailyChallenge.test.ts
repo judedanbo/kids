@@ -35,6 +35,7 @@ function makeProfile(overrides: Partial<UserProfile> = {}): UserProfile {
     progress: {},
     rewards: [],
     stats: { totalPlayTime: 0, totalGamesPlayed: 0, currentStreak: 0, longestStreak: 0, lastPlayedAt: '' },
+    deletedAt: null,
     ...overrides,
   };
 }

@@ -116,6 +116,7 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
         longestStreak: 0,
         lastPlayedAt: '',
       },
+      deletedAt: null,
     };
 
     onComplete(profile);
