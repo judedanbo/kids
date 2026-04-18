@@ -58,6 +58,13 @@ export function useSpellingRound(
   // broken round instead of hanging on it. The hasNotifiedRef gate ensures
   // this fires at most once per hook instance, so repeated empty→non-empty
   // transitions (unusual) don't cascade into duplicate notifications.
+  //
+  // Dev-only note: React strict-mode mounts components twice, so this
+  // effect fires twice in dev when it fires at all. The ref is fresh per
+  // mount, so the guard doesn't help across strict-mode's throwaway mount.
+  // Not worth fixing because the empty-words path is unreachable in
+  // practice — Layer 4 of selectWords guarantees a non-empty array for
+  // any real word pool.
   useEffect(() => {
     if (!isEmpty || hasNotifiedRef.current) return;
     hasNotifiedRef.current = true;
