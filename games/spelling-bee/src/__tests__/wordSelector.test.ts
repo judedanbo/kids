@@ -23,9 +23,9 @@ describe('selectWords', () => {
     expect(Math.max(...difficulties)).toBe(5);
   });
 
-  it('returns fewer words if pool is smaller than count', () => {
-    const result = selectWords(wordsTiny, { difficulty: 1, count: 100 });
-    expect(result.length).toBeLessThanOrEqual(wordsTiny.length);
+  it('clamps result to the pool size when count exceeds the entire pool', () => {
+    const result = selectWords(wordsTiny, { difficulty: 1, count: 1000 });
+    expect(result).toHaveLength(wordsTiny.length);
   });
 
   it('shuffles the result (non-deterministic, run multiple times)', () => {
@@ -76,6 +76,34 @@ describe('selectWords', () => {
     expect(result).toHaveLength(2);
     const words = result.map((w) => w.word).sort();
     expect(words).toEqual(['a', 'b']);
+  });
+
+  it('uses repeats while honoring the +2 difficulty ceiling (Layer 3)', () => {
+    // Pool has 5 words at difficulty 1-3, and 2 words at difficulty 10.
+    // Target difficulty 1, all difficulty 1-3 words excluded, count = 5.
+    // Layer 1 & 2 skip (eligible after exclude is empty), Layer 3 fires
+    // (pool has 5 words within diff+2=3 when exclude is ignored).
+    // Layer 4 should NOT fire — the ceiling should hold.
+    const pool = [
+      { word: 'a', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
+      { word: 'b', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
+      { word: 'c', difficulty: 2, image: '', definition: '', origin: '', sentence: '' },
+      { word: 'd', difficulty: 2, image: '', definition: '', origin: '', sentence: '' },
+      { word: 'e', difficulty: 3, image: '', definition: '', origin: '', sentence: '' },
+      { word: 'hard1', difficulty: 10, image: '', definition: '', origin: '', sentence: '' },
+      { word: 'hard2', difficulty: 10, image: '', definition: '', origin: '', sentence: '' },
+    ];
+    const result = selectWords(pool, {
+      difficulty: 1,
+      count: 5,
+      exclude: ['a', 'b', 'c', 'd', 'e'],
+    });
+    expect(result).toHaveLength(5);
+    // Every returned word must be within the +2 ceiling — no hard1/hard2.
+    for (const word of result) {
+      expect(word.difficulty).toBeLessThanOrEqual(3);
+      expect(['hard1', 'hard2']).not.toContain(word.word);
+    }
   });
 
   it('primary path prefers words at-or-below target and keeps exclude honored', () => {
