@@ -44,6 +44,13 @@ describe('GameOverOverlay', () => {
     expect(onExit).toHaveBeenCalledTimes(1);
   });
 
+  it('calls onExit when Escape is pressed', () => {
+    const onExit = vi.fn();
+    renderOverlay({ onExit });
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(onExit).toHaveBeenCalledTimes(1);
+  });
+
   it('uses role="dialog" with aria-modal and aria-labelledby', () => {
     renderOverlay();
     const dialog = screen.getByRole('dialog');
