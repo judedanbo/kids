@@ -50,23 +50,17 @@ export function LevelPlay({
     onRoundComplete,
   });
 
-  if (round.phase === 'complete' || !round.currentWord) {
-    return null;
-  }
-
-  const currentWord = round.currentWord;
-
   const tiles = useMemo(
-    () => (isTiny ? scrambleWithDistractors(currentWord.word, 3) : []),
-    [isTiny, currentWord.word],
+    () => (isTiny && round.currentWord ? scrambleWithDistractors(round.currentWord.word, 3) : []),
+    [isTiny, round.currentWord],
   );
 
   useEffect(() => {
-    if (round.phase === 'playing') {
-      audioManager.playVoice(`voice:word-${currentWord.word}`);
+    if (round.phase === 'playing' && round.currentWord) {
+      audioManager.playVoice(`voice:word-${round.currentWord.word}`);
       announce(t('wordOf', { current: round.currentWordIndex + 1, total: words.length }));
     }
-  }, [round.phase, round.currentWordIndex, currentWord.word, audioManager, announce, t, words.length]);
+  }, [round.phase, round.currentWordIndex, round.currentWord, audioManager, announce, t, words.length]);
 
   useEffect(() => {
     if (round.phase !== 'feedback') return;
@@ -78,6 +72,10 @@ export function LevelPlay({
       if (isTiny) audioManager.playVoice('voice:encouragement-tryagain');
     }
   }, [round.phase, round.isCorrect, audioManager, isTiny]);
+
+  if (round.phase === 'complete' || !round.currentWord) {
+    return null;
+  }
 
   const showFeedback = round.phase === 'feedback';
 
