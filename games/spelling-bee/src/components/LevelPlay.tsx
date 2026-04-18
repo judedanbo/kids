@@ -55,6 +55,13 @@ export function LevelPlay({
     [isTiny, round.currentWord],
   );
 
+  // Guard against React StrictMode's double-invoked effects firing
+  // audioManager.playVoice twice. Keyed on phase+word so real transitions
+  // (new word, re-entering 'playing' for another word) still fire audio.
+  // Test coverage for this is deliberately deferred — a direct StrictMode
+  // test triggers a latent setTimeout leak in the shared Announcer
+  // component that crashes jsdom teardown. Fixing Announcer is tracked
+  // separately.
   const lastPlayedKeyRef = useRef<string | null>(null);
 
   useEffect(() => {
