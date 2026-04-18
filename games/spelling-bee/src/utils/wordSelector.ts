@@ -54,19 +54,36 @@ export function selectWords(pool: WordEntry[], options: SelectOptions): WordEntr
 }
 
 function pickFrom(candidates: WordEntry[], targetDifficulty: number, count: number): WordEntry[] {
-  const sorted = [...candidates].sort((a, b) => {
-    const distA = targetDifficulty - a.difficulty;
-    const distB = targetDifficulty - b.difficulty;
-    if (distA !== distB) return distA - distB;
-    return Math.random() - 0.5;
-  });
-
-  const selected = sorted.slice(0, count);
-
-  for (let i = selected.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [selected[i], selected[j]] = [selected[j], selected[i]];
+  // Bucket candidates by distance-to-target so we can shuffle within each
+  // distance band before slicing. This gives per-session variety among
+  // same-distance candidates without relying on Math.random() in a sort
+  // comparator (which is an unstable-sort anti-pattern).
+  const byDistance = new Map<number, WordEntry[]>();
+  for (const w of candidates) {
+    const d = targetDifficulty - w.difficulty;
+    const group = byDistance.get(d);
+    if (group) group.push(w);
+    else byDistance.set(d, [w]);
   }
 
+  // Closest buckets first. Within each bucket: shuffle, then concat.
+  const ordered: WordEntry[] = [];
+  const keys = [...byDistance.keys()].sort((a, b) => a - b);
+  for (const key of keys) {
+    const group = byDistance.get(key)!;
+    shuffleInPlace(group);
+    ordered.push(...group);
+    if (ordered.length >= count) break;
+  }
+
+  const selected = ordered.slice(0, count);
+  shuffleInPlace(selected);
   return selected;
+}
+
+function shuffleInPlace<T>(arr: T[]): void {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
 }
