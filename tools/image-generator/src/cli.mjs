@@ -26,6 +26,7 @@
 import 'dotenv/config';
 import { mkdir, writeFile, access } from 'node:fs/promises';
 import { dirname, relative } from 'node:path';
+import { setTimeout as sleep } from 'node:timers/promises';
 import { buildManifest, REPO_ROOT } from './manifest.mjs';
 
 // --- Arg parsing -----------------------------------------------------------
@@ -40,6 +41,7 @@ function parseArgs(argv) {
     list: false,
     force: false,
     concurrency: 3,
+    delay: 1000,
     model: 'gpt-image-1',
     quality: 'medium',
   };
@@ -54,6 +56,7 @@ function parseArgs(argv) {
       case '--category': opts.category = argv[++i]; break;
       case '--only':     opts.only = argv[++i].split(',').map((s) => s.trim()); break;
       case '--concurrency': opts.concurrency = Number(argv[++i]); break;
+      case '--delay': opts.delay = Number(argv[++i]); break;
       case '--model': opts.model = argv[++i]; break;
       case '--quality': opts.quality = argv[++i]; break;
       case '-h': case '--help': printHelp(); process.exit(0);
@@ -68,7 +71,7 @@ function printHelp() {
 
 Flags: --pilot | --full | --category <x> | --only a,b,c
        --dry-run | --list | --force
-       --concurrency <n> | --model <name> | --quality <low|medium|high>`);
+       --concurrency <n> | --delay <ms> | --model <name> | --quality <low|medium|high>`);
 }
 
 // --- Cost estimate (rough; real prices vary — treat as a guardrail) ---------
@@ -180,12 +183,16 @@ async function main() {
   const { default: OpenAI } = await import('openai');
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-  console.log(`Generating with model=${opts.model} quality=${opts.quality} concurrency=${opts.concurrency}...\n`);
+  console.log(`Generating with model=${opts.model} quality=${opts.quality} concurrency=${opts.concurrency} delay=${opts.delay}ms...\n`);
   const start = Date.now();
   const results = await runPool(todo, opts.concurrency, async (entry) => {
     process.stdout.write(`  → ${entry.id}... `);
-    await generateOne(openai, entry, opts);
-    process.stdout.write('ok\n');
+    try {
+      await generateOne(openai, entry, opts);
+      process.stdout.write('ok\n');
+    } finally {
+      if (opts.delay > 0) await sleep(opts.delay);
+    }
   });
 
   const failures = results.filter((r) => !r.ok);
