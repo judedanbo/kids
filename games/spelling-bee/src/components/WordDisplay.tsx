@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { AgeTier, AudioManager } from '@kids-games-zone/shared';
 import type { WordEntry } from '../utils/wordSelector';
@@ -16,6 +16,11 @@ export function WordDisplay({ word, ageTier, audioManager }: WordDisplayProps) {
   const [showDefinition, setShowDefinition] = useState(false);
   const [showOrigin, setShowOrigin] = useState(false);
   const [showSentence, setShowSentence] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    setImageError(false);
+  }, [word.word]);
 
   const handlePlayWord = useCallback(() => {
     audioManager.playVoice(`voice:word-${word.word}`);
@@ -41,12 +46,23 @@ export function WordDisplay({ word, ageTier, audioManager }: WordDisplayProps) {
 
   return (
     <div className={styles.container}>
-      {isTiny && word.image && (
+      {isTiny && word.image && !imageError && (
         <img
           src={`/images/spelling-bee/${word.image}`}
           alt={word.word}
           className={styles.wordImage}
+          onError={() => setImageError(true)}
         />
+      )}
+
+      {isTiny && (!word.image || imageError) && (
+        <div
+          className={styles.imageFallback}
+          role="img"
+          aria-label={t('imageFallbackLabel')}
+        >
+          <span aria-hidden="true">🐝</span>
+        </div>
       )}
 
       <button className={styles.playButton} onClick={handlePlayWord} aria-label={t('playWord')}>
