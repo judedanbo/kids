@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { AgeTier } from '@kids-games-zone/shared';
 import type { WordEntry } from '../utils/wordSelector';
 
@@ -16,7 +16,7 @@ interface UseSpellingRoundOptions {
 interface SpellingRoundState {
   phase: RoundPhase;
   currentWordIndex: number;
-  currentWord: WordEntry;
+  currentWord: WordEntry | undefined;
   score: number;
   maxScore: number;
   isCorrect: boolean | null;
@@ -34,7 +34,8 @@ export function useSpellingRound(
   const { words, ageTier, onScorePoint, lives, onLifeLost, onRoundComplete } = options;
   const isTiny = ageTier === 'tiny';
 
-  const [phase, setPhase] = useState<RoundPhase>('playing');
+  const isEmpty = words.length === 0;
+  const [phase, setPhase] = useState<RoundPhase>(isEmpty ? 'complete' : 'playing');
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -45,10 +46,27 @@ export function useSpellingRound(
   livesRef.current = lives;
 
   const maxScore = words.length;
-  const currentWord = words[currentWordIndex] ?? words[0];
+  const currentWord = words[currentWordIndex];
+
+  // If constructed with no words, notify the parent once (post-render, via
+  // effect) so the session hook can advance past the broken round instead
+  // of hanging on it. Calling parent callbacks during render is a React
+  // anti-pattern; the effect defers it safely.
+  useEffect(() => {
+    if (!isEmpty) return;
+    if (import.meta.env.DEV) {
+      console.error('[spelling-bee] useSpellingRound received empty words array');
+    }
+    onRoundComplete(0, 0);
+    // Intentionally only runs on the first render that sees an empty words
+    // array. If the parent re-renders with a non-empty array later, this
+    // effect correctly stays idle.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEmpty]);
 
   const submitAnswer = useCallback(
     (answer: string) => {
+      if (!currentWord) return;
       const correct = answer.toLowerCase() === currentWord.word.toLowerCase();
       setIsCorrect(correct);
       setPhase('feedback');
