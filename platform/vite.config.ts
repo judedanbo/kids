@@ -24,7 +24,10 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,mp3,png,webp,svg,ico}'],
+        // Precache the app shell + PWA icons only. Bulk content assets
+        // (mp3, webp) are handled by runtimeCaching below — precaching
+        // thousands of them blows past practical SW install limits.
+        globPatterns: ['**/*.{js,css,html,svg,ico,png}'],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         navigateFallback: 'index.html',
         runtimeCaching: [
@@ -32,8 +35,16 @@ export default defineConfig({
             urlPattern: /\.(?:woff2|mp3)$/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'assets-cache',
-              expiration: { maxEntries: 50, maxAgeSeconds: 365 * 24 * 60 * 60 },
+              cacheName: 'audio-fonts',
+              expiration: { maxEntries: 1200, maxAgeSeconds: 365 * 24 * 60 * 60 },
+            },
+          },
+          {
+            urlPattern: /\.webp$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'images',
+              expiration: { maxEntries: 400, maxAgeSeconds: 365 * 24 * 60 * 60 },
             },
           },
         ],
