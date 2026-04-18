@@ -20,8 +20,6 @@
   "livesRemaining": "{{lives}} lives remaining",
   "celebrationTitle": "Great Spelling!",
   "finalScore": "You spelled {{score}} of {{total}} words correctly!",
-  "encourageTiny": "Well done!",
-  "encourageJunior": "Nice spelling!",
   "gameOver": "Game Over",
   "levelOf": "Level {{current}} of {{total}}",
   "levelComplete": "Level {{level}} Complete!",

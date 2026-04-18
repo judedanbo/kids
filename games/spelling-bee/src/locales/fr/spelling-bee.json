@@ -20,8 +20,6 @@
   "livesRemaining": "{{lives}} vies restantes",
   "celebrationTitle": "Super orthographe !",
   "finalScore": "Tu as épelé {{score}} mots sur {{total}} correctement !",
-  "encourageTiny": "Bien joué !",
-  "encourageJunior": "Belle orthographe !",
   "gameOver": "Fin de partie",
   "levelOf": "Niveau {{current}} sur {{total}}",
   "levelComplete": "Niveau {{level}} terminé !",
