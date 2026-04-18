@@ -1,3 +1,4 @@
+import { StrictMode } from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { axe } from 'vitest-axe';
@@ -158,5 +159,23 @@ describe('SpellingBee', () => {
   it('does not render a dialog while still on the instruction screen', () => {
     render(<SpellingBee {...createTinyProps()} />);
     expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('plays word audio exactly once after dismissing instruction, even in StrictMode', () => {
+    const props = createMockProps();
+    render(
+      <StrictMode>
+        <SpellingBee {...props} />
+      </StrictMode>,
+    );
+
+    // Dismiss instruction → phase becomes 'playing', the play-word
+    // effect fires. Without the guard, StrictMode fires it twice.
+    fireEvent.click(screen.getByText('letsGo'));
+
+    const wordPlays = (props.audioManager.playVoice as ReturnType<typeof vi.fn>).mock.calls.filter(
+      (call: unknown[]) => typeof call[0] === 'string' && call[0].startsWith('voice:word-'),
+    );
+    expect(wordPlays).toHaveLength(1);
   });
 });

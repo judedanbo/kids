@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   OptionButton,
@@ -55,11 +55,15 @@ export function LevelPlay({
     [isTiny, round.currentWord],
   );
 
+  const lastPlayedKeyRef = useRef<string | null>(null);
+
   useEffect(() => {
-    if (round.phase === 'playing' && round.currentWord) {
-      audioManager.playVoice(`voice:word-${round.currentWord.word}`);
-      announce(t('wordOf', { current: round.currentWordIndex + 1, total: words.length }));
-    }
+    if (round.phase !== 'playing' || !round.currentWord) return;
+    const key = `playing:${round.currentWord.word}`;
+    if (lastPlayedKeyRef.current === key) return;
+    lastPlayedKeyRef.current = key;
+    audioManager.playVoice(`voice:word-${round.currentWord.word}`);
+    announce(t('wordOf', { current: round.currentWordIndex + 1, total: words.length }));
   }, [round.phase, round.currentWordIndex, round.currentWord, audioManager, announce, t, words.length]);
 
   useEffect(() => {
