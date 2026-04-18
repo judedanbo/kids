@@ -25,6 +25,9 @@ function getWordPool(ageTier: AgeTier) {
   }
 }
 
+// Design note: any animations added to spelling-bee components should gate
+// on `useReducedMotion()` from framer-motion. The shared CelebrationOverlay
+// and PauseMenu already follow this pattern; follow them.
 export function SpellingBee({ config, onScore, onComplete, onExit, audioManager }: GameProps) {
   const { t } = useTranslation('spelling-bee');
   const startTimeRef = useRef(Date.now());
