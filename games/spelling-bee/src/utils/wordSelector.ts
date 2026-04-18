@@ -77,6 +77,8 @@ function pickFrom(candidates: WordEntry[], targetDifficulty: number, count: numb
   }
 
   const selected = ordered.slice(0, count);
+  // Re-shuffle so closer-difficulty words aren't always at the front of
+  // the round when buckets straddle the count boundary.
   shuffleInPlace(selected);
   return selected;
 }
