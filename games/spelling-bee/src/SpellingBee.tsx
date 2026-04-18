@@ -11,6 +11,7 @@ import { useSessionLevels } from './hooks/useSessionLevels';
 import { LevelPlay } from './components/LevelPlay';
 import { LevelIndicator } from './components/LevelIndicator';
 import { LevelTransition } from './components/LevelTransition';
+import { GameOverOverlay } from './components/GameOverOverlay';
 import wordsTiny from './data/words-tiny.json';
 import wordsJunior from './data/words-junior.json';
 import wordsExplorer from './data/words-explorer.json';
@@ -100,10 +101,21 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
   }
 
   if (session.sessionPhase === 'complete') {
-    const completionMessage =
-      session.levelsCompleted >= session.totalLevels
-        ? t('sessionComplete', { levels: session.levelsCompleted })
-        : t('reachedLevel', { level: session.levelsCompleted });
+    if (session.outcome === 'out-of-lives') {
+      return (
+        <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+          <GameOverOverlay
+            levelReached={session.levelsCompleted}
+            score={session.sessionScore}
+            maxScore={session.sessionMaxScore}
+            onRetry={session.restart}
+            onExit={onExit}
+          />
+        </GameShell>
+      );
+    }
+
+    const completionMessage = t('sessionComplete', { levels: session.levelsCompleted });
 
     return (
       <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
