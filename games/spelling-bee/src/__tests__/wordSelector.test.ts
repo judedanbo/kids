@@ -63,7 +63,11 @@ describe('selectWords', () => {
     }
   });
 
-  it('allows repeats when widening is still not enough', () => {
+  it('falls through to whole-pool fallback when the pool is smaller than count', () => {
+    // Pool has 2 unique words and both are excluded — Layer 3 can't
+    // satisfy count (2 < 5), so Layer 4 returns whatever the whole pool
+    // offers. Layer 3 proper is covered by the 'uses repeats while
+    // honoring the +2 difficulty ceiling (Layer 3)' test below.
     const narrowPool = [
       { word: 'a', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
       { word: 'b', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
