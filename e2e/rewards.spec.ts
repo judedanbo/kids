@@ -14,10 +14,10 @@ test.describe('Rewards Gallery', () => {
     // Should show "0 / 7 unlocked"
     await expect(page.locator('text=0 / 7 unlocked')).toBeVisible();
 
-    // "First Star" reward should exist but be locked
-    await expect(page.locator('text=First Star')).toBeVisible();
-    // The lock icon (🔒) should be shown for locked rewards
-    await expect(page.locator('text=🔒').first()).toBeVisible();
+    // "First Star" reward card should exist in a locked state. Check the
+    // card's aria-label rather than the 🔒 emoji — the emoji only renders
+    // when the lock image fails to load.
+    await expect(page.getByLabel(/First Star — Locked/)).toBeVisible();
   });
 
   test('earns "First Star" reward after completing a game', async ({
