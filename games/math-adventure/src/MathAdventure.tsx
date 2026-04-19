@@ -156,6 +156,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
       <GameShell
         title={t('title')}
         onBack={onExit}
+        disableBackConfirm
         audioManager={audioManager}
         musicEnabled={config.settings.backgroundMusicEnabled}
       >
