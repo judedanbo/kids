@@ -47,5 +47,9 @@
     "groupLabel": "Clavier à l'écran",
     "backspace": "Retour arrière",
     "submit": "Valider"
-  }
+  },
+  "exitConfirmTitle": "Quitter le jeu ?",
+  "exitConfirmMessage": "Tu perdras ta progression dans cette partie.",
+  "exitConfirmConfirm": "Quitter",
+  "exitConfirmCancel": "Continuer"
 }

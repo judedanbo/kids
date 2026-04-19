@@ -47,5 +47,9 @@
     "groupLabel": "On-screen keyboard",
     "backspace": "Backspace",
     "submit": "Submit"
-  }
+  },
+  "exitConfirmTitle": "Leave the game?",
+  "exitConfirmMessage": "You'll lose your progress in this session.",
+  "exitConfirmConfirm": "Exit game",
+  "exitConfirmCancel": "Keep playing"
 }
