@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAnnounce } from '@kids-games-zone/shared';
 import styles from './Keyboard.module.css';
 
@@ -14,6 +15,7 @@ interface KeyboardProps {
 }
 
 export function Keyboard({ onSubmit, disabled = false }: KeyboardProps) {
+  const { t } = useTranslation('spelling-bee');
   const announce = useAnnounce();
   const [typed, setTyped] = useState('');
 
@@ -39,7 +41,7 @@ export function Keyboard({ onSubmit, disabled = false }: KeyboardProps) {
   return (
     <div className={styles.container}>
       <div className={styles.typedWord} aria-live="polite" aria-label={`Typed: ${typed || 'nothing yet'}`}>
-        {typed || <span className={styles.placeholder}>Type your answer...</span>}
+        {typed || <span className={styles.placeholder}>{t('typePlaceholder')}</span>}
       </div>
 
       <div className={styles.keyboard} role="group" aria-label="On-screen keyboard">

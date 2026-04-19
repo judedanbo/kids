@@ -35,5 +35,7 @@
   "gameOverTitle": "Good try!",
   "gameOverSubtitle": "You reached Level {{level}}",
   "tryAgain": "Try again",
-  "backToHome": "Back"
+  "backToHome": "Back",
+  "typePlaceholder": "Type your answer...",
+  "undoLetter": "← Undo"
 }

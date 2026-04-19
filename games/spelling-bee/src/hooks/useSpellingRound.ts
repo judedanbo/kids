@@ -45,6 +45,11 @@ export function useSpellingRound(
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const wordsCorrectRef = useRef(0);
   const hasNotifiedRef = useRef(false);
+  // Guards nextWord against a second fire (rapid double-click on the
+  // "Next Word" button). Without it, onRoundComplete — and therefore
+  // useSessionLevels.completeLevel — would run twice, double-incrementing
+  // levelsCompleted and sessionMaxScore.
+  const hasCompletedRef = useRef(false);
 
   // Sync lives from props into a ref for reliable reads in callbacks
   const livesRef = useRef(lives);
@@ -95,12 +100,14 @@ export function useSpellingRound(
   );
 
   const nextWord = useCallback(() => {
+    if (hasCompletedRef.current) return;
     setIsCorrect(null);
 
     const isLastWord = currentWordIndex >= words.length - 1;
     const outOfLives = !isTiny && livesRef.current <= 0;
 
     if (isLastWord || outOfLives) {
+      hasCompletedRef.current = true;
       setPhase('complete');
       onRoundComplete(wordsCorrectRef.current, currentWordIndex + 1);
       return;
