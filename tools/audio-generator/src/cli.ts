@@ -19,9 +19,7 @@ import {
 } from './paths.js';
 
 const program = new Command();
-program
-  .name('gen-audio')
-  .description('AI content + TTS pipeline for kids-games-zone');
+program.name('gen-audio').description('AI content + TTS pipeline for kids-games-zone');
 
 program
   .command('content')
@@ -73,9 +71,7 @@ program
       outputDir: `platform/public/audio/narration/${langShort}`,
     });
 
-    console.log(
-      `Manifest: ${manifest.phrases.length} phrases across ${tierFiles.length} tiers`,
-    );
+    console.log(`Manifest: ${manifest.phrases.length} phrases across ${tierFiles.length} tiers`);
 
     const summary = await runAudioGeneration({
       repoRoot: REPO_ROOT,
@@ -94,11 +90,7 @@ program
 program
   .command('music')
   .description('Generate background music via ElevenLabs Music API')
-  .option(
-    '--plan <path>',
-    'path to music plan JSON',
-    join(PLANS_DIR, 'music.json'),
-  )
+  .option('--plan <path>', 'path to music plan JSON', join(PLANS_DIR, 'music.json'))
   .option('--force', 'ignore cache and regenerate', false)
   .option('--dry-run', 'list tracks without calling the API', false)
   .action(async (raw: MusicArgs) => {
@@ -125,11 +117,7 @@ interface MusicArgs {
 program
   .command('sfx')
   .description('Generate sound effects via ElevenLabs Sound Generation API')
-  .option(
-    '--plan <path>',
-    'path to SFX plan JSON',
-    join(PLANS_DIR, 'sfx.json'),
-  )
+  .option('--plan <path>', 'path to SFX plan JSON', join(PLANS_DIR, 'sfx.json'))
   .option('--force', 'ignore cache and regenerate', false)
   .option('--dry-run', 'list entries without calling the API', false)
   .action(async (raw: SFXArgs) => {
@@ -141,9 +129,7 @@ program
       force: raw.force,
       dryRun: raw.dryRun,
     });
-    console.log(
-      `\nSFX: generated=${summary.generated} cached=${summary.cached}`,
-    );
+    console.log(`\nSFX: generated=${summary.generated} cached=${summary.cached}`);
   });
 
 interface SFXArgs {
@@ -157,11 +143,7 @@ program
   .description(
     'Generate multi-variant encouragement voice lines (OpenAI TTS) and emit the variant registry',
   )
-  .option(
-    '--plan <path>',
-    'path to encouragement plan JSON',
-    join(PLANS_DIR, 'encouragement.json'),
-  )
+  .option('--plan <path>', 'path to encouragement plan JSON', join(PLANS_DIR, 'encouragement.json'))
   .option(
     '--registry <path>',
     'path where the variant registry TS file is written',

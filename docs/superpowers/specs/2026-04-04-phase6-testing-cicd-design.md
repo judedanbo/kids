@@ -55,7 +55,7 @@ The `useFeatureFlag` hook interface is designed to support a future IndexedDB ov
 ```ts
 // Phase 6: reads from static JSON context
 // Future: checks IndexedDB overrides first, falls back to JSON defaults
-function useFeatureFlag(name: string): boolean
+function useFeatureFlag(name: string): boolean;
 ```
 
 The runtime override UI (parental settings panel for toggling beta games) is explicitly deferred.
@@ -85,12 +85,14 @@ A single document at the repo root covering:
 **Invocation:** `pnpm create-game` (registered as a root workspace script)
 
 **Prompts for:**
+
 - Game name (kebab-case)
 - Display name
 - Age range (select from tiny/junior/explorer)
 - Skill categories (multi-select)
 
 **Generates `games/<name>/` package with:**
+
 - `package.json` — workspace dependency on `@kids-games-zone/shared`
 - `tsconfig.json` — extends `tsconfig.base.json`, project reference to shared
 - `src/index.tsx` — `GamePlugin` export with manifest and stub lifecycle hooks
@@ -100,6 +102,7 @@ A single document at the repo root covering:
 - `src/__tests__/Game.test.tsx` — starter test file
 
 **Post-scaffold actions:**
+
 - Registers the game in `platform/src/config/featureFlags.json` with flag set to `false` (opt-in)
 - Prints next steps to the console
 
@@ -110,11 +113,13 @@ A single document at the repo root covering:
 ### Unit & Integration Tests (Vitest + React Testing Library)
 
 **Coverage targets:**
+
 - Shared library: 80%+ — focus on StorageManager, RewardEngine, AudioManager, difficulty algorithm, daily challenge generator
 - Per game: 70%+ — game logic, question generators, answer validation
 - Platform services: 80%+ — game loader, streaks, time limits, PIN utils, feature flags
 
 **Integration test scenarios (Vitest):**
+
 - Game plugin loading and full lifecycle (load → start → pause → resume → end → unload)
 - Profile creation → game play → progress persistence → reward unlock
 - Parental PIN flow (setup, verify, lockout, recovery)
@@ -125,23 +130,25 @@ A single document at the repo root covering:
 
 **Test suites organized by user journey:**
 
-| Suite | Viewports | Coverage |
-|-------|-----------|----------|
-| `profile.spec.ts` | mobile, desktop | Create profile, select avatar, set age, optional PIN, switch profiles |
-| `hub.spec.ts` | mobile, tablet, desktop | Browse games, filter by age/skill, continue playing section, feature flag hiding |
-| `gameplay.spec.ts` | mobile, desktop | Play each of the 3 games to completion, verify score reported, progress saved |
-| `rewards.spec.ts` | mobile, desktop | Earn a reward through gameplay, see celebration, check rewards gallery |
-| `parental.spec.ts` | desktop | Adult gate, PIN entry, dashboard stats, set time limit, verify enforcement |
-| `offline.spec.ts` | mobile | Load app, go offline, play a game, come back online |
-| `a11y.spec.ts` | desktop | axe-core full-page scan on every major route/state |
+| Suite              | Viewports               | Coverage                                                                         |
+| ------------------ | ----------------------- | -------------------------------------------------------------------------------- |
+| `profile.spec.ts`  | mobile, desktop         | Create profile, select avatar, set age, optional PIN, switch profiles            |
+| `hub.spec.ts`      | mobile, tablet, desktop | Browse games, filter by age/skill, continue playing section, feature flag hiding |
+| `gameplay.spec.ts` | mobile, desktop         | Play each of the 3 games to completion, verify score reported, progress saved    |
+| `rewards.spec.ts`  | mobile, desktop         | Earn a reward through gameplay, see celebration, check rewards gallery           |
+| `parental.spec.ts` | desktop                 | Adult gate, PIN entry, dashboard stats, set time limit, verify enforcement       |
+| `offline.spec.ts`  | mobile                  | Load app, go offline, play a game, come back online                              |
+| `a11y.spec.ts`     | desktop                 | axe-core full-page scan on every major route/state                               |
 
 **Playwright config:**
+
 - 3 viewport presets: mobile (375×667), tablet (768×1024), desktop (1440×900)
 - Each suite specifies which viewports it runs at (not all suites need all 3)
 - `webServer` config to auto-start the dev server before tests
 - Custom fixtures for common setup: `createProfile`, `navigateToGame`, `playGameToCompletion`
 
 **Accessibility E2E (`a11y.spec.ts`):**
+
 - Uses `@axe-core/playwright` for automated scanning
 - Scans: Hub, Profile creation, each game mid-play, Rewards gallery, Settings, Parental dashboard
 - Catches page-level issues that component-level axe tests miss (landmark structure, heading order, skip links)
@@ -153,16 +160,19 @@ A single document at the repo root covering:
 ### Enhanced GitHub Actions Pipeline
 
 Current pipeline (from Phases 0/5):
+
 ```
 lint → typecheck → test → build → size-limit → lighthouse
 ```
 
 New pipeline:
+
 ```
 lint → typecheck → unit tests (with coverage) → build → size-limit → lighthouse → playwright E2E → playwright a11y
 ```
 
 **Key additions:**
+
 - **Playwright step** — install browsers via `playwright install --with-deps`, run against the built preview server (`pnpm preview`), upload trace files as artifacts on failure
 - **A11y step** — runs `a11y.spec.ts` separately so a11y failures are clearly visible in PR checks (not buried in general E2E results)
 - **Test results** — upload Playwright HTML report as a CI artifact for easy debugging
@@ -182,13 +192,13 @@ lint → typecheck → unit tests (with coverage) → build → size-limit → l
 
 ## Explicitly Deferred
 
-| Item | Reason | When |
-|------|--------|------|
-| Deployment platform selection | Keep phase focused; pick when ready to ship | Pre-launch |
-| PR preview deploys | Depends on platform choice | After platform selected |
-| Auto-deploy on merge | Depends on platform choice | After platform selected |
-| Visual regression testing | Nice-to-have, not critical for launch | Future phase |
-| Runtime feature flag overrides | Interface is future-compatible; build when needed | Future phase |
+| Item                           | Reason                                            | When                    |
+| ------------------------------ | ------------------------------------------------- | ----------------------- |
+| Deployment platform selection  | Keep phase focused; pick when ready to ship       | Pre-launch              |
+| PR preview deploys             | Depends on platform choice                        | After platform selected |
+| Auto-deploy on merge           | Depends on platform choice                        | After platform selected |
+| Visual regression testing      | Nice-to-have, not critical for launch             | Future phase            |
+| Runtime feature flag overrides | Interface is future-compatible; build when needed | Future phase            |
 
 ---
 

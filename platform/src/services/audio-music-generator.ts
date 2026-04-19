@@ -3,14 +3,38 @@ const MELODY_NOTES = [261.63, 293.66, 329.63, 392.0, 440.0, 523.25];
 
 // 8-bar melody pattern — indices into MELODY_NOTES
 const MELODY_PATTERN = [
-  0, 1, 2, 3, // bar 1: ascending walk up
-  2, 3, 4, 3, // bar 2: playful bounce
-  4, 5, 4, 3, // bar 3: peak and descend
-  2, 1, 2, 3, // bar 4: gentle return
-  3, 4, 3, 2, // bar 5: echo the bounce
-  1, 2, 3, 2, // bar 6: wandering
-  1, 0, 1, 2, // bar 7: settling down
-  1, 0, 0, 0, // bar 8: resolve to home
+  0,
+  1,
+  2,
+  3, // bar 1: ascending walk up
+  2,
+  3,
+  4,
+  3, // bar 2: playful bounce
+  4,
+  5,
+  4,
+  3, // bar 3: peak and descend
+  2,
+  1,
+  2,
+  3, // bar 4: gentle return
+  3,
+  4,
+  3,
+  2, // bar 5: echo the bounce
+  1,
+  2,
+  3,
+  2, // bar 6: wandering
+  1,
+  0,
+  1,
+  2, // bar 7: settling down
+  1,
+  0,
+  0,
+  0, // bar 8: resolve to home
 ];
 
 const NOTE_DURATION = 250; // ms per note
@@ -105,10 +129,7 @@ export class WebAudioMusicGenerator {
     const fadeOut = options?.fadeOut ?? 0;
 
     if (fadeOut > 0 && this.masterGain && this.context) {
-      this.masterGain.gain.linearRampToValueAtTime(
-        0,
-        this.context.currentTime + fadeOut / 1000,
-      );
+      this.masterGain.gain.linearRampToValueAtTime(0, this.context.currentTime + fadeOut / 1000);
       setTimeout(() => this.cleanup(), fadeOut);
     } else {
       this.cleanup();
@@ -178,11 +199,7 @@ export class WebAudioMusicGenerator {
     }, NOTE_DURATION);
   }
 
-  private playNote(
-    frequency: number,
-    type: OscillatorType,
-    relativeVolume: number,
-  ): void {
+  private playNote(frequency: number, type: OscillatorType, relativeVolume: number): void {
     if (!this.context || !this.masterGain) {
       return;
     }

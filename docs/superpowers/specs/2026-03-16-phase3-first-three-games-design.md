@@ -55,17 +55,18 @@ A multiple-choice math game with procedurally generated questions. Visual counti
 
 Procedural generation in `questionGenerator.ts`. No static question banks.
 
-| Difficulty | Operations | Number Range | Carrying/Borrowing |
-|------------|-----------|-------------|-------------------|
-| 1 | Addition only | 1–9 | No |
-| 2 | Addition only | 1–15 | No |
-| 3 | Addition + Subtraction | 1–20 | No |
-| 4 | Addition + Subtraction | 1–50 | Yes |
-| 5 | Add + Subtract + simple Multiply | 1–50 | Yes |
+| Difficulty | Operations                       | Number Range | Carrying/Borrowing |
+| ---------- | -------------------------------- | ------------ | ------------------ |
+| 1          | Addition only                    | 1–9          | No                 |
+| 2          | Addition only                    | 1–15         | No                 |
+| 3          | Addition + Subtraction           | 1–20         | No                 |
+| 4          | Addition + Subtraction           | 1–50         | Yes                |
+| 5          | Add + Subtract + simple Multiply | 1–50         | Yes                |
 
 **Distractor generation:** 3 plausible wrong answers per question — nearby values, common mistakes (off-by-one, wrong operation). No duplicates. No negative distractors.
 
 **Constraints:**
+
 - No duplicate questions within a round
 - Subtraction never produces negative results
 - Multiplication limited to single-digit factors at difficulty 5
@@ -73,6 +74,7 @@ Procedural generation in `questionGenerator.ts`. No static question banks.
 ### Visual Aids (Difficulty 1-2 Only)
 
 CSS-drawn colored dots grouped by operand:
+
 - E.g., "3 + 4" shows 3 blue dots + 4 red dots
 - Dots arranged in rows of 5 for easy counting
 - Component: `VisualAid.tsx`
@@ -80,11 +82,11 @@ CSS-drawn colored dots grouped by operand:
 
 ### Scoring
 
-| Attempt | Points |
-|---------|--------|
-| 1st try | 10 |
-| 2nd try | 5 |
-| 3rd try+ | 2 |
+| Attempt  | Points |
+| -------- | ------ |
+| 1st try  | 10     |
+| 2nd try  | 5      |
+| 3rd try+ | 2      |
 
 - 10 questions per round
 - Max score: 100
@@ -170,13 +172,13 @@ A scrambled-letter spelling game. Players see jumbled letters and tap them in or
 
 Curated static lists in `data/words.ts`, organized by category and difficulty.
 
-| Difficulty | Word Length | Example Categories |
-|------------|-----------|-------------------|
-| 1 | 3 letters | Animals (cat, dog, hen), Colors (red, tan), Food (jam, pie) |
-| 2 | 4 letters | Animals (frog, bear), Nature (tree, rain), Home (door, lamp) |
-| 3 | 4-5 letters | Animals (tiger, horse), Food (bread, grape), Body (elbow, thumb) |
-| 4 | 5-6 letters | Nature (flower, jungle), School (pencil, eraser) |
-| 5 | 6+ letters | Animals (giraffe, dolphin), Science (planet, rocket) |
+| Difficulty | Word Length | Example Categories                                               |
+| ---------- | ----------- | ---------------------------------------------------------------- |
+| 1          | 3 letters   | Animals (cat, dog, hen), Colors (red, tan), Food (jam, pie)      |
+| 2          | 4 letters   | Animals (frog, bear), Nature (tree, rain), Home (door, lamp)     |
+| 3          | 4-5 letters | Animals (tiger, horse), Food (bread, grape), Body (elbow, thumb) |
+| 4          | 5-6 letters | Nature (flower, jungle), School (pencil, eraser)                 |
+| 5          | 6+ letters  | Animals (giraffe, dolphin), Science (planet, rocket)             |
 
 - ~15-20 words per category per difficulty level
 - Each round picks 8 words from a selected category at the current difficulty
@@ -186,17 +188,18 @@ Curated static lists in `data/words.ts`, organized by category and difficulty.
 ### Scramble Algorithm
 
 In `utils/scramble.ts`:
+
 - Fisher-Yates shuffle on the letter array
 - Validation: scrambled form must differ from the original word
 - If shuffle produces the original, re-shuffle (with max attempts, then force-swap first two letters)
 
 ### Scoring
 
-| Attempt | Points |
-|---------|--------|
-| 1st try | 10 |
-| 2nd try | 5 |
-| 3rd try+ | 2 |
+| Attempt  | Points |
+| -------- | ------ |
+| 1st try  | 10     |
+| 2nd try  | 5      |
+| 3rd try+ | 2      |
 
 - 8 words per round
 - Max score: 80
@@ -208,6 +211,7 @@ In `utils/scramble.ts`:
 **Shared:** `<GameShell>`, `<ScoreDisplay>`, `<ProgressBar>`, `<CelebrationOverlay>`, `<InstructionBubble>`
 
 **Custom:**
+
 - `<LetterTile>` — individual tappable letter with available/placed/correct/incorrect states
 - `<ScrambleRow>` — source row of jumbled letters
 - `<AnswerSlots>` — target slots where letters are placed
@@ -281,13 +285,13 @@ A card-matching game for the youngest players (ages 3-5, tiny tier). Tap cards t
 
 ### Grid Configuration
 
-| Difficulty | Pairs | Grid Layout | Card Size |
-|------------|-------|-------------|-----------|
-| 1 | 2 pairs (4 cards) | 2×2 | 120px |
-| 2 | 3 pairs (6 cards) | 2×3 | 110px |
-| 3 | 4 pairs (8 cards) | 2×4 | 100px |
-| 4 | 6 pairs (12 cards) | 3×4 | 96px |
-| 5 | 8 pairs (16 cards) | 4×4 | 96px |
+| Difficulty | Pairs              | Grid Layout | Card Size |
+| ---------- | ------------------ | ----------- | --------- |
+| 1          | 2 pairs (4 cards)  | 2×2         | 120px     |
+| 2          | 3 pairs (6 cards)  | 2×3         | 110px     |
+| 3          | 4 pairs (8 cards)  | 2×4         | 100px     |
+| 4          | 6 pairs (12 cards) | 3×4         | 96px      |
+| 5          | 8 pairs (16 cards) | 4×4         | 96px      |
 
 - All cards meet the 96px minimum for tiny tier
 - Grid is centered and responsive
@@ -297,18 +301,18 @@ A card-matching game for the youngest players (ages 3-5, tiny tier). Tap cards t
 
 Simple, recognizable shapes built entirely with CSS — no image assets:
 
-| Name | Description |
-|------|-------------|
-| Cat | Round face, pointed ears, whiskers |
-| Fish | Oval body, tail fin, eye |
-| Butterfly | Symmetrical wings, antennae |
-| Bird | Simple body, beak, wing |
-| Flower | Petals around a center circle |
-| Sun | Circle with radiating rays |
-| Tree | Brown trunk, green rounded canopy |
-| Star | Five-pointed star shape |
-| Heart | Classic heart shape |
-| House | Square body, triangle roof, door |
+| Name      | Description                        |
+| --------- | ---------------------------------- |
+| Cat       | Round face, pointed ears, whiskers |
+| Fish      | Oval body, tail fin, eye           |
+| Butterfly | Symmetrical wings, antennae        |
+| Bird      | Simple body, beak, wing            |
+| Flower    | Petals around a center circle      |
+| Sun       | Circle with radiating rays         |
+| Tree      | Brown trunk, green rounded canopy  |
+| Star      | Five-pointed star shape            |
+| Heart     | Classic heart shape                |
+| House     | Square body, triangle roof, door   |
 
 - Each illustration is a small React component using `div` elements + CSS
 - Bright, high-contrast colors on a white card background
@@ -342,6 +346,7 @@ Simple, recognizable shapes built entirely with CSS — no image assets:
 **Shared:** `<GameShell>`, `<ScoreDisplay>`, `<ProgressBar>`, `<CelebrationOverlay>`, `<InstructionBubble>`
 
 **Custom:**
+
 - `<Card>` — single card with flip animation, front/back faces
 - `<CardGrid>` — responsive grid layout, card selection logic, match checking
 - `<CSSIllustration>` — renders one of the 10 CSS illustrations by name
@@ -455,11 +460,11 @@ No game-specific audio assets required.
 
 All games are fully keyboard-accessible:
 
-| Game | Tab | Enter | Escape | Arrow Keys |
-|------|-----|-------|--------|------------|
-| Math Adventure | Cycle option buttons | Select answer | — | — |
-| Word Puzzle | Cycle letter tiles | Place/remove letter | Undo last placed letter | — |
-| Memory Match | Cycle cards | Flip card | — | Navigate grid |
+| Game           | Tab                  | Enter               | Escape                  | Arrow Keys    |
+| -------------- | -------------------- | ------------------- | ----------------------- | ------------- |
+| Math Adventure | Cycle option buttons | Select answer       | —                       | —             |
+| Word Puzzle    | Cycle letter tiles   | Place/remove letter | Undo last placed letter | —             |
+| Memory Match   | Cycle cards          | Flip card           | —                       | Navigate grid |
 
 ### Wrong Answer Handling
 
@@ -478,6 +483,7 @@ Age-tiered approach:
 ### Bundle Budget
 
 Each game must stay under 100KB gzipped. Expected to be well within budget:
+
 - No image assets (CSS illustrations, JSON data, procedural generation)
 - Shared components are not bundled per-game
 - CSS Modules have minimal overhead

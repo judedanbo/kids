@@ -94,10 +94,24 @@ export function MoreOrLess({ config, onScore, onComplete, onExit, audioManager }
 
   if (round.phase === 'instruction') {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <div className={styles.gameArea}>
-          <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character="🔢" characterSrc="/images/games/mascots/numbers.webp" />
-          <OptionButton label={t('letsGo')} state="default" onSelect={round.dismissInstruction} size="large" />
+          <InstructionBubble
+            text={isTiny ? t('instructionTiny') : t('instruction')}
+            character="🔢"
+            characterSrc="/images/games/mascots/numbers.webp"
+          />
+          <OptionButton
+            label={t('letsGo')}
+            state="default"
+            onSelect={round.dismissInstruction}
+            size="large"
+          />
         </div>
       </GameShell>
     );
@@ -105,7 +119,12 @@ export function MoreOrLess({ config, onScore, onComplete, onExit, audioManager }
 
   if (round.phase === 'complete') {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={round.score}
@@ -119,7 +138,12 @@ export function MoreOrLess({ config, onScore, onComplete, onExit, audioManager }
   const showFeedback = round.phase === 'feedback';
 
   return (
-    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+    <GameShell
+      title={t('title')}
+      onBack={onExit}
+      audioManager={audioManager}
+      musicEnabled={config.settings.backgroundMusicEnabled}
+    >
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={round.score} maxScore={round.maxScore} showStars />
@@ -127,7 +151,9 @@ export function MoreOrLess({ config, onScore, onComplete, onExit, audioManager }
 
         <ProgressBar current={round.currentIndex} total={round.totalRounds} showLabel />
 
-        <p className={styles.prompt} aria-live="assertive">{getPromptText()}</p>
+        <p className={styles.prompt} aria-live="assertive">
+          {getPromptText()}
+        </p>
 
         {!showFeedback && comp.type === 'objects' && (
           <ObjectGroups groups={comp.groups} onSelect={round.submitChoice} />
@@ -150,7 +176,12 @@ export function MoreOrLess({ config, onScore, onComplete, onExit, audioManager }
             <p className={round.isCorrect ? styles.correctText : styles.incorrectText}>
               {round.isCorrect ? t('correct') : t('incorrect')}
             </p>
-            <OptionButton label={t('next')} state="default" onSelect={round.nextRound} size="large" />
+            <OptionButton
+              label={t('next')}
+              state="default"
+              onSelect={round.nextRound}
+              size="large"
+            />
           </div>
         )}
       </div>

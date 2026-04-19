@@ -87,9 +87,7 @@ export class HowlerBackend implements AudioBackend {
     const res = await fetch(src, { method: 'HEAD' });
     const contentType = res.headers.get('content-type') ?? '';
     if (!res.ok || !contentType.startsWith('audio/')) {
-      throw new Error(
-        `Audio file not found: ${src}`,
-      );
+      throw new Error(`Audio file not found: ${src}`);
     }
 
     return new Promise<void>((resolve, reject) => {
@@ -155,12 +153,7 @@ export class HowlerBackend implements AudioBackend {
     }
   }
 
-  fade(
-    playbackId: string,
-    from: number,
-    to: number,
-    duration: number,
-  ): void {
+  fade(playbackId: string, from: number, to: number, duration: number): void {
     const entry = this.playbackMap.get(playbackId);
     if (entry) {
       entry.howl.fade(from, to, duration, entry.soundId);

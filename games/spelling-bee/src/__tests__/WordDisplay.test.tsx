@@ -17,13 +17,15 @@ const mockAudio = {
   setLanguage: vi.fn(),
 } as unknown as AudioManager;
 
-function makeWord(overrides: Partial<{
-  word: string;
-  image: string;
-  definition: string;
-  origin: string;
-  sentence: string;
-}> = {}) {
+function makeWord(
+  overrides: Partial<{
+    word: string;
+    image: string;
+    definition: string;
+    origin: string;
+    sentence: string;
+  }> = {},
+) {
   return {
     word: 'cat',
     difficulty: 1,

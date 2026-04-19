@@ -35,17 +35,13 @@ describe('CelebrationOverlay', () => {
   });
 
   it('renders score when provided', () => {
-    render(
-      <CelebrationOverlay title="Great!" score={950} maxScore={1000} />,
-    );
+    render(<CelebrationOverlay title="Great!" score={950} maxScore={1000} />);
     expect(screen.getByText(/950/)).toBeInTheDocument();
   });
 
   it('calls onComplete after duration', () => {
     const onComplete = vi.fn();
-    render(
-      <CelebrationOverlay title="Done!" duration={2000} onComplete={onComplete} />,
-    );
+    render(<CelebrationOverlay title="Done!" duration={2000} onComplete={onComplete} />);
 
     act(() => {
       vi.advanceTimersByTime(2000);
@@ -72,9 +68,7 @@ describe('CelebrationOverlay', () => {
 
   it('has no accessibility violations', async () => {
     vi.useRealTimers();
-    const { container } = render(
-      <CelebrationOverlay title="Great job!" score={8} maxScore={10} />,
-    );
+    const { container } = render(<CelebrationOverlay title="Great job!" score={8} maxScore={10} />);
     const result = await axe(container);
     vi.useFakeTimers();
     expect(result).toHaveNoViolations();

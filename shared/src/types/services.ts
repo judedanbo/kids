@@ -53,7 +53,14 @@ export interface StorageManager {
 
 export interface AnalyticsEvent {
   id: string;
-  type: 'game_start' | 'game_end' | 'level_complete' | 'reward_unlocked' | 'game_error' | 'error' | 'navigation';
+  type:
+    | 'game_start'
+    | 'game_end'
+    | 'level_complete'
+    | 'reward_unlocked'
+    | 'game_error'
+    | 'error'
+    | 'navigation';
   profileId: string;
   gameId?: string;
   timestamp: string;

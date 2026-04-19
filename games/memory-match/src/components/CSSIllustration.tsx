@@ -34,7 +34,14 @@ function Fish() {
 function Butterfly() {
   return (
     <div className={styles.illustration}>
-      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div
+        style={{
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <div className={styles.butterflyBody}>
           <div className={styles.butterflyWingTL} />
           <div className={styles.butterflyWingTR} />
@@ -69,7 +76,16 @@ function Flower() {
   const petalAngles = [0, 45, 90, 135, 180, 225, 270, 315];
   return (
     <div className={styles.illustration}>
-      <div style={{ position: 'relative', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div
+        style={{
+          position: 'relative',
+          width: '48px',
+          height: '48px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         {petalAngles.map((angle) => (
           <div
             key={angle}
@@ -90,7 +106,16 @@ function Sun() {
   const rayAngles = [0, 45, 90, 135, 180, 225, 270, 315];
   return (
     <div className={styles.illustration}>
-      <div style={{ position: 'relative', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div
+        style={{
+          position: 'relative',
+          width: '48px',
+          height: '48px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         {rayAngles.map((angle) => (
           <div
             key={angle}

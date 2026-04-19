@@ -11,11 +11,11 @@
 
 ### New Dependencies
 
-| Package | Purpose |
-|---------|---------|
-| `i18next` | Core translation framework |
-| `react-i18next` | React bindings (`useTranslation` hook, `Trans` component) |
-| `i18next-browser-languagedetector` | Auto-detect browser language on first visit |
+| Package                            | Purpose                                                   |
+| ---------------------------------- | --------------------------------------------------------- |
+| `i18next`                          | Core translation framework                                |
+| `react-i18next`                    | React bindings (`useTranslation` hook, `Trans` component) |
+| `i18next-browser-languagedetector` | Auto-detect browser language on first visit               |
 
 ### Initialization
 
@@ -28,13 +28,13 @@ A single `i18n.ts` config file in `platform/src/` that:
 
 ### Namespace Registration
 
-| Namespace | Source | Loaded When |
-|-----------|--------|-------------|
-| `common` | Platform pages + shared component strings | App startup |
-| `memory-match` | Memory Match game strings | App startup (static import) |
-| `math-adventure` | Math Adventure game strings | App startup (static import) |
-| `word-puzzle` | Word Puzzle game strings | App startup (static import) |
-| (no `shared` namespace) | Shared component strings live in `common` | N/A — no separate file |
+| Namespace               | Source                                    | Loaded When                 |
+| ----------------------- | ----------------------------------------- | --------------------------- |
+| `common`                | Platform pages + shared component strings | App startup                 |
+| `memory-match`          | Memory Match game strings                 | App startup (static import) |
+| `math-adventure`        | Math Adventure game strings               | App startup (static import) |
+| `word-puzzle`           | Word Puzzle game strings                  | App startup (static import) |
+| (no `shared` namespace) | Shared component strings live in `common` | N/A — no separate file      |
 
 ### Language Change Flow
 
@@ -110,12 +110,12 @@ i18next handles plurals natively with `_one` / `_other` suffixes:
 
 ### String Counts by Namespace
 
-| Namespace | Approx. Strings | Sources |
-|-----------|----------------|---------|
-| `common` | ~100 | Hub (~28), Settings (~10), Rewards (~8), ParentalDashboard (~15), ProfileCreator (~20), NavBar (~4), PauseMenu (~4), other shared components (~11) |
-| `memory-match` | ~12 | MemoryMatch.tsx game strings + announcements |
-| `math-adventure` | ~15 | MathAdventure.tsx game strings + announcements |
-| `word-puzzle` | ~12 | WordPuzzle.tsx game strings + announcements |
+| Namespace        | Approx. Strings | Sources                                                                                                                                            |
+| ---------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `common`         | ~100            | Hub (~28), Settings (~10), Rewards (~8), ParentalDashboard (~15), ProfileCreator (~20), NavBar (~4), PauseMenu (~4), other shared components (~11) |
+| `memory-match`   | ~12             | MemoryMatch.tsx game strings + announcements                                                                                                       |
+| `math-adventure` | ~15             | MathAdventure.tsx game strings + announcements                                                                                                     |
+| `word-puzzle`    | ~12             | WordPuzzle.tsx game strings + announcements                                                                                                        |
 
 ### What Does NOT Get Extracted
 
@@ -200,6 +200,7 @@ Appearance
 ```
 
 Each language button:
+
 - Shows the language's native name (e.g., "Français" not "French")
 - Uses `aria-pressed` on the active language
 - On click: calls `i18next.changeLanguage(code)` and dispatches `SET_SETTINGS` to persist
@@ -239,6 +240,7 @@ Adding a new language: create locale JSON files + add an entry to this array.
 A test helper that wraps components with an initialized i18next instance. Existing component tests continue to work — `react-i18next` provides a fallback mode where missing translations return the key.
 
 For tests that assert on specific visible text (e.g., `getByText('Resume')`):
+
 - Update to use the i18n test wrapper, OR
 - Query by role/label instead of text content (more resilient)
 
@@ -283,7 +285,7 @@ const { i18n } = useTranslation();
 <InstructionBubble
   text={t('instruction')}
   audioSrc={`/audio/narration/${i18n.language}/memory-match/instruction.mp3`}
-/>
+/>;
 ```
 
 ---

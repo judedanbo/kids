@@ -117,10 +117,7 @@ export function generateQuestion(difficulty: number): Question {
       operandB = randomInt(config.minVal, operandA);
       attempts++;
       if (attempts > 500) break;
-    } while (
-      !config.allowCarrying &&
-      operandA % 10 < operandB % 10
-    );
+    } while (!config.allowCarrying && operandA % 10 < operandB % 10);
     // Guarantee a >= b even after the loop
     if (operandA < operandB) {
       [operandA, operandB] = [operandB, operandA];

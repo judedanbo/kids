@@ -1,10 +1,7 @@
 import { test, expect, solveMathProblem } from './fixtures';
 
 test.describe('Parental Controls', () => {
-  test('parental dashboard requires adult gate verification', async ({
-    page,
-    createProfile,
-  }) => {
+  test('parental dashboard requires adult gate verification', async ({ page, createProfile }) => {
     await createProfile({ name: 'TestKid', age: '7' });
 
     // Navigate to Settings
@@ -15,18 +12,13 @@ test.describe('Parental Controls', () => {
 
     // Should show the adult verification gate
     await expect(page.locator('text=Adult Verification')).toBeVisible();
-    await expect(
-      page.locator('text=Please solve this problem to continue'),
-    ).toBeVisible();
+    await expect(page.locator('text=Please solve this problem to continue')).toBeVisible();
     await expect(page.locator('[aria-label="Your answer"]')).toBeVisible();
     await expect(page.locator('button:has-text("Verify")')).toBeVisible();
     await expect(page.locator('button:has-text("Cancel")')).toBeVisible();
   });
 
-  test('adult gate grants access with correct answer', async ({
-    page,
-    createProfile,
-  }) => {
+  test('adult gate grants access with correct answer', async ({ page, createProfile }) => {
     await createProfile({ name: 'TestKid', age: '7' });
 
     await page.locator('a:has-text("Settings")').click();
@@ -56,25 +48,17 @@ test.describe('Parental Controls', () => {
     await expect(page.locator('text=Back to Settings')).toBeVisible();
   });
 
-  test('settings page has parental controls section', async ({
-    page,
-    createProfile,
-  }) => {
+  test('settings page has parental controls section', async ({ page, createProfile }) => {
     await createProfile({ name: 'TestKid', age: '7' });
 
     await page.locator('a:has-text("Settings")').click();
 
     // Should show the parental controls section
     await expect(page.locator('text=Parental Controls')).toBeVisible();
-    await expect(
-      page.locator('button:has-text("Open Parental Dashboard")'),
-    ).toBeVisible();
+    await expect(page.locator('button:has-text("Open Parental Dashboard")')).toBeVisible();
   });
 
-  test('adult gate blocks with wrong answer', async ({
-    page,
-    createProfile,
-  }) => {
+  test('adult gate blocks with wrong answer', async ({ page, createProfile }) => {
     await createProfile({ name: 'TestKid', age: '7' });
 
     await page.locator('a:has-text("Settings")').click();
@@ -91,10 +75,7 @@ test.describe('Parental Controls', () => {
     await expect(page.locator('text=Activity Summary')).not.toBeVisible();
   });
 
-  test('cancel button returns to settings', async ({
-    page,
-    createProfile,
-  }) => {
+  test('cancel button returns to settings', async ({ page, createProfile }) => {
     await createProfile({ name: 'TestKid', age: '7' });
 
     await page.locator('a:has-text("Settings")').click();
@@ -105,8 +86,6 @@ test.describe('Parental Controls', () => {
 
     // Should return to settings page
     await expect(page.locator('h1:has-text("Settings")')).toBeVisible();
-    await expect(
-      page.locator('button:has-text("Open Parental Dashboard")'),
-    ).toBeVisible();
+    await expect(page.locator('button:has-text("Open Parental Dashboard")')).toBeVisible();
   });
 });

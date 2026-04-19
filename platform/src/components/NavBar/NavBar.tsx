@@ -11,7 +11,12 @@ export function NavBar() {
     { icon: '🏠', src: '/images/ui/nav-home.webp', label: t('nav.home'), path: '/' },
     { icon: '👤', src: '/images/ui/nav-profile.webp', label: t('nav.profile'), path: '/profile' },
     { icon: '🏆', src: '/images/ui/nav-rewards.webp', label: t('nav.rewards'), path: '/rewards' },
-    { icon: '⚙️', src: '/images/ui/nav-settings.webp', label: t('nav.settings'), path: '/settings' },
+    {
+      icon: '⚙️',
+      src: '/images/ui/nav-settings.webp',
+      label: t('nav.settings'),
+      path: '/settings',
+    },
   ];
 
   // Hide NavBar on game routes
@@ -22,9 +27,8 @@ export function NavBar() {
   return (
     <nav className={styles.navbar} aria-label="Main navigation">
       {tabs.map((tab) => {
-        const isActive = tab.path === '/'
-          ? location.pathname === '/'
-          : location.pathname.startsWith(tab.path);
+        const isActive =
+          tab.path === '/' ? location.pathname === '/' : location.pathname.startsWith(tab.path);
         return (
           <NavLink
             key={tab.path}

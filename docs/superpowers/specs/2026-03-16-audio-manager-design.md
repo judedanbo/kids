@@ -12,14 +12,14 @@ Replace the console-logging `StubAudioManager` with a real `RealAudioManager` th
 
 ## Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Audio library | Howler.js (~10KB gzipped) | Battle-tested, handles autoplay policies, codec fallbacks, audio sprites, mobile quirks |
-| Architecture | Adapter pattern — `AudioBackend` interface | Swappable backends (Howler.js now, Web Audio API later) without changing consumers |
-| Location | `platform/src/services/` | AudioManager is a platform service; games receive it via `GameProps` |
-| Audio files | 4 placeholder SFX in `platform/public/audio/sfx/` | Gives Phase 3 games immediate audio feedback without sourcing their own |
-| Asset resolution | Convention-based: `/audio/sfx/{id}.mp3` | Simple, no config needed; configurable later if required |
-| Testing | Mock `AudioBackend`, not Howler.js | Tests validate AudioManager logic without browser audio APIs |
+| Decision         | Choice                                            | Rationale                                                                               |
+| ---------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Audio library    | Howler.js (~10KB gzipped)                         | Battle-tested, handles autoplay policies, codec fallbacks, audio sprites, mobile quirks |
+| Architecture     | Adapter pattern — `AudioBackend` interface        | Swappable backends (Howler.js now, Web Audio API later) without changing consumers      |
+| Location         | `platform/src/services/`                          | AudioManager is a platform service; games receive it via `GameProps`                    |
+| Audio files      | 4 placeholder SFX in `platform/public/audio/sfx/` | Gives Phase 3 games immediate audio feedback without sourcing their own                 |
+| Asset resolution | Convention-based: `/audio/sfx/{id}.mp3`           | Simple, no config needed; configurable later if required                                |
+| Testing          | Mock `AudioBackend`, not Howler.js                | Tests validate AudioManager logic without browser audio APIs                            |
 
 ---
 
@@ -101,6 +101,7 @@ interface ChannelState {
 ```
 
 Three channels initialized with defaults:
+
 - music: `{ volume: 0.3, muted: false, currentPlaybackId: null }`
 - sfx: `{ volume: 1.0, muted: false, currentPlaybackId: null }`
 - voice: `{ volume: 1.0, muted: false, currentPlaybackId: null }`
@@ -108,6 +109,7 @@ Three channels initialized with defaults:
 **Asset resolution:**
 
 Audio assets are referenced by ID (e.g., `"click"`, `"correct"`). The AudioManager resolves IDs to file paths:
+
 - SFX: `/audio/sfx/{id}.mp3`
 - Music: `/audio/music/{id}.mp3`
 - Voice: `/audio/voice/{id}.mp3`
@@ -117,6 +119,7 @@ The category is inferred from the method called (playSFX → sfx path, playMusic
 **Method implementations:**
 
 ### `playMusic(trackId, options?)`
+
 1. If music is currently playing, stop it **immediately** (no fade — cross-fading is not supported in this version). Cancel any in-progress fade-out from a prior `stopMusic` call.
 2. Resolve path: `/audio/music/${trackId}.mp3`
 3. Load if not already loaded: `backend.load(trackId, path)`
@@ -125,18 +128,21 @@ The category is inferred from the method called (playSFX → sfx path, playMusic
 6. Store playback ID in `channels.music.currentPlaybackId`
 
 ### `stopMusic(options?)`
+
 1. If no music playing, return
 2. Clear `channels.music.currentPlaybackId` immediately (prevents race conditions if `playMusic` is called during fade-out)
 3. If `options?.fadeOut`, fade to 0 over `fadeOut` ms, then call `backend.stop()` after fade completes
 4. Else, stop immediately via `backend.stop()`
 
 ### `playSFX(sfxId)`
+
 1. Resolve path: `/audio/sfx/${sfxId}.mp3`
 2. Load if not already loaded
 3. Play with `{ volume: muted ? 0 : channels.sfx.volume }`
 4. Fire-and-forget — no tracking of playback ID. **SFX channel note:** because SFX are fire-and-forget with no tracked playback ID, `setVolume('sfx', ...)` and `mute('sfx')` only affect **future** `playSFX` calls, not already-playing sounds. This is intentional — SFX are short enough that retroactive volume changes aren't meaningful.
 
 ### `playVoice(voiceId, onComplete?)`
+
 1. If voice is currently playing, stop it
 2. Resolve path: `/audio/voice/${voiceId}.mp3`
 3. Load if not already loaded
@@ -145,24 +151,29 @@ The category is inferred from the method called (playSFX → sfx path, playMusic
 6. Store playback ID in `channels.voice.currentPlaybackId`
 
 ### `setVolume(category, level)`
+
 1. Clamp `level` to 0-1
 2. Update `channels[category].volume = level`
 3. If channel has an active playback and is not muted, update `backend.volume(playbackId, level)`
 
 ### `mute(category?)`
+
 1. If category specified, mute that channel: set `channels[category].muted = true`, set active playback volume to 0
 2. If no category, mute all three channels
 
 ### `unmute(category?)`
+
 1. If category specified, unmute: set `channels[category].muted = false`, restore volume on active playback
 2. If no category, unmute all three channels
 
 ### `preload(assetIds)`
+
 1. For each asset ID, parse the prefix to determine category and canonical key
 2. Call `backend.load(canonicalKey, resolvedPath)` for each
 3. Return `Promise.all()` — resolves when all assets are loaded
 
 **Preload prefix convention and canonical keys:** Asset IDs use a `category:name` prefix. The canonical backend key strips the prefix, matching what `playMusic`/`playSFX`/`playVoice` use:
+
 - `music:track-name` → key `track-name`, path `/audio/music/track-name.mp3`
 - `voice:instruction-1` → key `instruction-1`, path `/audio/voice/instruction-1.mp3`
 - `sfx:click` or `click` (no prefix) → key `click`, path `/audio/sfx/click.mp3`
@@ -177,12 +188,12 @@ This ensures `preload(['music:main-theme'])` caches under key `main-theme`, and 
 
 Four MP3 files, CC0-licensed or generated:
 
-| File | Description | Duration | Source |
-|------|-------------|----------|--------|
-| `click.mp3` | Soft UI tap/click | ~100ms | Generated tone |
-| `correct.mp3` | Cheerful ascending chime | ~500ms | Generated tone |
-| `incorrect.mp3` | Gentle low tone (not harsh — encouragement-first design) | ~400ms | Generated tone |
-| `celebrate.mp3` | Short celebration fanfare | ~1.5s | Generated tone |
+| File            | Description                                              | Duration | Source         |
+| --------------- | -------------------------------------------------------- | -------- | -------------- |
+| `click.mp3`     | Soft UI tap/click                                        | ~100ms   | Generated tone |
+| `correct.mp3`   | Cheerful ascending chime                                 | ~500ms   | Generated tone |
+| `incorrect.mp3` | Gentle low tone (not harsh — encouragement-first design) | ~400ms   | Generated tone |
+| `celebrate.mp3` | Short celebration fanfare                                | ~1.5s    | Generated tone |
 
 These are minimal synthesized tones. Real game-specific audio replaces or supplements them in Phase 3+.
 
@@ -195,12 +206,14 @@ These are minimal synthesized tones. Real game-specific audio replaces or supple
 ### `platform/src/main.tsx` update
 
 Replace:
+
 ```typescript
 import { StubAudioManager } from './services/audio';
 const audioManager = new StubAudioManager();
 ```
 
 With:
+
 ```typescript
 import { RealAudioManager } from './services/audio-manager';
 import { HowlerBackend } from './services/audio-howler';
@@ -220,9 +233,9 @@ const audioManager = new RealAudioManager(new HowlerBackend());
 
 ### New packages
 
-| Package | Location | Purpose |
-|---------|----------|---------|
-| `howler` | `platform/package.json` dependencies | Audio playback library |
+| Package         | Location                                | Purpose                                                                  |
+| --------------- | --------------------------------------- | ------------------------------------------------------------------------ |
+| `howler`        | `platform/package.json` dependencies    | Audio playback library                                                   |
 | `@types/howler` | `platform/package.json` devDependencies | TypeScript type definitions (collocated with the package that uses them) |
 
 ---

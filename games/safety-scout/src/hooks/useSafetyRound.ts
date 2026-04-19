@@ -25,7 +25,9 @@ interface SafetyRoundActions {
   nextObject: () => void;
 }
 
-export function useSafetyRound(options: UseSafetyRoundOptions): SafetyRoundState & SafetyRoundActions {
+export function useSafetyRound(
+  options: UseSafetyRoundOptions,
+): SafetyRoundState & SafetyRoundActions {
   const { onScorePoint } = options;
 
   const [roundObjects, setRoundObjects] = useState<SafetyObject[]>(options.objects);

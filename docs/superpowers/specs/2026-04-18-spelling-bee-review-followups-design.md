@@ -21,15 +21,15 @@ Two rounds of review on the prior bug-fix PR (`docs/superpowers/specs/2026-04-18
 
 ## Items in scope
 
-| ID | Source | Summary |
-|----|--------|---------|
-| #7 | Original review | Replace the `Math.random() - 0.5` tiebreaker in `pickFrom`'s sort with a deterministic sort + within-group Fisher-Yates shuffle. |
-| #8 | Original review | Audit `prefers-reduced-motion` coverage; today no spelling-bee component animates outside the shared `CelebrationOverlay` (which already respects it). Scope-limited fix: leave code alone, add a one-line comment in `SpellingBee.tsx` noting the expectation so future animations remember to gate. |
-| #9 | Original review | Delete dead `encourageTiny` / `encourageJunior` keys from EN + FR locale files — they're unreferenced. Live `levelEncourageTiny` / `levelEncourageJunior` / `levelEncourageExplorer` stay (used by `LevelTransition.tsx:25-28`). |
-| #10 | Original review | Add a key-ref guard to `LevelPlay`'s play-word `useEffect` so React strict-mode double-mount doesn't double-fire the `playVoice` / `announce` pair. |
-| I-2 | Final cross-task review | Accept that reaching level 5 always fires `outcome === 'victory'` regardless of the player's final-level score. Update the comment in `useSessionLevels.completeLevel` to describe the rule accurately. |
-| M-3 | Final cross-task review | Accept dev-only strict-mode double-fire of the empty-words notification in `useSpellingRound`. Add a comment explaining why fixing it isn't worthwhile (the path is unreachable in practice). |
-| M-4 | Final cross-task review | Rename the misleading test `allows repeats when widening is still not enough` in `wordSelector.test.ts` — it actually exercises Layer 4, not Layer 3. Layer 3 is separately covered. |
+| ID  | Source                  | Summary                                                                                                                                                                                                                                                                                               |
+| --- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| #7  | Original review         | Replace the `Math.random() - 0.5` tiebreaker in `pickFrom`'s sort with a deterministic sort + within-group Fisher-Yates shuffle.                                                                                                                                                                      |
+| #8  | Original review         | Audit `prefers-reduced-motion` coverage; today no spelling-bee component animates outside the shared `CelebrationOverlay` (which already respects it). Scope-limited fix: leave code alone, add a one-line comment in `SpellingBee.tsx` noting the expectation so future animations remember to gate. |
+| #9  | Original review         | Delete dead `encourageTiny` / `encourageJunior` keys from EN + FR locale files — they're unreferenced. Live `levelEncourageTiny` / `levelEncourageJunior` / `levelEncourageExplorer` stay (used by `LevelTransition.tsx:25-28`).                                                                      |
+| #10 | Original review         | Add a key-ref guard to `LevelPlay`'s play-word `useEffect` so React strict-mode double-mount doesn't double-fire the `playVoice` / `announce` pair.                                                                                                                                                   |
+| I-2 | Final cross-task review | Accept that reaching level 5 always fires `outcome === 'victory'` regardless of the player's final-level score. Update the comment in `useSessionLevels.completeLevel` to describe the rule accurately.                                                                                               |
+| M-3 | Final cross-task review | Accept dev-only strict-mode double-fire of the empty-words notification in `useSpellingRound`. Add a comment explaining why fixing it isn't worthwhile (the path is unreachable in practice).                                                                                                         |
+| M-4 | Final cross-task review | Rename the misleading test `allows repeats when widening is still not enough` in `wordSelector.test.ts` — it actually exercises Layer 4, not Layer 3. Layer 3 is separately covered.                                                                                                                  |
 
 ## Design
 
@@ -122,7 +122,15 @@ useEffect(() => {
     audioManager.playVoice(`voice:word-${round.currentWord.word}`);
     announce(t('wordOf', { current: round.currentWordIndex + 1, total: words.length }));
   }
-}, [round.phase, round.currentWordIndex, round.currentWord, audioManager, announce, t, words.length]);
+}, [
+  round.phase,
+  round.currentWordIndex,
+  round.currentWord,
+  audioManager,
+  announce,
+  t,
+  words.length,
+]);
 ```
 
 In React strict-mode dev, the effect fires twice on mount. Each fire calls `audioManager.playVoice` and `announce`. Users in prod aren't affected, but developers hear the word twice in dev, and any shared-library regression that changes strict-mode behavior in prod would leak.
@@ -139,7 +147,15 @@ useEffect(() => {
   lastPlayedKeyRef.current = key;
   audioManager.playVoice(`voice:word-${round.currentWord.word}`);
   announce(t('wordOf', { current: round.currentWordIndex + 1, total: words.length }));
-}, [round.phase, round.currentWordIndex, round.currentWord, audioManager, announce, t, words.length]);
+}, [
+  round.phase,
+  round.currentWordIndex,
+  round.currentWord,
+  audioManager,
+  announce,
+  t,
+  words.length,
+]);
 ```
 
 The feedback effect (lines 65-74) isn't included here — it doesn't double-fire in strict-mode because each `feedback` phase entry is preceded by a `playing` phase, so the key naturally changes. If it turns out to be problematic, fix separately.

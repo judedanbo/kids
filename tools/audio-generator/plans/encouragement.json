@@ -7,13 +7,7 @@
   "entries": [
     {
       "baseId": "encouragement-correct",
-      "texts": [
-        "Great job!",
-        "Well done!",
-        "Excellent!",
-        "You got it!",
-        "Perfect!"
-      ]
+      "texts": ["Great job!", "Well done!", "Excellent!", "You got it!", "Perfect!"]
     },
     {
       "baseId": "encouragement-tryagain",
@@ -26,21 +20,11 @@
     },
     {
       "baseId": "encouragement-almost",
-      "texts": [
-        "So close!",
-        "Almost there!",
-        "Very close — keep going!",
-        "You're nearly there!"
-      ]
+      "texts": ["So close!", "Almost there!", "Very close — keep going!", "You're nearly there!"]
     },
     {
       "baseId": "encouragement-amazing",
-      "texts": [
-        "Amazing work!",
-        "Incredible!",
-        "You're a superstar!",
-        "Way to go, champion!"
-      ]
+      "texts": ["Amazing work!", "Incredible!", "You're a superstar!", "Way to go, champion!"]
     },
     {
       "baseId": "encouragement-streak",

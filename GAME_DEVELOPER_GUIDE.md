@@ -237,15 +237,15 @@ export interface GameProps {
 
 ```ts
 export interface GameConfig {
-  difficulty: number;      // 1–maxDifficulty (from manifest)
-  profile: UserProfile;    // Active player profile
-  settings: GameSettings;  // Sound, language, high-contrast flags
+  difficulty: number; // 1–maxDifficulty (from manifest)
+  profile: UserProfile; // Active player profile
+  settings: GameSettings; // Sound, language, high-contrast flags
 }
 
 export interface GameSettings {
   soundEnabled: boolean;
   musicEnabled: boolean;
-  language: string;        // e.g. 'en', 'fr'
+  language: string; // e.g. 'en', 'fr'
   highContrastMode: boolean;
 }
 ```
@@ -257,8 +257,8 @@ Use `config.difficulty` to scale word count, time limits, grid size, etc. Use `c
 Call this every time the player earns points during play. The platform accumulates the running total in its own state. Do not track the total yourself — just emit increments.
 
 ```ts
-onScore(10);  // player answered correctly
-onScore(5);   // bonus for speed
+onScore(10); // player answered correctly
+onScore(5); // bonus for speed
 ```
 
 ### `onComplete(result: GameResult)`
@@ -311,21 +311,21 @@ Declare the manifest inline in your `src/index.ts`. All fields are required.
 
 ```ts
 export interface GameManifest {
-  id: string;               // kebab-case, unique across all games
-  name: string;             // Display name shown on GameCard
-  description: string;      // One sentence shown below the title
-  thumbnail: string;        // Path under /public/images/games/<name>.webp
+  id: string; // kebab-case, unique across all games
+  name: string; // Display name shown on GameCard
+  description: string; // One sentence shown below the title
+  thumbnail: string; // Path under /public/images/games/<name>.webp
   ageRange: [number, number]; // [minAge, maxAge], e.g. [3, 5] or [6, 12]
-  skills: SkillCategory[];  // See skill categories below
-  version: string;          // Semver, e.g. '1.0.0'
-  entryPoint: string;       // Relative path from platform/src to your index.ts
-  minDifficulty: number;    // Minimum difficulty level (usually 1)
-  maxDifficulty: number;    // Maximum difficulty level (1–10 recommended)
+  skills: SkillCategory[]; // See skill categories below
+  version: string; // Semver, e.g. '1.0.0'
+  entryPoint: string; // Relative path from platform/src to your index.ts
+  minDifficulty: number; // Minimum difficulty level (usually 1)
+  maxDifficulty: number; // Maximum difficulty level (1–10 recommended)
   estimatedPlayTime: number; // Minutes per session
-  offlineCapable: boolean;  // true if game works without network
+  offlineCapable: boolean; // true if game works without network
   status: 'active' | 'beta' | 'coming_soon' | 'retired';
-  releaseDate: string;      // ISO date string, e.g. '2026-05-01'
-  tags: string[];           // Searchable keywords
+  releaseDate: string; // ISO date string, e.g. '2026-05-01'
+  tags: string[]; // Searchable keywords
 }
 ```
 
@@ -353,20 +353,20 @@ entryPoint: '../../../games/color-match/src/index.ts',
 
 This matches the pattern used by every existing game:
 
-| Game | Entry point |
-|---|---|
-| word-puzzle | `../../../games/word-puzzle/src/index.ts` |
-| memory-match | `../../../games/memory-match/src/index.ts` |
+| Game           | Entry point                                  |
+| -------------- | -------------------------------------------- |
+| word-puzzle    | `../../../games/word-puzzle/src/index.ts`    |
+| memory-match   | `../../../games/memory-match/src/index.ts`   |
 | math-adventure | `../../../games/math-adventure/src/index.ts` |
 
 ### Status values
 
-| Value | Meaning |
-|---|---|
-| `active` | Fully released; shown to all players |
-| `beta` | Released with a Beta badge; shown to all players |
-| `coming_soon` | Placeholder card; not playable |
-| `retired` | Hidden from the Hub |
+| Value         | Meaning                                          |
+| ------------- | ------------------------------------------------ |
+| `active`      | Fully released; shown to all players             |
+| `beta`        | Released with a Beta badge; shown to all players |
+| `coming_soon` | Placeholder card; not playable                   |
+| `retired`     | Hidden from the Hub                              |
 
 ---
 
@@ -390,17 +390,17 @@ import {
 
 ### Component reference
 
-| Component | Key props | Notes |
-|---|---|---|
-| `GameShell` | `title`, `onBack?`, `onPause?`, `showPauseButton?`, `children` | Wraps every game. Renders header with Back button, title, and pause button. Includes `SkipLink` and `Announcer` for accessibility. Press Escape to trigger `onPause`. |
-| `OptionButton` | `label`, `state?` (`'default'`/`'correct'`/`'incorrect'`), `onSelect?`, `icon?`, `disabled?`, `selected?`, `size?` (`'normal'`/`'large'`) | Animated tap button. Shows ✓/✗ icons for feedback states. Respects `prefers-reduced-motion`. |
-| `ScoreDisplay` | `score`, `maxScore?`, `showStars?`, `starCount?`, `animate?` | Animates score changes with a spring. Live region for screen readers. |
-| `ProgressBar` | `current`, `total`, `color?`, `showLabel?`, `label?` | `role="progressbar"` with aria attributes. Accepts custom CSS color via `color` prop. |
-| `CelebrationOverlay` | `onComplete?`, `title?`, `score?`, `maxScore?`, `type?` (`'confetti'`/`'stars'`), `duration?`, `intensity?` | Fires confetti/stars on mount, auto-dismisses after `duration` ms. Skips animation when `prefers-reduced-motion` is set. |
-| `GameTimer` | `mode` (`'countdown'`/`'countup'`), `duration?`, `paused?`, `onExpire?`, `onTick?`, `size?` | SVG ring timer. Announces time every 10 s via `aria-live`. Turns red at 10 s remaining in countdown mode. |
-| `DifficultySelector` | `current`, `onChange`, `levels?`, `labels?` | Star-based selector. Full keyboard support (arrow keys). `role="radiogroup"`. |
-| `InstructionBubble` | `text`, `audioSrc?`, `character?`, `onAudioPlay?` | Speech-bubble for game instructions. Optional character emoji/image. Optional audio replay button. |
-| `PauseMenu` | `onResume`, `onRestart`, `onExit` | Modal dialog with focus trap. Escape key resumes. Use inside `AnimatePresence` from framer-motion for enter/exit animation. |
+| Component            | Key props                                                                                                                                 | Notes                                                                                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GameShell`          | `title`, `onBack?`, `onPause?`, `showPauseButton?`, `children`                                                                            | Wraps every game. Renders header with Back button, title, and pause button. Includes `SkipLink` and `Announcer` for accessibility. Press Escape to trigger `onPause`. |
+| `OptionButton`       | `label`, `state?` (`'default'`/`'correct'`/`'incorrect'`), `onSelect?`, `icon?`, `disabled?`, `selected?`, `size?` (`'normal'`/`'large'`) | Animated tap button. Shows ✓/✗ icons for feedback states. Respects `prefers-reduced-motion`.                                                                          |
+| `ScoreDisplay`       | `score`, `maxScore?`, `showStars?`, `starCount?`, `animate?`                                                                              | Animates score changes with a spring. Live region for screen readers.                                                                                                 |
+| `ProgressBar`        | `current`, `total`, `color?`, `showLabel?`, `label?`                                                                                      | `role="progressbar"` with aria attributes. Accepts custom CSS color via `color` prop.                                                                                 |
+| `CelebrationOverlay` | `onComplete?`, `title?`, `score?`, `maxScore?`, `type?` (`'confetti'`/`'stars'`), `duration?`, `intensity?`                               | Fires confetti/stars on mount, auto-dismisses after `duration` ms. Skips animation when `prefers-reduced-motion` is set.                                              |
+| `GameTimer`          | `mode` (`'countdown'`/`'countup'`), `duration?`, `paused?`, `onExpire?`, `onTick?`, `size?`                                               | SVG ring timer. Announces time every 10 s via `aria-live`. Turns red at 10 s remaining in countdown mode.                                                             |
+| `DifficultySelector` | `current`, `onChange`, `levels?`, `labels?`                                                                                               | Star-based selector. Full keyboard support (arrow keys). `role="radiogroup"`.                                                                                         |
+| `InstructionBubble`  | `text`, `audioSrc?`, `character?`, `onAudioPlay?`                                                                                         | Speech-bubble for game instructions. Optional character emoji/image. Optional audio replay button.                                                                    |
+| `PauseMenu`          | `onResume`, `onRestart`, `onExit`                                                                                                         | Modal dialog with focus trap. Escape key resumes. Use inside `AnimatePresence` from framer-motion for enter/exit animation.                                           |
 
 ### Usage example
 
@@ -434,11 +434,7 @@ export function ColorMatch({ config, onScore, onComplete, onExit, audioManager }
 
       <AnimatePresence>
         {paused && (
-          <PauseMenu
-            onResume={() => setPaused(false)}
-            onRestart={handleRestart}
-            onExit={onExit}
-          />
+          <PauseMenu onResume={() => setPaused(false)} onRestart={handleRestart} onExit={onExit} />
         )}
       </AnimatePresence>
     </GameShell>
@@ -455,10 +451,10 @@ The `audioManager` is passed via `GameProps`. It abstracts away all Web Audio AP
 ### Sound effects
 
 ```ts
-audioManager.playSFX('correct');    // Player answered correctly
+audioManager.playSFX('correct'); // Player answered correctly
 audioManager.playSFX('incorrect'); // Wrong answer
 audioManager.playSFX('celebrate'); // Game complete
-audioManager.playSFX('click');     // UI tap/select
+audioManager.playSFX('click'); // UI tap/select
 ```
 
 SFX IDs are registered in the platform's audio asset manifest. For custom sounds, add your asset file to `public/audio/sfx/` and register it.
@@ -517,6 +513,7 @@ games/color-match/src/locales/fr/color-match.json
 ```
 
 **`en/color-match.json`:**
+
 ```json
 {
   "title": "Color Match",
@@ -529,6 +526,7 @@ games/color-match/src/locales/fr/color-match.json
 ```
 
 **`fr/color-match.json`:**
+
 ```json
 {
   "title": "Correspondance de couleurs",
@@ -541,12 +539,13 @@ games/color-match/src/locales/fr/color-match.json
 ```
 
 Use `{{variable}}` for interpolation:
+
 ```json
 { "score": "Score : {{score}} sur {{max}}" }
 ```
 
 ```ts
-t('score', { score: 45, max: 60 })
+t('score', { score: 45, max: 60 });
 // → "Score : 45 sur 60"
 ```
 
@@ -566,13 +565,13 @@ i18n.init({
       common: enCommon,
       'memory-match': enMemoryMatch,
       'word-puzzle': enWordPuzzle,
-      'color-match': enColorMatch,   // add this line
+      'color-match': enColorMatch, // add this line
     },
     fr: {
       common: frCommon,
       'memory-match': frMemoryMatch,
       'word-puzzle': frWordPuzzle,
-      'color-match': frColorMatch,   // add this line
+      'color-match': frColorMatch, // add this line
     },
   },
   // ...
@@ -585,12 +584,14 @@ i18n.init({
 import { useTranslation } from 'react-i18next';
 
 export function ColorMatch(props: GameProps) {
-  const { t } = useTranslation('color-match');  // namespace = game id
+  const { t } = useTranslation('color-match'); // namespace = game id
 
-  return <GameShell title={t('title')} onBack={props.onExit}>
-    <InstructionBubble text={t('instruction')} />
-    <OptionButton label={t('letsGo')} onSelect={handleStart} />
-  </GameShell>;
+  return (
+    <GameShell title={t('title')} onBack={props.onExit}>
+      <InstructionBubble text={t('instruction')} />
+      <OptionButton label={t('letsGo')} onSelect={handleStart} />
+    </GameShell>
+  );
 }
 ```
 
@@ -631,7 +632,7 @@ import styles from './ColorMatch.module.css';
 
 <div className={styles.grid}>
   <button className={styles.card}>Red</button>
-</div>
+</div>;
 ```
 
 No Tailwind, no CSS-in-JS, no inline style objects (unless applying dynamic CSS custom properties).
@@ -640,35 +641,35 @@ No Tailwind, no CSS-in-JS, no inline style objects (unless applying dynamic CSS 
 
 All tokens come from `shared/src/styles/tokens.css` and are available globally as CSS custom properties.
 
-| Token | Value | Use for |
-|---|---|---|
-| `--color-primary` | `#4a90d9` | Primary actions, highlights |
-| `--color-secondary` | `#ff8c42` | Secondary actions, accents |
-| `--color-success` | `#4caf50` | Correct feedback |
-| `--color-error` | `#e57373` | Incorrect feedback |
-| `--color-bg-primary` | `#fff8f0` | Page/container backgrounds |
-| `--color-bg-secondary` | `#f0f4ff` | Card/panel backgrounds |
-| `--color-surface` | `#ffffff` | Elevated surfaces |
-| `--color-text-primary` | `#333333` | Body text |
-| `--color-text-secondary` | `#666666` | Captions, labels |
-| `--color-border` | `#e0d5c8` | Dividers, card borders |
-| `--radius-small` | `8px` | Small chips, tags |
-| `--radius-medium` | `16px` | Cards, buttons |
-| `--radius-large` | `24px` | Large panels, modals |
-| `--radius-round` | `50%` | Circular elements |
-| `--spacing-xs` | `4px` | Tight gaps |
-| `--spacing-sm` | `8px` | Inner padding |
-| `--spacing-md` | `16px` | Standard gaps |
-| `--spacing-lg` | `24px` | Section spacing |
-| `--spacing-xl` | `32px` | Page-level spacing |
-| `--font-family-display` | `'Baloo 2', cursive` | Headings, titles |
-| `--font-family-body` | `'Nunito', sans-serif` | Body copy |
-| `--font-size-base` | tier-dependent | Set on `:root`, use `em`/`rem` |
-| `--touch-target-size` | tier-dependent | Minimum interactive element size |
-| `--transition-fast` | `150ms ease` | Hover/tap responses |
-| `--transition-normal` | `300ms ease-in-out` | State transitions |
-| `--shadow-card` | `0 4px 12px …` | Card elevation |
-| `--shadow-button` | `0 2px 8px …` | Button elevation |
+| Token                    | Value                  | Use for                          |
+| ------------------------ | ---------------------- | -------------------------------- |
+| `--color-primary`        | `#4a90d9`              | Primary actions, highlights      |
+| `--color-secondary`      | `#ff8c42`              | Secondary actions, accents       |
+| `--color-success`        | `#4caf50`              | Correct feedback                 |
+| `--color-error`          | `#e57373`              | Incorrect feedback               |
+| `--color-bg-primary`     | `#fff8f0`              | Page/container backgrounds       |
+| `--color-bg-secondary`   | `#f0f4ff`              | Card/panel backgrounds           |
+| `--color-surface`        | `#ffffff`              | Elevated surfaces                |
+| `--color-text-primary`   | `#333333`              | Body text                        |
+| `--color-text-secondary` | `#666666`              | Captions, labels                 |
+| `--color-border`         | `#e0d5c8`              | Dividers, card borders           |
+| `--radius-small`         | `8px`                  | Small chips, tags                |
+| `--radius-medium`        | `16px`                 | Cards, buttons                   |
+| `--radius-large`         | `24px`                 | Large panels, modals             |
+| `--radius-round`         | `50%`                  | Circular elements                |
+| `--spacing-xs`           | `4px`                  | Tight gaps                       |
+| `--spacing-sm`           | `8px`                  | Inner padding                    |
+| `--spacing-md`           | `16px`                 | Standard gaps                    |
+| `--spacing-lg`           | `24px`                 | Section spacing                  |
+| `--spacing-xl`           | `32px`                 | Page-level spacing               |
+| `--font-family-display`  | `'Baloo 2', cursive`   | Headings, titles                 |
+| `--font-family-body`     | `'Nunito', sans-serif` | Body copy                        |
+| `--font-size-base`       | tier-dependent         | Set on `:root`, use `em`/`rem`   |
+| `--touch-target-size`    | tier-dependent         | Minimum interactive element size |
+| `--transition-fast`      | `150ms ease`           | Hover/tap responses              |
+| `--transition-normal`    | `300ms ease-in-out`    | State transitions                |
+| `--shadow-card`          | `0 4px 12px …`         | Card elevation                   |
+| `--shadow-button`        | `0 2px 8px …`          | Button elevation                 |
 
 All tokens automatically adapt to dark theme (`[data-theme="dark"]`) and high-contrast mode (`[data-high-contrast="true"]`) — you get this for free when you use the tokens consistently.
 
@@ -676,11 +677,11 @@ All tokens automatically adapt to dark theme (`[data-theme="dark"]`) and high-co
 
 The platform sets `data-age-tier` on the `<body>` element based on the active profile. Use this attribute for tier-specific overrides:
 
-| Tier | Ages | `--touch-target-size` | `--font-size-base` |
-|---|---|---|---|
-| `tiny` | 3–5 | `64px` | `24px` |
-| `junior` | 6–8 | `48px` | `18px` |
-| `explorer` | 9–12 | `48px` | `16px` |
+| Tier       | Ages | `--touch-target-size` | `--font-size-base` |
+| ---------- | ---- | --------------------- | ------------------ |
+| `tiny`     | 3–5  | `64px`                | `24px`             |
+| `junior`   | 6–8  | `48px`                | `18px`             |
+| `explorer` | 9–12 | `48px`                | `16px`             |
 
 ```css
 /* Default (junior) */

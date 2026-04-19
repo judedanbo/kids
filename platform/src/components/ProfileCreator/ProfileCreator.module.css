@@ -65,7 +65,9 @@
   cursor: pointer;
   border: none;
   box-shadow: var(--shadow-button);
-  transition: transform var(--transition-fast), opacity var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
 }
 
 .nextButton:disabled {
@@ -108,7 +110,9 @@
   font-weight: 700;
   color: var(--color-text-primary);
   cursor: pointer;
-  transition: border-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
   font-family: var(--font-family-body);
 }
 
@@ -140,7 +144,9 @@
   border: 2px solid var(--color-border);
   font-size: 2.5rem;
   cursor: pointer;
-  transition: border-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .avatarButton:hover {

@@ -10,25 +10,10 @@ export type {
   DailyChallenge,
 } from './game';
 
-export type {
-  UserProfile,
-  GameProgress,
-  Reward,
-  RewardType,
-  RewardCriteria,
-} from './user';
+export type { UserProfile, GameProgress, Reward, RewardType, RewardCriteria } from './user';
 
 export type { TimeLimitConfig, FeatureFlags } from './platform';
 
-export type {
-  AudioManager,
-  StorageManager,
-  AnalyticsEvent,
-  EventFilter,
-} from './services';
+export type { AudioManager, StorageManager, AnalyticsEvent, EventFilter } from './services';
 
-export type {
-  SpellingWordEntry,
-  SpellingWordList,
-  SpellingTierFile,
-} from './spelling';
+export type { SpellingWordEntry, SpellingWordList, SpellingTierFile } from './spelling';

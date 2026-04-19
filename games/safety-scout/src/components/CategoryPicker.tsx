@@ -29,7 +29,9 @@ export function CategoryPicker({ categories, onSelect }: CategoryPickerProps) {
             onClick={() => onSelect(cat)}
             aria-label={t(`category.${cat}`)}
           >
-            <span className={styles.icon} aria-hidden="true">{CATEGORY_ICONS[cat] ?? '📦'}</span>
+            <span className={styles.icon} aria-hidden="true">
+              {CATEGORY_ICONS[cat] ?? '📦'}
+            </span>
             <span className={styles.label}>{t(`category.${cat}`)}</span>
           </button>
         ))}
@@ -38,7 +40,9 @@ export function CategoryPicker({ categories, onSelect }: CategoryPickerProps) {
           onClick={() => onSelect(null)}
           aria-label={t('randomMix')}
         >
-          <span className={styles.icon} aria-hidden="true">🎲</span>
+          <span className={styles.icon} aria-hidden="true">
+            🎲
+          </span>
           <span className={styles.label}>{t('randomMix')}</span>
         </button>
       </div>

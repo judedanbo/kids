@@ -1,11 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  OptionButton,
-  ProgressBar,
-  ScoreDisplay,
-  useAnnounce,
-} from '@kids-games-zone/shared';
+import { OptionButton, ProgressBar, ScoreDisplay, useAnnounce } from '@kids-games-zone/shared';
 import type { AgeTier, AudioManager } from '@kids-games-zone/shared';
 import { scrambleWithDistractors } from '../utils/letterScrambler';
 import { useSpellingRound } from '../hooks/useSpellingRound';
@@ -71,7 +66,15 @@ export function LevelPlay({
     lastPlayedKeyRef.current = key;
     audioManager.playVoice(`voice:word-${round.currentWord.word}`);
     announce(t('wordOf', { current: round.currentWordIndex + 1, total: words.length }));
-  }, [round.phase, round.currentWordIndex, round.currentWord, audioManager, announce, t, words.length]);
+  }, [
+    round.phase,
+    round.currentWordIndex,
+    round.currentWord,
+    audioManager,
+    announce,
+    t,
+    words.length,
+  ]);
 
   useEffect(() => {
     if (round.phase !== 'feedback') return;
@@ -102,12 +105,14 @@ export function LevelPlay({
       <WordDisplay word={round.currentWord} ageTier={ageTier} audioManager={audioManager} />
 
       {!showFeedback && isTiny && (
-        <LetterTiles letters={tiles} wordLength={round.currentWord.word.length} onSubmit={round.submitAnswer} />
+        <LetterTiles
+          letters={tiles}
+          wordLength={round.currentWord.word.length}
+          onSubmit={round.submitAnswer}
+        />
       )}
 
-      {!showFeedback && !isTiny && (
-        <Keyboard onSubmit={round.submitAnswer} />
-      )}
+      {!showFeedback && !isTiny && <Keyboard onSubmit={round.submitAnswer} />}
 
       {showFeedback && (
         <div className={styles.feedbackArea} aria-live="assertive">
@@ -118,7 +123,12 @@ export function LevelPlay({
                 ? t('incorrectTiny')
                 : t('incorrect', { word: round.currentWord.word })}
           </p>
-          <OptionButton label={t('nextWord')} state="default" onSelect={round.nextWord} size="large" />
+          <OptionButton
+            label={t('nextWord')}
+            state="default"
+            onSelect={round.nextWord}
+            size="large"
+          />
         </div>
       )}
     </div>

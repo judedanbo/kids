@@ -8,7 +8,11 @@ interface LivesDisplayProps {
 
 export function LivesDisplay({ lives, maxLives }: LivesDisplayProps) {
   return (
-    <div className={styles.container} role="img" aria-label={`${lives} of ${maxLives} lives remaining`}>
+    <div
+      className={styles.container}
+      role="img"
+      aria-label={`${lives} of ${maxLives} lives remaining`}
+    >
       {Array.from({ length: maxLives }, (_, i) => {
         const alive = i < lives;
         return (
@@ -18,9 +22,11 @@ export function LivesDisplay({ lives, maxLives }: LivesDisplayProps) {
             aria-hidden="true"
           >
             <IconImage
-              src={alive
-                ? '/images/games/spelling-bee/heart-full.webp'
-                : '/images/games/spelling-bee/heart-empty.webp'}
+              src={
+                alive
+                  ? '/images/games/spelling-bee/heart-full.webp'
+                  : '/images/games/spelling-bee/heart-empty.webp'
+              }
               alt=""
               fallback={alive ? '❤️' : '🖤'}
               size={28}

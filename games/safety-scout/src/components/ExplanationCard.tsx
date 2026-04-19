@@ -15,7 +15,9 @@ export function ExplanationCard({ explanation, isCorrect, ageTier }: Explanation
       className={`${styles.container} ${isCorrect ? styles.correct : styles.incorrect}`}
       aria-live="polite"
     >
-      <span className={styles.icon} aria-hidden="true">{isCorrect ? '🎉' : '💡'}</span>
+      <span className={styles.icon} aria-hidden="true">
+        {isCorrect ? '🎉' : '💡'}
+      </span>
       <p className={`${styles.text} ${isTiny ? styles.textLarge : ''}`}>{explanation}</p>
     </div>
   );

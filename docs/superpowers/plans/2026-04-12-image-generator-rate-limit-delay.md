@@ -17,6 +17,7 @@
 ## File Structure
 
 **Modify:**
+
 - `tools/image-generator/src/cli.mjs` — add flag parsing, update worker, update log line, update help text.
 - `tools/image-generator/README.md` — document the new flag alongside existing `Quick start` examples.
 
@@ -27,6 +28,7 @@ No new files, no new dependencies.
 ## Task 1: Add `--delay` to arg parsing and defaults
 
 **Files:**
+
 - Modify: `tools/image-generator/src/cli.mjs` (functions `parseArgs` around lines 33-64, `printHelp` around lines 66-72)
 
 - [ ] **Step 1: Add `delay` to `opts` defaults**
@@ -100,6 +102,7 @@ git commit -m "feat(image-generator): add --delay flag with 1s default"
 ## Task 2: Apply delay inside the pool worker
 
 **Files:**
+
 - Modify: `tools/image-generator/src/cli.mjs` (top of file for import; `main` function around lines 183-189)
 
 - [ ] **Step 1: Add the `setTimeout` promise import**
@@ -145,13 +148,17 @@ The `finally` ensures the delay runs even when `generateOne` throws, so a single
 Locate the log line in `main` (currently around line 183):
 
 ```js
-console.log(`Generating with model=${opts.model} quality=${opts.quality} concurrency=${opts.concurrency}...\n`);
+console.log(
+  `Generating with model=${opts.model} quality=${opts.quality} concurrency=${opts.concurrency}...\n`,
+);
 ```
 
 Replace with:
 
 ```js
-console.log(`Generating with model=${opts.model} quality=${opts.quality} concurrency=${opts.concurrency} delay=${opts.delay}ms...\n`);
+console.log(
+  `Generating with model=${opts.model} quality=${opts.quality} concurrency=${opts.concurrency} delay=${opts.delay}ms...\n`,
+);
 ```
 
 - [ ] **Step 4: Sanity-check the file still parses**
@@ -184,6 +191,7 @@ git commit -m "feat(image-generator): sleep between API calls to avoid 429s"
 ## Task 3: Document the flag in the README
 
 **Files:**
+
 - Modify: `tools/image-generator/README.md`
 
 - [ ] **Step 1: Add a short note about `--delay` to the Quick start section**

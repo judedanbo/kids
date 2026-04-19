@@ -46,7 +46,13 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
 
   useEffect(() => {
     if (!showInstruction) {
-      announce(t('questionOf', { current: currentIndex + 1, total: questions.length, text: currentQuestion.displayText }));
+      announce(
+        t('questionOf', {
+          current: currentIndex + 1,
+          total: questions.length,
+          text: currentQuestion.displayText,
+        }),
+      );
     }
   }, [currentIndex, showInstruction, announce, t, currentQuestion.displayText, questions.length]);
 
@@ -107,7 +113,16 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
         }, 600);
       }
     },
-    [selectedOption, attempts, currentQuestion, audioManager, onScore, advanceQuestion, announce, t],
+    [
+      selectedOption,
+      attempts,
+      currentQuestion,
+      audioManager,
+      onScore,
+      advanceQuestion,
+      announce,
+      t,
+    ],
   );
 
   const handleCelebrationComplete = useCallback(() => {
@@ -138,7 +153,12 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
 
   if (showCelebration) {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={score}
@@ -151,10 +171,24 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
 
   if (showInstruction) {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <div className={styles.gameArea}>
-          <InstructionBubble text={t('instruction')} character="🧮" characterSrc="/images/games/mascots/calculator.webp" />
-          <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
+          <InstructionBubble
+            text={t('instruction')}
+            character="🧮"
+            characterSrc="/images/games/mascots/calculator.webp"
+          />
+          <OptionButton
+            label={t('letsGo')}
+            state="default"
+            onSelect={handleDismissInstruction}
+            size="large"
+          />
         </div>
       </GameShell>
     );
@@ -163,7 +197,12 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
   const showVisualAid = config.difficulty <= 2;
 
   return (
-    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+    <GameShell
+      title={t('title')}
+      onBack={onExit}
+      audioManager={audioManager}
+      musicEnabled={config.settings.backgroundMusicEnabled}
+    >
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={score} maxScore={TOTAL_QUESTIONS * 10} showStars />
@@ -171,12 +210,11 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
         </div>
         <ProgressBar current={currentIndex} total={TOTAL_QUESTIONS} showLabel />
         <div className={styles.questionArea}>
-          <p aria-live="assertive" aria-atomic="true" className={styles.questionText}>{currentQuestion.displayText}</p>
+          <p aria-live="assertive" aria-atomic="true" className={styles.questionText}>
+            {currentQuestion.displayText}
+          </p>
           {attempts > 1 && (
-            <p
-              className={styles.attemptHint}
-              aria-label={t('attempt', { count: attempts })}
-            >
+            <p className={styles.attemptHint} aria-label={t('attempt', { count: attempts })}>
               {t('attempt', { count: attempts })}
             </p>
           )}

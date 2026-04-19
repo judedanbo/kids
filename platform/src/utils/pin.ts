@@ -31,7 +31,12 @@ export async function verifyPin(pin: string, stored: string): Promise<boolean> {
   const keyMaterial = await getKeyMaterial(pin);
   const derivedKey = await globalThis.crypto.subtle.deriveBits(
     // Uint8Array works at runtime in both browser and Node; cast for TS strictness
-    { name: 'PBKDF2', salt: salt as unknown as ArrayBuffer, iterations: ITERATIONS, hash: 'SHA-256' },
+    {
+      name: 'PBKDF2',
+      salt: salt as unknown as ArrayBuffer,
+      iterations: ITERATIONS,
+      hash: 'SHA-256',
+    },
     keyMaterial,
     KEY_LENGTH,
   );
@@ -42,13 +47,9 @@ export async function verifyPin(pin: string, stored: string): Promise<boolean> {
 
 async function getKeyMaterial(pin: string): Promise<CryptoKey> {
   const encoder = new TextEncoder();
-  return globalThis.crypto.subtle.importKey(
-    'raw',
-    encoder.encode(pin),
-    'PBKDF2',
-    false,
-    ['deriveBits'],
-  );
+  return globalThis.crypto.subtle.importKey('raw', encoder.encode(pin), 'PBKDF2', false, [
+    'deriveBits',
+  ]);
 }
 
 function uint8ToBase64(bytes: Uint8Array): string {

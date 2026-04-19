@@ -51,6 +51,7 @@ games/safety-scout/
 ```
 
 Platform files to modify:
+
 - `platform/src/config/gameRegistry.ts` — Add safety-scout manifest
 - `platform/src/config/featureFlags.json` — Add `game.safety-scout` flag
 
@@ -59,6 +60,7 @@ Platform files to modify:
 ### Task 1: Scaffold game package
 
 **Files:**
+
 - Create: `games/safety-scout/package.json`
 - Create: `games/safety-scout/tsconfig.json`
 - Create: `games/safety-scout/vitest.config.ts`
@@ -153,7 +155,7 @@ import { expect } from 'vitest';
 expect.extend(axeMatchers);
 ```
 
-- [ ] **Step 6: Create src/__mocks__/react-i18next.ts**
+- [ ] **Step 6: Create src/**mocks**/react-i18next.ts**
 
 ```typescript
 import { vi } from 'vitest';
@@ -183,6 +185,7 @@ git commit -m "feat(safety-scout): scaffold game package with build config"
 ### Task 2: Object data and object selector utility
 
 **Files:**
+
 - Create: `games/safety-scout/src/data/objects.json`
 - Create: `games/safety-scout/src/utils/objectSelector.ts`
 - Create: `games/safety-scout/src/__tests__/objectSelector.test.ts`
@@ -191,49 +194,467 @@ git commit -m "feat(safety-scout): scaffold game package with build config"
 
 ```json
 [
-  { "id": "kitchen-knife", "name": "Kitchen Knife", "category": "kitchen", "image": "kitchen-knife.webp", "isSafe": false, "explanations": { "tiny": "Knives are sharp! Always ask a grown-up.", "junior": "Kitchen knives can cut you. Only adults should handle them." }, "difficulty": 1 },
-  { "id": "kitchen-spoon", "name": "Spoon", "category": "kitchen", "image": "spoon.webp", "isSafe": true, "explanations": { "tiny": "Spoons are safe to use!", "junior": "Spoons are a safe eating utensil." }, "difficulty": 1 },
-  { "id": "kitchen-stove", "name": "Stove", "category": "kitchen", "image": "stove.webp", "isSafe": false, "explanations": { "tiny": "The stove is very hot! Don't touch it.", "junior": "Stoves get very hot when cooking. Only use them with an adult." }, "difficulty": 1 },
-  { "id": "kitchen-cup", "name": "Cup", "category": "kitchen", "image": "cup.webp", "isSafe": true, "explanations": { "tiny": "Cups are safe for drinking!", "junior": "Cups are safe to use for drinks." }, "difficulty": 1 },
-  { "id": "kitchen-blender", "name": "Blender", "category": "kitchen", "image": "blender.webp", "isSafe": false, "explanations": { "tiny": "Blenders have sharp blades! Ask a grown-up.", "junior": "Blenders have sharp spinning blades inside. Let an adult use it." }, "difficulty": 2 },
-  { "id": "kitchen-fork", "name": "Fork", "category": "kitchen", "image": "fork.webp", "isSafe": true, "explanations": { "tiny": "Forks are safe for eating!", "junior": "Forks are safe eating utensils when used properly." }, "difficulty": 1 },
-  { "id": "kitchen-microwave", "name": "Microwave", "category": "kitchen", "image": "microwave.webp", "isSafe": false, "explanations": { "tiny": "Food from the microwave is very hot! Be careful.", "junior": "Microwaves heat food very quickly. Ask an adult to help." }, "difficulty": 3 },
-  { "id": "kitchen-oven-mitt", "name": "Oven Mitt", "category": "kitchen", "image": "oven-mitt.webp", "isSafe": true, "explanations": { "tiny": "Oven mitts protect your hands!", "junior": "Oven mitts keep your hands safe from hot things." }, "difficulty": 2 },
+  {
+    "id": "kitchen-knife",
+    "name": "Kitchen Knife",
+    "category": "kitchen",
+    "image": "kitchen-knife.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Knives are sharp! Always ask a grown-up.",
+      "junior": "Kitchen knives can cut you. Only adults should handle them."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "kitchen-spoon",
+    "name": "Spoon",
+    "category": "kitchen",
+    "image": "spoon.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Spoons are safe to use!",
+      "junior": "Spoons are a safe eating utensil."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "kitchen-stove",
+    "name": "Stove",
+    "category": "kitchen",
+    "image": "stove.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "The stove is very hot! Don't touch it.",
+      "junior": "Stoves get very hot when cooking. Only use them with an adult."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "kitchen-cup",
+    "name": "Cup",
+    "category": "kitchen",
+    "image": "cup.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Cups are safe for drinking!",
+      "junior": "Cups are safe to use for drinks."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "kitchen-blender",
+    "name": "Blender",
+    "category": "kitchen",
+    "image": "blender.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Blenders have sharp blades! Ask a grown-up.",
+      "junior": "Blenders have sharp spinning blades inside. Let an adult use it."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "kitchen-fork",
+    "name": "Fork",
+    "category": "kitchen",
+    "image": "fork.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Forks are safe for eating!",
+      "junior": "Forks are safe eating utensils when used properly."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "kitchen-microwave",
+    "name": "Microwave",
+    "category": "kitchen",
+    "image": "microwave.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Food from the microwave is very hot! Be careful.",
+      "junior": "Microwaves heat food very quickly. Ask an adult to help."
+    },
+    "difficulty": 3
+  },
+  {
+    "id": "kitchen-oven-mitt",
+    "name": "Oven Mitt",
+    "category": "kitchen",
+    "image": "oven-mitt.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Oven mitts protect your hands!",
+      "junior": "Oven mitts keep your hands safe from hot things."
+    },
+    "difficulty": 2
+  },
 
-  { "id": "bathroom-medicine", "name": "Medicine Bottle", "category": "bathroom", "image": "medicine.webp", "isSafe": false, "explanations": { "tiny": "Medicine is only for when a grown-up gives it to you!", "junior": "Never take medicine without an adult. It can be dangerous." }, "difficulty": 1 },
-  { "id": "bathroom-toothbrush", "name": "Toothbrush", "category": "bathroom", "image": "toothbrush.webp", "isSafe": true, "explanations": { "tiny": "Toothbrushes keep your teeth clean!", "junior": "Toothbrushes are safe and important for dental hygiene." }, "difficulty": 1 },
-  { "id": "bathroom-razor", "name": "Razor", "category": "bathroom", "image": "razor.webp", "isSafe": false, "explanations": { "tiny": "Razors are very sharp! Don't touch them.", "junior": "Razors have sharp blades. Only adults should use them." }, "difficulty": 1 },
-  { "id": "bathroom-soap", "name": "Soap", "category": "bathroom", "image": "soap.webp", "isSafe": true, "explanations": { "tiny": "Soap helps keep your hands clean!", "junior": "Soap is safe and helps fight germs." }, "difficulty": 1 },
-  { "id": "bathroom-hairdryer", "name": "Hair Dryer", "category": "bathroom", "image": "hairdryer.webp", "isSafe": false, "explanations": { "tiny": "Hair dryers are very hot and use electricity!", "junior": "Hair dryers get hot and should not be used near water." }, "difficulty": 2 },
-  { "id": "bathroom-shampoo", "name": "Shampoo", "category": "bathroom", "image": "shampoo.webp", "isSafe": true, "explanations": { "tiny": "Shampoo cleans your hair! Keep it away from your eyes.", "junior": "Shampoo is safe for hair but avoid getting it in your eyes." }, "difficulty": 2 },
+  {
+    "id": "bathroom-medicine",
+    "name": "Medicine Bottle",
+    "category": "bathroom",
+    "image": "medicine.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Medicine is only for when a grown-up gives it to you!",
+      "junior": "Never take medicine without an adult. It can be dangerous."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "bathroom-toothbrush",
+    "name": "Toothbrush",
+    "category": "bathroom",
+    "image": "toothbrush.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Toothbrushes keep your teeth clean!",
+      "junior": "Toothbrushes are safe and important for dental hygiene."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "bathroom-razor",
+    "name": "Razor",
+    "category": "bathroom",
+    "image": "razor.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Razors are very sharp! Don't touch them.",
+      "junior": "Razors have sharp blades. Only adults should use them."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "bathroom-soap",
+    "name": "Soap",
+    "category": "bathroom",
+    "image": "soap.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Soap helps keep your hands clean!",
+      "junior": "Soap is safe and helps fight germs."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "bathroom-hairdryer",
+    "name": "Hair Dryer",
+    "category": "bathroom",
+    "image": "hairdryer.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Hair dryers are very hot and use electricity!",
+      "junior": "Hair dryers get hot and should not be used near water."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "bathroom-shampoo",
+    "name": "Shampoo",
+    "category": "bathroom",
+    "image": "shampoo.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Shampoo cleans your hair! Keep it away from your eyes.",
+      "junior": "Shampoo is safe for hair but avoid getting it in your eyes."
+    },
+    "difficulty": 2
+  },
 
-  { "id": "living-outlet", "name": "Electrical Outlet", "category": "living-room", "image": "outlet.webp", "isSafe": false, "explanations": { "tiny": "Never put anything in an outlet! It's very dangerous.", "junior": "Electrical outlets carry electricity that can shock you badly." }, "difficulty": 1 },
-  { "id": "living-remote", "name": "Remote Control", "category": "living-room", "image": "remote.webp", "isSafe": true, "explanations": { "tiny": "Remote controls are safe to use!", "junior": "Remote controls are safe electronics for everyday use." }, "difficulty": 1 },
-  { "id": "living-candle", "name": "Candle", "category": "living-room", "image": "candle.webp", "isSafe": false, "explanations": { "tiny": "Candles have fire! Don't touch them.", "junior": "Lit candles have an open flame that can burn you or start a fire." }, "difficulty": 2 },
-  { "id": "living-cushion", "name": "Cushion", "category": "living-room", "image": "cushion.webp", "isSafe": true, "explanations": { "tiny": "Cushions are soft and safe!", "junior": "Cushions are soft and harmless household items." }, "difficulty": 1 },
-  { "id": "living-lamp", "name": "Lamp", "category": "living-room", "image": "lamp.webp", "isSafe": true, "explanations": { "tiny": "Lamps give us light!", "junior": "Lamps are generally safe when used properly." }, "difficulty": 2 },
-  { "id": "living-matches", "name": "Matches", "category": "living-room", "image": "matches.webp", "isSafe": false, "explanations": { "tiny": "Matches make fire! Never play with them.", "junior": "Matches are fire starters. Only adults should use them." }, "difficulty": 1 },
+  {
+    "id": "living-outlet",
+    "name": "Electrical Outlet",
+    "category": "living-room",
+    "image": "outlet.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Never put anything in an outlet! It's very dangerous.",
+      "junior": "Electrical outlets carry electricity that can shock you badly."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "living-remote",
+    "name": "Remote Control",
+    "category": "living-room",
+    "image": "remote.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Remote controls are safe to use!",
+      "junior": "Remote controls are safe electronics for everyday use."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "living-candle",
+    "name": "Candle",
+    "category": "living-room",
+    "image": "candle.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Candles have fire! Don't touch them.",
+      "junior": "Lit candles have an open flame that can burn you or start a fire."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "living-cushion",
+    "name": "Cushion",
+    "category": "living-room",
+    "image": "cushion.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Cushions are soft and safe!",
+      "junior": "Cushions are soft and harmless household items."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "living-lamp",
+    "name": "Lamp",
+    "category": "living-room",
+    "image": "lamp.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Lamps give us light!",
+      "junior": "Lamps are generally safe when used properly."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "living-matches",
+    "name": "Matches",
+    "category": "living-room",
+    "image": "matches.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Matches make fire! Never play with them.",
+      "junior": "Matches are fire starters. Only adults should use them."
+    },
+    "difficulty": 1
+  },
 
-  { "id": "outdoor-traffic", "name": "Busy Road", "category": "outdoor", "image": "traffic.webp", "isSafe": false, "explanations": { "tiny": "Roads with cars are dangerous! Hold a grown-up's hand.", "junior": "Busy roads are dangerous. Always look both ways and cross with an adult." }, "difficulty": 1 },
-  { "id": "outdoor-bicycle", "name": "Bicycle", "category": "outdoor", "image": "bicycle.webp", "isSafe": true, "explanations": { "tiny": "Bikes are fun! Always wear a helmet.", "junior": "Bicycles are safe when you wear a helmet and follow road rules." }, "difficulty": 3 },
-  { "id": "outdoor-swing", "name": "Swing", "category": "outdoor", "image": "swing.webp", "isSafe": true, "explanations": { "tiny": "Swings are fun to play on!", "junior": "Swings are safe playground equipment. Hold on tight!" }, "difficulty": 1 },
-  { "id": "outdoor-stray-animal", "name": "Stray Animal", "category": "outdoor", "image": "stray-animal.webp", "isSafe": false, "explanations": { "tiny": "Don't touch animals you don't know!", "junior": "Stray animals may be scared and could bite. Keep your distance." }, "difficulty": 2 },
-  { "id": "outdoor-puddle", "name": "Deep Puddle", "category": "outdoor", "image": "puddle.webp", "isSafe": false, "explanations": { "tiny": "Deep puddles can be slippery!", "junior": "Deep puddles can hide hazards and make you slip." }, "difficulty": 3 },
-  { "id": "outdoor-helmet", "name": "Helmet", "category": "outdoor", "image": "helmet.webp", "isSafe": true, "explanations": { "tiny": "Helmets protect your head!", "junior": "Helmets protect your head during sports and cycling." }, "difficulty": 1 },
-  { "id": "outdoor-ball", "name": "Ball", "category": "outdoor", "image": "ball.webp", "isSafe": true, "explanations": { "tiny": "Balls are fun to play with!", "junior": "Balls are safe toys for outdoor play." }, "difficulty": 1 },
+  {
+    "id": "outdoor-traffic",
+    "name": "Busy Road",
+    "category": "outdoor",
+    "image": "traffic.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Roads with cars are dangerous! Hold a grown-up's hand.",
+      "junior": "Busy roads are dangerous. Always look both ways and cross with an adult."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "outdoor-bicycle",
+    "name": "Bicycle",
+    "category": "outdoor",
+    "image": "bicycle.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Bikes are fun! Always wear a helmet.",
+      "junior": "Bicycles are safe when you wear a helmet and follow road rules."
+    },
+    "difficulty": 3
+  },
+  {
+    "id": "outdoor-swing",
+    "name": "Swing",
+    "category": "outdoor",
+    "image": "swing.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Swings are fun to play on!",
+      "junior": "Swings are safe playground equipment. Hold on tight!"
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "outdoor-stray-animal",
+    "name": "Stray Animal",
+    "category": "outdoor",
+    "image": "stray-animal.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Don't touch animals you don't know!",
+      "junior": "Stray animals may be scared and could bite. Keep your distance."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "outdoor-puddle",
+    "name": "Deep Puddle",
+    "category": "outdoor",
+    "image": "puddle.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Deep puddles can be slippery!",
+      "junior": "Deep puddles can hide hazards and make you slip."
+    },
+    "difficulty": 3
+  },
+  {
+    "id": "outdoor-helmet",
+    "name": "Helmet",
+    "category": "outdoor",
+    "image": "helmet.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Helmets protect your head!",
+      "junior": "Helmets protect your head during sports and cycling."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "outdoor-ball",
+    "name": "Ball",
+    "category": "outdoor",
+    "image": "ball.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Balls are fun to play with!",
+      "junior": "Balls are safe toys for outdoor play."
+    },
+    "difficulty": 1
+  },
 
-  { "id": "garage-tools", "name": "Power Tools", "category": "garage", "image": "power-tools.webp", "isSafe": false, "explanations": { "tiny": "Tools are for grown-ups! They can hurt you.", "junior": "Power tools are dangerous machines. Only adults should use them." }, "difficulty": 1 },
-  { "id": "garage-paint", "name": "Paint Cans", "category": "garage", "image": "paint-cans.webp", "isSafe": false, "explanations": { "tiny": "Paint can make you sick if you breathe it!", "junior": "Paint fumes are toxic. Only use paint in well-ventilated areas with an adult." }, "difficulty": 2 },
-  { "id": "garage-ladder", "name": "Ladder", "category": "garage", "image": "ladder.webp", "isSafe": false, "explanations": { "tiny": "Ladders are tall and you can fall! Don't climb them.", "junior": "Ladders are dangerous if used without proper supervision." }, "difficulty": 2 },
-  { "id": "garage-flashlight", "name": "Flashlight", "category": "garage", "image": "flashlight.webp", "isSafe": true, "explanations": { "tiny": "Flashlights help you see in the dark!", "junior": "Flashlights are safe and useful tools." }, "difficulty": 1 },
-  { "id": "garage-nails", "name": "Nails", "category": "garage", "image": "nails.webp", "isSafe": false, "explanations": { "tiny": "Nails are sharp and pointy! Don't touch them.", "junior": "Nails are sharp and can cause injuries if stepped on or handled." }, "difficulty": 1 },
-  { "id": "garage-broom", "name": "Broom", "category": "garage", "image": "broom.webp", "isSafe": true, "explanations": { "tiny": "Brooms help clean the floor!", "junior": "Brooms are safe cleaning tools." }, "difficulty": 1 },
+  {
+    "id": "garage-tools",
+    "name": "Power Tools",
+    "category": "garage",
+    "image": "power-tools.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Tools are for grown-ups! They can hurt you.",
+      "junior": "Power tools are dangerous machines. Only adults should use them."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "garage-paint",
+    "name": "Paint Cans",
+    "category": "garage",
+    "image": "paint-cans.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Paint can make you sick if you breathe it!",
+      "junior": "Paint fumes are toxic. Only use paint in well-ventilated areas with an adult."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "garage-ladder",
+    "name": "Ladder",
+    "category": "garage",
+    "image": "ladder.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Ladders are tall and you can fall! Don't climb them.",
+      "junior": "Ladders are dangerous if used without proper supervision."
+    },
+    "difficulty": 2
+  },
+  {
+    "id": "garage-flashlight",
+    "name": "Flashlight",
+    "category": "garage",
+    "image": "flashlight.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Flashlights help you see in the dark!",
+      "junior": "Flashlights are safe and useful tools."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "garage-nails",
+    "name": "Nails",
+    "category": "garage",
+    "image": "nails.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Nails are sharp and pointy! Don't touch them.",
+      "junior": "Nails are sharp and can cause injuries if stepped on or handled."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "garage-broom",
+    "name": "Broom",
+    "category": "garage",
+    "image": "broom.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Brooms help clean the floor!",
+      "junior": "Brooms are safe cleaning tools."
+    },
+    "difficulty": 1
+  },
 
-  { "id": "playground-glass", "name": "Broken Glass", "category": "playground", "image": "broken-glass.webp", "isSafe": false, "explanations": { "tiny": "Broken glass is very sharp! Tell a grown-up.", "junior": "Broken glass can cut you badly. Alert an adult if you see any." }, "difficulty": 1 },
-  { "id": "playground-slide", "name": "Slide", "category": "playground", "image": "slide.webp", "isSafe": true, "explanations": { "tiny": "Slides are fun! Go down feet first.", "junior": "Slides are safe when you go down feet first and wait your turn." }, "difficulty": 1 },
-  { "id": "playground-sandbox", "name": "Sandbox", "category": "playground", "image": "sandbox.webp", "isSafe": true, "explanations": { "tiny": "Sandboxes are fun to play in!", "junior": "Sandboxes are safe play areas. Wash your hands after playing." }, "difficulty": 1 },
-  { "id": "playground-rusty-nail", "name": "Rusty Nail", "category": "playground", "image": "rusty-nail.webp", "isSafe": false, "explanations": { "tiny": "Rusty nails can hurt you! Tell a grown-up right away.", "junior": "Rusty nails can cause tetanus infection. Never pick them up." }, "difficulty": 1 },
-  { "id": "playground-fountain", "name": "Water Fountain", "category": "playground", "image": "fountain.webp", "isSafe": true, "explanations": { "tiny": "Water fountains give you a drink!", "junior": "Water fountains are safe for drinking when you're thirsty." }, "difficulty": 1 }
+  {
+    "id": "playground-glass",
+    "name": "Broken Glass",
+    "category": "playground",
+    "image": "broken-glass.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Broken glass is very sharp! Tell a grown-up.",
+      "junior": "Broken glass can cut you badly. Alert an adult if you see any."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "playground-slide",
+    "name": "Slide",
+    "category": "playground",
+    "image": "slide.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Slides are fun! Go down feet first.",
+      "junior": "Slides are safe when you go down feet first and wait your turn."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "playground-sandbox",
+    "name": "Sandbox",
+    "category": "playground",
+    "image": "sandbox.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Sandboxes are fun to play in!",
+      "junior": "Sandboxes are safe play areas. Wash your hands after playing."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "playground-rusty-nail",
+    "name": "Rusty Nail",
+    "category": "playground",
+    "image": "rusty-nail.webp",
+    "isSafe": false,
+    "explanations": {
+      "tiny": "Rusty nails can hurt you! Tell a grown-up right away.",
+      "junior": "Rusty nails can cause tetanus infection. Never pick them up."
+    },
+    "difficulty": 1
+  },
+  {
+    "id": "playground-fountain",
+    "name": "Water Fountain",
+    "category": "playground",
+    "image": "fountain.webp",
+    "isSafe": true,
+    "explanations": {
+      "tiny": "Water fountains give you a drink!",
+      "junior": "Water fountains are safe for drinking when you're thirsty."
+    },
+    "difficulty": 1
+  }
 ]
 ```
 
@@ -398,6 +819,7 @@ git commit -m "feat(safety-scout): add object data and object selector utility"
 ### Task 3: useSafetyRound hook
 
 **Files:**
+
 - Create: `games/safety-scout/src/hooks/useSafetyRound.ts`
 
 - [ ] **Step 1: Create the round management hook**
@@ -430,7 +852,9 @@ interface SafetyRoundActions {
   nextObject: () => void;
 }
 
-export function useSafetyRound(options: UseSafetyRoundOptions): SafetyRoundState & SafetyRoundActions {
+export function useSafetyRound(
+  options: UseSafetyRoundOptions,
+): SafetyRoundState & SafetyRoundActions {
   const { onScorePoint } = options;
 
   const [roundObjects, setRoundObjects] = useState<SafetyObject[]>(options.objects);
@@ -511,6 +935,7 @@ git commit -m "feat(safety-scout): add useSafetyRound hook for round management"
 ### Task 4: UI components (CategoryPicker, ObjectCard, SafetyButtons, ExplanationCard)
 
 **Files:**
+
 - Create: `games/safety-scout/src/components/CategoryPicker.tsx`
 - Create: `games/safety-scout/src/components/CategoryPicker.module.css`
 - Create: `games/safety-scout/src/components/ObjectCard.tsx`
@@ -608,7 +1033,9 @@ export function CategoryPicker({ categories, onSelect }: CategoryPickerProps) {
   border-radius: var(--radius-lg, 12px);
   background: var(--color-surface, #fff);
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .categoryButton:hover {
@@ -895,6 +1322,7 @@ git commit -m "feat(safety-scout): add CategoryPicker, ObjectCard, SafetyButtons
 ### Task 5: Locale files
 
 **Files:**
+
 - Create: `games/safety-scout/src/locales/en/safety-scout.json`
 - Create: `games/safety-scout/src/locales/fr/safety-scout.json`
 
@@ -968,6 +1396,7 @@ git commit -m "feat(safety-scout): add English and French locale files"
 ### Task 6: Main SafetyScout component and plugin export
 
 **Files:**
+
 - Create: `games/safety-scout/src/SafetyScout.tsx`
 - Create: `games/safety-scout/src/SafetyScout.module.css`
 - Create: `games/safety-scout/src/index.ts`
@@ -1262,6 +1691,7 @@ git commit -m "feat(safety-scout): add main SafetyScout component and plugin exp
 ### Task 7: Register game in platform
 
 **Files:**
+
 - Modify: `platform/src/config/gameRegistry.ts`
 - Modify: `platform/src/config/featureFlags.json`
 
@@ -1312,6 +1742,7 @@ git commit -m "feat(safety-scout): register game in platform registry and featur
 ### Task 8: Main component tests
 
 **Files:**
+
 - Create: `games/safety-scout/src/__tests__/SafetyScout.test.tsx`
 
 - [ ] **Step 1: Write the tests**

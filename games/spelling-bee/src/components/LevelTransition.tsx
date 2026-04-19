@@ -35,12 +35,7 @@ export function LevelTransition({
       <h2 className={styles.title}>{t('levelComplete', { level: levelCompleted })}</h2>
       <p className={styles.score}>{t('scoreSoFar', { score })}</p>
       <p className={styles.encourage}>{t(encourageKey)}</p>
-      <OptionButton
-        label={t('nextLevel')}
-        state="default"
-        onSelect={onContinue}
-        size="large"
-      />
+      <OptionButton label={t('nextLevel')} state="default" onSelect={onContinue} size="large" />
       <p className={styles.progress}>
         {t('levelOf', { current: levelCompleted + 1, total: totalLevels })}
       </p>

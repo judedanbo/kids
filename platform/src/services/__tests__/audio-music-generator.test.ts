@@ -28,7 +28,10 @@ class MockAudioContext {
 }
 
 beforeEach(() => {
-  vi.stubGlobal('AudioContext', vi.fn(() => new MockAudioContext()));
+  vi.stubGlobal(
+    'AudioContext',
+    vi.fn(() => new MockAudioContext()),
+  );
   vi.useFakeTimers();
 });
 

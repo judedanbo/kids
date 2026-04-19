@@ -15,9 +15,7 @@ describe('ProgressBar', () => {
   });
 
   it('renders custom label', () => {
-    render(
-      <ProgressBar current={3} total={10} showLabel label="Question 3 of 10" />,
-    );
+    render(<ProgressBar current={3} total={10} showLabel label="Question 3 of 10" />);
     expect(screen.getByText('Question 3 of 10')).toBeInTheDocument();
   });
 

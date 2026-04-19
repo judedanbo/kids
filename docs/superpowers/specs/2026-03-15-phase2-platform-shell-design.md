@@ -12,15 +12,15 @@ Phase 2 builds the platform shell — the functional application that hosts game
 
 ## Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Audio service | Stub AudioManager (no-op) | Real implementation deferred — will use adapter pattern for swappable audio backend |
-| IndexedDB library | `idb` (~1.4KB) | Thin promise wrapper, schema versioning, negligible bundle cost |
-| Profile PIN | Deferred to Phase 4 | PIN hashing + verification is a coherent unit with parental controls |
-| Navigation | Bottom tab bar everywhere | Consistent across devices, thumb-friendly, kids don't need to learn different patterns |
-| Hub layout | Welcome + Grid | Personalized greeting, uniform game card grid, highlight border on recently-played games |
-| Dummy game | Light demo using shared components | Exercises GameShell, OptionButton, ProgressBar, CelebrationOverlay inside the plugin system |
-| Rewards/Settings pages | Placeholders | Routes wired for nav bar, real content in Phase 4 |
+| Decision               | Choice                             | Rationale                                                                                   |
+| ---------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------- |
+| Audio service          | Stub AudioManager (no-op)          | Real implementation deferred — will use adapter pattern for swappable audio backend         |
+| IndexedDB library      | `idb` (~1.4KB)                     | Thin promise wrapper, schema versioning, negligible bundle cost                             |
+| Profile PIN            | Deferred to Phase 4                | PIN hashing + verification is a coherent unit with parental controls                        |
+| Navigation             | Bottom tab bar everywhere          | Consistent across devices, thumb-friendly, kids don't need to learn different patterns      |
+| Hub layout             | Welcome + Grid                     | Personalized greeting, uniform game card grid, highlight border on recently-played games    |
+| Dummy game             | Light demo using shared components | Exercises GameShell, OptionButton, ProgressBar, CelebrationOverlay inside the plugin system |
+| Rewards/Settings pages | Placeholders                       | Routes wired for nav bar, real content in Phase 4                                           |
 
 ---
 
@@ -57,7 +57,10 @@ interface GlobalState {
 type PlatformAction =
   | { type: 'SET_PROFILE'; payload: UserProfile }
   | { type: 'ADD_PROFILE'; payload: UserProfile }
-  | { type: 'UPDATE_PROGRESS'; payload: { profileId: string; gameId: string; progress: GameProgress } }
+  | {
+      type: 'UPDATE_PROGRESS';
+      payload: { profileId: string; gameId: string; progress: GameProgress };
+    }
   | { type: 'REGISTER_GAME'; payload: GameManifest }
   | { type: 'START_SESSION'; payload: { gameId: string } }
   | { type: 'END_SESSION' }
@@ -67,6 +70,7 @@ type PlatformAction =
 ```
 
 **`PlatformProvider`** wraps the entire app. On mount:
+
 1. Loads profiles from IndexedDB via StorageManager
 2. Sets the last active profile (or null if none)
 3. Loads game registry
@@ -91,16 +95,17 @@ Implements the `StorageManager` interface from `shared/src/types/services.ts` us
 
 **Schema (version 1):**
 
-| Store | Key Path | Indexes |
-|-------|----------|---------|
-| `profiles` | `id` | `name` |
+| Store      | Key Path                         | Indexes                               |
+| ---------- | -------------------------------- | ------------------------------------- |
+| `profiles` | `id`                             | `name`                                |
 | `progress` | `[profileId, gameId]` (compound) | `profileId`, `gameId`, `lastPlayedAt` |
-| `rewards` | auto-increment | `profileId`, `rewardId` |
-| `events` | `id` | `profileId`, `timestamp`, `type` |
+| `rewards`  | auto-increment                   | `profileId`, `rewardId`               |
+| `events`   | `id`                             | `profileId`, `timestamp`, `type`      |
 
 **Schema versioning:** The `idb` `openDB` upgrade callback handles migrations. Version 1 creates all four stores. Future versions add migration logic inside the same callback with version checks.
 
 **Implementation details:**
+
 - `saveProfile` / `loadProfile` / `listProfiles` / `deleteProfile` — CRUD on `profiles` store
 - `saveProgress` / `loadProgress` — uses compound key `[profileId, gameId]`
 - `saveCheckpoint` / `loadCheckpoint` — stores checkpoint data as a JSON blob inside the `progress` record's `checkpointData` field
@@ -166,6 +171,7 @@ class StubAudioManager implements AudioManager {
 Welcome + Grid layout.
 
 **Structure:**
+
 1. **Welcome header** — "Welcome back, {profile.name}!" centered at top
 2. **Continue Playing** — horizontal scrollable row showing the last 3 played games (by `lastPlayedAt` from progress). Each card is a compact version of the game card with a progress indicator. Only shown if the profile has play history.
 3. **Search bar** — visible for junior (6-8) and explorer (9-12) profiles, hidden for tiny (3-5). Filters the game grid by name match. Uses `useAgeTier()` to determine visibility.
@@ -177,6 +183,7 @@ Welcome + Grid layout.
 6. **Empty state** — if no games match the filter or age tier, show a friendly message
 
 **Filtering logic:**
+
 - Age tier filter: `game.ageRange[0] <= profile.age && profile.age <= game.ageRange[1]`
 - Skill category filter: `game.skills.includes(selectedCategory)` or "All" shows everything
 - Games with `status: "coming_soon"` or `status: "retired"` shown at 50% opacity with lock icon
@@ -186,11 +193,13 @@ Welcome + Grid layout.
 Individual game card in the hub grid.
 
 **Props:**
+
 - `manifest: GameManifest`
 - `progress?: GameProgress`
 - `isRecent?: boolean` — highlight border if recently played
 
 **Rendering:**
+
 - Colored thumbnail area (uses a background color derived from the game's first skill category + emoji icon)
 - Game name (bold, `--font-family-body`)
 - Age badge + skill icon (small pills)
@@ -220,6 +229,7 @@ For Phase 2, game entry points are relative paths resolved by Vite's dynamic imp
 The page rendered at `/game/:gameId`.
 
 **Flow:**
+
 1. Read `gameId` from route params
 2. Look up manifest in `state.gameRegistry`
 3. If not found → show "Game not found" with "Go Home" button
@@ -232,6 +242,7 @@ The page rendered at `/game/:gameId`.
 10. On `onExit` → navigate to hub
 
 **Visibility change handling:**
+
 ```typescript
 useEffect(() => {
   function handleVisibility() {
@@ -253,6 +264,7 @@ useEffect(() => {
 Class component wrapping every loaded game.
 
 **On error:**
+
 - Shows friendly screen: "Oops! Something went wrong" with a sad character
 - "Try Again" button — resets error state, re-renders game
 - "Go Home" button — navigates to hub
@@ -311,6 +323,7 @@ Bottom tab bar.
 | ⚙️ | Settings | `/settings` |
 
 **Behavior:**
+
 - Fixed to bottom, `z-index: 50`
 - Active tab: `--color-primary` color, bold label
 - Inactive tabs: `--color-text-secondary`
@@ -321,6 +334,7 @@ Bottom tab bar.
 ### Placeholder Pages
 
 **`platform/src/pages/Rewards.tsx`:**
+
 ```tsx
 <div>
   <h1>Rewards</h1>
@@ -329,6 +343,7 @@ Bottom tab bar.
 ```
 
 **`platform/src/pages/Settings.tsx`:**
+
 ```tsx
 <div>
   <h1>Settings</h1>
@@ -345,6 +360,7 @@ Bottom tab bar.
 Profile picker and creator.
 
 **Profile picker (when profiles exist):**
+
 - Grid of profile cards: avatar (large emoji) + name
 - Click a profile → dispatch `SET_PROFILE`, navigate to `/`
 - "Create New Profile" card at the end of the grid (+ icon)
@@ -353,12 +369,14 @@ Profile picker and creator.
 Rendered by `platform/src/components/ProfileCreator/ProfileCreator.tsx`.
 
 **Steps:**
+
 1. **Name** — text input with large font, "What's your name?" prompt. Minimum 1 character, maximum 20.
 2. **Age** — grid of big number buttons (3 through 12). "How old are you?" prompt.
 3. **Avatar** — grid of 10 emoji avatars: 🦉🦊🐱🐶🐸🦁🐼🐰🦄🐙. "Pick your avatar!" prompt.
 4. **Confirm** — shows summary (avatar, name, age, tier badge). "Let's go!" button.
 
 **On confirm:**
+
 - Auto-assign age tier: 3-5 → tiny, 6-8 → junior, 9-12 → explorer
 - Generate profile ID via `crypto.randomUUID()` (no `uuid` package needed — native browser API)
 - Initialize defaults:
@@ -387,6 +405,7 @@ First game workspace package. Validates the entire plugin pipeline end-to-end.
 **Gameplay:** 5 rounds. Each round shows an `<OptionButton>` with "Click me! ({n}/5)". Clicking it increments the score. After 5 clicks, `<CelebrationOverlay>` appears, then `onComplete(result)` is called.
 
 **Uses shared components:**
+
 - `<GameShell>` — wrapper with title "Click Counter" and pause/back buttons
 - `<OptionButton>` — the clickable target, shows "correct" state briefly on click
 - `<ProgressBar>` — shows progress (n/5)
@@ -420,20 +439,21 @@ const plugin: GamePlugin = {
   onPause: () => {},
   onResume: () => {},
   onEnd: () => ({
-      gameId: 'dummy-game',
-      score: 5,
-      maxScore: 5,
-      timeSpent: 0, // calculated from session start
-      difficulty: 1,
-      completedAt: new Date().toISOString(),
-      metrics: { clicks: 5 },
-    }),
+    gameId: 'dummy-game',
+    score: 5,
+    maxScore: 5,
+    timeSpent: 0, // calculated from session start
+    difficulty: 1,
+    completedAt: new Date().toISOString(),
+    metrics: { clicks: 5 },
+  }),
   onUnload: () => {},
   GameComponent: DummyGame,
 };
 ```
 
 **Package setup:**
+
 - `package.json`: workspace package `dummy-game` with peer deps on react and `@kids-games-zone/shared`
 - `tsconfig.json`: extends base, has `jsx: "react-jsx"`, references shared
 
@@ -453,9 +473,9 @@ This lets Vite code-split each game at build time. The `loadGame` function match
 
 ### New packages
 
-| Package | Location | Purpose |
-|---------|----------|---------|
-| `idb` | `platform/package.json` dependencies | IndexedDB wrapper |
+| Package         | Location                             | Purpose                                                                           |
+| --------------- | ------------------------------------ | --------------------------------------------------------------------------------- |
+| `idb`           | `platform/package.json` dependencies | IndexedDB wrapper                                                                 |
 | `framer-motion` | `platform/package.json` dependencies | GameCard hover animations (already a root devDep, needs to be a platform dep too) |
 
 ### No `uuid` package needed

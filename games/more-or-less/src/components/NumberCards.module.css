@@ -19,7 +19,9 @@
   font-weight: 700;
   color: var(--color-text);
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .card:hover:not(:disabled) {

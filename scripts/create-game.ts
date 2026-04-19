@@ -117,7 +117,10 @@ async function promptSkills(): Promise<Skill[]> {
   SKILL_OPTIONS.forEach((s, i) => console.log(`  ${i + 1}) ${s}`));
   while (true) {
     const answer = (await ask('Select skills [e.g. 1,3 or literacy,logic]: ')).trim();
-    const parts = answer.split(',').map((p) => p.trim()).filter(Boolean);
+    const parts = answer
+      .split(',')
+      .map((p) => p.trim())
+      .filter(Boolean);
     const skills: Skill[] = [];
     let valid = true;
     for (const part of parts) {
@@ -146,7 +149,9 @@ async function promptGameName(): Promise<string> {
   while (true) {
     const name = (await ask('\nGame name (kebab-case, e.g. spelling-bee): ')).trim();
     if (!kebabPattern.test(name)) {
-      console.log('  Must be kebab-case (lowercase letters, digits, hyphens; no leading/trailing hyphens).');
+      console.log(
+        '  Must be kebab-case (lowercase letters, digits, hyphens; no leading/trailing hyphens).',
+      );
       continue;
     }
     const dest = path.join(ROOT, 'games', name);
@@ -163,30 +168,32 @@ async function promptGameName(): Promise<string> {
 // ---------------------------------------------------------------------------
 
 function generatePackageJson(name: string): string {
-  return JSON.stringify(
-    {
-      name: `@kids-games-zone/${name}`,
-      version: '0.1.0',
-      private: true,
-      type: 'module',
-      main: './src/index.ts',
-      scripts: {
-        typecheck: 'tsc --noEmit',
-        test: 'vitest run --passWithNoTests',
+  return (
+    JSON.stringify(
+      {
+        name: `@kids-games-zone/${name}`,
+        version: '0.1.0',
+        private: true,
+        type: 'module',
+        main: './src/index.ts',
+        scripts: {
+          typecheck: 'tsc --noEmit',
+          test: 'vitest run --passWithNoTests',
+        },
+        dependencies: {
+          'framer-motion': '^11.0.0',
+        },
+        peerDependencies: {
+          react: '^19.0.0',
+          'react-dom': '^19.0.0',
+          '@kids-games-zone/shared': 'workspace:*',
+          'react-i18next': '^16.0.0',
+        },
       },
-      dependencies: {
-        'framer-motion': '^11.0.0',
-      },
-      peerDependencies: {
-        react: '^19.0.0',
-        'react-dom': '^19.0.0',
-        '@kids-games-zone/shared': 'workspace:*',
-        'react-i18next': '^16.0.0',
-      },
-    },
-    null,
-    2,
-  ) + '\n';
+      null,
+      2,
+    ) + '\n'
+  );
 }
 
 function generateTsConfig(): string {
@@ -612,10 +619,16 @@ async function main(): Promise<void> {
   writeFile(path.join(gameDir, 'src/__mocks__/react-i18next.ts'), generateI18nMock());
 
   // src/index.ts
-  writeFile(path.join(gameDir, 'src/index.ts'), generateIndexTs(name, displayName, ageRange, skills));
+  writeFile(
+    path.join(gameDir, 'src/index.ts'),
+    generateIndexTs(name, displayName, ageRange, skills),
+  );
 
   // Component files
-  writeFile(path.join(gameDir, `src/components/${pascal}.tsx`), generateComponent(name, displayName));
+  writeFile(
+    path.join(gameDir, `src/components/${pascal}.tsx`),
+    generateComponent(name, displayName),
+  );
   writeFile(path.join(gameDir, `src/components/${pascal}.module.css`), generateComponentCss(name));
 
   // Locale files

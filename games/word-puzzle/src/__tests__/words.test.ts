@@ -10,7 +10,10 @@ describe('categories', () => {
     for (const category of categories) {
       for (let d = 1; d <= 5; d++) {
         expect(category.words[d], `${category.name} difficulty ${d}`).toBeDefined();
-        expect(category.words[d].length, `${category.name} difficulty ${d} word count`).toBeGreaterThanOrEqual(10);
+        expect(
+          category.words[d].length,
+          `${category.name} difficulty ${d} word count`,
+        ).toBeGreaterThanOrEqual(10);
       }
     }
   });
@@ -41,7 +44,9 @@ describe('categories', () => {
     for (const category of categories) {
       for (let d = 1; d <= 5; d++) {
         for (const entry of category.words[d]) {
-          expect(entry.word, `word "${entry.word}" should be lowercase alphabetic`).toMatch(/^[a-z]+$/);
+          expect(entry.word, `word "${entry.word}" should be lowercase alphabetic`).toMatch(
+            /^[a-z]+$/,
+          );
         }
       }
     }
@@ -75,7 +80,9 @@ describe('getWordsForRound', () => {
   it('returns different order on repeated calls (shuffled)', () => {
     // With 10+ words asking for 5, there should be variety across many calls
     const results = Array.from({ length: 20 }, () =>
-      getWordsForRound(0, 1, 5).map((e) => e.word).join(','),
+      getWordsForRound(0, 1, 5)
+        .map((e) => e.word)
+        .join(','),
     );
     const unique = new Set(results);
     expect(unique.size).toBeGreaterThan(1);

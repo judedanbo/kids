@@ -47,15 +47,11 @@ export default function Hub() {
 
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      games = games.filter((game) =>
-        game.name.toLowerCase().includes(query),
-      );
+      games = games.filter((game) => game.name.toLowerCase().includes(query));
     }
 
     if (activeFilter !== 'all') {
-      games = games.filter((game) =>
-        game.skills.includes(activeFilter as SkillCategory),
-      );
+      games = games.filter((game) => game.skills.includes(activeFilter as SkillCategory));
     }
 
     return games;
@@ -68,8 +64,8 @@ export default function Hub() {
     if (progressEntries.length === 0) return [];
 
     return progressEntries
-      .sort(([, a], [, b]) =>
-        new Date(b.lastPlayedAt).getTime() - new Date(a.lastPlayedAt).getTime(),
+      .sort(
+        ([, a], [, b]) => new Date(b.lastPlayedAt).getTime() - new Date(a.lastPlayedAt).getTime(),
       )
       .slice(0, 3)
       .map(([gameId]) => state.gameRegistry.find((g) => g.id === gameId))
@@ -113,123 +109,125 @@ export default function Hub() {
   return (
     <div className={styles.hub}>
       <main>
-      {/* Welcome header */}
-      <header className={styles.header}>
-        <h1 className={styles.welcome}>
-          {t('hub.welcome', { name: profile.name })}
-        </h1>
-        {profile.stats.currentStreak >= 1 && (
-          <div className={styles.streakBadge} aria-label={t('hub.streak', { count: profile.stats.currentStreak })}>
-            <span className={styles.streakIcon}>
-              <IconImage src="/images/ui/reward-super-streak.webp" alt="" fallback="🔥" size={28} />
-            </span>
-            {t('hub.streak', { count: profile.stats.currentStreak })}
-          </div>
-        )}
-        {musicEnabled && (
-          <button
-            type="button"
-            className={styles.musicToggle}
-            onClick={handleToggleMusic}
-            aria-pressed={musicPaused}
-            aria-label={
-              musicPaused
-                ? t('hub.resumeMusic', { defaultValue: 'Play music' })
-                : t('hub.pauseMusic', { defaultValue: 'Pause music' })
-            }
-          >
-            <span className={styles.musicToggleIcon} aria-hidden="true">
-              {musicPaused ? '▶' : '⏸'}
-            </span>
-            <span className={styles.musicToggleLabel}>
-              {musicPaused
-                ? t('hub.resumeMusic', { defaultValue: 'Play music' })
-                : t('hub.pauseMusic', { defaultValue: 'Pause music' })}
-            </span>
-          </button>
-        )}
-      </header>
-
-      {/* Daily Challenge */}
-      <div className={styles.challengeCard} role="region" aria-label={t('hub.dailyChallenge')}>
-        <div className={styles.challengeHeader}>
-          <span className={styles.challengeTitle}>{t('hub.dailyChallenge')}</span>
-        </div>
-        <p className={styles.challengeDescription}>{dailyChallenge.description}</p>
-      </div>
-
-      {/* Continue Playing */}
-      {recentGames.length > 0 && (
-        <section className={styles.section} aria-label={t('hub.continuePlaying')}>
-          <h2 className={styles.sectionTitle}>{t('hub.continuePlaying')}</h2>
-          <div className={styles.recentRow}>
-            {recentGames.map((game) => (
-              <GameCard
-                key={game.id}
-                manifest={game}
-                progress={profile.progress[game.id]}
-                isRecent
-              />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Search bar */}
-      {showSearch && (
-        <div className={styles.searchContainer}>
-          <input
-            className={styles.searchInput}
-            type="text"
-            placeholder={t('hub.searchPlaceholder')}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            aria-label={t('hub.searchPlaceholder')}
-          />
-        </div>
-      )}
-
-      {/* Filter pills */}
-      {skillCategories.length > 0 && (
-        <div className={styles.filterRow}>
-          <button
-            className={`${styles.filterPill} ${activeFilter === 'all' ? styles.filterActive : ''}`}
-            onClick={() => setActiveFilter('all')}
-            aria-pressed={activeFilter === 'all'}
-          >
-            {t('hub.filterAll')}
-          </button>
-          {skillCategories.map((category) => (
-            <button
-              key={category}
-              className={`${styles.filterPill} ${activeFilter === category ? styles.filterActive : ''}`}
-              onClick={() => setActiveFilter(category)}
-              aria-pressed={activeFilter === category}
+        {/* Welcome header */}
+        <header className={styles.header}>
+          <h1 className={styles.welcome}>{t('hub.welcome', { name: profile.name })}</h1>
+          {profile.stats.currentStreak >= 1 && (
+            <div
+              className={styles.streakBadge}
+              aria-label={t('hub.streak', { count: profile.stats.currentStreak })}
             >
-              {category.replace('_', ' ')}
+              <span className={styles.streakIcon}>
+                <IconImage
+                  src="/images/ui/reward-super-streak.webp"
+                  alt=""
+                  fallback="🔥"
+                  size={28}
+                />
+              </span>
+              {t('hub.streak', { count: profile.stats.currentStreak })}
+            </div>
+          )}
+          {musicEnabled && (
+            <button
+              type="button"
+              className={styles.musicToggle}
+              onClick={handleToggleMusic}
+              aria-pressed={musicPaused}
+              aria-label={
+                musicPaused
+                  ? t('hub.resumeMusic', { defaultValue: 'Play music' })
+                  : t('hub.pauseMusic', { defaultValue: 'Pause music' })
+              }
+            >
+              <span className={styles.musicToggleIcon} aria-hidden="true">
+                {musicPaused ? '▶' : '⏸'}
+              </span>
+              <span className={styles.musicToggleLabel}>
+                {musicPaused
+                  ? t('hub.resumeMusic', { defaultValue: 'Play music' })
+                  : t('hub.pauseMusic', { defaultValue: 'Pause music' })}
+              </span>
             </button>
-          ))}
-        </div>
-      )}
+          )}
+        </header>
 
-      {/* Game grid */}
-      <section aria-label="All Games">
-        {filteredGames.length > 0 ? (
-          <div className={styles.gameGrid}>
-            {filteredGames.map((game) => (
-              <GameCard
-                key={game.id}
-                manifest={game}
-                progress={profile.progress[game.id]}
-              />
-            ))}
+        {/* Daily Challenge */}
+        <div className={styles.challengeCard} role="region" aria-label={t('hub.dailyChallenge')}>
+          <div className={styles.challengeHeader}>
+            <span className={styles.challengeTitle}>{t('hub.dailyChallenge')}</span>
           </div>
-        ) : (
-          <div className={styles.emptyState}>
-            <p>{t('hub.noGamesFound')}</p>
+          <p className={styles.challengeDescription}>{dailyChallenge.description}</p>
+        </div>
+
+        {/* Continue Playing */}
+        {recentGames.length > 0 && (
+          <section className={styles.section} aria-label={t('hub.continuePlaying')}>
+            <h2 className={styles.sectionTitle}>{t('hub.continuePlaying')}</h2>
+            <div className={styles.recentRow}>
+              {recentGames.map((game) => (
+                <GameCard
+                  key={game.id}
+                  manifest={game}
+                  progress={profile.progress[game.id]}
+                  isRecent
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Search bar */}
+        {showSearch && (
+          <div className={styles.searchContainer}>
+            <input
+              className={styles.searchInput}
+              type="text"
+              placeholder={t('hub.searchPlaceholder')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label={t('hub.searchPlaceholder')}
+            />
           </div>
         )}
-      </section>
+
+        {/* Filter pills */}
+        {skillCategories.length > 0 && (
+          <div className={styles.filterRow}>
+            <button
+              className={`${styles.filterPill} ${activeFilter === 'all' ? styles.filterActive : ''}`}
+              onClick={() => setActiveFilter('all')}
+              aria-pressed={activeFilter === 'all'}
+            >
+              {t('hub.filterAll')}
+            </button>
+            {skillCategories.map((category) => (
+              <button
+                key={category}
+                className={`${styles.filterPill} ${activeFilter === category ? styles.filterActive : ''}`}
+                onClick={() => setActiveFilter(category)}
+                aria-pressed={activeFilter === category}
+              >
+                {category.replace('_', ' ')}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Game grid */}
+        <section aria-label="All Games">
+          {filteredGames.length > 0 ? (
+            <div className={styles.gameGrid}>
+              {filteredGames.map((game) => (
+                <GameCard key={game.id} manifest={game} progress={profile.progress[game.id]} />
+              ))}
+            </div>
+          ) : (
+            <div className={styles.emptyState}>
+              <p>{t('hub.noGamesFound')}</p>
+            </div>
+          )}
+        </section>
       </main>
     </div>
   );

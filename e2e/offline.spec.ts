@@ -9,9 +9,7 @@ test.describe('Offline Support', () => {
 
     // Hub content should be visible when online
     await expect(page.locator('h1')).toContainText('Welcome');
-    await expect(
-      page.locator('button[aria-label="Math Adventure"]'),
-    ).toBeVisible();
+    await expect(page.locator('button[aria-label="Math Adventure"]')).toBeVisible();
   });
 
   test('app works after going offline via service worker cache', async ({
@@ -37,11 +35,7 @@ test.describe('Offline Support', () => {
     });
   });
 
-  test('offline banner may appear when offline', async ({
-    page,
-    context,
-    createProfile,
-  }) => {
+  test('offline banner may appear when offline', async ({ page, context, createProfile }) => {
     await createProfile({ name: 'BannerKid', age: '7' });
 
     // Wait for SW

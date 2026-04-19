@@ -72,8 +72,7 @@ export function GameTimer({
     };
   }, [paused, mode, duration]);
 
-  const displaySeconds =
-    mode === 'countdown' ? Math.max(duration - elapsed, 0) : elapsed;
+  const displaySeconds = mode === 'countdown' ? Math.max(duration - elapsed, 0) : elapsed;
   const remaining = mode === 'countdown' ? duration - elapsed : 0;
   const isWarning = mode === 'countdown' && remaining <= 10 && remaining > 0;
 
@@ -82,11 +81,7 @@ export function GameTimer({
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress =
-    mode === 'countdown'
-      ? elapsed / duration
-      : duration > 0
-        ? Math.min(elapsed / duration, 1)
-        : 0;
+    mode === 'countdown' ? elapsed / duration : duration > 0 ? Math.min(elapsed / duration, 1) : 0;
   const dashOffset = circumference * (1 - progress);
 
   const ariaLabel =
@@ -113,12 +108,7 @@ export function GameTimer({
           strokeDasharray={circumference}
           strokeDashoffset={dashOffset}
         />
-        <text
-          className={styles.time}
-          x={size / 2}
-          y={size / 2}
-          fontSize={size * 0.25}
-        >
+        <text className={styles.time} x={size / 2} y={size / 2} fontSize={size * 0.25}>
           {formatTime(displaySeconds)}
         </text>
       </svg>

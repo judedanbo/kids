@@ -11,10 +11,7 @@ interface GameErrorBoundaryState {
   error: Error | null;
 }
 
-export class GameErrorBoundary extends Component<
-  GameErrorBoundaryProps,
-  GameErrorBoundaryState
-> {
+export class GameErrorBoundary extends Component<GameErrorBoundaryProps, GameErrorBoundaryState> {
   constructor(props: GameErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -63,7 +60,8 @@ export class GameErrorBoundary extends Component<
             Oops! Something went wrong
           </h2>
           <p style={{ color: 'var(--color-text-secondary)', maxWidth: '400px' }}>
-            Don&apos;t worry, it&apos;s not your fault! Let&apos;s try again or go back to the games.
+            Don&apos;t worry, it&apos;s not your fault! Let&apos;s try again or go back to the
+            games.
           </p>
           <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
             <button

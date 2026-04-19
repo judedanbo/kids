@@ -54,18 +54,13 @@ export class RealAudioManager implements AudioManager {
       return variants[0];
     }
     const lastPick = this.lastVariantByBase.get(baseKey);
-    const pool = lastPick
-      ? variants.filter((v) => v !== lastPick)
-      : variants;
+    const pool = lastPick ? variants.filter((v) => v !== lastPick) : variants;
     const pick = pool[Math.floor(Math.random() * pool.length)];
     this.lastVariantByBase.set(baseKey, pick);
     return pick;
   }
 
-  async playMusic(
-    trackId: string,
-    options?: { loop?: boolean; fadeIn?: number },
-  ): Promise<void> {
+  async playMusic(trackId: string, options?: { loop?: boolean; fadeIn?: number }): Promise<void> {
     // Browsers block audio until the user interacts with the page. Queue the
     // request and retry once the backend reports it's ready.
     if (!this.backend.isReady()) {
@@ -150,9 +145,7 @@ export class RealAudioManager implements AudioManager {
     this.pendingMusic = null;
 
     if (this.usingGenerator && this.musicGenerator) {
-      this.musicGenerator.stop(
-        options?.fadeOut ? { fadeOut: options.fadeOut } : undefined,
-      );
+      this.musicGenerator.stop(options?.fadeOut ? { fadeOut: options.fadeOut } : undefined);
       this.usingGenerator = false;
       return;
     }
@@ -226,10 +219,7 @@ export class RealAudioManager implements AudioManager {
   }
 
   private speakFallback(key: string, onComplete?: () => void): void {
-    if (
-      this.channels.voice.muted ||
-      typeof speechSynthesis === 'undefined'
-    ) {
+    if (this.channels.voice.muted || typeof speechSynthesis === 'undefined') {
       onComplete?.();
       return;
     }
@@ -370,18 +360,12 @@ export class RealAudioManager implements AudioManager {
     }
   }
 
-  private async ensureLoaded(
-    id: string,
-    category: AudioCategory,
-  ): Promise<void> {
+  private async ensureLoaded(id: string, category: AudioCategory): Promise<void> {
     const path = `/audio/${category}/${id}.mp3`;
     await this.ensureLoadedAt(id, path);
   }
 
-  private async ensureLoadedAt(
-    cacheKey: string,
-    path: string,
-  ): Promise<boolean> {
+  private async ensureLoadedAt(cacheKey: string, path: string): Promise<boolean> {
     if (this.loadedAssets.has(cacheKey)) {
       return true;
     }

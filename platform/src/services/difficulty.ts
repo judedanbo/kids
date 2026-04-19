@@ -2,7 +2,7 @@ const MIN_DIFFICULTY = 1;
 const MAX_DIFFICULTY = 5;
 const MIN_RESULTS_FOR_ADJUSTMENT = 3;
 const INCREASE_THRESHOLD = 0.85;
-const DECREASE_THRESHOLD = 0.40;
+const DECREASE_THRESHOLD = 0.4;
 
 /**
  * Calculates the next difficulty based on recent score history.

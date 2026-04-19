@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  type ReactNode,
-} from 'react';
+import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import styles from './Announcer.module.css';
 
 type AnnounceFn = (message: string) => void;
@@ -31,12 +25,7 @@ export function Announcer({ children }: AnnouncerProps) {
   return (
     <AnnounceContext.Provider value={announce}>
       {children}
-      <div
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className={styles.visuallyHidden}
-      >
+      <div role="status" aria-live="polite" aria-atomic="true" className={styles.visuallyHidden}>
         {message}
       </div>
     </AnnounceContext.Provider>

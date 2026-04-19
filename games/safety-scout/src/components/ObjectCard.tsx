@@ -24,7 +24,11 @@ export function ObjectCard({ object, ageTier, audioManager }: ObjectCardProps) {
       />
       <p className={styles.name}>{object.name}</p>
       {isTiny && (
-        <button className={styles.playButton} onClick={handlePlayName} aria-label={`Hear: ${object.name}`}>
+        <button
+          className={styles.playButton}
+          onClick={handlePlayName}
+          aria-label={`Hear: ${object.name}`}
+        >
           🔊
         </button>
       )}

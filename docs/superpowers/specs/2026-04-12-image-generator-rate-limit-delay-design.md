@@ -39,7 +39,7 @@ means:
 
 - Each worker waits `delay` ms between its own calls.
 - With concurrency = N and delay = D, the steady-state rate is roughly `N / (D +
-  latency)` requests per second.
+latency)` requests per second.
 - Defaults (concurrency=3, delay=1000ms) yield ~3 req/sec, comfortably under typical
   `gpt-image-1` limits.
 

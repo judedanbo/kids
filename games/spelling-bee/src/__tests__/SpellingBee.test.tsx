@@ -160,4 +160,67 @@ describe('SpellingBee', () => {
     expect(screen.queryByRole('dialog')).toBeNull();
   });
 
+  describe('back-button confirmation', () => {
+    it('does not call onExit when back is clicked (shows dialog instead)', () => {
+      const props = createMockProps();
+      render(<SpellingBee {...props} />);
+      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+      expect(props.onExit).not.toHaveBeenCalled();
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      expect(screen.getByText('exitConfirmTitle')).toBeInTheDocument();
+    });
+
+    it('calls onExit when the user confirms', () => {
+      const props = createMockProps();
+      render(<SpellingBee {...props} />);
+      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+      fireEvent.click(screen.getByRole('button', { name: 'exitConfirmConfirm' }));
+      expect(props.onExit).toHaveBeenCalledOnce();
+    });
+
+    it('closes the dialog and does not call onExit on cancel', () => {
+      const props = createMockProps();
+      render(<SpellingBee {...props} />);
+      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+      fireEvent.click(screen.getByRole('button', { name: 'exitConfirmCancel' }));
+      expect(props.onExit).not.toHaveBeenCalled();
+      expect(screen.queryByRole('dialog')).toBeNull();
+    });
+
+    it('shows the dialog in the playing phase too', () => {
+      const props = createMockProps();
+      render(<SpellingBee {...props} />);
+      fireEvent.click(screen.getByText('letsGo')); // dismiss instruction
+      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
+
+    it('re-plays bgm on cancel for tiny when music was enabled', () => {
+      const props = createTinyProps();
+      render(<SpellingBee {...props} />);
+      // Clear the initial playMusic call from mount.
+      (props.audioManager.playMusic as unknown as ReturnType<typeof vi.fn>).mockClear();
+
+      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+      // GameShell calls stopMusic on back-click.
+      expect(props.audioManager.stopMusic).toHaveBeenCalled();
+
+      fireEvent.click(screen.getByRole('button', { name: 'exitConfirmCancel' }));
+      expect(props.audioManager.playMusic).toHaveBeenCalledWith(
+        'music:spelling-bee-bgm',
+        expect.objectContaining({ loop: true }),
+      );
+    });
+
+    it('does not re-play bgm on cancel for non-tiny tiers', () => {
+      const props = createMockProps(); // junior by default
+      render(<SpellingBee {...props} />);
+      (props.audioManager.playMusic as unknown as ReturnType<typeof vi.fn>).mockClear();
+
+      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+      fireEvent.click(screen.getByRole('button', { name: 'exitConfirmCancel' }));
+
+      expect(props.audioManager.playMusic).not.toHaveBeenCalled();
+    });
+  });
 });

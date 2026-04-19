@@ -26,9 +26,7 @@ export interface AudioRunSummary {
   estimatedUsd: number;
 }
 
-export async function runAudioGeneration(
-  opts: AudioRunOptions,
-): Promise<AudioRunSummary> {
+export async function runAudioGeneration(opts: AudioRunOptions): Promise<AudioRunSummary> {
   if (!opts.dryRun && !opts.skipFfmpeg) {
     await assertFfmpegInstalled();
   }
@@ -36,9 +34,7 @@ export async function runAudioGeneration(
     await mkdir(opts.cacheDir, { recursive: true });
   }
 
-  const lock = opts.dryRun
-    ? { version: 1 as const, entries: {} }
-    : await loadLock(opts.lockPath);
+  const lock = opts.dryRun ? { version: 1 as const, entries: {} } : await loadLock(opts.lockPath);
   const providerCache = new Map<string, TTSProvider>();
   const getProvider = (name: Manifest['provider']): TTSProvider => {
     const cached = providerCache.get(name);
@@ -81,8 +77,7 @@ export async function runAudioGeneration(
           hash,
           path: outPath,
           bytes: size,
-          generatedAt:
-            lock.entries[key]?.generatedAt ?? new Date().toISOString(),
+          generatedAt: lock.entries[key]?.generatedAt ?? new Date().toISOString(),
         };
         cached++;
         continue;

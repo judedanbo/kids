@@ -93,27 +93,21 @@ export function PinEntry({ storedHash, onSuccess, onCancel }: PinEntryProps) {
         <h2 className={styles.title}>{t('pin.enterPin')}</h2>
 
         {/* Dot indicators */}
-        <div className={styles.dots} aria-label={t('pin.digitsEntered', { count: digits.length, total: PIN_LENGTH })}>
+        <div
+          className={styles.dots}
+          aria-label={t('pin.digitsEntered', { count: digits.length, total: PIN_LENGTH })}
+        >
           {Array.from({ length: PIN_LENGTH }, (_, i) => (
-            <div
-              key={i}
-              className={`${styles.dot} ${i < digits.length ? styles.dotFilled : ''}`}
-            />
+            <div key={i} className={`${styles.dot} ${i < digits.length ? styles.dotFilled : ''}`} />
           ))}
         </div>
 
         {error && <p className={styles.error}>{error}</p>}
         {isLocked && (
-          <p className={styles.lockout}>
-            {t('pin.lockedFor', { seconds: lockoutRemaining })}
-          </p>
+          <p className={styles.lockout}>{t('pin.lockedFor', { seconds: lockoutRemaining })}</p>
         )}
 
-        <NumberPad
-          onDigit={handleDigit}
-          onDelete={handleDelete}
-          disabled={isLocked || verifying}
-        />
+        <NumberPad onDigit={handleDigit} onDelete={handleDelete} disabled={isLocked || verifying} />
 
         <button type="button" className={styles.cancelBtn} onClick={onCancel}>
           {t('pin.cancel')}

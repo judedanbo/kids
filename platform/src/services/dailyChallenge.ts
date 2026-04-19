@@ -1,4 +1,9 @@
-import type { DailyChallenge, GameManifest, SkillCategory, UserProfile } from '@kids-games-zone/shared';
+import type {
+  DailyChallenge,
+  GameManifest,
+  SkillCategory,
+  UserProfile,
+} from '@kids-games-zone/shared';
 
 interface ChallengeTemplate {
   type: DailyChallenge['type'];
@@ -10,10 +15,20 @@ interface ChallengeTemplate {
 const CHALLENGE_TEMPLATES: ChallengeTemplate[] = [
   { type: 'play_count', description: 'Play 3 games today', target: 3 },
   { type: 'play_count', description: 'Play 2 games today', target: 2 },
-  { type: 'score_threshold', description: 'Score 80%+ on any math game', target: 80, skillCategory: 'numeracy' },
-  { type: 'score_threshold', description: 'Score 80%+ on any word game', target: 80, skillCategory: 'literacy' },
+  {
+    type: 'score_threshold',
+    description: 'Score 80%+ on any math game',
+    target: 80,
+    skillCategory: 'numeracy',
+  },
+  {
+    type: 'score_threshold',
+    description: 'Score 80%+ on any word game',
+    target: 80,
+    skillCategory: 'literacy',
+  },
   { type: 'score_threshold', description: 'Score 90%+ on any game', target: 90 },
-  { type: 'try_new_game', description: 'Try a game you haven\'t played before', target: 1 },
+  { type: 'try_new_game', description: "Try a game you haven't played before", target: 1 },
 ];
 
 /**
@@ -31,10 +46,7 @@ export function hashDateString(date: string): number {
 /**
  * Returns today's daily challenge, deterministically selected from the date.
  */
-export function getDailyChallenge(
-  date: string,
-  _gameRegistry: GameManifest[],
-): DailyChallenge {
+export function getDailyChallenge(date: string, _gameRegistry: GameManifest[]): DailyChallenge {
   const seed = hashDateString(date);
   const template = CHALLENGE_TEMPLATES[seed % CHALLENGE_TEMPLATES.length];
 

@@ -202,19 +202,12 @@ export class IndexedDBStorageManager implements StorageManager {
     }
   }
 
-  async saveProgress(
-    profileId: string,
-    gameId: string,
-    progress: GameProgress,
-  ): Promise<void> {
+  async saveProgress(profileId: string, gameId: string, progress: GameProgress): Promise<void> {
     const record: ProgressRecord = { profileId, gameId, data: progress };
     await this.getDB().put('progress', record);
   }
 
-  async loadProgress(
-    profileId: string,
-    gameId: string,
-  ): Promise<GameProgress | null> {
+  async loadProgress(profileId: string, gameId: string): Promise<GameProgress | null> {
     const record: ProgressRecord | undefined = await this.getDB().get('progress', [
       profileId,
       gameId,
@@ -222,23 +215,16 @@ export class IndexedDBStorageManager implements StorageManager {
     return record?.data ?? null;
   }
 
-  async saveCheckpoint(
-    profileId: string,
-    gameId: string,
-    data: unknown,
-  ): Promise<void> {
+  async saveCheckpoint(profileId: string, gameId: string, data: unknown): Promise<void> {
     const record: CheckpointRecord = { profileId, gameId, data };
     await this.getDB().put('checkpoints', record);
   }
 
-  async loadCheckpoint(
-    profileId: string,
-    gameId: string,
-  ): Promise<unknown | null> {
-    const record: CheckpointRecord | undefined = await this.getDB().get(
-      'checkpoints',
-      [profileId, gameId],
-    );
+  async loadCheckpoint(profileId: string, gameId: string): Promise<unknown | null> {
+    const record: CheckpointRecord | undefined = await this.getDB().get('checkpoints', [
+      profileId,
+      gameId,
+    ]);
     return record?.data ?? null;
   }
 

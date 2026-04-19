@@ -35,7 +35,9 @@ export function ObjectGroups({ groups, onSelect, disabled = false }: ObjectGroup
 
   const handleSelect = (index: number) => {
     if (disabled) return;
-    announce(`Selected group ${index + 1} with ${groups[index].count} ${groups[index].objectType}s`);
+    announce(
+      `Selected group ${index + 1} with ${groups[index].count} ${groups[index].objectType}s`,
+    );
     onSelect(index);
   };
 
@@ -55,11 +57,7 @@ export function ObjectGroups({ groups, onSelect, disabled = false }: ObjectGroup
               const fallback = EMOJI_MAP[group.objectType] ?? '⬛';
               return (
                 <span key={i} className={styles.object} aria-hidden="true">
-                  {src ? (
-                    <IconImage src={src} alt="" fallback={fallback} size={48} />
-                  ) : (
-                    fallback
-                  )}
+                  {src ? <IconImage src={src} alt="" fallback={fallback} size={48} /> : fallback}
                 </span>
               );
             })}

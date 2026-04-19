@@ -34,9 +34,7 @@ function createMockBackend(failIds: Set<string> = new Set()): AudioBackend {
   return {
     load: vi.fn(async (id: string, _src: string) => {
       if (failIds.has(id)) {
-        throw new Error(
-          `Failed to load audio "${id}": Decoding audio data failed.`,
-        );
+        throw new Error(`Failed to load audio "${id}": Decoding audio data failed.`);
       }
       loaded.add(id);
     }),
@@ -76,9 +74,7 @@ describe('RealAudioManager — graceful error handling', () => {
     });
 
     it('does not throw when music file fails to load', async () => {
-      await expect(
-        manager.playMusic('music:game-bgm', { loop: true }),
-      ).resolves.toBeUndefined();
+      await expect(manager.playMusic('music:game-bgm', { loop: true })).resolves.toBeUndefined();
     });
 
     it('logs a warning when audio fails to load', async () => {
@@ -119,16 +115,12 @@ describe('RealAudioManager — graceful error handling', () => {
 
   describe('playVoice with missing asset', () => {
     beforeEach(() => {
-      backend = createMockBackend(
-        new Set(['narration/en/missing-voice', 'voice/missing-voice']),
-      );
+      backend = createMockBackend(new Set(['narration/en/missing-voice', 'voice/missing-voice']));
       manager = new RealAudioManager(backend);
     });
 
     it('does not throw when voice file fails to load', async () => {
-      await expect(
-        manager.playVoice('voice:missing-voice'),
-      ).resolves.toBeUndefined();
+      await expect(manager.playVoice('voice:missing-voice')).resolves.toBeUndefined();
     });
 
     it('calls onComplete even when voice asset fails', async () => {
@@ -187,13 +179,16 @@ describe('RealAudioManager — speech synthesis fallback', () => {
     mockSpeak = vi.fn();
     mockCancel = vi.fn();
     vi.stubGlobal('speechSynthesis', { speak: mockSpeak, cancel: mockCancel });
-    vi.stubGlobal('SpeechSynthesisUtterance', vi.fn().mockImplementation((text: string) => ({
-      text,
-      rate: 1,
-      volume: 1,
-      onend: null,
-      onerror: null,
-    })));
+    vi.stubGlobal(
+      'SpeechSynthesisUtterance',
+      vi.fn().mockImplementation((text: string) => ({
+        text,
+        rate: 1,
+        volume: 1,
+        onend: null,
+        onerror: null,
+      })),
+    );
   });
 
   afterEach(() => {
@@ -215,9 +210,7 @@ describe('RealAudioManager — speech synthesis fallback', () => {
   });
 
   it('does not speak for unrecognised key patterns', async () => {
-    backend = createMockBackend(
-      new Set(['narration/en/unknown-key', 'voice/unknown-key']),
-    );
+    backend = createMockBackend(new Set(['narration/en/unknown-key', 'voice/unknown-key']));
     manager = new RealAudioManager(backend);
     const onComplete = vi.fn();
     await manager.playVoice('voice:unknown-key', onComplete);
@@ -323,11 +316,9 @@ describe('RealAudioManager — autoplay gating', () => {
     readyCallback = null;
     backend = createMockBackend();
     (backend.isReady as ReturnType<typeof vi.fn>).mockReturnValue(false);
-    (backend.onReady as ReturnType<typeof vi.fn>).mockImplementation(
-      (cb: () => void) => {
-        readyCallback = cb;
-      },
-    );
+    (backend.onReady as ReturnType<typeof vi.fn>).mockImplementation((cb: () => void) => {
+      readyCallback = cb;
+    });
     manager = new RealAudioManager(backend);
   });
 
@@ -346,10 +337,7 @@ describe('RealAudioManager — autoplay gating', () => {
     await Promise.resolve();
     await Promise.resolve();
 
-    expect(backend.load).toHaveBeenCalledWith(
-      'main-theme',
-      '/audio/music/main-theme.mp3',
-    );
+    expect(backend.load).toHaveBeenCalledWith('main-theme', '/audio/music/main-theme.mp3');
   });
 
   it('drops the pending play if stopMusic is called before ready', async () => {
@@ -403,14 +391,10 @@ describe('RealAudioManager — voice variant rotation', () => {
   it('avoids picking the same variant twice in a row', async () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
     await manager.playVoice('voice:encouragement-correct');
-    const firstKey = (backend.load as ReturnType<typeof vi.fn>).mock.calls.at(
-      -1,
-    )?.[0];
+    const firstKey = (backend.load as ReturnType<typeof vi.fn>).mock.calls.at(-1)?.[0];
 
     await manager.playVoice('voice:encouragement-correct');
-    const secondKey = (backend.load as ReturnType<typeof vi.fn>).mock.calls.at(
-      -1,
-    )?.[0];
+    const secondKey = (backend.load as ReturnType<typeof vi.fn>).mock.calls.at(-1)?.[0];
 
     expect(secondKey).not.toBe(firstKey);
     vi.restoreAllMocks();

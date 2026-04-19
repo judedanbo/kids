@@ -182,9 +182,7 @@ describe('MemoryMatch', () => {
     const calls = (props.audioManager.playSFX as ReturnType<typeof vi.fn>).mock.calls as string[][];
     const sfxValues = calls.map((c) => c[0]);
     // Either correct or incorrect SFX should have been played
-    expect(
-      sfxValues.includes('correct') || sfxValues.includes('incorrect'),
-    ).toBe(true);
+    expect(sfxValues.includes('correct') || sfxValues.includes('incorrect')).toBe(true);
   });
 
   it('plays SFX("incorrect") on mismatch', () => {

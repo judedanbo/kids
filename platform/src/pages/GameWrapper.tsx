@@ -19,13 +19,7 @@ const TIME_CHECK_INTERVAL = 30_000; // 30 seconds
  * Inner component that renders once the plugin is loaded.
  * This allows useGameLifecycle to be called unconditionally.
  */
-function GameSession({
-  plugin,
-  gameId,
-}: {
-  plugin: GamePlugin;
-  gameId: string;
-}) {
+function GameSession({ plugin, gameId }: { plugin: GamePlugin; gameId: string }) {
   const navigate = useNavigate();
   const { state, dispatch, storageManager, audioManager } = usePlatform();
   const [score, setScore] = useState(0);
@@ -165,13 +159,9 @@ function GameSession({
         gameId,
         highScore: Math.max(result.score, existingProgress?.highScore ?? 0),
         currentLevel: result.difficulty,
-        maxLevelReached: Math.max(
-          result.difficulty,
-          existingProgress?.maxLevelReached ?? 0,
-        ),
+        maxLevelReached: Math.max(result.difficulty, existingProgress?.maxLevelReached ?? 0),
         totalAttempts: (existingProgress?.totalAttempts ?? 0) + 1,
-        totalTimePlayed:
-          (existingProgress?.totalTimePlayed ?? 0) + result.timeSpent,
+        totalTimePlayed: (existingProgress?.totalTimePlayed ?? 0) + result.timeSpent,
         lastPlayedAt: new Date().toISOString(),
         difficulty: nextDifficulty,
         recentScores,
@@ -264,7 +254,14 @@ function GameSession({
   }
 
   // Time limit reached — show friendly pause message
-  if (timeLimitMessage && checkTimeLimit(state.settings.timeLimits, sessionStartRef.current, (profile.stats.totalPlayTime ?? 0) / 60) === 'limit_reached') {
+  if (
+    timeLimitMessage &&
+    checkTimeLimit(
+      state.settings.timeLimits,
+      sessionStartRef.current,
+      (profile.stats.totalPlayTime ?? 0) / 60,
+    ) === 'limit_reached'
+  ) {
     return (
       <div
         style={{

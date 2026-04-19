@@ -19,7 +19,9 @@
   font-weight: 700;
   font-family: var(--font-family-display);
   cursor: pointer;
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }

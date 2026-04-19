@@ -30,11 +30,7 @@ export function solveMathProblem(problem: string): number {
 // ── Fixture type extensions ──────────────────────────────────────────
 export type GameFixtures = {
   /** Create a child profile and land on the hub. */
-  createProfile: (options?: {
-    name?: string;
-    age?: string;
-    avatar?: string;
-  }) => Promise<void>;
+  createProfile: (options?: { name?: string; age?: string; avatar?: string }) => Promise<void>;
 
   /** From the hub, click on a game card by its aria-label (game name). */
   navigateToGame: (gameId: string) => Promise<void>;
@@ -46,9 +42,7 @@ export type GameFixtures = {
 export const test = base.extend<GameFixtures>({
   // ── createProfile ──────────────────────────────────────────────────
   createProfile: async ({ page }, use) => {
-    const helper = async (
-      options: { name?: string; age?: string; avatar?: string } = {},
-    ) => {
+    const helper = async (options: { name?: string; age?: string; avatar?: string } = {}) => {
       const { name = 'TestKid', age = '7', avatar = '🦊' } = options;
 
       await page.goto('/profile');
@@ -60,9 +54,7 @@ export const test = base.extend<GameFixtures>({
       await page.locator(`button:has-text("${age}")`).click();
 
       // Step 3 — avatar
-      await page
-        .locator(`[aria-label="Select ${avatar} avatar"]`)
-        .click();
+      await page.locator(`[aria-label="Select ${avatar} avatar"]`).click();
 
       // Step 4 — PIN  (skip)
       await page.locator('button:has-text("Skip")').click();
@@ -73,9 +65,7 @@ export const test = base.extend<GameFixtures>({
       // Wait until we reach the hub (URL === '/')
       await page.waitForURL('/', { timeout: 10_000 });
       // Hub is ready once the welcome heading appears
-      await expect(
-        page.locator('h1', { hasText: 'Welcome' }),
-      ).toBeVisible({ timeout: 5_000 });
+      await expect(page.locator('h1', { hasText: 'Welcome' })).toBeVisible({ timeout: 5_000 });
     };
     await use(helper);
   },
@@ -95,9 +85,7 @@ export const test = base.extend<GameFixtures>({
   playMemoryMatchToCompletion: async ({ page }, use) => {
     const helper = async () => {
       // We should be on the Memory Match splash screen; click "Let's Go!"
-      await page
-        .locator('button:has-text("Let\'s Go")')
-        .click();
+      await page.locator('button:has-text("Let\'s Go")').click();
 
       // Wait for the card grid to appear
       const grid = page.locator('[aria-label="Memory card grid"]');
@@ -131,9 +119,7 @@ export const test = base.extend<GameFixtures>({
 
       // A reward overlay may appear and auto-dismiss after ~5s.
       // Wait for the result screen which has "Play Again" and "Go Home" buttons.
-      await expect(
-        page.locator('button:has-text("Play Again")'),
-      ).toBeVisible({ timeout: 15_000 });
+      await expect(page.locator('button:has-text("Play Again")')).toBeVisible({ timeout: 15_000 });
     };
     await use(helper);
   },

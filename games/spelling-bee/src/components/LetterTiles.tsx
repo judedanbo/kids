@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAnnounce } from '@kids-games-zone/shared';
 import styles from './LetterTiles.module.css';
@@ -15,26 +15,36 @@ export function LetterTiles({ letters, wordLength, onSubmit }: LetterTilesProps)
   const [selected, setSelected] = useState<number[]>([]);
 
   const currentAnswer = selected.map((i) => letters[i]).join('');
+  const isFull = selected.length === wordLength;
 
   const handleTileTap = useCallback(
     (index: number) => {
       if (selected.includes(index)) return;
-      const next = [...selected, index];
-      setSelected(next);
+      if (selected.length >= wordLength) return;
+      setSelected([...selected, index]);
       announce(letters[index]);
-
-      if (next.length === wordLength) {
-        const answer = next.map((i) => letters[i]).join('');
-        onSubmit(answer);
-        setSelected([]);
-      }
     },
-    [selected, letters, wordLength, onSubmit, announce],
+    [selected, letters, wordLength, announce],
   );
 
   const handleUndo = useCallback(() => {
     setSelected((prev) => prev.slice(0, -1));
   }, []);
+
+  const handleSubmit = useCallback(() => {
+    if (selected.length !== wordLength) return;
+    const answer = selected.map((i) => letters[i]).join('');
+    onSubmit(answer);
+    setSelected([]);
+  }, [selected, letters, wordLength, onSubmit]);
+
+  const wasFullRef = useRef(false);
+  useEffect(() => {
+    if (isFull && !wasFullRef.current) {
+      announce(t('readyToSubmit'));
+    }
+    wasFullRef.current = isFull;
+  }, [isFull, announce, t]);
 
   return (
     <div className={styles.container}>
@@ -60,11 +70,18 @@ export function LetterTiles({ letters, wordLength, onSubmit }: LetterTilesProps)
         ))}
       </div>
 
-      {selected.length > 0 && (
-        <button className={styles.undoButton} onClick={handleUndo} aria-label="Undo last letter">
-          {t('undoLetter')}
-        </button>
-      )}
+      <div className={styles.actions}>
+        {selected.length > 0 && (
+          <button className={styles.undoButton} onClick={handleUndo} aria-label="Undo last letter">
+            {t('undoLetter')}
+          </button>
+        )}
+        {isFull && (
+          <button className={styles.submitButton} onClick={handleSubmit}>
+            {t('submit')}
+          </button>
+        )}
+      </div>
     </div>
   );
 }

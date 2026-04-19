@@ -16,30 +16,30 @@
 
 ### New files
 
-| Path | Responsibility |
-|------|---------------|
-| `platform/src/services/audio-stub.ts` | Renamed from `audio.ts` — StubAudioManager (unchanged code) |
-| `platform/src/services/audio-backend.ts` | `AudioBackend` interface — internal contract for audio library adapters |
-| `platform/src/services/audio-manager.ts` | `RealAudioManager` — implements shared `AudioManager`, delegates to `AudioBackend` |
-| `platform/src/services/audio-manager.test.ts` | Unit tests for `RealAudioManager` (mocked `AudioBackend`) |
-| `platform/src/services/audio-howler.ts` | `HowlerBackend` — Howler.js adapter implementing `AudioBackend` |
-| `platform/public/audio/sfx/click.mp3` | Placeholder SFX — soft UI tap/click (~100ms) |
-| `platform/public/audio/sfx/correct.mp3` | Placeholder SFX — ascending chime (~500ms) |
-| `platform/public/audio/sfx/incorrect.mp3` | Placeholder SFX — gentle low tone (~400ms) |
-| `platform/public/audio/sfx/celebrate.mp3` | Placeholder SFX — short celebration fanfare (~1.5s) |
+| Path                                          | Responsibility                                                                     |
+| --------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `platform/src/services/audio-stub.ts`         | Renamed from `audio.ts` — StubAudioManager (unchanged code)                        |
+| `platform/src/services/audio-backend.ts`      | `AudioBackend` interface — internal contract for audio library adapters            |
+| `platform/src/services/audio-manager.ts`      | `RealAudioManager` — implements shared `AudioManager`, delegates to `AudioBackend` |
+| `platform/src/services/audio-manager.test.ts` | Unit tests for `RealAudioManager` (mocked `AudioBackend`)                          |
+| `platform/src/services/audio-howler.ts`       | `HowlerBackend` — Howler.js adapter implementing `AudioBackend`                    |
+| `platform/public/audio/sfx/click.mp3`         | Placeholder SFX — soft UI tap/click (~100ms)                                       |
+| `platform/public/audio/sfx/correct.mp3`       | Placeholder SFX — ascending chime (~500ms)                                         |
+| `platform/public/audio/sfx/incorrect.mp3`     | Placeholder SFX — gentle low tone (~400ms)                                         |
+| `platform/public/audio/sfx/celebrate.mp3`     | Placeholder SFX — short celebration fanfare (~1.5s)                                |
 
 ### Modified files
 
-| Path | Change |
-|------|--------|
-| `platform/package.json` | Add `howler` dependency, `@types/howler` devDependency |
-| `platform/src/services/audio.test.ts` | Update import path from `./audio` to `./audio-stub` |
-| `platform/src/main.tsx` | Replace `StubAudioManager` with `RealAudioManager` + `HowlerBackend` |
+| Path                                  | Change                                                               |
+| ------------------------------------- | -------------------------------------------------------------------- |
+| `platform/package.json`               | Add `howler` dependency, `@types/howler` devDependency               |
+| `platform/src/services/audio.test.ts` | Update import path from `./audio` to `./audio-stub`                  |
+| `platform/src/main.tsx`               | Replace `StubAudioManager` with `RealAudioManager` + `HowlerBackend` |
 
 ### Deleted files
 
-| Path | Reason |
-|------|--------|
+| Path                             | Reason                              |
+| -------------------------------- | ----------------------------------- |
 | `platform/src/services/audio.ts` | Renamed to `audio-stub.ts` (git mv) |
 
 ---
@@ -51,6 +51,7 @@ Dependencies, file rename, AudioBackend interface, RealAudioManager with TDD.
 ### Task 1: Install dependencies and rename audio.ts to audio-stub.ts
 
 **Files:**
+
 - Modify: `platform/package.json`
 - Rename: `platform/src/services/audio.ts` → `platform/src/services/audio-stub.ts`
 - Modify: `platform/src/services/audio.test.ts`
@@ -87,6 +88,7 @@ Expected: Clean install with no errors.
 - [ ] **Step 3: Rename audio.ts to audio-stub.ts**
 
 Run:
+
 ```bash
 cd /home/jude/code/kids
 git mv platform/src/services/audio.ts platform/src/services/audio-stub.ts
@@ -135,6 +137,7 @@ Rename StubAudioManager file to audio-stub.ts, update imports."
 ### Task 2: Create AudioBackend interface
 
 **Files:**
+
 - Create: `platform/src/services/audio-backend.ts`
 
 - [ ] **Step 1: Create audio-backend.ts**
@@ -189,6 +192,7 @@ git commit -m "feat: add AudioBackend interface for swappable audio adapters"
 ### Task 3: Create RealAudioManager with TDD
 
 **Files:**
+
 - Create: `platform/src/services/audio-manager.test.ts`
 - Create: `platform/src/services/audio-manager.ts`
 
@@ -323,9 +327,7 @@ describe('RealAudioManager', () => {
       // backend.stop should NOT have been called with 'pb-old' by the second playMusic
       // (stopMusic already cleared the currentPlaybackId)
       const stopCalls = (backend.stop as ReturnType<typeof vi.fn>).mock.calls;
-      const stopCallsFromPlayMusic = stopCalls.filter(
-        (call: string[]) => call[0] === 'pb-old',
-      );
+      const stopCallsFromPlayMusic = stopCalls.filter((call: string[]) => call[0] === 'pb-old');
       expect(stopCallsFromPlayMusic).toHaveLength(0);
     });
   });
@@ -563,10 +565,7 @@ export class RealAudioManager implements AudioManager {
     this.backend = backend;
   }
 
-  async playMusic(
-    trackId: string,
-    options?: { loop?: boolean; fadeIn?: number },
-  ): Promise<void> {
+  async playMusic(trackId: string, options?: { loop?: boolean; fadeIn?: number }): Promise<void> {
     const current = this.channels.music.currentPlaybackId;
     if (current !== null) {
       this.backend.stop(current);
@@ -723,10 +722,7 @@ export class RealAudioManager implements AudioManager {
     }
   }
 
-  private async ensureLoaded(
-    id: string,
-    category: AudioCategory,
-  ): Promise<void> {
+  private async ensureLoaded(id: string, category: AudioCategory): Promise<void> {
     if (this.loadedAssets.has(id)) {
       return;
     }
@@ -783,6 +779,7 @@ HowlerBackend adapter, placeholder audio files, and final integration.
 ### Task 4: Create HowlerBackend
 
 **Files:**
+
 - Create: `platform/src/services/audio-howler.ts`
 
 - [ ] **Step 1: Create HowlerBackend**
@@ -851,12 +848,7 @@ export class HowlerBackend implements AudioBackend {
     }
   }
 
-  fade(
-    playbackId: string,
-    from: number,
-    to: number,
-    duration: number,
-  ): void {
+  fade(playbackId: string, from: number, to: number, duration: number): void {
     const entry = this.playbackMap.get(playbackId);
     if (entry) {
       entry.howl.fade(from, to, duration, entry.soundId);
@@ -922,6 +914,7 @@ and maps string playback IDs to Howler sound IDs."
 ### Task 5: Create placeholder audio files
 
 **Files:**
+
 - Create: `platform/public/audio/sfx/click.mp3`
 - Create: `platform/public/audio/sfx/correct.mp3`
 - Create: `platform/public/audio/sfx/incorrect.mp3`
@@ -930,6 +923,7 @@ and maps string playback IDs to Howler sound IDs."
 - [ ] **Step 1: Create audio directory**
 
 Run:
+
 ```bash
 mkdir -p /home/jude/code/kids/platform/public/audio/sfx
 ```
@@ -939,6 +933,7 @@ mkdir -p /home/jude/code/kids/platform/public/audio/sfx
 Create a Node.js script to generate minimal valid MP3 files. These are tiny valid MPEG audio frames that will play as brief silent/near-silent clips. They serve as placeholders until real audio assets are created.
 
 Run:
+
 ```bash
 node -e "
 const fs = require('fs');
@@ -1010,6 +1005,7 @@ for immediate use by Phase 3 games. Will be replaced with real audio."
 ### Task 6: Integration — wire up RealAudioManager in main.tsx
 
 **Files:**
+
 - Modify: `platform/src/main.tsx`
 
 - [ ] **Step 1: Update main.tsx to use RealAudioManager**

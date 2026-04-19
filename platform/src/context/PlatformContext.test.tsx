@@ -111,21 +111,15 @@ function TestConsumer() {
   const { state, dispatch } = usePlatform();
   return (
     <div>
-      <div data-testid="profile-name">
-        {state.currentProfile?.name ?? 'none'}
-      </div>
+      <div data-testid="profile-name">{state.currentProfile?.name ?? 'none'}</div>
       <div data-testid="profile-count">{state.profiles.length}</div>
       <button
-        onClick={() =>
-          dispatch({ type: 'ADD_PROFILE', payload: makeProfile({ name: 'Alice' }) })
-        }
+        onClick={() => dispatch({ type: 'ADD_PROFILE', payload: makeProfile({ name: 'Alice' }) })}
       >
         Add Profile
       </button>
       <button
-        onClick={() =>
-          dispatch({ type: 'SET_PROFILE', payload: makeProfile({ name: 'Bob' }) })
-        }
+        onClick={() => dispatch({ type: 'SET_PROFILE', payload: makeProfile({ name: 'Bob' }) })}
       >
         Set Profile
       </button>
@@ -145,11 +139,7 @@ describe('PlatformContext', () => {
 
   it('provides initial state with no profile', () => {
     render(
-      <PlatformProvider
-        storageManager={mockStorage}
-        audioManager={mockAudio}
-        gameRegistry={[]}
-      >
+      <PlatformProvider storageManager={mockStorage} audioManager={mockAudio} gameRegistry={[]}>
         <TestConsumer />
       </PlatformProvider>,
     );
@@ -160,11 +150,7 @@ describe('PlatformContext', () => {
 
   it('handles ADD_PROFILE action', () => {
     render(
-      <PlatformProvider
-        storageManager={mockStorage}
-        audioManager={mockAudio}
-        gameRegistry={[]}
-      >
+      <PlatformProvider storageManager={mockStorage} audioManager={mockAudio} gameRegistry={[]}>
         <TestConsumer />
       </PlatformProvider>,
     );
@@ -178,11 +164,7 @@ describe('PlatformContext', () => {
 
   it('handles SET_PROFILE action', () => {
     render(
-      <PlatformProvider
-        storageManager={mockStorage}
-        audioManager={mockAudio}
-        gameRegistry={[]}
-      >
+      <PlatformProvider storageManager={mockStorage} audioManager={mockAudio} gameRegistry={[]}>
         <TestConsumer />
       </PlatformProvider>,
     );
@@ -196,11 +178,7 @@ describe('PlatformContext', () => {
 
   it('handles START_SESSION and END_SESSION', () => {
     render(
-      <PlatformProvider
-        storageManager={mockStorage}
-        audioManager={mockAudio}
-        gameRegistry={[]}
-      >
+      <PlatformProvider storageManager={mockStorage} audioManager={mockAudio} gameRegistry={[]}>
         <TestConsumer />
       </PlatformProvider>,
     );

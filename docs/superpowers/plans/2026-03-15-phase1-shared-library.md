@@ -16,64 +16,64 @@
 
 ### New files
 
-| Path | Responsibility |
-|------|---------------|
-| `shared/src/types/platform.ts` | `TimeLimitConfig`, `FeatureFlags` types |
-| `shared/src/types/services.ts` | `AudioManager`, `StorageManager`, `AnalyticsEvent`, `EventFilter` interfaces |
-| `shared/src/types/index.ts` | Barrel re-export for all type files |
-| `shared/src/styles/tokens.css` | All CSS custom properties (light + dark themes) |
-| `shared/src/styles/reset.css` | Minimal CSS reset |
-| `shared/src/styles/breakpoints.css` | Breakpoint reference values |
-| `shared/src/context/AgeTierContext.tsx` | AgeTier context provider |
-| `shared/src/context/FeatureFlagContext.tsx` | Feature flag context provider |
-| `shared/src/hooks/useGameLifecycle.ts` | Game state machine hook |
-| `shared/src/hooks/useGameLifecycle.test.ts` | Tests for lifecycle hook |
-| `shared/src/hooks/useAgeTier.ts` | Age tier context consumer hook |
-| `shared/src/hooks/useAgeTier.test.ts` | Tests for age tier hook |
-| `shared/src/hooks/useFeatureFlag.ts` | Feature flag consumer hook |
-| `shared/src/hooks/useFeatureFlag.test.ts` | Tests for feature flag hook |
-| `shared/src/hooks/index.ts` | Barrel export for hooks |
-| `shared/src/components/GameShell/GameShell.tsx` | Game wrapper component |
-| `shared/src/components/GameShell/GameShell.module.css` | GameShell styles |
-| `shared/src/components/GameShell/GameShell.test.tsx` | GameShell tests |
-| `shared/src/components/OptionButton/OptionButton.tsx` | Answer/choice button |
-| `shared/src/components/OptionButton/OptionButton.module.css` | OptionButton styles |
-| `shared/src/components/OptionButton/OptionButton.test.tsx` | OptionButton tests |
-| `shared/src/components/ScoreDisplay/ScoreDisplay.tsx` | Animated score counter |
-| `shared/src/components/ScoreDisplay/ScoreDisplay.module.css` | ScoreDisplay styles |
-| `shared/src/components/ScoreDisplay/ScoreDisplay.test.tsx` | ScoreDisplay tests |
-| `shared/src/components/ProgressBar/ProgressBar.tsx` | Progress indicator |
-| `shared/src/components/ProgressBar/ProgressBar.module.css` | ProgressBar styles |
-| `shared/src/components/ProgressBar/ProgressBar.test.tsx` | ProgressBar tests |
-| `shared/src/components/CelebrationOverlay/CelebrationOverlay.tsx` | Celebration with confetti |
-| `shared/src/components/CelebrationOverlay/CelebrationOverlay.module.css` | CelebrationOverlay styles |
-| `shared/src/components/CelebrationOverlay/CelebrationOverlay.test.tsx` | CelebrationOverlay tests |
-| `shared/src/components/GameTimer/GameTimer.tsx` | SVG ring timer |
-| `shared/src/components/GameTimer/GameTimer.module.css` | GameTimer styles |
-| `shared/src/components/GameTimer/GameTimer.test.tsx` | GameTimer tests |
-| `shared/src/components/DifficultySelector/DifficultySelector.tsx` | Star-based picker |
-| `shared/src/components/DifficultySelector/DifficultySelector.module.css` | DifficultySelector styles |
-| `shared/src/components/DifficultySelector/DifficultySelector.test.tsx` | DifficultySelector tests |
-| `shared/src/components/InstructionBubble/InstructionBubble.tsx` | Speech bubble |
-| `shared/src/components/InstructionBubble/InstructionBubble.module.css` | InstructionBubble styles |
-| `shared/src/components/InstructionBubble/InstructionBubble.test.tsx` | InstructionBubble tests |
-| `shared/src/components/PauseMenu/PauseMenu.tsx` | Pause modal |
-| `shared/src/components/PauseMenu/PauseMenu.module.css` | PauseMenu styles |
-| `shared/src/components/PauseMenu/PauseMenu.test.tsx` | PauseMenu tests |
-| `shared/src/components/index.ts` | Barrel export for all components |
-| `shared/vitest.config.ts` | Vitest config for shared package |
-| `shared/src/test-setup.ts` | Testing library setup (jest-dom matchers) |
+| Path                                                                     | Responsibility                                                               |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| `shared/src/types/platform.ts`                                           | `TimeLimitConfig`, `FeatureFlags` types                                      |
+| `shared/src/types/services.ts`                                           | `AudioManager`, `StorageManager`, `AnalyticsEvent`, `EventFilter` interfaces |
+| `shared/src/types/index.ts`                                              | Barrel re-export for all type files                                          |
+| `shared/src/styles/tokens.css`                                           | All CSS custom properties (light + dark themes)                              |
+| `shared/src/styles/reset.css`                                            | Minimal CSS reset                                                            |
+| `shared/src/styles/breakpoints.css`                                      | Breakpoint reference values                                                  |
+| `shared/src/context/AgeTierContext.tsx`                                  | AgeTier context provider                                                     |
+| `shared/src/context/FeatureFlagContext.tsx`                              | Feature flag context provider                                                |
+| `shared/src/hooks/useGameLifecycle.ts`                                   | Game state machine hook                                                      |
+| `shared/src/hooks/useGameLifecycle.test.ts`                              | Tests for lifecycle hook                                                     |
+| `shared/src/hooks/useAgeTier.ts`                                         | Age tier context consumer hook                                               |
+| `shared/src/hooks/useAgeTier.test.ts`                                    | Tests for age tier hook                                                      |
+| `shared/src/hooks/useFeatureFlag.ts`                                     | Feature flag consumer hook                                                   |
+| `shared/src/hooks/useFeatureFlag.test.ts`                                | Tests for feature flag hook                                                  |
+| `shared/src/hooks/index.ts`                                              | Barrel export for hooks                                                      |
+| `shared/src/components/GameShell/GameShell.tsx`                          | Game wrapper component                                                       |
+| `shared/src/components/GameShell/GameShell.module.css`                   | GameShell styles                                                             |
+| `shared/src/components/GameShell/GameShell.test.tsx`                     | GameShell tests                                                              |
+| `shared/src/components/OptionButton/OptionButton.tsx`                    | Answer/choice button                                                         |
+| `shared/src/components/OptionButton/OptionButton.module.css`             | OptionButton styles                                                          |
+| `shared/src/components/OptionButton/OptionButton.test.tsx`               | OptionButton tests                                                           |
+| `shared/src/components/ScoreDisplay/ScoreDisplay.tsx`                    | Animated score counter                                                       |
+| `shared/src/components/ScoreDisplay/ScoreDisplay.module.css`             | ScoreDisplay styles                                                          |
+| `shared/src/components/ScoreDisplay/ScoreDisplay.test.tsx`               | ScoreDisplay tests                                                           |
+| `shared/src/components/ProgressBar/ProgressBar.tsx`                      | Progress indicator                                                           |
+| `shared/src/components/ProgressBar/ProgressBar.module.css`               | ProgressBar styles                                                           |
+| `shared/src/components/ProgressBar/ProgressBar.test.tsx`                 | ProgressBar tests                                                            |
+| `shared/src/components/CelebrationOverlay/CelebrationOverlay.tsx`        | Celebration with confetti                                                    |
+| `shared/src/components/CelebrationOverlay/CelebrationOverlay.module.css` | CelebrationOverlay styles                                                    |
+| `shared/src/components/CelebrationOverlay/CelebrationOverlay.test.tsx`   | CelebrationOverlay tests                                                     |
+| `shared/src/components/GameTimer/GameTimer.tsx`                          | SVG ring timer                                                               |
+| `shared/src/components/GameTimer/GameTimer.module.css`                   | GameTimer styles                                                             |
+| `shared/src/components/GameTimer/GameTimer.test.tsx`                     | GameTimer tests                                                              |
+| `shared/src/components/DifficultySelector/DifficultySelector.tsx`        | Star-based picker                                                            |
+| `shared/src/components/DifficultySelector/DifficultySelector.module.css` | DifficultySelector styles                                                    |
+| `shared/src/components/DifficultySelector/DifficultySelector.test.tsx`   | DifficultySelector tests                                                     |
+| `shared/src/components/InstructionBubble/InstructionBubble.tsx`          | Speech bubble                                                                |
+| `shared/src/components/InstructionBubble/InstructionBubble.module.css`   | InstructionBubble styles                                                     |
+| `shared/src/components/InstructionBubble/InstructionBubble.test.tsx`     | InstructionBubble tests                                                      |
+| `shared/src/components/PauseMenu/PauseMenu.tsx`                          | Pause modal                                                                  |
+| `shared/src/components/PauseMenu/PauseMenu.module.css`                   | PauseMenu styles                                                             |
+| `shared/src/components/PauseMenu/PauseMenu.test.tsx`                     | PauseMenu tests                                                              |
+| `shared/src/components/index.ts`                                         | Barrel export for all components                                             |
+| `shared/vitest.config.ts`                                                | Vitest config for shared package                                             |
+| `shared/src/test-setup.ts`                                               | Testing library setup (jest-dom matchers)                                    |
 
 ### Modified files
 
-| Path | Change |
-|------|--------|
-| `shared/src/types/game.ts` | Add `GameSettings`, update `GameConfig.settings`, add `audioManager`/`storageManager` to `GameProps` |
-| `shared/src/index.ts` | Replace direct type imports with barrel re-exports; add component, hook, context exports |
-| `shared/package.json` | Add `canvas-confetti`, `focus-trap-react` deps; add `framer-motion` peer dep |
-| `shared/tsconfig.json` | Add `"jsx": "react-jsx"` for component compilation |
-| `platform/src/styles/global.css` | Replace inline tokens with `@import` from shared; keep app-specific styles |
-| `package.json` (root) | Add `framer-motion`, `@testing-library/react`, `@testing-library/jest-dom`, `jsdom`, `@types/canvas-confetti` devDeps |
+| Path                             | Change                                                                                                                |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `shared/src/types/game.ts`       | Add `GameSettings`, update `GameConfig.settings`, add `audioManager`/`storageManager` to `GameProps`                  |
+| `shared/src/index.ts`            | Replace direct type imports with barrel re-exports; add component, hook, context exports                              |
+| `shared/package.json`            | Add `canvas-confetti`, `focus-trap-react` deps; add `framer-motion` peer dep                                          |
+| `shared/tsconfig.json`           | Add `"jsx": "react-jsx"` for component compilation                                                                    |
+| `platform/src/styles/global.css` | Replace inline tokens with `@import` from shared; keep app-specific styles                                            |
+| `package.json` (root)            | Add `framer-motion`, `@testing-library/react`, `@testing-library/jest-dom`, `jsdom`, `@types/canvas-confetti` devDeps |
 
 ---
 
@@ -84,6 +84,7 @@ Dependencies, types, tokens, test infrastructure. Everything else builds on this
 ### Task 1: Install dependencies and configure test infrastructure
 
 **Files:**
+
 - Modify: `package.json` (root)
 - Modify: `shared/package.json`
 - Modify: `shared/tsconfig.json`
@@ -197,6 +198,7 @@ Configure Vitest with jsdom for shared component tests."
 ### Task 2: Add remaining types and update existing types
 
 **Files:**
+
 - Modify: `shared/src/types/game.ts`
 - Create: `shared/src/types/platform.ts`
 - Create: `shared/src/types/services.ts`
@@ -208,11 +210,13 @@ Configure Vitest with jsdom for shared component tests."
 In `/home/jude/code/kids/shared/src/types/game.ts`:
 
 Add the import for service types at the top (after existing imports):
+
 ```typescript
 import type { AudioManager, StorageManager } from './services';
 ```
 
 Add `GameSettings` interface before `GameConfig`:
+
 ```typescript
 export interface GameSettings {
   soundEnabled: boolean;
@@ -223,6 +227,7 @@ export interface GameSettings {
 ```
 
 Change `GameConfig.settings` from `Record<string, unknown>` to `GameSettings`:
+
 ```typescript
 export interface GameConfig {
   difficulty: number;
@@ -232,6 +237,7 @@ export interface GameConfig {
 ```
 
 Add `audioManager` and `storageManager` to `GameProps`:
+
 ```typescript
 export interface GameProps {
   config: GameConfig;
@@ -308,7 +314,14 @@ export interface StorageManager {
 
 export interface AnalyticsEvent {
   id: string;
-  type: 'game_start' | 'game_end' | 'level_complete' | 'reward_unlocked' | 'game_error' | 'error' | 'navigation';
+  type:
+    | 'game_start'
+    | 'game_end'
+    | 'level_complete'
+    | 'reward_unlocked'
+    | 'game_error'
+    | 'error'
+    | 'navigation';
   profileId: string;
   gameId?: string;
   timestamp: string;
@@ -340,22 +353,11 @@ export type {
   AgeTier,
 } from './game';
 
-export type {
-  UserProfile,
-  GameProgress,
-  Reward,
-  RewardType,
-  RewardCriteria,
-} from './user';
+export type { UserProfile, GameProgress, Reward, RewardType, RewardCriteria } from './user';
 
 export type { TimeLimitConfig, FeatureFlags } from './platform';
 
-export type {
-  AudioManager,
-  StorageManager,
-  AnalyticsEvent,
-  EventFilter,
-} from './services';
+export type { AudioManager, StorageManager, AnalyticsEvent, EventFilter } from './services';
 ```
 
 - [ ] **Step 5: Update root barrel**
@@ -408,6 +410,7 @@ GameConfig with typed GameSettings."
 ### Task 3: Create design tokens, reset, and breakpoints
 
 **Files:**
+
 - Create: `shared/src/styles/tokens.css`
 - Create: `shared/src/styles/reset.css`
 - Create: `shared/src/styles/breakpoints.css`
@@ -664,6 +667,7 @@ Platform global.css now imports from shared."
 ### Task 4: Create context providers
 
 **Files:**
+
 - Create: `shared/src/context/AgeTierContext.tsx`
 - Create: `shared/src/context/FeatureFlagContext.tsx`
 
@@ -683,9 +687,7 @@ interface AgeTierProviderProps {
 }
 
 export function AgeTierProvider({ tier, children }: AgeTierProviderProps) {
-  return (
-    <AgeTierContext.Provider value={tier}>{children}</AgeTierContext.Provider>
-  );
+  return <AgeTierContext.Provider value={tier}>{children}</AgeTierContext.Provider>;
 }
 ```
 
@@ -743,6 +745,7 @@ git commit -m "feat: add AgeTier and FeatureFlag context providers"
 ### Task 5: Create hooks with tests (TDD)
 
 **Files:**
+
 - Create: `shared/src/hooks/useAgeTier.ts`
 - Create: `shared/src/hooks/useAgeTier.test.ts`
 - Create: `shared/src/hooks/useFeatureFlag.ts`
@@ -1299,8 +1302,7 @@ export function useGameLifecycle(plugin: GamePlugin): GameLifecycle {
   }, [plugin, setGameState]);
 
   const end = useCallback(() => {
-    if (stateRef.current !== 'PLAYING' && stateRef.current !== 'PAUSED')
-      return undefined;
+    if (stateRef.current !== 'PLAYING' && stateRef.current !== 'PAUSED') return undefined;
     const result = plugin.onEnd();
     setGameState('COMPLETED');
     return result;
@@ -1338,10 +1340,7 @@ Update `/home/jude/code/kids/shared/src/index.ts` — append after the type expo
 ```typescript
 // Context providers
 export { AgeTierProvider, AgeTierContext } from './context/AgeTierContext';
-export {
-  FeatureFlagProvider,
-  FeatureFlagContext,
-} from './context/FeatureFlagContext';
+export { FeatureFlagProvider, FeatureFlagContext } from './context/FeatureFlagContext';
 
 // Hooks
 export { useAgeTier } from './hooks/useAgeTier';
@@ -1374,6 +1373,7 @@ providers and manage game state machine lifecycle."
 ### Task 6: GameShell component
 
 **Files:**
+
 - Create: `shared/src/components/GameShell/GameShell.tsx`
 - Create: `shared/src/components/GameShell/GameShell.module.css`
 - Create: `shared/src/components/GameShell/GameShell.test.tsx`
@@ -1545,11 +1545,7 @@ export function GameShell({
     <div className={styles.shell}>
       <header className={styles.header}>
         {onBack ? (
-          <button
-            className={styles.backButton}
-            onClick={onBack}
-            aria-label="Go back"
-          >
+          <button className={styles.backButton} onClick={onBack} aria-label="Go back">
             ← Back
           </button>
         ) : (
@@ -1559,11 +1555,7 @@ export function GameShell({
         <h1 className={styles.title}>{title}</h1>
 
         {showPauseButton && onPause ? (
-          <button
-            className={styles.pauseButton}
-            onClick={onPause}
-            aria-label="Pause game"
-          >
+          <button className={styles.pauseButton} onClick={onPause} aria-label="Pause game">
             ⏸
           </button>
         ) : (
@@ -1597,6 +1589,7 @@ age-tier-aware touch targets via CSS custom properties."
 ### Task 7: OptionButton component
 
 **Files:**
+
 - Create: `shared/src/components/OptionButton/OptionButton.tsx`
 - Create: `shared/src/components/OptionButton/OptionButton.module.css`
 - Create: `shared/src/components/OptionButton/OptionButton.test.tsx`
@@ -1641,10 +1634,7 @@ describe('OptionButton', () => {
 
   it('has aria-disabled when disabled', () => {
     render(<OptionButton label="Cat" disabled />);
-    expect(screen.getByRole('button')).toHaveAttribute(
-      'aria-disabled',
-      'true',
-    );
+    expect(screen.getByRole('button')).toHaveAttribute('aria-disabled', 'true');
   });
 
   it('has role="button"', () => {
@@ -1763,9 +1753,7 @@ export function OptionButton({
       className={classNames}
       onClick={handleClick}
       aria-disabled={disabled}
-      whileTap={
-        !disabled && !shouldReduceMotion ? { scale: 0.95 } : undefined
-      }
+      whileTap={!disabled && !shouldReduceMotion ? { scale: 0.95 } : undefined}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}
     >
       {state === 'correct' && <span className={styles.stateIcon}>✓</span>}
@@ -1797,6 +1785,7 @@ via Framer Motion, prefers-reduced-motion support, ARIA attributes."
 ### Task 8: ScoreDisplay component
 
 **Files:**
+
 - Create: `shared/src/components/ScoreDisplay/ScoreDisplay.tsx`
 - Create: `shared/src/components/ScoreDisplay/ScoreDisplay.module.css`
 - Create: `shared/src/components/ScoreDisplay/ScoreDisplay.test.tsx`
@@ -1816,9 +1805,7 @@ describe('ScoreDisplay', () => {
   });
 
   it('renders stars when showStars is true', () => {
-    render(
-      <ScoreDisplay score={60} maxScore={100} showStars starCount={5} />,
-    );
+    render(<ScoreDisplay score={60} maxScore={100} showStars starCount={5} />);
     // 60/100 = 60%, out of 5 stars = 3 filled
     const stars = screen.getAllByRole('img', { hidden: true });
     expect(stars).toHaveLength(5);
@@ -1836,18 +1823,12 @@ describe('ScoreDisplay', () => {
 
   it('has correct aria-label with score and max', () => {
     render(<ScoreDisplay score={80} maxScore={100} />);
-    expect(
-      screen.getByLabelText('Score: 80 out of 100'),
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText('Score: 80 out of 100')).toBeInTheDocument();
   });
 
   it('has correct aria-label with stars', () => {
-    render(
-      <ScoreDisplay score={80} maxScore={100} showStars starCount={5} />,
-    );
-    expect(
-      screen.getByLabelText('Score: 80 out of 100, 4 of 5 stars'),
-    ).toBeInTheDocument();
+    render(<ScoreDisplay score={80} maxScore={100} showStars starCount={5} />);
+    expect(screen.getByLabelText('Score: 80 out of 100, 4 of 5 stars')).toBeInTheDocument();
   });
 });
 ```
@@ -1938,8 +1919,7 @@ export function ScoreDisplay({
   starCount = 5,
   animate = true,
 }: ScoreDisplayProps) {
-  const filledStars =
-    showStars && maxScore ? Math.round((score / maxScore) * starCount) : 0;
+  const filledStars = showStars && maxScore ? Math.round((score / maxScore) * starCount) : 0;
 
   let ariaLabel = `Score: ${score}`;
   if (maxScore) ariaLabel += ` out of ${maxScore}`;
@@ -1992,6 +1972,7 @@ rating, comprehensive aria-label for accessibility."
 ### Task 9: ProgressBar component
 
 **Files:**
+
 - Create: `shared/src/components/ProgressBar/ProgressBar.tsx`
 - Create: `shared/src/components/ProgressBar/ProgressBar.module.css`
 - Create: `shared/src/components/ProgressBar/ProgressBar.test.tsx`
@@ -2017,9 +1998,7 @@ describe('ProgressBar', () => {
   });
 
   it('renders custom label', () => {
-    render(
-      <ProgressBar current={3} total={10} showLabel label="Question 3 of 10" />,
-    );
+    render(<ProgressBar current={3} total={10} showLabel label="Question 3 of 10" />);
     expect(screen.getByText('Question 3 of 10')).toBeInTheDocument();
   });
 
@@ -2099,19 +2078,11 @@ interface ProgressBarProps {
   label?: string;
 }
 
-export function ProgressBar({
-  current,
-  total,
-  color,
-  showLabel = false,
-  label,
-}: ProgressBarProps) {
+export function ProgressBar({ current, total, color, showLabel = false, label }: ProgressBarProps) {
   const percentage = Math.min(Math.max((current / total) * 100, 0), 100);
   const displayLabel = label ?? `${current} of ${total}`;
 
-  const style = color
-    ? ({ '--progress-bar-color': color } as React.CSSProperties)
-    : undefined;
+  const style = color ? ({ '--progress-bar-color': color } as React.CSSProperties) : undefined;
 
   return (
     <div className={styles.container}>
@@ -2151,6 +2122,7 @@ optional label, full ARIA progressbar attributes."
 ### Task 10: CelebrationOverlay component
 
 **Files:**
+
 - Create: `shared/src/components/CelebrationOverlay/CelebrationOverlay.tsx`
 - Create: `shared/src/components/CelebrationOverlay/CelebrationOverlay.module.css`
 - Create: `shared/src/components/CelebrationOverlay/CelebrationOverlay.test.tsx`
@@ -2196,17 +2168,13 @@ describe('CelebrationOverlay', () => {
   });
 
   it('renders score when provided', () => {
-    render(
-      <CelebrationOverlay title="Great!" score={950} maxScore={1000} />,
-    );
+    render(<CelebrationOverlay title="Great!" score={950} maxScore={1000} />);
     expect(screen.getByText(/950/)).toBeInTheDocument();
   });
 
   it('calls onComplete after duration', () => {
     const onComplete = vi.fn();
-    render(
-      <CelebrationOverlay title="Done!" duration={2000} onComplete={onComplete} />,
-    );
+    render(<CelebrationOverlay title="Done!" duration={2000} onComplete={onComplete} />);
 
     act(() => {
       vi.advanceTimersByTime(2000);
@@ -2387,6 +2355,7 @@ entrance/exit, auto-dismiss, prefers-reduced-motion support."
 ### Task 11: GameTimer component
 
 **Files:**
+
 - Create: `shared/src/components/GameTimer/GameTimer.tsx`
 - Create: `shared/src/components/GameTimer/GameTimer.module.css`
 - Create: `shared/src/components/GameTimer/GameTimer.test.tsx`
@@ -2435,9 +2404,7 @@ describe('GameTimer', () => {
   });
 
   it('pauses when paused prop is true', () => {
-    const { rerender } = render(
-      <GameTimer mode="countdown" duration={10} />,
-    );
+    const { rerender } = render(<GameTimer mode="countdown" duration={10} />);
 
     act(() => {
       vi.advanceTimersByTime(2000);
@@ -2494,7 +2461,9 @@ Create `/home/jude/code/kids/shared/src/components/GameTimer/GameTimer.module.cs
   fill: none;
   stroke: var(--timer-color, var(--color-primary));
   stroke-linecap: round;
-  transition: stroke-dashoffset 1s linear, stroke var(--transition-fast);
+  transition:
+    stroke-dashoffset 1s linear,
+    stroke var(--transition-fast);
 }
 
 .progressCircle.warning {
@@ -2575,8 +2544,7 @@ export function GameTimer({
     };
   }, [paused, mode, duration]);
 
-  const displaySeconds =
-    mode === 'countdown' ? Math.max(duration - elapsed, 0) : elapsed;
+  const displaySeconds = mode === 'countdown' ? Math.max(duration - elapsed, 0) : elapsed;
   const remaining = mode === 'countdown' ? duration - elapsed : 0;
   const isWarning = mode === 'countdown' && remaining <= 10 && remaining > 0;
 
@@ -2585,11 +2553,7 @@ export function GameTimer({
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress =
-    mode === 'countdown'
-      ? elapsed / duration
-      : duration > 0
-        ? Math.min(elapsed / duration, 1)
-        : 0;
+    mode === 'countdown' ? elapsed / duration : duration > 0 ? Math.min(elapsed / duration, 1) : 0;
   const dashOffset = circumference * (1 - progress);
 
   const ariaLabel =
@@ -2616,12 +2580,7 @@ export function GameTimer({
           strokeDasharray={circumference}
           strokeDashoffset={dashOffset}
         />
-        <text
-          className={styles.time}
-          x={size / 2}
-          y={size / 2}
-          fontSize={size * 0.25}
-        >
+        <text className={styles.time} x={size / 2} y={size / 2} fontSize={size * 0.25}>
           {formatTime(displaySeconds)}
         </text>
       </svg>
@@ -2650,6 +2609,7 @@ warning color in last 10 seconds, ARIA timer role."
 ### Task 12: DifficultySelector component
 
 **Files:**
+
 - Create: `shared/src/components/DifficultySelector/DifficultySelector.tsx`
 - Create: `shared/src/components/DifficultySelector/DifficultySelector.module.css`
 - Create: `shared/src/components/DifficultySelector/DifficultySelector.test.tsx`
@@ -2664,9 +2624,7 @@ import { DifficultySelector } from './DifficultySelector';
 
 describe('DifficultySelector', () => {
   it('renders the correct number of stars', () => {
-    render(
-      <DifficultySelector current={3} onChange={vi.fn()} levels={5} />,
-    );
+    render(<DifficultySelector current={3} onChange={vi.fn()} levels={5} />);
     const group = screen.getByRole('radiogroup');
     const radios = screen.getAllByRole('radio');
     expect(group).toBeInTheDocument();
@@ -2831,9 +2789,7 @@ export function DifficultySelector({
           );
         })}
       </div>
-      {labels && labels[current - 1] && (
-        <span className={styles.label}>{labels[current - 1]}</span>
-      )}
+      {labels && labels[current - 1] && <span className={styles.label}>{labels[current - 1]}</span>}
     </div>
   );
 }
@@ -2859,6 +2815,7 @@ navigation with wrapping, optional level labels."
 ### Task 13: InstructionBubble component
 
 **Files:**
+
 - Create: `shared/src/components/InstructionBubble/InstructionBubble.tsx`
 - Create: `shared/src/components/InstructionBubble/InstructionBubble.module.css`
 - Create: `shared/src/components/InstructionBubble/InstructionBubble.test.tsx`
@@ -2878,36 +2835,26 @@ describe('InstructionBubble', () => {
   });
 
   it('shows audio button when audioSrc is provided', () => {
-    render(
-      <InstructionBubble text="Listen!" audioSrc="/audio/instruction.mp3" />,
-    );
+    render(<InstructionBubble text="Listen!" audioSrc="/audio/instruction.mp3" />);
     expect(screen.getByLabelText('Play instruction audio')).toBeInTheDocument();
   });
 
   it('does not show audio button when no audioSrc', () => {
     render(<InstructionBubble text="Just text" />);
-    expect(
-      screen.queryByLabelText('Play instruction audio'),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Play instruction audio')).not.toBeInTheDocument();
   });
 
   it('fires onAudioPlay when audio button is clicked', () => {
     const onAudioPlay = vi.fn();
     render(
-      <InstructionBubble
-        text="Listen!"
-        audioSrc="/audio/test.mp3"
-        onAudioPlay={onAudioPlay}
-      />,
+      <InstructionBubble text="Listen!" audioSrc="/audio/test.mp3" onAudioPlay={onAudioPlay} />,
     );
     fireEvent.click(screen.getByLabelText('Play instruction audio'));
     expect(onAudioPlay).toHaveBeenCalledOnce();
   });
 
   it('renders character name when provided', () => {
-    render(
-      <InstructionBubble text="Hello!" character="Owl Helper" />,
-    );
+    render(<InstructionBubble text="Hello!" character="Owl Helper" />);
     expect(screen.getByText('Owl Helper')).toBeInTheDocument();
   });
 });
@@ -3045,6 +2992,7 @@ character attribution."
 ### Task 14: PauseMenu component
 
 **Files:**
+
 - Create: `shared/src/components/PauseMenu/PauseMenu.tsx`
 - Create: `shared/src/components/PauseMenu/PauseMenu.module.css`
 - Create: `shared/src/components/PauseMenu/PauseMenu.test.tsx`
@@ -3277,6 +3225,7 @@ Escape key resumes, ARIA dialog pattern."
 ### Task 15: Create component barrel, update root barrel, and verify everything
 
 **Files:**
+
 - Create: `shared/src/components/index.ts`
 - Modify: `shared/src/index.ts`
 
@@ -3362,22 +3311,22 @@ Revert the temporary import.
 
 ## Summary
 
-| Task | What it delivers | Estimated time |
-|------|-----------------|----------------|
-| 1 | Dependencies + test infra | 5 min |
-| 2 | All shared types | 10 min |
-| 3 | Design tokens + CSS | 10 min |
-| 4 | Context providers | 5 min |
-| 5 | 3 hooks with TDD | 15 min |
-| 6 | GameShell | 10 min |
-| 7 | OptionButton | 10 min |
-| 8 | ScoreDisplay | 10 min |
-| 9 | ProgressBar | 10 min |
-| 10 | CelebrationOverlay | 10 min |
-| 11 | GameTimer | 10 min |
-| 12 | DifficultySelector | 10 min |
-| 13 | InstructionBubble | 10 min |
-| 14 | PauseMenu | 10 min |
-| 15 | Barrel exports + verification | 5 min |
+| Task | What it delivers              | Estimated time |
+| ---- | ----------------------------- | -------------- |
+| 1    | Dependencies + test infra     | 5 min          |
+| 2    | All shared types              | 10 min         |
+| 3    | Design tokens + CSS           | 10 min         |
+| 4    | Context providers             | 5 min          |
+| 5    | 3 hooks with TDD              | 15 min         |
+| 6    | GameShell                     | 10 min         |
+| 7    | OptionButton                  | 10 min         |
+| 8    | ScoreDisplay                  | 10 min         |
+| 9    | ProgressBar                   | 10 min         |
+| 10   | CelebrationOverlay            | 10 min         |
+| 11   | GameTimer                     | 10 min         |
+| 12   | DifficultySelector            | 10 min         |
+| 13   | InstructionBubble             | 10 min         |
+| 14   | PauseMenu                     | 10 min         |
+| 15   | Barrel exports + verification | 5 min          |
 
 15 tasks, 6 chunks. Each task produces a working commit. All tests, typecheck, and lint must pass before moving to the next task.

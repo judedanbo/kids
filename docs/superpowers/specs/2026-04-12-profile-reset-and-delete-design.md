@@ -86,7 +86,7 @@ Four new reducer actions:
 
 - `SOFT_DELETE_PROFILE { profileId }` — updates the matching entry in
   `state.profiles` with `deletedAt`. If `state.currentProfile?.id ===
-  profileId`, also clears `currentProfile`.
+profileId`, also clears `currentProfile`.
 - `RESTORE_PROFILE { profileId }` — clears `deletedAt` on the matching entry
   in `state.profiles`.
 - `PURGE_PROFILE { profileId }` — removes the profile from `state.profiles`.
@@ -107,10 +107,10 @@ remain unchanged. A new **Profiles** section is added below them.
 
 Layout: a table listing every profile on the device.
 
-| Avatar + Name | Status | Last played | Actions |
-|---|---|---|---|
-| 🦊 Amina | Active | 2d ago | **Reset progress** · **Delete** |
-| 🐻 Noah | Deleted 3d ago | — | **Restore** · **Delete permanently** |
+| Avatar + Name | Status         | Last played | Actions                              |
+| ------------- | -------------- | ----------- | ------------------------------------ |
+| 🦊 Amina      | Active         | 2d ago      | **Reset progress** · **Delete**      |
+| 🐻 Noah       | Deleted 3d ago | —           | **Restore** · **Delete permanently** |
 
 "Last played" reads from `profile.stats.lastPlayedAt` and is hidden ("—")
 for deleted profiles. "Status" shows `Active` for active rows and
@@ -118,12 +118,12 @@ for deleted profiles. "Status" shows `Active` for active rows and
 
 Action semantics:
 
-- **Reset progress** (active rows only). Simple confirm dialog: *"Reset
-  Amina's game progress? Rewards and stats will be kept."* On confirm, calls
+- **Reset progress** (active rows only). Simple confirm dialog: _"Reset
+  Amina's game progress? Rewards and stats will be kept."_ On confirm, calls
   `resetProfileProgress` → dispatches `RESET_PROFILE_PROGRESS`.
 - **Delete** (active rows only). Modal requires typing the child's name to
   confirm — match is case-insensitive against the displayed `profile.name`.
-  Names are not globally unique; typing a name only has to match *that* row,
+  Names are not globally unique; typing a name only has to match _that_ row,
   not disambiguate across profiles. On confirm, calls `softDeleteProfile` →
   dispatches `SOFT_DELETE_PROFILE`.
 - **Restore** (deleted rows only). Simple confirm dialog. On confirm, calls

@@ -19,7 +19,9 @@ export function ClueButton({ label, icon, onClick, ariaLabel }: ClueButtonProps)
       whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}
     >
-      <span className={styles.icon} aria-hidden="true">{icon}</span>
+      <span className={styles.icon} aria-hidden="true">
+        {icon}
+      </span>
       {label}
     </motion.button>
   );

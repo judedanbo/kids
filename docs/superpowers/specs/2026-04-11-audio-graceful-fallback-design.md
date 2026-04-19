@@ -63,10 +63,10 @@ class WebAudioMusicGenerator {
   private gainNode: GainNode | null = null;
   private isPlaying = false;
 
-  start(options?: { volume?: number; fadeIn?: number }): void
-  stop(options?: { fadeOut?: number }): void
-  setVolume(level: number): void
-  isActive(): boolean
+  start(options?: { volume?: number; fadeIn?: number }): void;
+  stop(options?: { fadeOut?: number }): void;
+  setVolume(level: number): void;
+  isActive(): boolean;
 }
 ```
 
@@ -146,13 +146,13 @@ const audioManager = new RealAudioManager(new HowlerBackend(), musicGenerator);
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
-| `platform/src/services/audio-manager.ts` | Add failedAssets, guard callers, generator integration |
-| `platform/src/services/audio-music-generator.ts` | New file — Web Audio music generator |
-| `platform/src/main.tsx` | Wire generator into RealAudioManager |
-| `platform/src/services/__tests__/audio-manager.test.ts` | Error handling + integration tests |
-| `platform/src/services/__tests__/audio-music-generator.test.ts` | New file — generator tests |
+| File                                                            | Change                                                 |
+| --------------------------------------------------------------- | ------------------------------------------------------ |
+| `platform/src/services/audio-manager.ts`                        | Add failedAssets, guard callers, generator integration |
+| `platform/src/services/audio-music-generator.ts`                | New file — Web Audio music generator                   |
+| `platform/src/main.tsx`                                         | Wire generator into RealAudioManager                   |
+| `platform/src/services/__tests__/audio-manager.test.ts`         | Error handling + integration tests                     |
+| `platform/src/services/__tests__/audio-music-generator.test.ts` | New file — generator tests                             |
 
 ## Scope Boundaries
 

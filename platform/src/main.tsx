@@ -29,10 +29,7 @@ storageManager.init().catch((err) => {
   console.warn('IndexedDB initialization failed. Running in-memory only:', err);
 });
 
-const audioManager = new RealAudioManager(
-  new HowlerBackend(),
-  new WebAudioMusicGenerator(),
-);
+const audioManager = new RealAudioManager(new HowlerBackend(), new WebAudioMusicGenerator());
 audioManager.setVoiceVariants(voiceVariants);
 
 createRoot(document.getElementById('root')!).render(
@@ -43,9 +40,9 @@ createRoot(document.getElementById('root')!).render(
         audioManager={audioManager}
         gameRegistry={gameRegistry}
       >
-          <FeatureFlagProvider flags={featureFlags as FeatureFlags} profileId={null}>
-            <App />
-          </FeatureFlagProvider>
+        <FeatureFlagProvider flags={featureFlags as FeatureFlags} profileId={null}>
+          <App />
+        </FeatureFlagProvider>
       </PlatformProvider>
     </BrowserRouter>
   </StrictMode>,

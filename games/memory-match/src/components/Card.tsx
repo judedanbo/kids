@@ -47,10 +47,7 @@ export function Card({
   }
 
   return (
-    <div
-      className={styles.cardWrapper}
-      style={{ width: size, height: size, perspective: 800 }}
-    >
+    <div className={styles.cardWrapper} style={{ width: size, height: size, perspective: 800 }}>
       <motion.button
         className={`${styles.cardButton} ${isMatched ? styles.cardMatched : ''}`}
         style={{ width: size, height: size }}
@@ -64,9 +61,7 @@ export function Card({
         ref={refCallback}
       >
         <div className={styles.cardInner}>
-          <div className={`${styles.cardBack} ${isMatched ? styles.cardMatched : ''}`}>
-            ?
-          </div>
+          <div className={`${styles.cardBack} ${isMatched ? styles.cardMatched : ''}`}>?</div>
           <div className={`${styles.cardFront} ${isMatched ? styles.cardMatched : ''}`}>
             <CSSIllustration name={illustration} />
           </div>

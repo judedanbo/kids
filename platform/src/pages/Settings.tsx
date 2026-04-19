@@ -16,9 +16,7 @@ export function Settings() {
     dispatch({ type: 'SET_SETTINGS', payload: { theme: next } });
   };
 
-  const { isHighContrast, setHighContrast } = useHighContrast(
-    state.settings.highContrast,
-  );
+  const { isHighContrast, setHighContrast } = useHighContrast(state.settings.highContrast);
 
   const handleHighContrastToggle = () => {
     const next = !isHighContrast;
@@ -63,10 +61,7 @@ export function Settings() {
               <p className={styles.profileAge}>{t('settings.age', { age: profile.age })}</p>
             </div>
           </div>
-          <button
-            className={styles.linkBtn}
-            onClick={() => navigate('/profile')}
-          >
+          <button className={styles.linkBtn} onClick={() => navigate('/profile')}>
             {t('settings.switchProfile')}
           </button>
         </section>
@@ -100,9 +95,7 @@ export function Settings() {
 
       {/* Sound */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>
-          {t('settings.sound', { defaultValue: 'Sound' })}
-        </h2>
+        <h2 className={styles.sectionTitle}>{t('settings.sound', { defaultValue: 'Sound' })}</h2>
         <div className={styles.settingRow}>
           <label htmlFor="bg-music-toggle">
             {t('settings.backgroundMusic', { defaultValue: 'Background music' })}
@@ -153,13 +146,8 @@ export function Settings() {
       {/* Parental Controls */}
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{t('settings.parentalControls')}</h2>
-        <p className={styles.description}>
-          {t('settings.parentalDescription')}
-        </p>
-        <button
-          className={styles.primaryBtn}
-          onClick={() => navigate('/settings/parental')}
-        >
+        <p className={styles.description}>{t('settings.parentalDescription')}</p>
+        <button className={styles.primaryBtn} onClick={() => navigate('/settings/parental')}>
           {t('settings.openParentalDashboard')}
         </button>
       </section>

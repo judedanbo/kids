@@ -68,12 +68,8 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
     <motion.button
       className={`${styles.card} ${isRecent ? styles.recent : ''} ${isLocked ? styles.locked : ''}`}
       onClick={handleClick}
-      whileHover={
-        !isLocked && !shouldReduceMotion ? { scale: 1.03 } : undefined
-      }
-      whileTap={
-        !isLocked && !shouldReduceMotion ? { scale: 0.98 } : undefined
-      }
+      whileHover={!isLocked && !shouldReduceMotion ? { scale: 1.03 } : undefined}
+      whileTap={!isLocked && !shouldReduceMotion ? { scale: 0.98 } : undefined}
       transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       aria-label={`${manifest.name}${isLocked ? ` ${t('gameCard.locked')}` : ''}`}
       disabled={isLocked}
@@ -112,10 +108,7 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
 
         {progress && !isLocked && (
           <div className={styles.progressContainer}>
-            <ProgressBar
-              current={progress.currentLevel}
-              total={manifest.maxDifficulty}
-            />
+            <ProgressBar current={progress.currentLevel} total={manifest.maxDifficulty} />
           </div>
         )}
       </div>

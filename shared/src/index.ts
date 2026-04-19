@@ -51,4 +51,5 @@ export {
   useAnnounce,
   SkipLink,
   IconImage,
+  ConfirmDialog,
 } from './components';

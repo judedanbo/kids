@@ -44,7 +44,13 @@ const plugin: GamePlugin = {
       timeSpent,
       difficulty: _difficulty,
       completedAt: new Date().toISOString(),
-      metrics: { questionsCorrect: 0, avgAttempts: 0, additionCount: 0, subtractionCount: 0, multiplicationCount: 0 },
+      metrics: {
+        questionsCorrect: 0,
+        avgAttempts: 0,
+        additionCount: 0,
+        subtractionCount: 0,
+        multiplicationCount: 0,
+      },
     };
   },
 

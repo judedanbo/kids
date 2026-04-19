@@ -1,11 +1,7 @@
 import OpenAI from 'openai';
 import { z } from 'zod';
 import type { AgeTier } from '@kids-games-zone/shared';
-import type {
-  ContentProvider,
-  ContentRequest,
-  ContentResult,
-} from './content-provider.js';
+import type { ContentProvider, ContentRequest, ContentResult } from './content-provider.js';
 
 const ResponseSchema = z.object({
   definition: z.string().min(3).max(200),

@@ -7,9 +7,7 @@ import { z } from 'zod';
  */
 export const PhraseSchema = z
   .object({
-    id: z
-      .string()
-      .regex(/^[a-z0-9][a-z0-9-]*$/, 'id must be kebab-case (a-z, 0-9, -)'),
+    id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'id must be kebab-case (a-z, 0-9, -)'),
     text: z.string().min(1).optional(),
     ssml: z.string().min(1).optional(),
     voice: z.string().optional(),

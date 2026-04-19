@@ -4,9 +4,7 @@ import { DifficultySelector } from './DifficultySelector';
 
 describe('DifficultySelector', () => {
   it('renders the correct number of stars', () => {
-    render(
-      <DifficultySelector current={3} onChange={vi.fn()} levels={5} />,
-    );
+    render(<DifficultySelector current={3} onChange={vi.fn()} levels={5} />);
     const group = screen.getByRole('radiogroup');
     const radios = screen.getAllByRole('radio');
     expect(group).toBeInTheDocument();
@@ -56,9 +54,7 @@ describe('DifficultySelector', () => {
   });
 
   it('has no accessibility violations', async () => {
-    const { container } = render(
-      <DifficultySelector current={3} onChange={() => {}} />,
-    );
+    const { container } = render(<DifficultySelector current={3} onChange={() => {}} />);
     expect(await axe(container)).toHaveNoViolations();
   });
 });

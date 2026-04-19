@@ -1,10 +1,7 @@
 import { test, expect } from './fixtures';
 
 test.describe('Profile Management', () => {
-  test('creates a profile and shows welcome message on hub', async ({
-    page,
-    createProfile,
-  }) => {
+  test('creates a profile and shows welcome message on hub', async ({ page, createProfile }) => {
     await createProfile({ name: 'Rosie', age: '5' });
     await expect(page.locator('h1')).toContainText('Welcome back, Rosie');
   });
@@ -17,10 +14,7 @@ test.describe('Profile Management', () => {
     await expect(page.locator('h1')).toContainText('Welcome back, Kai');
   });
 
-  test('can switch profiles via settings', async ({
-    page,
-    createProfile,
-  }) => {
+  test('can switch profiles via settings', async ({ page, createProfile }) => {
     // Create first profile
     await createProfile({ name: 'Alpha', age: '6' });
     await expect(page.locator('h1')).toContainText('Welcome back, Alpha');
@@ -30,9 +24,7 @@ test.describe('Profile Management', () => {
     await page.locator('button:has-text("Switch Profile")').click();
 
     // Should show "Who's playing?" with existing profile and New Player
-    await expect(
-      page.locator('text=Who\'s playing?'),
-    ).toBeVisible({ timeout: 5_000 });
+    await expect(page.locator("text=Who's playing?")).toBeVisible({ timeout: 5_000 });
 
     // Click "New Player" to create a second profile
     await page.locator('text=New Player').click();
@@ -49,15 +41,10 @@ test.describe('Profile Management', () => {
     await expect(page.locator('h1')).toContainText('Welcome back, Beta');
   });
 
-  test('profile creation works on mobile viewport', async ({
-    page,
-    createProfile,
-  }) => {
+  test('profile creation works on mobile viewport', async ({ page, createProfile }) => {
     // Use mobile-like viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await createProfile({ name: 'MobileKid', age: '4' });
-    await expect(page.locator('h1')).toContainText(
-      'Welcome back, MobileKid',
-    );
+    await expect(page.locator('h1')).toContainText('Welcome back, MobileKid');
   });
 });

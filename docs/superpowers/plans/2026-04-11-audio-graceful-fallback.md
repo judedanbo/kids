@@ -14,19 +14,20 @@
 
 ## File Map
 
-| File | Action | Responsibility |
-|------|--------|---------------|
-| `platform/src/services/audio-manager.ts` | Modify | Add `failedAssets` set, guard play calls, integrate generator fallback |
-| `platform/src/services/audio-music-generator.ts` | Create | Web Audio API music synthesis — pentatonic melody loop |
-| `platform/src/main.tsx` | Modify | Wire `WebAudioMusicGenerator` into `RealAudioManager` constructor |
-| `platform/src/services/__tests__/audio-manager.test.ts` | Create | Tests for graceful error handling + generator integration |
-| `platform/src/services/__tests__/audio-music-generator.test.ts` | Create | Tests for the music generator |
+| File                                                            | Action | Responsibility                                                         |
+| --------------------------------------------------------------- | ------ | ---------------------------------------------------------------------- |
+| `platform/src/services/audio-manager.ts`                        | Modify | Add `failedAssets` set, guard play calls, integrate generator fallback |
+| `platform/src/services/audio-music-generator.ts`                | Create | Web Audio API music synthesis — pentatonic melody loop                 |
+| `platform/src/main.tsx`                                         | Modify | Wire `WebAudioMusicGenerator` into `RealAudioManager` constructor      |
+| `platform/src/services/__tests__/audio-manager.test.ts`         | Create | Tests for graceful error handling + generator integration              |
+| `platform/src/services/__tests__/audio-music-generator.test.ts` | Create | Tests for the music generator                                          |
 
 ---
 
 ## Task 1: Graceful Error Handling — Tests
 
 **Files:**
+
 - Create: `platform/src/services/__tests__/audio-manager.test.ts`
 
 - [ ] **Step 1: Create the mock backend and test file scaffold**
@@ -86,16 +87,12 @@ describe('RealAudioManager — graceful error handling', () => {
     });
 
     it('does not throw when music file fails to load', async () => {
-      await expect(
-        manager.playMusic('music:game-bgm', { loop: true }),
-      ).resolves.toBeUndefined();
+      await expect(manager.playMusic('music:game-bgm', { loop: true })).resolves.toBeUndefined();
     });
 
     it('logs a warning when audio fails to load', async () => {
       await manager.playMusic('music:game-bgm');
-      expect(console.warn).toHaveBeenCalledWith(
-        expect.stringContaining('game-bgm'),
-      );
+      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('game-bgm'));
     });
 
     it('does not call backend.play for failed assets', async () => {
@@ -133,9 +130,7 @@ describe('RealAudioManager — graceful error handling', () => {
     });
 
     it('does not throw when voice file fails to load', async () => {
-      await expect(
-        manager.playVoice('voice:missing-voice'),
-      ).resolves.toBeUndefined();
+      await expect(manager.playVoice('voice:missing-voice')).resolves.toBeUndefined();
     });
 
     it('calls onComplete even when voice asset fails', async () => {
@@ -193,6 +188,7 @@ git commit -m "test(audio): add failing tests for graceful error handling"
 ## Task 2: Graceful Error Handling — Implementation
 
 **Files:**
+
 - Modify: `platform/src/services/audio-manager.ts`
 
 - [ ] **Step 1: Add `failedAssets` set to `RealAudioManager`**
@@ -237,9 +233,9 @@ Replace the `ensureLoaded` method (lines 185-195) with:
 In `playMusic()`, after the `await this.ensureLoaded(trackId, 'music');` line (line 35), add:
 
 ```typescript
-    if (!this.loadedAssets.has(trackId)) {
-      return;
-    }
+if (!this.loadedAssets.has(trackId)) {
+  return;
+}
 ```
 
 Note: `trackId` here is the raw ID passed to `playMusic` (e.g. `'music:game-bgm'`). But `ensureLoaded` is called with the parsed key. We need to parse first. Looking at the current code, `playMusic` passes the full `trackId` string directly to `ensureLoaded` — but `ensureLoaded` uses it as-is for the filename. We need to parse the asset ID first, just like `preload` does.
@@ -364,6 +360,7 @@ git commit -m "fix(audio): graceful error handling for missing audio assets"
 ## Task 3: Web Audio Music Generator — Tests
 
 **Files:**
+
 - Create: `platform/src/services/__tests__/audio-music-generator.test.ts`
 
 - [ ] **Step 1: Create Web Audio API mocks and test scaffold**
@@ -509,6 +506,7 @@ git commit -m "test(audio): add failing tests for WebAudioMusicGenerator"
 ## Task 4: Web Audio Music Generator — Implementation
 
 **Files:**
+
 - Create: `platform/src/services/audio-music-generator.ts`
 
 This is the creative core of the solution — a programmatic melody generator. This task has a meaningful design choice for the user.
@@ -577,10 +575,7 @@ export class WebAudioMusicGenerator {
     const fadeOut = options?.fadeOut ?? 0;
 
     if (fadeOut > 0 && this.masterGain && this.context) {
-      this.masterGain.gain.linearRampToValueAtTime(
-        0,
-        this.context.currentTime + fadeOut / 1000,
-      );
+      this.masterGain.gain.linearRampToValueAtTime(0, this.context.currentTime + fadeOut / 1000);
       setTimeout(() => this.cleanup(), fadeOut);
     } else {
       this.cleanup();
@@ -616,11 +611,7 @@ export class WebAudioMusicGenerator {
     }, NOTE_DURATION);
   }
 
-  private playNote(
-    frequency: number,
-    type: OscillatorType,
-    relativeVolume: number,
-  ): void {
+  private playNote(frequency: number, type: OscillatorType, relativeVolume: number): void {
     if (!this.context || !this.masterGain) {
       return;
     }
@@ -633,10 +624,7 @@ export class WebAudioMusicGenerator {
 
     // Gentle envelope: quick attack, soft decay
     noteGain.gain.value = relativeVolume;
-    noteGain.gain.linearRampToValueAtTime(
-      0,
-      this.context.currentTime + NOTE_DURATION / 1000,
-    );
+    noteGain.gain.linearRampToValueAtTime(0, this.context.currentTime + NOTE_DURATION / 1000);
 
     oscillator.connect(noteGain);
     noteGain.connect(this.masterGain);
@@ -682,30 +670,55 @@ export class WebAudioMusicGenerator {
 
 The `MELODY_PATTERN` array is the creative heart of this generator. Each number is an index into `MELODY_NOTES`:
 
-| Index | Note | Frequency | Character |
-|-------|------|-----------|-----------|
-| 0 | C4 | 261.63 Hz | Home/rest |
-| 1 | D4 | 293.66 Hz | Stepping up |
-| 2 | E4 | 329.63 Hz | Bright |
-| 3 | G4 | 392.00 Hz | Open/happy |
-| 4 | A4 | 440.00 Hz | Soaring |
-| 5 | C5 | 523.25 Hz | High resolve |
+| Index | Note | Frequency | Character    |
+| ----- | ---- | --------- | ------------ |
+| 0     | C4   | 261.63 Hz | Home/rest    |
+| 1     | D4   | 293.66 Hz | Stepping up  |
+| 2     | E4   | 329.63 Hz | Bright       |
+| 3     | G4   | 392.00 Hz | Open/happy   |
+| 4     | A4   | 440.00 Hz | Soaring      |
+| 5     | C5   | 523.25 Hz | High resolve |
 
 Write a 32-number array (8 bars x 4 notes) in `platform/src/services/audio-music-generator.ts` for the `MELODY_PATTERN` constant.
 
 Guidance: Pentatonic melodies sound best when they move mostly by step (adjacent indices) with occasional leaps. Starting and ending on index 0 (C) gives a sense of resolution. A pattern like ascending in the first half and descending in the second half creates natural phrasing.
 
 Example to get started:
+
 ```typescript
 const MELODY_PATTERN = [
-  0, 1, 2, 3,  // bar 1: ascending walk up
-  2, 3, 4, 3,  // bar 2: playful bounce
-  4, 5, 4, 3,  // bar 3: peak and descend
-  2, 1, 2, 3,  // bar 4: gentle return
-  3, 4, 3, 2,  // bar 5: echo the bounce
-  1, 2, 3, 2,  // bar 6: wandering
-  1, 0, 1, 2,  // bar 7: settling down
-  1, 0, 0, 0,  // bar 8: resolve to home
+  0,
+  1,
+  2,
+  3, // bar 1: ascending walk up
+  2,
+  3,
+  4,
+  3, // bar 2: playful bounce
+  4,
+  5,
+  4,
+  3, // bar 3: peak and descend
+  2,
+  1,
+  2,
+  3, // bar 4: gentle return
+  3,
+  4,
+  3,
+  2, // bar 5: echo the bounce
+  1,
+  2,
+  3,
+  2, // bar 6: wandering
+  1,
+  0,
+  1,
+  2, // bar 7: settling down
+  1,
+  0,
+  0,
+  0, // bar 8: resolve to home
 ];
 ```
 
@@ -727,6 +740,7 @@ git commit -m "feat(audio): add WebAudioMusicGenerator with pentatonic melody lo
 ## Task 5: Integration — Generator Fallback Tests
 
 **Files:**
+
 - Modify: `platform/src/services/__tests__/audio-manager.test.ts`
 
 - [ ] **Step 1: Add a mock generator factory to the test file**
@@ -739,8 +753,12 @@ import type { WebAudioMusicGenerator } from '../audio-music-generator';
 function createMockGenerator(): WebAudioMusicGenerator {
   let active = false;
   return {
-    start: vi.fn(() => { active = true; }),
-    stop: vi.fn(() => { active = false; }),
+    start: vi.fn(() => {
+      active = true;
+    }),
+    stop: vi.fn(() => {
+      active = false;
+    }),
     setVolume: vi.fn(),
     isActive: vi.fn(() => active),
   } as unknown as WebAudioMusicGenerator;
@@ -845,6 +863,7 @@ git commit -m "test(audio): add failing tests for generator fallback integration
 ## Task 6: Integration — Wire Generator into RealAudioManager
 
 **Files:**
+
 - Modify: `platform/src/services/audio-manager.ts`
 
 - [ ] **Step 1: Add generator as optional constructor parameter and new state**
@@ -957,19 +976,19 @@ Replace the `stopMusic` method:
 In `muteChannel`, add before the existing `if (category === 'sfx')` check:
 
 ```typescript
-    if (category === 'music' && this.usingGenerator && this.musicGenerator) {
-      this.musicGenerator.setVolume(0);
-      return;
-    }
+if (category === 'music' && this.usingGenerator && this.musicGenerator) {
+  this.musicGenerator.setVolume(0);
+  return;
+}
 ```
 
 In `unmuteChannel`, add before the existing `if (category === 'sfx')` check:
 
 ```typescript
-    if (category === 'music' && this.usingGenerator && this.musicGenerator) {
-      this.musicGenerator.setVolume(channel.volume);
-      return;
-    }
+if (category === 'music' && this.usingGenerator && this.musicGenerator) {
+  this.musicGenerator.setVolume(channel.volume);
+  return;
+}
 ```
 
 - [ ] **Step 5: Update `setVolume` to forward to generator**
@@ -977,10 +996,10 @@ In `unmuteChannel`, add before the existing `if (category === 'sfx')` check:
 In `setVolume`, after `channel.volume = clamped;` and before `if (category === 'sfx')`:
 
 ```typescript
-    if (category === 'music' && this.usingGenerator && this.musicGenerator) {
-      this.musicGenerator.setVolume(channel.muted ? 0 : clamped);
-      return;
-    }
+if (category === 'music' && this.usingGenerator && this.musicGenerator) {
+  this.musicGenerator.setVolume(channel.muted ? 0 : clamped);
+  return;
+}
 ```
 
 - [ ] **Step 6: Run all audio tests**
@@ -1001,6 +1020,7 @@ git commit -m "feat(audio): integrate WebAudioMusicGenerator as fallback in Real
 ## Task 7: Wire Up in Production Entry Point
 
 **Files:**
+
 - Modify: `platform/src/main.tsx`
 
 - [ ] **Step 1: Import and instantiate the generator**
@@ -1022,10 +1042,7 @@ const audioManager = new RealAudioManager(new HowlerBackend());
 with:
 
 ```typescript
-const audioManager = new RealAudioManager(
-  new HowlerBackend(),
-  new WebAudioMusicGenerator(),
-);
+const audioManager = new RealAudioManager(new HowlerBackend(), new WebAudioMusicGenerator());
 ```
 
 - [ ] **Step 3: Run full test suite and typecheck**
