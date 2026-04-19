@@ -23,21 +23,9 @@ export function GameOverOverlay({
   const titleId = useId();
   const subtitleId = useId();
   const retryRef = useRef<HTMLButtonElement>(null);
-  const onExitRef = useRef(onExit);
-  onExitRef.current = onExit;
 
   useEffect(() => {
     retryRef.current?.focus();
-  }, []);
-
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        onExitRef.current();
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   return (

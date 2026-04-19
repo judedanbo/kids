@@ -44,11 +44,11 @@ describe('GameOverOverlay', () => {
     expect(onExit).toHaveBeenCalledTimes(1);
   });
 
-  it('calls onExit when Escape is pressed', () => {
+  it('does not call onExit when Escape is pressed (exit flow owned by GameShell)', () => {
     const onExit = vi.fn();
     renderOverlay({ onExit });
     fireEvent.keyDown(document, { key: 'Escape' });
-    expect(onExit).toHaveBeenCalledTimes(1);
+    expect(onExit).not.toHaveBeenCalled();
   });
 
   it('uses role="dialog" with aria-modal and aria-labelledby', () => {
