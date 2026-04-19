@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef } from 'react';
 import FocusTrap from 'focus-trap-react';
 import { useTranslation } from 'react-i18next';
+import { OptionButton } from '@kids-games-zone/shared';
 import styles from './GameOverOverlay.module.css';
 
 interface GameOverOverlayProps {
@@ -63,21 +64,17 @@ export function GameOverOverlay({
             {score} / {maxScore}
           </p>
           <div className={styles.actions}>
-            <button
+            <OptionButton
               ref={retryRef}
-              type="button"
-              className={styles.primary}
-              onClick={onRetry}
-            >
-              {t('tryAgain')}
-            </button>
-            <button
-              type="button"
-              className={styles.secondary}
-              onClick={onExit}
-            >
-              {t('backToHome')}
-            </button>
+              label={t('tryAgain')}
+              size="large"
+              onSelect={onRetry}
+            />
+            <OptionButton
+              label={t('backToHome')}
+              size="normal"
+              onSelect={onExit}
+            />
           </div>
         </div>
       </div>

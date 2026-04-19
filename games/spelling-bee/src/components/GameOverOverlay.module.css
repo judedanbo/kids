@@ -51,35 +51,3 @@
   flex-wrap: wrap;
 }
 
-.primary,
-.secondary {
-  min-width: 8rem;
-  min-height: 2.75rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: 2px solid transparent;
-}
-
-.primary {
-  background: var(--color-primary, #4A90D9);
-  color: #ffffff;
-}
-
-.primary:focus-visible {
-  outline: 3px solid var(--color-focus, #FFD700);
-  outline-offset: 2px;
-}
-
-.secondary {
-  background: transparent;
-  color: var(--color-text-primary, #1a1a1a);
-  border-color: var(--color-border, #cccccc);
-}
-
-.secondary:focus-visible {
-  outline: 3px solid var(--color-focus, #FFD700);
-  outline-offset: 2px;
-}
