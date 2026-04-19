@@ -5,10 +5,7 @@ import { join, resolve } from 'node:path';
 import { loadLock, saveLock } from './lockfile.js';
 import type { Lockfile } from './lockfile.js';
 import { SFXManifestSchema, type SFXManifest } from './sfx-manifest.js';
-import {
-  ElevenLabsSFXProvider,
-  type SFXProvider,
-} from './providers/elevenlabs-sfx.js';
+import { ElevenLabsSFXProvider, type SFXProvider } from './providers/elevenlabs-sfx.js';
 
 export interface SFXRunOptions {
   repoRoot: string;
@@ -25,17 +22,13 @@ export interface SFXRunSummary {
   cached: number;
 }
 
-export async function runSFXGeneration(
-  opts: SFXRunOptions,
-): Promise<SFXRunSummary> {
+export async function runSFXGeneration(opts: SFXRunOptions): Promise<SFXRunSummary> {
   const manifest = await loadSFXManifest(opts.manifestPath);
   if (!opts.dryRun) {
     await mkdir(opts.cacheDir, { recursive: true });
   }
 
-  const lock: Lockfile = opts.dryRun
-    ? { version: 1, entries: {} }
-    : await loadLock(opts.lockPath);
+  const lock: Lockfile = opts.dryRun ? { version: 1, entries: {} } : await loadLock(opts.lockPath);
 
   const provider: SFXProvider | null = opts.dryRun
     ? null
@@ -65,8 +58,7 @@ export async function runSFXGeneration(
         hash,
         path: outPath,
         bytes: size,
-        generatedAt:
-          lock.entries[lockKey]?.generatedAt ?? new Date().toISOString(),
+        generatedAt: lock.entries[lockKey]?.generatedAt ?? new Date().toISOString(),
       };
       cached++;
       continue;
@@ -118,9 +110,7 @@ function sfxHash(entry: {
 function makeSFXProvider(): SFXProvider {
   const key = process.env.ELEVENLABS_API_KEY;
   if (!key) {
-    throw new Error(
-      'ELEVENLABS_API_KEY is not set. Add it to tools/audio-generator/.env.',
-    );
+    throw new Error('ELEVENLABS_API_KEY is not set. Add it to tools/audio-generator/.env.');
   }
   return new ElevenLabsSFXProvider(key);
 }

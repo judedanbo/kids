@@ -41,12 +41,12 @@ Every command accepts `--dry-run` (lists work + cost estimate, no API calls) and
 
 ### Outputs and lockfiles
 
-| Command         | Plan file                    | Output dir                                | Lockfile           |
-|-----------------|------------------------------|-------------------------------------------|--------------------|
-| `audio`         | (derived from word lists)    | `platform/public/audio/narration/{lang}/` | `audio-lock.json`  |
-| `encouragement` | `plans/encouragement.json`   | `platform/public/audio/narration/{lang}/` | `audio-lock.json`  |
-| `music`         | `plans/music.json`           | `platform/public/audio/music/`            | `music-lock.json`  |
-| `sfx`           | `plans/sfx.json`             | `platform/public/audio/sfx/`              | `sfx-lock.json`    |
+| Command         | Plan file                  | Output dir                                | Lockfile          |
+| --------------- | -------------------------- | ----------------------------------------- | ----------------- |
+| `audio`         | (derived from word lists)  | `platform/public/audio/narration/{lang}/` | `audio-lock.json` |
+| `encouragement` | `plans/encouragement.json` | `platform/public/audio/narration/{lang}/` | `audio-lock.json` |
+| `music`         | `plans/music.json`         | `platform/public/audio/music/`            | `music-lock.json` |
+| `sfx`           | `plans/sfx.json`           | `platform/public/audio/sfx/`              | `sfx-lock.json`   |
 
 `encouragement` additionally writes `platform/src/generated/voice-variants.ts`,
 which the platform imports in `main.tsx` and hands to `RealAudioManager.setVoiceVariants`

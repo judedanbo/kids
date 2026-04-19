@@ -2,14 +2,7 @@ import OpenAI from 'openai';
 import type { TTSGenerateOptions, TTSProvider } from './tts-provider.js';
 
 type OpenAIVoice = 'alloy' | 'echo' | 'fable' | 'nova' | 'onyx' | 'shimmer';
-const OPENAI_VOICES: readonly OpenAIVoice[] = [
-  'alloy',
-  'echo',
-  'fable',
-  'nova',
-  'onyx',
-  'shimmer',
-];
+const OPENAI_VOICES: readonly OpenAIVoice[] = ['alloy', 'echo', 'fable', 'nova', 'onyx', 'shimmer'];
 
 function isOpenAIVoice(v: string): v is OpenAIVoice {
   return (OPENAI_VOICES as readonly string[]).includes(v);
@@ -34,8 +27,7 @@ export class OpenAITTSProvider implements TTSProvider {
     }
     if (!isOpenAIVoice(opts.voice)) {
       throw new Error(
-        `Unknown OpenAI voice "${opts.voice}". ` +
-          `Valid voices: ${OPENAI_VOICES.join(', ')}.`,
+        `Unknown OpenAI voice "${opts.voice}". ` + `Valid voices: ${OPENAI_VOICES.join(', ')}.`,
       );
     }
 

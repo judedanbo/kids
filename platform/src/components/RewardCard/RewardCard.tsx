@@ -47,9 +47,7 @@ export function RewardCard({ reward, unlocked, progress }: RewardCardProps) {
       {unlocked && formattedDate && (
         <p className={styles.date}>{t('rewardCard.earned', { date: formattedDate })}</p>
       )}
-      {!unlocked && progress && (
-        <p className={styles.progress}>{progress}</p>
-      )}
+      {!unlocked && progress && <p className={styles.progress}>{progress}</p>}
     </motion.div>
   );
 }

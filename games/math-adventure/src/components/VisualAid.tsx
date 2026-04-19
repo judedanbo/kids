@@ -29,11 +29,7 @@ function DotGroup({ count, color }: { count: number; color: string }) {
 export function VisualAid({ operandA, operandB, operation }: VisualAidProps) {
   const symbol = operation === 'add' ? '+' : operation === 'subtract' ? '−' : '×';
   return (
-    <div
-      className={styles.container}
-      role="img"
-      aria-label={`${operandA} ${symbol} ${operandB}`}
-    >
+    <div className={styles.container} role="img" aria-label={`${operandA} ${symbol} ${operandB}`}>
       <DotGroup count={operandA} color="var(--color-primary)" />
       <span className={styles.symbol}>{symbol}</span>
       <DotGroup count={operandB} color="var(--color-secondary)" />

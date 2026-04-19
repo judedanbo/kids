@@ -1,10 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  getGridConfig,
-  generateCards,
-  ALL_ILLUSTRATIONS,
-  GRID_CONFIGS,
-} from '../utils/gridUtils';
+import { getGridConfig, generateCards, ALL_ILLUSTRATIONS, GRID_CONFIGS } from '../utils/gridUtils';
 import type { IllustrationName } from '../utils/gridUtils';
 
 describe('getGridConfig', () => {

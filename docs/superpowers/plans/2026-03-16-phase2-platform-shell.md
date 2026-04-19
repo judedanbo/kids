@@ -16,51 +16,51 @@
 
 ### New files
 
-| Path | Responsibility |
-|------|---------------|
-| `platform/vitest.config.ts` | Vitest config for platform package (jsdom, CSS modules) |
-| `platform/src/test-setup.ts` | Testing library jest-dom setup |
-| `platform/src/services/storage.ts` | StorageManager implementation using idb |
-| `platform/src/services/storage.test.ts` | Storage service tests (fake-indexeddb) |
-| `platform/src/services/audio.ts` | StubAudioManager (console-logging no-ops) |
-| `platform/src/services/audio.test.ts` | Audio stub tests |
-| `platform/src/context/PlatformContext.tsx` | GlobalState, reducer, PlatformProvider, usePlatform hook |
-| `platform/src/context/PlatformContext.test.tsx` | PlatformContext tests |
-| `platform/src/components/NavBar/NavBar.tsx` | Bottom tab bar navigation |
-| `platform/src/components/NavBar/NavBar.module.css` | NavBar styles |
-| `platform/src/components/LoadingSpinner/LoadingSpinner.tsx` | CSS-only loading spinner |
-| `platform/src/components/LoadingSpinner/LoadingSpinner.module.css` | LoadingSpinner styles |
-| `platform/src/components/GameErrorBoundary.tsx` | Error boundary for game loading |
-| `platform/src/components/ProfileCreator/ProfileCreator.tsx` | Multi-step profile creation wizard |
-| `platform/src/components/ProfileCreator/ProfileCreator.module.css` | ProfileCreator styles |
-| `platform/src/components/GameCard/GameCard.tsx` | Game card for hub grid |
-| `platform/src/components/GameCard/GameCard.module.css` | GameCard styles |
-| `platform/src/pages/Hub.tsx` | Game hub home screen |
-| `platform/src/pages/Hub.module.css` | Hub page styles |
-| `platform/src/pages/ProfileSelect.tsx` | Profile picker + creation flow |
-| `platform/src/pages/ProfileSelect.module.css` | ProfileSelect styles |
-| `platform/src/pages/GameWrapper.tsx` | Game plugin host page |
-| `platform/src/pages/Rewards.tsx` | Placeholder rewards page |
-| `platform/src/pages/Settings.tsx` | Placeholder settings page |
-| `platform/src/services/gameLoader.ts` | Dynamic import game loader |
-| `platform/src/config/gameRegistry.ts` | Static game manifest registry |
-| `games/dummy-game/package.json` | Dummy game workspace package |
-| `games/dummy-game/tsconfig.json` | Dummy game TypeScript config |
-| `games/dummy-game/src/index.ts` | GamePlugin export |
-| `games/dummy-game/src/DummyGame.tsx` | Dummy game component |
-| `games/dummy-game/src/DummyGame.module.css` | Dummy game styles |
+| Path                                                               | Responsibility                                           |
+| ------------------------------------------------------------------ | -------------------------------------------------------- |
+| `platform/vitest.config.ts`                                        | Vitest config for platform package (jsdom, CSS modules)  |
+| `platform/src/test-setup.ts`                                       | Testing library jest-dom setup                           |
+| `platform/src/services/storage.ts`                                 | StorageManager implementation using idb                  |
+| `platform/src/services/storage.test.ts`                            | Storage service tests (fake-indexeddb)                   |
+| `platform/src/services/audio.ts`                                   | StubAudioManager (console-logging no-ops)                |
+| `platform/src/services/audio.test.ts`                              | Audio stub tests                                         |
+| `platform/src/context/PlatformContext.tsx`                         | GlobalState, reducer, PlatformProvider, usePlatform hook |
+| `platform/src/context/PlatformContext.test.tsx`                    | PlatformContext tests                                    |
+| `platform/src/components/NavBar/NavBar.tsx`                        | Bottom tab bar navigation                                |
+| `platform/src/components/NavBar/NavBar.module.css`                 | NavBar styles                                            |
+| `platform/src/components/LoadingSpinner/LoadingSpinner.tsx`        | CSS-only loading spinner                                 |
+| `platform/src/components/LoadingSpinner/LoadingSpinner.module.css` | LoadingSpinner styles                                    |
+| `platform/src/components/GameErrorBoundary.tsx`                    | Error boundary for game loading                          |
+| `platform/src/components/ProfileCreator/ProfileCreator.tsx`        | Multi-step profile creation wizard                       |
+| `platform/src/components/ProfileCreator/ProfileCreator.module.css` | ProfileCreator styles                                    |
+| `platform/src/components/GameCard/GameCard.tsx`                    | Game card for hub grid                                   |
+| `platform/src/components/GameCard/GameCard.module.css`             | GameCard styles                                          |
+| `platform/src/pages/Hub.tsx`                                       | Game hub home screen                                     |
+| `platform/src/pages/Hub.module.css`                                | Hub page styles                                          |
+| `platform/src/pages/ProfileSelect.tsx`                             | Profile picker + creation flow                           |
+| `platform/src/pages/ProfileSelect.module.css`                      | ProfileSelect styles                                     |
+| `platform/src/pages/GameWrapper.tsx`                               | Game plugin host page                                    |
+| `platform/src/pages/Rewards.tsx`                                   | Placeholder rewards page                                 |
+| `platform/src/pages/Settings.tsx`                                  | Placeholder settings page                                |
+| `platform/src/services/gameLoader.ts`                              | Dynamic import game loader                               |
+| `platform/src/config/gameRegistry.ts`                              | Static game manifest registry                            |
+| `games/dummy-game/package.json`                                    | Dummy game workspace package                             |
+| `games/dummy-game/tsconfig.json`                                   | Dummy game TypeScript config                             |
+| `games/dummy-game/src/index.ts`                                    | GamePlugin export                                        |
+| `games/dummy-game/src/DummyGame.tsx`                               | Dummy game component                                     |
+| `games/dummy-game/src/DummyGame.module.css`                        | Dummy game styles                                        |
 
 ### Modified files
 
-| Path | Change |
-|------|--------|
-| `package.json` (root) | Add `fake-indexeddb` devDependency |
-| `platform/package.json` | Add `idb`, `framer-motion` deps; add vitest/testing devDeps |
-| `platform/tsconfig.json` | Add `vitest/globals` types |
-| `platform/src/App.tsx` | Rewrite with React Router routes, NavBar |
-| `platform/src/main.tsx` | Wrap with BrowserRouter and PlatformProvider |
-| `platform/src/styles/global.css` | Add page layout and nav-bar spacing styles |
-| `pnpm-workspace.yaml` | Already includes `games/*` — no change needed |
+| Path                             | Change                                                      |
+| -------------------------------- | ----------------------------------------------------------- |
+| `package.json` (root)            | Add `fake-indexeddb` devDependency                          |
+| `platform/package.json`          | Add `idb`, `framer-motion` deps; add vitest/testing devDeps |
+| `platform/tsconfig.json`         | Add `vitest/globals` types                                  |
+| `platform/src/App.tsx`           | Rewrite with React Router routes, NavBar                    |
+| `platform/src/main.tsx`          | Wrap with BrowserRouter and PlatformProvider                |
+| `platform/src/styles/global.css` | Add page layout and nav-bar spacing styles                  |
+| `pnpm-workspace.yaml`            | Already includes `games/*` — no change needed               |
 
 ---
 
@@ -71,6 +71,7 @@ Install dependencies, set up platform test infrastructure, implement StorageMana
 ### Task 1: Install dependencies and configure platform test infrastructure
 
 **Files:**
+
 - Modify: `package.json` (root)
 - Modify: `platform/package.json`
 - Modify: `platform/tsconfig.json`
@@ -197,6 +198,7 @@ Configure Vitest with jsdom for platform component/service tests."
 ### Task 2: Implement StorageManager with IndexedDB
 
 **Files:**
+
 - Create: `platform/src/services/storage.test.ts`
 - Create: `platform/src/services/storage.ts`
 
@@ -527,19 +529,12 @@ export class IndexedDBStorageManager implements StorageManager {
     await this.getDB().delete('profiles', profileId);
   }
 
-  async saveProgress(
-    profileId: string,
-    gameId: string,
-    progress: GameProgress,
-  ): Promise<void> {
+  async saveProgress(profileId: string, gameId: string, progress: GameProgress): Promise<void> {
     const record: ProgressRecord = { profileId, gameId, data: progress };
     await this.getDB().put('progress', record);
   }
 
-  async loadProgress(
-    profileId: string,
-    gameId: string,
-  ): Promise<GameProgress | null> {
+  async loadProgress(profileId: string, gameId: string): Promise<GameProgress | null> {
     const record: ProgressRecord | undefined = await this.getDB().get('progress', [
       profileId,
       gameId,
@@ -547,23 +542,16 @@ export class IndexedDBStorageManager implements StorageManager {
     return record?.data ?? null;
   }
 
-  async saveCheckpoint(
-    profileId: string,
-    gameId: string,
-    data: unknown,
-  ): Promise<void> {
+  async saveCheckpoint(profileId: string, gameId: string, data: unknown): Promise<void> {
     const record: CheckpointRecord = { profileId, gameId, data };
     await this.getDB().put('checkpoints', record);
   }
 
-  async loadCheckpoint(
-    profileId: string,
-    gameId: string,
-  ): Promise<unknown | null> {
-    const record: CheckpointRecord | undefined = await this.getDB().get(
-      'checkpoints',
-      [profileId, gameId],
-    );
+  async loadCheckpoint(profileId: string, gameId: string): Promise<unknown | null> {
+    const record: CheckpointRecord | undefined = await this.getDB().get('checkpoints', [
+      profileId,
+      gameId,
+    ]);
     return record?.data ?? null;
   }
 
@@ -632,6 +620,7 @@ Full test suite using fake-indexeddb."
 ### Task 3: Implement StubAudioManager
 
 **Files:**
+
 - Create: `platform/src/services/audio.test.ts`
 - Create: `platform/src/services/audio.ts`
 
@@ -765,6 +754,7 @@ PlatformContext, routing setup, NavBar, placeholder pages, LoadingSpinner, GameE
 ### Task 4: PlatformContext — state management
 
 **Files:**
+
 - Create: `platform/src/context/PlatformContext.tsx`
 - Create: `platform/src/context/PlatformContext.test.tsx`
 
@@ -838,21 +828,15 @@ function TestConsumer() {
   const { state, dispatch } = usePlatform();
   return (
     <div>
-      <div data-testid="profile-name">
-        {state.currentProfile?.name ?? 'none'}
-      </div>
+      <div data-testid="profile-name">{state.currentProfile?.name ?? 'none'}</div>
       <div data-testid="profile-count">{state.profiles.length}</div>
       <button
-        onClick={() =>
-          dispatch({ type: 'ADD_PROFILE', payload: makeProfile({ name: 'Alice' }) })
-        }
+        onClick={() => dispatch({ type: 'ADD_PROFILE', payload: makeProfile({ name: 'Alice' }) })}
       >
         Add Profile
       </button>
       <button
-        onClick={() =>
-          dispatch({ type: 'SET_PROFILE', payload: makeProfile({ name: 'Bob' }) })
-        }
+        onClick={() => dispatch({ type: 'SET_PROFILE', payload: makeProfile({ name: 'Bob' }) })}
       >
         Set Profile
       </button>
@@ -872,11 +856,7 @@ describe('PlatformContext', () => {
 
   it('provides initial state with no profile', () => {
     render(
-      <PlatformProvider
-        storageManager={mockStorage}
-        audioManager={mockAudio}
-        gameRegistry={[]}
-      >
+      <PlatformProvider storageManager={mockStorage} audioManager={mockAudio} gameRegistry={[]}>
         <TestConsumer />
       </PlatformProvider>,
     );
@@ -887,11 +867,7 @@ describe('PlatformContext', () => {
 
   it('handles ADD_PROFILE action', () => {
     render(
-      <PlatformProvider
-        storageManager={mockStorage}
-        audioManager={mockAudio}
-        gameRegistry={[]}
-      >
+      <PlatformProvider storageManager={mockStorage} audioManager={mockAudio} gameRegistry={[]}>
         <TestConsumer />
       </PlatformProvider>,
     );
@@ -905,11 +881,7 @@ describe('PlatformContext', () => {
 
   it('handles SET_PROFILE action', () => {
     render(
-      <PlatformProvider
-        storageManager={mockStorage}
-        audioManager={mockAudio}
-        gameRegistry={[]}
-      >
+      <PlatformProvider storageManager={mockStorage} audioManager={mockAudio} gameRegistry={[]}>
         <TestConsumer />
       </PlatformProvider>,
     );
@@ -923,11 +895,7 @@ describe('PlatformContext', () => {
 
   it('handles START_SESSION and END_SESSION', () => {
     render(
-      <PlatformProvider
-        storageManager={mockStorage}
-        audioManager={mockAudio}
-        gameRegistry={[]}
-      >
+      <PlatformProvider storageManager={mockStorage} audioManager={mockAudio} gameRegistry={[]}>
         <TestConsumer />
       </PlatformProvider>,
     );
@@ -955,13 +923,7 @@ Expected: Fails because `PlatformContext` module does not exist yet.
 Create `/home/jude/code/kids/platform/src/context/PlatformContext.tsx`:
 
 ```tsx
-import {
-  createContext,
-  useContext,
-  useReducer,
-  useEffect,
-  type ReactNode,
-} from 'react';
+import { createContext, useContext, useReducer, useEffect, type ReactNode } from 'react';
 import type {
   UserProfile,
   GameManifest,
@@ -995,7 +957,10 @@ export interface GlobalState {
 export type PlatformAction =
   | { type: 'SET_PROFILE'; payload: UserProfile }
   | { type: 'ADD_PROFILE'; payload: UserProfile }
-  | { type: 'UPDATE_PROGRESS'; payload: { profileId: string; gameId: string; progress: GameProgress } }
+  | {
+      type: 'UPDATE_PROGRESS';
+      payload: { profileId: string; gameId: string; progress: GameProgress };
+    }
   | { type: 'REGISTER_GAME'; payload: GameManifest }
   | { type: 'START_SESSION'; payload: { gameId: string } }
   | { type: 'END_SESSION' }
@@ -1163,9 +1128,7 @@ export function PlatformProvider({
   }, [state.currentProfile, storageManager]);
 
   return (
-    <PlatformContext.Provider
-      value={{ state, dispatch, storageManager, audioManager }}
-    >
+    <PlatformContext.Provider value={{ state, dispatch, storageManager, audioManager }}>
       {children}
     </PlatformContext.Provider>
   );
@@ -1208,6 +1171,7 @@ usePlatform hook for consuming state and dispatch."
 ### Task 5: Routing, NavBar, and placeholder pages
 
 **Files:**
+
 - Modify: `platform/src/App.tsx`
 - Modify: `platform/src/main.tsx`
 - Modify: `platform/src/styles/global.css`
@@ -1245,9 +1209,7 @@ export function NavBar() {
         <NavLink
           key={tab.path}
           to={tab.path}
-          className={({ isActive }) =>
-            `${styles.tab} ${isActive ? styles.active : ''}`
-          }
+          className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ''}`}
           end={tab.path === '/'}
         >
           <span className={styles.icon} aria-hidden="true">
@@ -1533,6 +1495,7 @@ PlatformProvider + services wired in main.tsx."
 ### Task 6: LoadingSpinner and GameErrorBoundary
 
 **Files:**
+
 - Create: `platform/src/components/LoadingSpinner/LoadingSpinner.tsx`
 - Create: `platform/src/components/LoadingSpinner/LoadingSpinner.module.css`
 - Create: `platform/src/components/GameErrorBoundary.tsx`
@@ -1644,10 +1607,7 @@ interface GameErrorBoundaryState {
   error: Error | null;
 }
 
-export class GameErrorBoundary extends Component<
-  GameErrorBoundaryProps,
-  GameErrorBoundaryState
-> {
+export class GameErrorBoundary extends Component<GameErrorBoundaryProps, GameErrorBoundaryState> {
   constructor(props: GameErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -1696,7 +1656,8 @@ export class GameErrorBoundary extends Component<
             Oops! Something went wrong
           </h2>
           <p style={{ color: 'var(--color-text-secondary)', maxWidth: '400px' }}>
-            Don&apos;t worry, it&apos;s not your fault! Let&apos;s try again or go back to the games.
+            Don&apos;t worry, it&apos;s not your fault! Let&apos;s try again or go back to the
+            games.
           </p>
           <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
             <button
@@ -1770,6 +1731,7 @@ Profile creation wizard and profile selection page.
 ### Task 7: ProfileCreator component
 
 **Files:**
+
 - Create: `platform/src/components/ProfileCreator/ProfileCreator.tsx`
 - Create: `platform/src/components/ProfileCreator/ProfileCreator.module.css`
 
@@ -2031,7 +1993,9 @@ Create `/home/jude/code/kids/platform/src/components/ProfileCreator/ProfileCreat
   cursor: pointer;
   border: none;
   box-shadow: var(--shadow-button);
-  transition: transform var(--transition-fast), opacity var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
 }
 
 .nextButton:disabled {
@@ -2074,7 +2038,9 @@ Create `/home/jude/code/kids/platform/src/components/ProfileCreator/ProfileCreat
   font-weight: 700;
   color: var(--color-text-primary);
   cursor: pointer;
-  transition: border-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
   font-family: var(--font-family-body);
 }
 
@@ -2106,7 +2072,9 @@ Create `/home/jude/code/kids/platform/src/components/ProfileCreator/ProfileCreat
   border: 2px solid var(--color-border);
   font-size: 2.5rem;
   cursor: pointer;
-  transition: border-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .avatarButton:hover {
@@ -2168,6 +2136,7 @@ Auto-assigns age tier. Uses crypto.randomUUID() for profile ID."
 ### Task 8: ProfileSelect page
 
 **Files:**
+
 - Modify: `platform/src/pages/ProfileSelect.tsx`
 - Create: `platform/src/pages/ProfileSelect.module.css`
 
@@ -2225,10 +2194,7 @@ export default function ProfileSelect() {
             <span className={styles.name}>{profile.name}</span>
           </button>
         ))}
-        <button
-          className={styles.createCard}
-          onClick={() => setShowCreator(true)}
-        >
+        <button className={styles.createCard} onClick={() => setShowCreator(true)}>
           <span className={styles.createIcon}>+</span>
           <span className={styles.createLabel}>New Player</span>
         </button>
@@ -2278,7 +2244,9 @@ Create `/home/jude/code/kids/platform/src/pages/ProfileSelect.module.css`:
   border: 2px solid var(--color-border);
   border-radius: var(--radius-large);
   cursor: pointer;
-  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast);
   box-shadow: var(--shadow-card);
 }
 
@@ -2314,7 +2282,9 @@ Create `/home/jude/code/kids/platform/src/pages/ProfileSelect.module.css`:
   border: 2px dashed var(--color-border);
   border-radius: var(--radius-large);
   cursor: pointer;
-  transition: border-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .createCard:hover {
@@ -2363,6 +2333,7 @@ GameCard component and Hub page with filtering and search.
 ### Task 9: GameCard component
 
 **Files:**
+
 - Create: `platform/src/components/GameCard/GameCard.tsx`
 - Create: `platform/src/components/GameCard/GameCard.module.css`
 
@@ -2423,12 +2394,8 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
     <motion.button
       className={`${styles.card} ${isRecent ? styles.recent : ''} ${isLocked ? styles.locked : ''}`}
       onClick={handleClick}
-      whileHover={
-        !isLocked && !shouldReduceMotion ? { scale: 1.03 } : undefined
-      }
-      whileTap={
-        !isLocked && !shouldReduceMotion ? { scale: 0.98 } : undefined
-      }
+      whileHover={!isLocked && !shouldReduceMotion ? { scale: 1.03 } : undefined}
+      whileTap={!isLocked && !shouldReduceMotion ? { scale: 0.98 } : undefined}
       transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       aria-label={`${manifest.name}${isLocked ? ' (locked)' : ''}`}
       disabled={isLocked}
@@ -2455,10 +2422,7 @@ export function GameCard({ manifest, progress, isRecent }: GameCardProps) {
 
         {progress && !isLocked && (
           <div className={styles.progressContainer}>
-            <ProgressBar
-              current={progress.currentLevel}
-              total={manifest.maxDifficulty}
-            />
+            <ProgressBar current={progress.currentLevel} total={manifest.maxDifficulty} />
           </div>
         )}
       </div>
@@ -2599,6 +2563,7 @@ Recent highlight border, new badge, locked state overlay."
 ### Task 10: Hub page
 
 **Files:**
+
 - Modify: `platform/src/pages/Hub.tsx`
 - Create: `platform/src/pages/Hub.module.css`
 
@@ -2650,15 +2615,11 @@ export default function Hub() {
 
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      games = games.filter((game) =>
-        game.name.toLowerCase().includes(query),
-      );
+      games = games.filter((game) => game.name.toLowerCase().includes(query));
     }
 
     if (activeFilter !== 'all') {
-      games = games.filter((game) =>
-        game.skills.includes(activeFilter as SkillCategory),
-      );
+      games = games.filter((game) => game.skills.includes(activeFilter as SkillCategory));
     }
 
     return games;
@@ -2670,8 +2631,8 @@ export default function Hub() {
     if (progressEntries.length === 0) return [];
 
     return progressEntries
-      .sort(([, a], [, b]) =>
-        new Date(b.lastPlayedAt).getTime() - new Date(a.lastPlayedAt).getTime(),
+      .sort(
+        ([, a], [, b]) => new Date(b.lastPlayedAt).getTime() - new Date(a.lastPlayedAt).getTime(),
       )
       .slice(0, 3)
       .map(([gameId]) => state.gameRegistry.find((g) => g.id === gameId))
@@ -2684,9 +2645,7 @@ export default function Hub() {
     <div className={styles.hub}>
       {/* Welcome header */}
       <header className={styles.header}>
-        <h1 className={styles.welcome}>
-          Welcome back, {profile.name}!
-        </h1>
+        <h1 className={styles.welcome}>Welcome back, {profile.name}!</h1>
       </header>
 
       {/* Continue Playing */}
@@ -2745,11 +2704,7 @@ export default function Hub() {
       {filteredGames.length > 0 ? (
         <div className={styles.gameGrid}>
           {filteredGames.map((game) => (
-            <GameCard
-              key={game.id}
-              manifest={game}
-              progress={profile.progress[game.id]}
-            />
+            <GameCard key={game.id} manifest={game} progress={profile.progress[game.id]} />
           ))}
         </div>
       ) : (
@@ -2849,7 +2804,9 @@ Create `/home/jude/code/kids/platform/src/pages/Hub.module.css`:
   font-family: var(--font-family-body);
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
   text-transform: capitalize;
 }
 
@@ -2916,6 +2873,7 @@ Game loader service, GameWrapper orchestration, dummy game package, registry int
 ### Task 11: Game loader service
 
 **Files:**
+
 - Create: `platform/src/services/gameLoader.ts`
 
 - [ ] **Step 1: Create gameLoader**
@@ -2927,9 +2885,7 @@ import type { GamePlugin, GameManifest } from '@kids-games-zone/shared';
 
 // Vite glob import — discovers all game entry points at build time.
 // Each key is a relative path; each value is a dynamic import function.
-const gameModules = import.meta.glob<{ default: GamePlugin }>(
-  '../../games/*/src/index.ts',
-);
+const gameModules = import.meta.glob<{ default: GamePlugin }>('../../games/*/src/index.ts');
 
 export async function loadGame(manifest: GameManifest): Promise<GamePlugin> {
   const importFn = gameModules[manifest.entryPoint];
@@ -2966,6 +2922,7 @@ Matches manifest.entryPoint to dynamic import function."
 ### Task 12: GameWrapper page
 
 **Files:**
+
 - Modify: `platform/src/pages/GameWrapper.tsx`
 
 - [ ] **Step 1: Implement GameWrapper**
@@ -3119,13 +3076,9 @@ export default function GameWrapper() {
             gameId,
             highScore: Math.max(result.score, existingProgress?.highScore ?? 0),
             currentLevel: result.difficulty,
-            maxLevelReached: Math.max(
-              result.difficulty,
-              existingProgress?.maxLevelReached ?? 0,
-            ),
+            maxLevelReached: Math.max(result.difficulty, existingProgress?.maxLevelReached ?? 0),
             totalAttempts: (existingProgress?.totalAttempts ?? 0) + 1,
-            totalTimePlayed:
-              (existingProgress?.totalTimePlayed ?? 0) + result.timeSpent,
+            totalTimePlayed: (existingProgress?.totalTimePlayed ?? 0) + result.timeSpent,
             lastPlayedAt: new Date().toISOString(),
             difficulty: result.difficulty,
           },
@@ -3136,13 +3089,9 @@ export default function GameWrapper() {
         gameId,
         highScore: Math.max(result.score, existingProgress?.highScore ?? 0),
         currentLevel: result.difficulty,
-        maxLevelReached: Math.max(
-          result.difficulty,
-          existingProgress?.maxLevelReached ?? 0,
-        ),
+        maxLevelReached: Math.max(result.difficulty, existingProgress?.maxLevelReached ?? 0),
         totalAttempts: (existingProgress?.totalAttempts ?? 0) + 1,
-        totalTimePlayed:
-          (existingProgress?.totalTimePlayed ?? 0) + result.timeSpent,
+        totalTimePlayed: (existingProgress?.totalTimePlayed ?? 0) + result.timeSpent,
         lastPlayedAt: new Date().toISOString(),
         difficulty: result.difficulty,
       });
@@ -3318,6 +3267,7 @@ Progress update and event logging on completion."
 ### Task 13: Dummy game package
 
 **Files:**
+
 - Create: `games/dummy-game/package.json`
 - Create: `games/dummy-game/tsconfig.json`
 - Create: `games/dummy-game/src/index.ts`
@@ -3386,7 +3336,13 @@ import styles from './DummyGame.module.css';
 
 const TOTAL_ROUNDS = 5;
 
-export function DummyGame({ config: _config, onScore, onComplete, onExit, audioManager }: GameProps) {
+export function DummyGame({
+  config: _config,
+  onScore,
+  onComplete,
+  onExit,
+  audioManager,
+}: GameProps) {
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
@@ -3580,6 +3536,7 @@ ProgressBar, ScoreDisplay, CelebrationOverlay. Validates full pipeline."
 ### Task 14: Game registry, final integration, and verification
 
 **Files:**
+
 - Modify: `platform/src/config/gameRegistry.ts`
 - Modify: `platform/src/App.tsx`
 
@@ -3687,6 +3644,7 @@ Expected: Successful production build.
 Run: `pnpm dev`
 
 Verify:
+
 1. App opens at `http://localhost:3000`
 2. Redirects to `/profile` since no profiles exist
 3. ProfileCreator wizard works: enter name, select age, pick avatar, confirm

@@ -1,44 +1,26 @@
 import { test, expect } from './fixtures';
 
 test.describe('Hub Browsing and Filtering', () => {
-  test('shows age-appropriate games for tiny tier (age 4)', async ({
-    page,
-    createProfile,
-  }) => {
+  test('shows age-appropriate games for tiny tier (age 4)', async ({ page, createProfile }) => {
     await createProfile({ name: 'TinyKid', age: '4' });
 
     // Memory Match should be visible (ages 3-5)
-    await expect(
-      page.locator('button[aria-label="Memory Match"]'),
-    ).toBeVisible();
+    await expect(page.locator('button[aria-label="Memory Match"]')).toBeVisible();
 
     // Math Adventure and Word Puzzle should NOT be visible (ages 6-8)
-    await expect(
-      page.locator('button[aria-label="Math Adventure"]'),
-    ).not.toBeVisible();
-    await expect(
-      page.locator('button[aria-label="Word Puzzle"]'),
-    ).not.toBeVisible();
+    await expect(page.locator('button[aria-label="Math Adventure"]')).not.toBeVisible();
+    await expect(page.locator('button[aria-label="Word Puzzle"]')).not.toBeVisible();
   });
 
-  test('shows age-appropriate games for junior tier (age 7)', async ({
-    page,
-    createProfile,
-  }) => {
+  test('shows age-appropriate games for junior tier (age 7)', async ({ page, createProfile }) => {
     await createProfile({ name: 'JuniorKid', age: '7' });
 
     // Math Adventure and Word Puzzle should be visible (ages 6-8)
-    await expect(
-      page.locator('button[aria-label="Math Adventure"]'),
-    ).toBeVisible();
-    await expect(
-      page.locator('button[aria-label="Word Puzzle"]'),
-    ).toBeVisible();
+    await expect(page.locator('button[aria-label="Math Adventure"]')).toBeVisible();
+    await expect(page.locator('button[aria-label="Word Puzzle"]')).toBeVisible();
 
     // Memory Match should NOT be visible (ages 3-5)
-    await expect(
-      page.locator('button[aria-label="Memory Match"]'),
-    ).not.toBeVisible();
+    await expect(page.locator('button[aria-label="Memory Match"]')).not.toBeVisible();
   });
 
   test('search bar filters games', async ({ page, createProfile }) => {
@@ -50,22 +32,14 @@ test.describe('Hub Browsing and Filtering', () => {
     // Type a search term
     await searchInput.fill('Math');
     // Math Adventure should still be visible
-    await expect(
-      page.locator('button[aria-label="Math Adventure"]'),
-    ).toBeVisible();
+    await expect(page.locator('button[aria-label="Math Adventure"]')).toBeVisible();
     // Word Puzzle should be filtered out
-    await expect(
-      page.locator('button[aria-label="Word Puzzle"]'),
-    ).not.toBeVisible();
+    await expect(page.locator('button[aria-label="Word Puzzle"]')).not.toBeVisible();
 
     // Clear and search for something else
     await searchInput.fill('Word');
-    await expect(
-      page.locator('button[aria-label="Word Puzzle"]'),
-    ).toBeVisible();
-    await expect(
-      page.locator('button[aria-label="Math Adventure"]'),
-    ).not.toBeVisible();
+    await expect(page.locator('button[aria-label="Word Puzzle"]')).toBeVisible();
+    await expect(page.locator('button[aria-label="Math Adventure"]')).not.toBeVisible();
   });
 
   test('skill category filter works', async ({ page, createProfile }) => {
@@ -75,38 +49,23 @@ test.describe('Hub Browsing and Filtering', () => {
     await page.locator('button:has-text("numeracy")').click();
 
     // Only Math Adventure should be visible
-    await expect(
-      page.locator('button[aria-label="Math Adventure"]'),
-    ).toBeVisible();
-    await expect(
-      page.locator('button[aria-label="Word Puzzle"]'),
-    ).not.toBeVisible();
+    await expect(page.locator('button[aria-label="Math Adventure"]')).toBeVisible();
+    await expect(page.locator('button[aria-label="Word Puzzle"]')).not.toBeVisible();
 
     // Click the "literacy" filter pill
     await page.locator('button:has-text("literacy")').click();
 
     // Only Word Puzzle should be visible
-    await expect(
-      page.locator('button[aria-label="Word Puzzle"]'),
-    ).toBeVisible();
-    await expect(
-      page.locator('button[aria-label="Math Adventure"]'),
-    ).not.toBeVisible();
+    await expect(page.locator('button[aria-label="Word Puzzle"]')).toBeVisible();
+    await expect(page.locator('button[aria-label="Math Adventure"]')).not.toBeVisible();
 
     // Click "All" to reset
     await page.locator('button:has-text("All")').click();
-    await expect(
-      page.locator('button[aria-label="Math Adventure"]'),
-    ).toBeVisible();
-    await expect(
-      page.locator('button[aria-label="Word Puzzle"]'),
-    ).toBeVisible();
+    await expect(page.locator('button[aria-label="Math Adventure"]')).toBeVisible();
+    await expect(page.locator('button[aria-label="Word Puzzle"]')).toBeVisible();
   });
 
-  test('daily challenge section is visible', async ({
-    page,
-    createProfile,
-  }) => {
+  test('daily challenge section is visible', async ({ page, createProfile }) => {
     await createProfile({ name: 'TestKid', age: '7' });
 
     // The challenge card always renders; its description is
@@ -118,16 +77,11 @@ test.describe('Hub Browsing and Filtering', () => {
     );
   });
 
-  test('disabled feature flag game does not appear', async ({
-    page,
-    createProfile,
-  }) => {
+  test('disabled feature flag game does not appear', async ({ page, createProfile }) => {
     // dummy-game has enabled: false in featureFlags.json
     // It should never appear in the hub regardless of age
     await createProfile({ name: 'TestKid', age: '7' });
-    await expect(
-      page.locator('button[aria-label="Dummy Game"]'),
-    ).not.toBeVisible();
+    await expect(page.locator('button[aria-label="Dummy Game"]')).not.toBeVisible();
 
     // Also check with tiny tier
     await page.locator('a:has-text("Settings")').click();
@@ -141,32 +95,20 @@ test.describe('Hub Browsing and Filtering', () => {
     await page.locator('button:has-text("Let\'s go")').click();
     await page.waitForURL('/');
 
-    await expect(
-      page.locator('button[aria-label="Dummy Game"]'),
-    ).not.toBeVisible();
+    await expect(page.locator('button[aria-label="Dummy Game"]')).not.toBeVisible();
   });
 
-  test('hub renders correctly on mobile viewport', async ({
-    page,
-    createProfile,
-  }) => {
+  test('hub renders correctly on mobile viewport', async ({ page, createProfile }) => {
     await page.setViewportSize({ width: 375, height: 667 });
     await createProfile({ name: 'MobileKid', age: '7' });
     await expect(page.locator('h1')).toContainText('Welcome');
-    await expect(
-      page.locator('button[aria-label="Math Adventure"]'),
-    ).toBeVisible();
+    await expect(page.locator('button[aria-label="Math Adventure"]')).toBeVisible();
   });
 
-  test('hub renders correctly on tablet viewport', async ({
-    page,
-    createProfile,
-  }) => {
+  test('hub renders correctly on tablet viewport', async ({ page, createProfile }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
     await createProfile({ name: 'TabletKid', age: '4' });
     await expect(page.locator('h1')).toContainText('Welcome');
-    await expect(
-      page.locator('button[aria-label="Memory Match"]'),
-    ).toBeVisible();
+    await expect(page.locator('button[aria-label="Memory Match"]')).toBeVisible();
   });
 });

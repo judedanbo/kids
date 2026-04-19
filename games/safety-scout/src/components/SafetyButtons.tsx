@@ -8,7 +8,12 @@ interface SafetyButtonsProps {
   large?: boolean;
 }
 
-export function SafetyButtons({ onSafe, onHarmful, disabled = false, large = false }: SafetyButtonsProps) {
+export function SafetyButtons({
+  onSafe,
+  onHarmful,
+  disabled = false,
+  large = false,
+}: SafetyButtonsProps) {
   const { t } = useTranslation('safety-scout');
 
   return (

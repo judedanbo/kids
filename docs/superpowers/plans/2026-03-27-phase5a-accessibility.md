@@ -16,55 +16,56 @@
 
 ### New Files
 
-| File | Responsibility |
-|------|---------------|
-| `shared/src/hooks/useRovingTabindex.ts` | Reusable roving tabindex hook for 1D/2D grid keyboard navigation |
-| `shared/src/hooks/useHighContrast.ts` | High-contrast mode detection (OS + manual toggle) |
-| `shared/src/hooks/__tests__/useRovingTabindex.test.tsx` | Tests for roving tabindex hook |
-| `shared/src/hooks/__tests__/useHighContrast.test.tsx` | Tests for high-contrast hook |
-| `shared/src/components/Announcer/Announcer.tsx` | Visually hidden aria-live region for screen reader announcements |
-| `shared/src/components/Announcer/Announcer.module.css` | Visually-hidden styles for Announcer |
-| `shared/src/components/Announcer/Announcer.test.tsx` | Tests for Announcer component |
-| `shared/src/components/SkipLink/SkipLink.tsx` | Skip-to-content navigation link |
-| `shared/src/components/SkipLink/SkipLink.module.css` | Styles for skip link (hidden until focused) |
+| File                                                    | Responsibility                                                   |
+| ------------------------------------------------------- | ---------------------------------------------------------------- |
+| `shared/src/hooks/useRovingTabindex.ts`                 | Reusable roving tabindex hook for 1D/2D grid keyboard navigation |
+| `shared/src/hooks/useHighContrast.ts`                   | High-contrast mode detection (OS + manual toggle)                |
+| `shared/src/hooks/__tests__/useRovingTabindex.test.tsx` | Tests for roving tabindex hook                                   |
+| `shared/src/hooks/__tests__/useHighContrast.test.tsx`   | Tests for high-contrast hook                                     |
+| `shared/src/components/Announcer/Announcer.tsx`         | Visually hidden aria-live region for screen reader announcements |
+| `shared/src/components/Announcer/Announcer.module.css`  | Visually-hidden styles for Announcer                             |
+| `shared/src/components/Announcer/Announcer.test.tsx`    | Tests for Announcer component                                    |
+| `shared/src/components/SkipLink/SkipLink.tsx`           | Skip-to-content navigation link                                  |
+| `shared/src/components/SkipLink/SkipLink.module.css`    | Styles for skip link (hidden until focused)                      |
 
 ### Modified Files
 
-| File | Changes |
-|------|---------|
-| `package.json` | Add `vitest-axe` to devDependencies |
-| `platform/package.json` | Add `@axe-core/react` and `axe-core` to devDependencies |
-| `shared/src/test-setup.ts` | Add vitest-axe `toHaveNoViolations` matcher |
-| `platform/src/test-setup.ts` | Add vitest-axe `toHaveNoViolations` matcher |
-| `platform/src/main.tsx` | Add axe-core dev overlay in DEV mode |
-| `shared/src/styles/tokens.css` | Add focus-ring tokens, high-contrast overrides |
-| `shared/src/hooks/index.ts` | Export new hooks |
-| `shared/src/index.ts` | Export new hooks and components |
-| `shared/src/components/index.ts` | Export Announcer and SkipLink |
-| `platform/src/context/PlatformContext.tsx` | Add `highContrast` to PlatformSettings |
-| `platform/src/pages/Settings.tsx` | Add high-contrast toggle |
-| `platform/src/pages/Settings.module.css` | Styles for new accessibility section |
-| `shared/src/components/ScoreDisplay/ScoreDisplay.tsx` | Add `aria-live="polite"` |
-| `shared/src/components/GameTimer/GameTimer.tsx` | Add debounced `aria-live` announcements |
-| `shared/src/components/InstructionBubble/InstructionBubble.tsx` | Add `role="status"`, `aria-live="polite"` |
-| `shared/src/components/OptionButton/OptionButton.tsx` | Add `disabled` attribute, `aria-pressed` |
-| `shared/src/components/PauseMenu/PauseMenu.tsx` | Add `useReducedMotion` check |
-| `shared/src/components/GameShell/GameShell.tsx` | Add SkipLink, Announcer, announce callback |
-| `platform/src/components/NavBar/NavBar.tsx` | Add `aria-current="page"` |
-| `platform/src/pages/Hub.tsx` | Add landmarks, `aria-pressed` on filters |
-| `platform/src/pages/Rewards.tsx` | Add landmarks, list semantics |
-| `platform/src/components/ProfileCreator/ProfileCreator.tsx` | Add `aria-current="step"`, fieldset/legend |
-| `platform/src/pages/ParentalDashboard.tsx` | Add `<th scope>`, chart `aria-label` |
-| `games/memory-match/src/MemoryMatch.tsx` | Card ARIA labels, keyboard nav, announcements |
-| `games/math-adventure/src/MathAdventure.tsx` | Question announcements, keyboard nav |
-| `games/word-puzzle/src/WordPuzzle.tsx` | Letter/slot ARIA labels, keyboard nav |
-| 18 existing test files | Add `toHaveNoViolations()` axe checks |
+| File                                                            | Changes                                                 |
+| --------------------------------------------------------------- | ------------------------------------------------------- |
+| `package.json`                                                  | Add `vitest-axe` to devDependencies                     |
+| `platform/package.json`                                         | Add `@axe-core/react` and `axe-core` to devDependencies |
+| `shared/src/test-setup.ts`                                      | Add vitest-axe `toHaveNoViolations` matcher             |
+| `platform/src/test-setup.ts`                                    | Add vitest-axe `toHaveNoViolations` matcher             |
+| `platform/src/main.tsx`                                         | Add axe-core dev overlay in DEV mode                    |
+| `shared/src/styles/tokens.css`                                  | Add focus-ring tokens, high-contrast overrides          |
+| `shared/src/hooks/index.ts`                                     | Export new hooks                                        |
+| `shared/src/index.ts`                                           | Export new hooks and components                         |
+| `shared/src/components/index.ts`                                | Export Announcer and SkipLink                           |
+| `platform/src/context/PlatformContext.tsx`                      | Add `highContrast` to PlatformSettings                  |
+| `platform/src/pages/Settings.tsx`                               | Add high-contrast toggle                                |
+| `platform/src/pages/Settings.module.css`                        | Styles for new accessibility section                    |
+| `shared/src/components/ScoreDisplay/ScoreDisplay.tsx`           | Add `aria-live="polite"`                                |
+| `shared/src/components/GameTimer/GameTimer.tsx`                 | Add debounced `aria-live` announcements                 |
+| `shared/src/components/InstructionBubble/InstructionBubble.tsx` | Add `role="status"`, `aria-live="polite"`               |
+| `shared/src/components/OptionButton/OptionButton.tsx`           | Add `disabled` attribute, `aria-pressed`                |
+| `shared/src/components/PauseMenu/PauseMenu.tsx`                 | Add `useReducedMotion` check                            |
+| `shared/src/components/GameShell/GameShell.tsx`                 | Add SkipLink, Announcer, announce callback              |
+| `platform/src/components/NavBar/NavBar.tsx`                     | Add `aria-current="page"`                               |
+| `platform/src/pages/Hub.tsx`                                    | Add landmarks, `aria-pressed` on filters                |
+| `platform/src/pages/Rewards.tsx`                                | Add landmarks, list semantics                           |
+| `platform/src/components/ProfileCreator/ProfileCreator.tsx`     | Add `aria-current="step"`, fieldset/legend              |
+| `platform/src/pages/ParentalDashboard.tsx`                      | Add `<th scope>`, chart `aria-label`                    |
+| `games/memory-match/src/MemoryMatch.tsx`                        | Card ARIA labels, keyboard nav, announcements           |
+| `games/math-adventure/src/MathAdventure.tsx`                    | Question announcements, keyboard nav                    |
+| `games/word-puzzle/src/WordPuzzle.tsx`                          | Letter/slot ARIA labels, keyboard nav                   |
+| 18 existing test files                                          | Add `toHaveNoViolations()` axe checks                   |
 
 ---
 
 ## Task 1: Install axe-core Dependencies
 
 **Files:**
+
 - Modify: `package.json`
 - Modify: `platform/package.json`
 
@@ -100,6 +101,7 @@ git commit -m "chore: add axe-core accessibility testing dependencies"
 ## Task 2: Configure axe-core in Test Setup and Dev Overlay
 
 **Files:**
+
 - Modify: `shared/src/test-setup.ts`
 - Modify: `platform/src/test-setup.ts`
 - Modify: `platform/src/main.tsx`
@@ -171,6 +173,7 @@ git commit -m "feat(a11y): configure vitest-axe matchers and axe-core dev overla
 ## Task 3: Add Focus Ring and High-Contrast Tokens
 
 **Files:**
+
 - Modify: `shared/src/styles/tokens.css`
 
 - [ ] **Step 1: Add focus ring tokens to :root**
@@ -178,10 +181,10 @@ git commit -m "feat(a11y): configure vitest-axe matchers and axe-core dev overla
 In `shared/src/styles/tokens.css`, add after the shadows section (after line 48, before the age-tier defaults comment):
 
 ```css
-  /* --- Focus ring --- */
-  --color-focus-ring: #1a73e8;
-  --focus-ring-width: 2px;
-  --focus-ring-offset: 2px;
+/* --- Focus ring --- */
+--color-focus-ring: #1a73e8;
+--focus-ring-width: 2px;
+--focus-ring-offset: 2px;
 ```
 
 - [ ] **Step 2: Add focus ring to dark theme**
@@ -189,7 +192,7 @@ In `shared/src/styles/tokens.css`, add after the shadows section (after line 48,
 Inside the `[data-theme='dark']` block, add after the shadow-button line (after line 66):
 
 ```css
-  --color-focus-ring: #8ab4f8;
+--color-focus-ring: #8ab4f8;
 ```
 
 - [ ] **Step 3: Add high-contrast overrides**
@@ -262,6 +265,7 @@ git commit -m "feat(a11y): add focus ring tokens, high-contrast mode overrides"
 ## Task 4: Create useHighContrast Hook
 
 **Files:**
+
 - Create: `shared/src/hooks/useHighContrast.ts`
 - Create: `shared/src/hooks/__tests__/useHighContrast.test.tsx`
 - Modify: `shared/src/hooks/index.ts`
@@ -417,6 +421,7 @@ git commit -m "feat(a11y): add useHighContrast hook with OS detection and manual
 ## Task 5: Create useRovingTabindex Hook
 
 **Files:**
+
 - Create: `shared/src/hooks/useRovingTabindex.ts`
 - Create: `shared/src/hooks/__tests__/useRovingTabindex.test.tsx`
 - Modify: `shared/src/hooks/index.ts`
@@ -657,13 +662,10 @@ export function useRovingTabindex({
   const [activeIndex, setActiveIndex] = useState(0);
   const itemRefs = useRef<Map<number, HTMLElement>>(new Map());
 
-  const moveTo = useCallback(
-    (index: number) => {
-      setActiveIndex(index);
-      itemRefs.current.get(index)?.focus();
-    },
-    [],
-  );
+  const moveTo = useCallback((index: number) => {
+    setActiveIndex(index);
+    itemRefs.current.get(index)?.focus();
+  }, []);
 
   const handleKeyDown = useCallback(
     (index: number, e: KeyboardEvent) => {
@@ -814,6 +816,7 @@ git commit -m "feat(a11y): add useRovingTabindex hook for 1D/2D keyboard grid na
 ## Task 6: Create Announcer and SkipLink Components
 
 **Files:**
+
 - Create: `shared/src/components/Announcer/Announcer.tsx`
 - Create: `shared/src/components/Announcer/Announcer.module.css`
 - Create: `shared/src/components/Announcer/Announcer.test.tsx`
@@ -832,9 +835,7 @@ import { Announcer, useAnnounce } from './Announcer';
 
 function TestConsumer() {
   const announce = useAnnounce();
-  return (
-    <button onClick={() => announce('Score updated to 5')}>Announce</button>
-  );
+  return <button onClick={() => announce('Score updated to 5')}>Announce</button>;
 }
 
 describe('Announcer', () => {
@@ -902,13 +903,7 @@ Create `shared/src/components/Announcer/Announcer.module.css`:
 Create `shared/src/components/Announcer/Announcer.tsx`:
 
 ```tsx
-import {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  type ReactNode,
-} from 'react';
+import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import styles from './Announcer.module.css';
 
 type AnnounceFn = (message: string) => void;
@@ -935,12 +930,7 @@ export function Announcer({ children }: AnnouncerProps) {
   return (
     <AnnounceContext.Provider value={announce}>
       {children}
-      <div
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className={styles.visuallyHidden}
-      >
+      <div role="status" aria-live="polite" aria-atomic="true" className={styles.visuallyHidden}>
         {message}
       </div>
     </AnnounceContext.Provider>
@@ -1037,6 +1027,7 @@ git commit -m "feat(a11y): add Announcer and SkipLink components"
 ## Task 7: Fix Shared Component ARIA — ScoreDisplay, ProgressBar, InstructionBubble
 
 **Files:**
+
 - Modify: `shared/src/components/ScoreDisplay/ScoreDisplay.tsx`
 - Modify: `shared/src/components/ProgressBar/ProgressBar.tsx`
 - Modify: `shared/src/components/InstructionBubble/InstructionBubble.tsx`
@@ -1164,6 +1155,7 @@ git commit -m "feat(a11y): add aria-live to ScoreDisplay, ProgressBar label, Ins
 ## Task 8: Fix Shared Component ARIA — GameTimer, OptionButton, PauseMenu
 
 **Files:**
+
 - Modify: `shared/src/components/GameTimer/GameTimer.tsx`
 - Modify: `shared/src/components/OptionButton/OptionButton.tsx`
 - Modify: `shared/src/components/PauseMenu/PauseMenu.tsx`
@@ -1180,35 +1172,35 @@ const lastAnnouncedRef = useRef(0);
 Inside the `setInterval` callback (around line 42-53), add announcement logic. After the `onTickRef.current?.(...)` call on line 51, add:
 
 ```typescript
-        // Announce to screen readers every 10 seconds
-        const displaySecs = mode === 'countdown' ? duration - next : next;
-        if (Math.abs(displaySecs - lastAnnouncedRef.current) >= 10) {
-          lastAnnouncedRef.current = displaySecs;
-          setAnnouncedTime(
-            mode === 'countdown'
-              ? `${formatTime(displaySecs)} remaining`
-              : `${formatTime(displaySecs)} elapsed`,
-          );
-        }
+// Announce to screen readers every 10 seconds
+const displaySecs = mode === 'countdown' ? duration - next : next;
+if (Math.abs(displaySecs - lastAnnouncedRef.current) >= 10) {
+  lastAnnouncedRef.current = displaySecs;
+  setAnnouncedTime(
+    mode === 'countdown'
+      ? `${formatTime(displaySecs)} remaining`
+      : `${formatTime(displaySecs)} elapsed`,
+  );
+}
 ```
 
 Then add a visually-hidden aria-live region inside the component return, after the closing `</svg>` tag (before the closing `</div>`):
 
 ```tsx
-      <span
-        aria-live="polite"
-        aria-atomic="true"
-        style={{
-          position: 'absolute',
-          width: '1px',
-          height: '1px',
-          overflow: 'hidden',
-          clip: 'rect(0,0,0,0)',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {announcedTime}
-      </span>
+<span
+  aria-live="polite"
+  aria-atomic="true"
+  style={{
+    position: 'absolute',
+    width: '1px',
+    height: '1px',
+    overflow: 'hidden',
+    clip: 'rect(0,0,0,0)',
+    whiteSpace: 'nowrap',
+  }}
+>
+  {announcedTime}
+</span>
 ```
 
 - [ ] **Step 2: Fix OptionButton — add disabled attribute and aria-pressed**
@@ -1265,7 +1257,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 Add inside the component body (after line 14):
 
 ```typescript
-  const shouldReduceMotion = useReducedMotion();
+const shouldReduceMotion = useReducedMotion();
 ```
 
 Update the motion.div props (lines 36-39) to respect reduced motion:
@@ -1342,6 +1334,7 @@ git commit -m "feat(a11y): debounced timer announcements, OptionButton disabled/
 ## Task 9: Fix GameShell — SkipLink, Announcer, Landmarks
 
 **Files:**
+
 - Modify: `shared/src/components/GameShell/GameShell.tsx`
 - Modify: `shared/src/components/GameShell/GameShell.test.tsx`
 
@@ -1389,11 +1382,7 @@ export function GameShell({
         <SkipLink targetId="game-content" label="Skip to game" />
         <header className={styles.header}>
           {onBack ? (
-            <button
-              className={styles.backButton}
-              onClick={onBack}
-              aria-label="Go back"
-            >
+            <button className={styles.backButton} onClick={onBack} aria-label="Go back">
               ← Back
             </button>
           ) : (
@@ -1403,11 +1392,7 @@ export function GameShell({
           <h1 className={styles.title}>{title}</h1>
 
           {showPauseButton && onPause ? (
-            <button
-              className={styles.pauseButton}
-              onClick={onPause}
-              aria-label="Pause game"
-            >
+            <button className={styles.pauseButton} onClick={onPause} aria-label="Pause game">
               ⏸
             </button>
           ) : (
@@ -1461,6 +1446,7 @@ git commit -m "feat(a11y): add SkipLink, Announcer, and landmark roles to GameSh
 ## Task 10: Add axe Checks to Remaining Shared Component Tests
 
 **Files:**
+
 - Modify: `shared/src/components/DifficultySelector/DifficultySelector.test.tsx`
 - Modify: `shared/src/components/CelebrationOverlay/CelebrationOverlay.test.tsx`
 
@@ -1472,9 +1458,7 @@ In `shared/src/components/DifficultySelector/DifficultySelector.test.tsx`, add:
 import { axe } from 'vitest-axe';
 
 it('has no accessibility violations', async () => {
-  const { container } = render(
-    <DifficultySelector current={3} onChange={() => {}} />,
-  );
+  const { container } = render(<DifficultySelector current={3} onChange={() => {}} />);
   expect(await axe(container)).toHaveNoViolations();
 });
 ```
@@ -1487,9 +1471,7 @@ In `shared/src/components/CelebrationOverlay/CelebrationOverlay.test.tsx`, add:
 import { axe } from 'vitest-axe';
 
 it('has no accessibility violations', async () => {
-  const { container } = render(
-    <CelebrationOverlay title="Great job!" score={8} maxScore={10} />,
-  );
+  const { container } = render(<CelebrationOverlay title="Great job!" score={8} maxScore={10} />);
   expect(await axe(container)).toHaveNoViolations();
 });
 ```
@@ -1514,6 +1496,7 @@ git commit -m "test(a11y): add axe violation checks to DifficultySelector and Ce
 ## Task 11: Add High-Contrast Toggle to Platform Settings
 
 **Files:**
+
 - Modify: `platform/src/context/PlatformContext.tsx`
 - Modify: `platform/src/pages/Settings.tsx`
 - Modify: `platform/src/pages/Settings.module.css`
@@ -1554,35 +1537,35 @@ import { useHighContrast } from '@kids-games-zone/shared';
 Add inside the component, after the `handleThemeToggle` function:
 
 ```typescript
-  const { isHighContrast, setHighContrast } = useHighContrast(
-    state.settings.highContrast,
-  );
+const { isHighContrast, setHighContrast } = useHighContrast(state.settings.highContrast);
 
-  const handleHighContrastToggle = () => {
-    const next = !isHighContrast;
-    setHighContrast(next);
-    dispatch({ type: 'SET_SETTINGS', payload: { highContrast: next } });
-  };
+const handleHighContrastToggle = () => {
+  const next = !isHighContrast;
+  setHighContrast(next);
+  dispatch({ type: 'SET_SETTINGS', payload: { highContrast: next } });
+};
 ```
 
 Add a new section in the JSX, after the Appearance section (after line 48):
 
 ```tsx
-      {/* Accessibility */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Accessibility</h2>
-        <div className={styles.settingRow}>
-          <label htmlFor="high-contrast-toggle">High Contrast</label>
-          <button
-            id="high-contrast-toggle"
-            className={styles.toggleBtn}
-            onClick={handleHighContrastToggle}
-            aria-pressed={isHighContrast}
-          >
-            {isHighContrast ? 'On' : 'Off'}
-          </button>
-        </div>
-      </section>
+{
+  /* Accessibility */
+}
+<section className={styles.section}>
+  <h2 className={styles.sectionTitle}>Accessibility</h2>
+  <div className={styles.settingRow}>
+    <label htmlFor="high-contrast-toggle">High Contrast</label>
+    <button
+      id="high-contrast-toggle"
+      className={styles.toggleBtn}
+      onClick={handleHighContrastToggle}
+      aria-pressed={isHighContrast}
+    >
+      {isHighContrast ? 'On' : 'Off'}
+    </button>
+  </div>
+</section>;
 ```
 
 - [ ] **Step 3: Verify build passes**
@@ -1605,6 +1588,7 @@ git commit -m "feat(a11y): add high-contrast toggle to Settings page with persis
 ## Task 12: Fix NavBar Accessibility
 
 **Files:**
+
 - Modify: `platform/src/components/NavBar/NavBar.tsx`
 
 - [ ] **Step 1: Add aria-current to active NavLink**
@@ -1612,64 +1596,59 @@ git commit -m "feat(a11y): add high-contrast toggle to Settings page with persis
 In `platform/src/components/NavBar/NavBar.tsx`, update the `NavLink` to include `aria-current`. Change lines 22-34 from:
 
 ```tsx
-        <NavLink
-          key={tab.path}
-          to={tab.path}
-          className={({ isActive }) =>
-            `${styles.tab} ${isActive ? styles.active : ''}`
-          }
-          end={tab.path === '/'}
-        >
-          <span className={styles.icon} aria-hidden="true">
-            {tab.icon}
-          </span>
-          <span className={styles.label}>{tab.label}</span>
-        </NavLink>
+<NavLink
+  key={tab.path}
+  to={tab.path}
+  className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ''}`}
+  end={tab.path === '/'}
+>
+  <span className={styles.icon} aria-hidden="true">
+    {tab.icon}
+  </span>
+  <span className={styles.label}>{tab.label}</span>
+</NavLink>
 ```
 
 to:
 
 ```tsx
-        <NavLink
-          key={tab.path}
-          to={tab.path}
-          className={({ isActive }) =>
-            `${styles.tab} ${isActive ? styles.active : ''}`
-          }
-          aria-current={({ isActive }: { isActive: boolean }) =>
-            isActive ? 'page' : undefined
-          }
-          end={tab.path === '/'}
-        >
-          <span className={styles.icon} aria-hidden="true">
-            {tab.icon}
-          </span>
-          <span className={styles.label}>{tab.label}</span>
-        </NavLink>
+<NavLink
+  key={tab.path}
+  to={tab.path}
+  className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ''}`}
+  aria-current={({ isActive }: { isActive: boolean }) => (isActive ? 'page' : undefined)}
+  end={tab.path === '/'}
+>
+  <span className={styles.icon} aria-hidden="true">
+    {tab.icon}
+  </span>
+  <span className={styles.label}>{tab.label}</span>
+</NavLink>
 ```
 
 Note: React Router's `NavLink` supports `aria-current` via a function prop. If this doesn't work with the current React Router version, use a render prop pattern instead — check the React Router 7 docs. An alternative approach is to read `isActive` from the className function and pass `aria-current` separately:
 
 ```tsx
-        {tabs.map((tab) => {
-          const isActive = tab.path === '/'
-            ? location.pathname === '/'
-            : location.pathname.startsWith(tab.path);
-          return (
-            <NavLink
-              key={tab.path}
-              to={tab.path}
-              className={`${styles.tab} ${isActive ? styles.active : ''}`}
-              end={tab.path === '/'}
-              aria-current={isActive ? 'page' : undefined}
-            >
-              <span className={styles.icon} aria-hidden="true">
-                {tab.icon}
-              </span>
-              <span className={styles.label}>{tab.label}</span>
-            </NavLink>
-          );
-        })}
+{
+  tabs.map((tab) => {
+    const isActive =
+      tab.path === '/' ? location.pathname === '/' : location.pathname.startsWith(tab.path);
+    return (
+      <NavLink
+        key={tab.path}
+        to={tab.path}
+        className={`${styles.tab} ${isActive ? styles.active : ''}`}
+        end={tab.path === '/'}
+        aria-current={isActive ? 'page' : undefined}
+      >
+        <span className={styles.icon} aria-hidden="true">
+          {tab.icon}
+        </span>
+        <span className={styles.label}>{tab.label}</span>
+      </NavLink>
+    );
+  });
+}
 ```
 
 - [ ] **Step 2: Verify typecheck passes**
@@ -1692,6 +1671,7 @@ git commit -m "feat(a11y): add aria-current='page' to active NavBar link"
 ## Task 13: Fix Hub Page Accessibility
 
 **Files:**
+
 - Modify: `platform/src/pages/Hub.tsx`
 
 - [ ] **Step 1: Add landmark roles and aria-pressed to Hub**
@@ -1706,10 +1686,13 @@ Read `platform/src/pages/Hub.tsx` to get the exact current code, then apply thes
    - Daily Challenge section already has `role="region" aria-label="Daily challenge"` — keep it.
 
 3. Add `aria-pressed` to filter buttons. For the "All" filter button, add:
+
    ```tsx
    aria-pressed={activeFilter === 'all'}
    ```
+
    For each category filter button, add:
+
    ```tsx
    aria-pressed={activeFilter === category}
    ```
@@ -1736,6 +1719,7 @@ git commit -m "feat(a11y): add landmarks, aria-pressed filters, and descriptive 
 ## Task 14: Fix Remaining Platform Pages
 
 **Files:**
+
 - Modify: `platform/src/pages/Rewards.tsx`
 - Modify: `platform/src/components/ProfileCreator/ProfileCreator.tsx`
 - Modify: `platform/src/pages/ParentalDashboard.tsx`
@@ -1783,6 +1767,7 @@ git commit -m "feat(a11y): fix landmarks, fieldsets, table headers, and ARIA acr
 ## Task 15: Fix Memory Match Game Accessibility
 
 **Files:**
+
 - Modify: `games/memory-match/src/MemoryMatch.tsx`
 
 - [ ] **Step 1: Read the current MemoryMatch code**
@@ -1792,6 +1777,7 @@ Read `games/memory-match/src/MemoryMatch.tsx` to understand the card rendering s
 - [ ] **Step 2: Add ARIA labels to cards**
 
 Each card button needs an `aria-label` describing its state:
+
 - Face down: `"Card ${index + 1} of ${totalCards}, face down"`
 - Face up (during flip): `"${cardContent}, face up"`
 - Matched: `"${cardContent}, matched"`
@@ -1813,6 +1799,7 @@ const announce = useAnnounce();
 ```
 
 Call `announce()` at key moments:
+
 - When cards are revealed in preview: `announce('Preview: memorize the cards!')`
 - When a match is found: `announce('Match found! ${matchName}')`
 - When cards don't match: `announce('Not a match, try again')`
@@ -1880,6 +1867,7 @@ git commit -m "feat(a11y): add card ARIA labels, keyboard grid nav, and announce
 ## Task 16: Fix Math Adventure Game Accessibility
 
 **Files:**
+
 - Modify: `games/math-adventure/src/MathAdventure.tsx`
 
 - [ ] **Step 1: Read the current MathAdventure code**
@@ -1907,6 +1895,7 @@ announce(`Question ${currentIndex + 1} of ${questions.length}: ${questions[curre
 ```
 
 When an answer is selected:
+
 - Correct: `announce('Correct!')`
 - Incorrect: `announce('Incorrect, try again')`
 
@@ -1963,6 +1952,7 @@ git commit -m "feat(a11y): add question announcements and ARIA labels to Math Ad
 ## Task 17: Fix Word Puzzle Game Accessibility
 
 **Files:**
+
 - Modify: `games/word-puzzle/src/WordPuzzle.tsx`
 
 - [ ] **Step 1: Read the current WordPuzzle code**
@@ -1992,6 +1982,7 @@ import { useAnnounce } from '@kids-games-zone/shared';
 ```
 
 Add announcements:
+
 - New round: `announce('Unscramble the word! Category: ${category}, Clue: ${clue}')`
 - Letter placed: `announce('Placed letter ${letter} in slot ${slotIndex + 1}')`
 - Letter removed: `announce('Removed letter ${letter} from slot ${slotIndex + 1}')`
@@ -2058,6 +2049,7 @@ git commit -m "feat(a11y): add letter/slot ARIA labels, keyboard nav, and announ
 ## Task 18: Add axe Checks to Remaining Platform Tests
 
 **Files:**
+
 - Modify: `platform/src/components/RewardCard/RewardCard.test.tsx`
 - Modify: `platform/src/components/RewardCelebration/RewardCelebration.test.tsx`
 - Modify: `games/memory-match/src/__tests__/Card.test.tsx`
@@ -2132,6 +2124,7 @@ git add -A && git commit -m "fix(a11y): resolve lint/type/test issues from acces
 ## Task 20: Update Development Plan
 
 **Files:**
+
 - Modify: `plans/development-plan.md`
 
 - [ ] **Step 1: Update Phase 5A status**
@@ -2140,12 +2133,15 @@ In `plans/development-plan.md`, update the Phase 5 section to reflect that 5A (A
 
 ```markdown
 ## Phase 5 — Accessibility, i18n & Offline
+
 **Duration:** 2-3 weeks
 
 ### 5A. Accessibility Audit & Fixes — ✅ COMPLETE
+
 **Completed:** [today's date]
 
 What was delivered:
+
 - axe-core dev overlay and vitest-axe test integration
 - Global focus-visible indicators and focus ring tokens
 - High-contrast mode (OS detection + manual toggle in Settings)

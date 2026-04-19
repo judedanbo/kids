@@ -9,19 +9,11 @@ interface ProgressBarProps {
   label?: string;
 }
 
-export function ProgressBar({
-  current,
-  total,
-  color,
-  showLabel = false,
-  label,
-}: ProgressBarProps) {
+export function ProgressBar({ current, total, color, showLabel = false, label }: ProgressBarProps) {
   const percentage = Math.min(Math.max((current / total) * 100, 0), 100);
   const displayLabel = label ?? `${current} of ${total}`;
 
-  const style = color
-    ? ({ '--progress-bar-color': color } as React.CSSProperties)
-    : undefined;
+  const style = color ? ({ '--progress-bar-color': color } as React.CSSProperties) : undefined;
 
   return (
     <div className={styles.container}>

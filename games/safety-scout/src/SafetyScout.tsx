@@ -33,14 +33,22 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
   const categories = useMemo(() => getCategories(allObjects), []);
 
   const [initialObjects] = useState(() =>
-    selectObjects(allObjects, { category: null, difficulty: config.difficulty, count: objectCount }),
+    selectObjects(allObjects, {
+      category: null,
+      difficulty: config.difficulty,
+      count: objectCount,
+    }),
   );
 
   const round = useSafetyRound({ objects: initialObjects, onScorePoint: onScore });
 
   const handleCategorySelect = useCallback(
     (category: string | null) => {
-      const objects = selectObjects(allObjects, { category, difficulty: config.difficulty, count: objectCount });
+      const objects = selectObjects(allObjects, {
+        category,
+        difficulty: config.difficulty,
+        count: objectCount,
+      });
       round.startRound(objects);
     },
     [config.difficulty, objectCount, round],
@@ -54,7 +62,16 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
     if (round.phase === 'playing') {
       announce(t('objectOf', { current: round.currentObjectIndex + 1, total: round.maxScore }));
     }
-  }, [round.phase, round.currentObjectIndex, round.currentObject.id, isTiny, audioManager, announce, t, round.maxScore]);
+  }, [
+    round.phase,
+    round.currentObjectIndex,
+    round.currentObject.id,
+    isTiny,
+    audioManager,
+    announce,
+    t,
+    round.maxScore,
+  ]);
 
   // Audio: feedback
   useEffect(() => {
@@ -105,7 +122,12 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
 
   if (round.phase === 'category-select') {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <CategoryPicker categories={categories} onSelect={handleCategorySelect} />
       </GameShell>
     );
@@ -113,10 +135,24 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
 
   if (round.phase === 'instruction') {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <div className={styles.gameArea}>
-          <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character="🛡️" characterSrc="/images/games/mascots/shield.webp" />
-          <OptionButton label={t('letsGo')} state="default" onSelect={round.dismissInstruction} size="large" />
+          <InstructionBubble
+            text={isTiny ? t('instructionTiny') : t('instruction')}
+            character="🛡️"
+            characterSrc="/images/games/mascots/shield.webp"
+          />
+          <OptionButton
+            label={t('letsGo')}
+            state="default"
+            onSelect={round.dismissInstruction}
+            size="large"
+          />
         </div>
       </GameShell>
     );
@@ -124,7 +160,12 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
 
   if (round.phase === 'complete') {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={round.score}
@@ -139,7 +180,12 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
   const explanationTier = isTiny ? 'tiny' : 'junior';
 
   return (
-    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+    <GameShell
+      title={t('title')}
+      onBack={onExit}
+      audioManager={audioManager}
+      musicEnabled={config.settings.backgroundMusicEnabled}
+    >
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={round.score} maxScore={round.maxScore} showStars />
@@ -164,7 +210,12 @@ export function SafetyScout({ config, onScore, onComplete, onExit, audioManager 
               isCorrect={round.isCorrect!}
               ageTier={ageTier}
             />
-            <OptionButton label={t('nextObject')} state="default" onSelect={round.nextObject} size="large" />
+            <OptionButton
+              label={t('nextObject')}
+              state="default"
+              onSelect={round.nextObject}
+              size="large"
+            />
           </div>
         )}
       </div>

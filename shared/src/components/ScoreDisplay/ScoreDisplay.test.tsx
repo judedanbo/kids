@@ -9,9 +9,7 @@ describe('ScoreDisplay', () => {
   });
 
   it('renders stars when showStars is true', () => {
-    render(
-      <ScoreDisplay score={60} maxScore={100} showStars starCount={5} />,
-    );
+    render(<ScoreDisplay score={60} maxScore={100} showStars starCount={5} />);
     // 60/100 = 60%, out of 5 stars = 3 filled
     const stars = screen.getAllByRole('img', { hidden: true });
     expect(stars).toHaveLength(5);
@@ -29,18 +27,12 @@ describe('ScoreDisplay', () => {
 
   it('has correct aria-label with score and max', () => {
     render(<ScoreDisplay score={80} maxScore={100} />);
-    expect(
-      screen.getByLabelText('Score: 80 out of 100'),
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText('Score: 80 out of 100')).toBeInTheDocument();
   });
 
   it('has correct aria-label with stars', () => {
-    render(
-      <ScoreDisplay score={80} maxScore={100} showStars starCount={5} />,
-    );
-    expect(
-      screen.getByLabelText('Score: 80 out of 100, 4 of 5 stars'),
-    ).toBeInTheDocument();
+    render(<ScoreDisplay score={80} maxScore={100} showStars starCount={5} />);
+    expect(screen.getByLabelText('Score: 80 out of 100, 4 of 5 stars')).toBeInTheDocument();
   });
 
   it('has no accessibility violations', async () => {

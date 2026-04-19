@@ -25,7 +25,8 @@
   font-family: var(--font-family-body);
   font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color var(--transition-fast),
+  transition:
+    background-color var(--transition-fast),
     border-color var(--transition-fast);
   min-height: 44px;
 }
@@ -121,7 +122,9 @@
   font-family: var(--font-family-body);
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
   text-transform: capitalize;
 }
 

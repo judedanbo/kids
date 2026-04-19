@@ -71,9 +71,7 @@ export interface SessionActions {
   restart: () => void;
 }
 
-export function useSessionLevels(
-  options: UseSessionLevelsOptions,
-): SessionState & SessionActions {
+export function useSessionLevels(options: UseSessionLevelsOptions): SessionState & SessionActions {
   const { startingDifficulty, ageTier, wordPool } = options;
   const isTiny = ageTier === 'tiny';
 
@@ -122,45 +120,42 @@ export function useSessionLevels(
   // the only non-local values (TOTAL_LEVELS, adjustDifficulty) are module
   // constants. Keep this shape when editing — introducing a prop-derived or
   // state-derived read here would silently stale this callback.
-  const completeLevel = useCallback(
-    (wordsCorrect: number, wordsAttempted: number) => {
-      const accuracy = wordsAttempted > 0 ? wordsCorrect / wordsAttempted : 0;
-      setSessionMaxScore((prev) => prev + wordsAttempted);
-      setLevelsCompleted((prev) => prev + 1);
+  const completeLevel = useCallback((wordsCorrect: number, wordsAttempted: number) => {
+    const accuracy = wordsAttempted > 0 ? wordsCorrect / wordsAttempted : 0;
+    setSessionMaxScore((prev) => prev + wordsAttempted);
+    setLevelsCompleted((prev) => prev + 1);
 
-      const currentDiff = ladderRef.current[currentLevelRef.current - 1].difficulty;
-      setHighestDifficulty((prev) => Math.max(prev, currentDiff));
+    const currentDiff = ladderRef.current[currentLevelRef.current - 1].difficulty;
+    setHighestDifficulty((prev) => Math.max(prev, currentDiff));
 
-      // Any completion at level 5 is treated as a victory, regardless of
-      // that level's accuracy — reaching level 5 is itself an achievement
-      // for kids, and tightening to require a passing score would punish
-      // players who got unlucky on their final-life attempt.
-      if (currentLevelRef.current >= TOTAL_LEVELS) {
-        setOutcome('victory');
-        setSessionPhase('complete');
-        return;
+    // Any completion at level 5 is treated as a victory, regardless of
+    // that level's accuracy — reaching level 5 is itself an achievement
+    // for kids, and tightening to require a passing score would punish
+    // players who got unlucky on their final-life attempt.
+    if (currentLevelRef.current >= TOTAL_LEVELS) {
+      setOutcome('victory');
+      setSessionPhase('complete');
+      return;
+    }
+    if (livesRef.current <= 0) {
+      setOutcome('out-of-lives');
+      setSessionPhase('complete');
+      return;
+    }
+
+    const nextIdx = currentLevelRef.current;
+    const nextPlanned = ladderRef.current[nextIdx].difficulty;
+    const adjusted = adjustDifficulty(nextPlanned, currentDiff, accuracy);
+    ladderRef.current[nextIdx] = { ...ladderRef.current[nextIdx], difficulty: adjusted };
+
+    for (let i = nextIdx + 1; i < TOTAL_LEVELS; i++) {
+      if (ladderRef.current[i].difficulty > adjusted) {
+        ladderRef.current[i] = { ...ladderRef.current[i], difficulty: adjusted };
       }
-      if (livesRef.current <= 0) {
-        setOutcome('out-of-lives');
-        setSessionPhase('complete');
-        return;
-      }
+    }
 
-      const nextIdx = currentLevelRef.current;
-      const nextPlanned = ladderRef.current[nextIdx].difficulty;
-      const adjusted = adjustDifficulty(nextPlanned, currentDiff, accuracy);
-      ladderRef.current[nextIdx] = { ...ladderRef.current[nextIdx], difficulty: adjusted };
-
-      for (let i = nextIdx + 1; i < TOTAL_LEVELS; i++) {
-        if (ladderRef.current[i].difficulty > adjusted) {
-          ladderRef.current[i] = { ...ladderRef.current[i], difficulty: adjusted };
-        }
-      }
-
-      setSessionPhase('level-transition');
-    },
-    [],
-  );
+    setSessionPhase('level-transition');
+  }, []);
 
   const startNextLevel = useCallback(() => {
     const nextLevel = currentLevelRef.current + 1;

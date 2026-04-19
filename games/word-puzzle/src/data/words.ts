@@ -236,7 +236,11 @@ export const categories: WordCategory[] = [
   },
 ];
 
-export function getWordsForRound(categoryIndex: number, difficulty: number, count: number): WordEntry[] {
+export function getWordsForRound(
+  categoryIndex: number,
+  difficulty: number,
+  count: number,
+): WordEntry[] {
   const category = categories[categoryIndex];
   if (!category) throw new Error(`Invalid categoryIndex: ${categoryIndex}`);
   const pool = category.words[difficulty];

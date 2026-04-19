@@ -20,31 +20,21 @@ export interface ContentRunSummary {
   estimatedUsd: number;
 }
 
-function needsFill(entry: {
-  definition: string;
-  sentence: string;
-  origin: string;
-}): boolean {
+function needsFill(entry: { definition: string; sentence: string; origin: string }): boolean {
   return entry.definition.trim() === '' || entry.sentence.trim() === '';
 }
 
-export async function runContentGeneration(
-  opts: ContentRunOptions,
-): Promise<ContentRunSummary> {
+export async function runContentGeneration(opts: ContentRunOptions): Promise<ContentRunSummary> {
   // Dry-run never calls the provider, so defer instantiation (and the env check).
   let lazyProvider: ContentProvider | null = null;
   const getProvider = (): ContentProvider => {
     if (lazyProvider) return lazyProvider;
-    lazyProvider =
-      opts.getProvider?.() ??
-      new OpenAIContentProvider(requireEnv('OPENAI_API_KEY'));
+    lazyProvider = opts.getProvider?.() ?? new OpenAIContentProvider(requireEnv('OPENAI_API_KEY'));
     return lazyProvider;
   };
 
   const allTiers = await loadAllTierFiles(opts.repoRoot);
-  const tiers = opts.tier
-    ? allTiers.filter((t) => t.tier === opts.tier)
-    : allTiers;
+  const tiers = opts.tier ? allTiers.filter((t) => t.tier === opts.tier) : allTiers;
 
   let generated = 0;
   let skipped = 0;
@@ -128,9 +118,7 @@ async function enrichTier(
 function requireEnv(name: string): string {
   const v = process.env[name];
   if (!v) {
-    throw new Error(
-      `${name} is not set. Copy tools/audio-generator/.env.example to .env.`,
-    );
+    throw new Error(`${name} is not set. Copy tools/audio-generator/.env.example to .env.`);
   }
   return v;
 }

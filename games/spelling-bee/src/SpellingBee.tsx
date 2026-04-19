@@ -20,9 +20,12 @@ import styles from './SpellingBee.module.css';
 
 function getWordPool(ageTier: AgeTier) {
   switch (ageTier) {
-    case 'tiny': return wordsTiny;
-    case 'junior': return wordsJunior;
-    case 'explorer': return wordsExplorer;
+    case 'tiny':
+      return wordsTiny;
+    case 'junior':
+      return wordsJunior;
+    case 'explorer':
+      return wordsExplorer;
   }
 }
 
@@ -122,8 +125,17 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
   if (session.sessionPhase === 'instruction') {
     return renderShell(
       <div className={styles.gameArea}>
-        <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character={'\u{1F41D}'} characterSrc="/images/games/mascots/bee.webp" />
-        <OptionButton label={t('letsGo')} state="default" onSelect={session.dismissInstruction} size="large" />
+        <InstructionBubble
+          text={isTiny ? t('instructionTiny') : t('instruction')}
+          character={'\u{1F41D}'}
+          characterSrc="/images/games/mascots/bee.webp"
+        />
+        <OptionButton
+          label={t('letsGo')}
+          state="default"
+          onSelect={session.dismissInstruction}
+          size="large"
+        />
       </div>,
     );
   }

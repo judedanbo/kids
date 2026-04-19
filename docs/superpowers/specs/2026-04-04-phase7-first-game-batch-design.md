@@ -40,13 +40,13 @@ All games use the platform's existing difficulty engine (rolling average of last
 
 ### Word Pools by Difficulty
 
-| Difficulty | Tiny (3-5)                    | Junior (6-8)                        | Explorer (9-12)                        |
-| ---------- | ----------------------------- | ----------------------------------- | -------------------------------------- |
-| 1-2        | 3-letter CVC (cat, dog, sun) | 4-letter common (book, fish)        | 5-letter common (house, table)         |
-| 3-4        | 4-letter simple (tree, ball) | 5-letter with blends (plant, crane) | 6-7 letter (kitchen, blanket)          |
-| 5-6        | —                             | 6-letter with patterns (bridge)     | 8-letter (dinosaur, elephant)          |
-| 7-8        | —                             | —                                   | 9-10 letter (adventure, geography)     |
-| 9-10       | —                             | —                                   | 10+ challenging (magnificent, encyclopedia) |
+| Difficulty | Tiny (3-5)                   | Junior (6-8)                        | Explorer (9-12)                             |
+| ---------- | ---------------------------- | ----------------------------------- | ------------------------------------------- |
+| 1-2        | 3-letter CVC (cat, dog, sun) | 4-letter common (book, fish)        | 5-letter common (house, table)              |
+| 3-4        | 4-letter simple (tree, ball) | 5-letter with blends (plant, crane) | 6-7 letter (kitchen, blanket)               |
+| 5-6        | —                            | 6-letter with patterns (bridge)     | 8-letter (dinosaur, elephant)               |
+| 7-8        | —                            | —                                   | 9-10 letter (adventure, geography)          |
+| 9-10       | —                            | —                                   | 10+ challenging (magnificent, encyclopedia) |
 
 Word lists are static JSON files per tier, tagged by difficulty. Each word entry includes:
 
@@ -67,17 +67,18 @@ Images are only used for tiny-tier. Definition, origin, and sentence are only su
 ### Clarification Features (Junior/Explorer Only)
 
 Three buttons appear after the word is spoken:
+
 - **"Definition"** → shows text + voice reads it
 - **"Origin"** → shows language of origin
 - **"Sentence"** → shows word used in context
 
 ### Audio Plan
 
-| Channel | Tiny (3-5)                                                     | Junior (6-8)              | Explorer (9-12)           |
-| ------- | -------------------------------------------------------------- | ------------------------- | ------------------------- |
-| Voice   | Word pronunciation, encouragement ("Well done!", "Try again!") | Word pronunciation only   | Word pronunciation only   |
-| SFX     | Correct, incorrect, celebration at round end                   | Correct, incorrect        | Correct, incorrect        |
-| Music   | Gentle background music                                        | Optional background music | None                      |
+| Channel | Tiny (3-5)                                                     | Junior (6-8)              | Explorer (9-12)         |
+| ------- | -------------------------------------------------------------- | ------------------------- | ----------------------- |
+| Voice   | Word pronunciation, encouragement ("Well done!", "Try again!") | Word pronunciation only   | Word pronunciation only |
+| SFX     | Correct, incorrect, celebration at round end                   | Correct, incorrect        | Correct, incorrect      |
+| Music   | Gentle background music                                        | Optional background music | None                    |
 
 ---
 
@@ -112,23 +113,23 @@ Three buttons appear after the word is spoken:
 
 ### Age-Tier Adaptations
 
-| Aspect              | Tiny (4-5)                                                                 | Junior (6-8)                                                                     |
-| ------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Object presentation | Large image, name spoken aloud, simple label                               | Image with name text, no voice unless requested                                  |
-| Tap targets         | Extra large (64px+) green/red buttons                                      | Standard (48px) buttons                                                          |
-| Feedback            | Voice explains why ("Knives are sharp! Ask a grown-up") + celebration SFX  | Text explanation shown on screen, correct/incorrect SFX only                     |
-| Difficulty scaling   | Obvious items → nuanced (butter knife vs chef's knife)                    | Clear hazards → situational context ("A stove is safe when off, harmful when on") |
-| Objects per round   | 6                                                                          | 10                                                                               |
+| Aspect              | Tiny (4-5)                                                                | Junior (6-8)                                                                      |
+| ------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Object presentation | Large image, name spoken aloud, simple label                              | Image with name text, no voice unless requested                                   |
+| Tap targets         | Extra large (64px+) green/red buttons                                     | Standard (48px) buttons                                                           |
+| Feedback            | Voice explains why ("Knives are sharp! Ask a grown-up") + celebration SFX | Text explanation shown on screen, correct/incorrect SFX only                      |
+| Difficulty scaling  | Obvious items → nuanced (butter knife vs chef's knife)                    | Clear hazards → situational context ("A stove is safe when off, harmful when on") |
+| Objects per round   | 6                                                                         | 10                                                                                |
 
 ### Difficulty Progression
 
-| Difficulty | What changes                                                          |
-| ---------- | --------------------------------------------------------------------- |
-| 1          | Obvious pairs — clearly safe vs clearly dangerous                     |
+| Difficulty | What changes                                                                            |
+| ---------- | --------------------------------------------------------------------------------------- |
+| 1          | Obvious pairs — clearly safe vs clearly dangerous                                       |
 | 2          | Less obvious items (e.g. scissors — harmful for tiny, safe with supervision for junior) |
-| 3          | Context-dependent objects ("hot water" — safe or harmful?)            |
-| 4          | Mixed categories, faster pacing                                       |
-| 5          | Nuanced scenarios, items that are safe *if used correctly*            |
+| 3          | Context-dependent objects ("hot water" — safe or harmful?)                              |
+| 4          | Mixed categories, faster pacing                                                         |
+| 5          | Nuanced scenarios, items that are safe _if used correctly_                              |
 
 ### Object Data Model
 
@@ -150,11 +151,11 @@ Three buttons appear after the word is spoken:
 
 ### Audio Plan
 
-| Channel | Tiny (4-5)                                                                  | Junior (6-8)           |
-| ------- | --------------------------------------------------------------------------- | ---------------------- |
-| Voice   | Object name, explanation after answer, encouragement ("You're keeping safe!") | None                   |
-| SFX     | Correct, incorrect, celebration at round end                                | Correct, incorrect     |
-| Music   | Gentle background music                                                     | None                   |
+| Channel | Tiny (4-5)                                                                    | Junior (6-8)       |
+| ------- | ----------------------------------------------------------------------------- | ------------------ |
+| Voice   | Object name, explanation after answer, encouragement ("You're keeping safe!") | None               |
+| SFX     | Correct, incorrect, celebration at round end                                  | Correct, incorrect |
+| Music   | Gentle background music                                                       | None               |
 
 ---
 
@@ -176,29 +177,30 @@ Three buttons appear after the word is spoken:
 
 ### Age-Tier Progression
 
-| Aspect           | Tiny (3-5)                                          | Junior (6-8)                        | Explorer (9-10)                                  |
-| ---------------- | --------------------------------------------------- | ----------------------------------- | ------------------------------------------------ |
-| What's compared  | Visual groups of objects (apples, stars, blocks)     | Abstract numbers                    | Decimals, fractions, mixed                       |
-| How many choices | 2 groups                                             | 3 numbers — pick biggest/smallest   | 4+ items — order from least to greatest          |
-| Prompt style     | "Which basket has MORE apples?" (voice + text)       | "Which number is the SMALLEST?" (text) | "Put these in order from least to greatest" (text) |
-| Visual style     | Colorful illustrated objects, large and countable    | Number cards, clean and bold        | Number cards with fraction/decimal notation      |
+| Aspect           | Tiny (3-5)                                        | Junior (6-8)                           | Explorer (9-10)                                    |
+| ---------------- | ------------------------------------------------- | -------------------------------------- | -------------------------------------------------- |
+| What's compared  | Visual groups of objects (apples, stars, blocks)  | Abstract numbers                       | Decimals, fractions, mixed                         |
+| How many choices | 2 groups                                          | 3 numbers — pick biggest/smallest      | 4+ items — order from least to greatest            |
+| Prompt style     | "Which basket has MORE apples?" (voice + text)    | "Which number is the SMALLEST?" (text) | "Put these in order from least to greatest" (text) |
+| Visual style     | Colorful illustrated objects, large and countable | Number cards, clean and bold           | Number cards with fraction/decimal notation        |
 
 ### Difficulty Progression
 
-| Difficulty | Tiny (3-5)                       | Junior (6-8)                    | Explorer (9-10)                                |
-| ---------- | -------------------------------- | ------------------------------- | ---------------------------------------------- |
-| 1          | 1 vs 5 objects — obvious         | Single digits (3 vs 7)          | Two-digit numbers (24 vs 67)                   |
-| 2          | 2 vs 5 objects                   | Single digits, pick from 3      | Three-digit numbers, pick from 3               |
-| 3          | 3 vs 5 — closer gaps            | Two-digit numbers (12 vs 28)    | Decimals (3.5 vs 3.2)                          |
-| 4          | 4 vs 6 — requires careful counting | Two-digit, pick from 3        | Simple fractions (1/2 vs 1/3)                  |
-| 5          | 5 vs 7 — close and tricky       | Three-digit numbers             | Mixed: fractions and decimals                  |
-| 6          | —                                | Three-digit, order 3 numbers    | Order 4 fractions least to greatest            |
-| 7          | —                                | —                               | Mixed fractions, decimals, whole numbers — order 4+ |
-| 8          | —                                | —                               | Negative numbers and ordering                  |
+| Difficulty | Tiny (3-5)                         | Junior (6-8)                 | Explorer (9-10)                                     |
+| ---------- | ---------------------------------- | ---------------------------- | --------------------------------------------------- |
+| 1          | 1 vs 5 objects — obvious           | Single digits (3 vs 7)       | Two-digit numbers (24 vs 67)                        |
+| 2          | 2 vs 5 objects                     | Single digits, pick from 3   | Three-digit numbers, pick from 3                    |
+| 3          | 3 vs 5 — closer gaps               | Two-digit numbers (12 vs 28) | Decimals (3.5 vs 3.2)                               |
+| 4          | 4 vs 6 — requires careful counting | Two-digit, pick from 3       | Simple fractions (1/2 vs 1/3)                       |
+| 5          | 5 vs 7 — close and tricky          | Three-digit numbers          | Mixed: fractions and decimals                       |
+| 6          | —                                  | Three-digit, order 3 numbers | Order 4 fractions least to greatest                 |
+| 7          | —                                  | —                            | Mixed fractions, decimals, whole numbers — order 4+ |
+| 8          | —                                  | —                            | Negative numbers and ordering                       |
 
 ### Round Structure
 
 Fixed rounds across all tiers (no elimination — numeracy benefits from practice over pressure):
+
 - **Tiny:** 6 comparisons per session
 - **Junior:** 8 comparisons per session
 - **Explorer:** 10 comparisons per session
@@ -220,11 +222,11 @@ Procedurally generated based on difficulty constraints. For ordering challenges,
 
 ### Audio Plan
 
-| Channel | Tiny (3-5)                                                          | Junior (6-8)       | Explorer (9-10)        |
-| ------- | ------------------------------------------------------------------- | ------------------ | ---------------------- |
-| Voice   | Reads prompt ("Which has MORE stars?"), encouragement after answers  | None               | None                   |
-| SFX     | Correct, incorrect, celebration at round end                        | Correct, incorrect | Correct, incorrect     |
-| Music   | Gentle background music                                             | None               | None                   |
+| Channel | Tiny (3-5)                                                          | Junior (6-8)       | Explorer (9-10)    |
+| ------- | ------------------------------------------------------------------- | ------------------ | ------------------ |
+| Voice   | Reads prompt ("Which has MORE stars?"), encouragement after answers | None               | None               |
+| SFX     | Correct, incorrect, celebration at round end                        | Correct, incorrect | Correct, incorrect |
+| Music   | Gentle background music                                             | None               | None               |
 
 ---
 
@@ -248,6 +250,7 @@ games/<game-name>/
 ### Audio Feedback Pattern
 
 Each game calls `audioManager` directly. Common asset IDs reused across games:
+
 - `correct`, `incorrect` — SFX feedback
 - `celebrate` — Round/game completion
 - `voice:encouragement-{n}` — Randomized praise (tiny-tier only)

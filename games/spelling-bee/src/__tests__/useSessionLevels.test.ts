@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { buildLadder, adjustDifficulty, TOTAL_LEVELS, LEVEL_WORD_COUNTS, ADVANCEMENT_THRESHOLD } from '../hooks/useSessionLevels';
+import {
+  buildLadder,
+  adjustDifficulty,
+  TOTAL_LEVELS,
+  LEVEL_WORD_COUNTS,
+  ADVANCEMENT_THRESHOLD,
+} from '../hooks/useSessionLevels';
 
 describe('buildLadder', () => {
   it('creates 5 levels with warmup/at-level/stretch pattern', () => {

@@ -17,12 +17,14 @@
 ## File map
 
 **New:**
+
 - `shared/src/components/ConfirmDialog/ConfirmDialog.tsx`
 - `shared/src/components/ConfirmDialog/ConfirmDialog.module.css`
 - `shared/src/components/ConfirmDialog/ConfirmDialog.test.tsx`
 - `games/spelling-bee/src/__tests__/LetterTiles.test.tsx`
 
 **Modified:**
+
 - `shared/src/components/index.ts` — export `ConfirmDialog`.
 - `platform/src/locales/en/common.json` — add `confirmDialog.confirm`, `confirmDialog.cancel`.
 - `platform/src/locales/fr/common.json` — same keys, French copy.
@@ -40,6 +42,7 @@
 ## Task 1: `ConfirmDialog` component (shared)
 
 **Files:**
+
 - Create: `shared/src/components/ConfirmDialog/ConfirmDialog.tsx`
 - Create: `shared/src/components/ConfirmDialog/ConfirmDialog.module.css`
 - Create: `shared/src/components/ConfirmDialog/ConfirmDialog.test.tsx`
@@ -286,9 +289,7 @@ export function ConfirmDialog({
   if (!open) return null;
 
   const confirmClass =
-    tone === 'danger'
-      ? `${styles.confirmButton} ${styles.danger}`
-      : styles.confirmButton;
+    tone === 'danger' ? `${styles.confirmButton} ${styles.danger}` : styles.confirmButton;
 
   return (
     <FocusTrap
@@ -363,6 +364,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ## Task 2: Export `ConfirmDialog` + add common i18n keys
 
 **Files:**
+
 - Modify: `shared/src/components/index.ts`
 - Modify: `platform/src/locales/en/common.json`
 - Modify: `platform/src/locales/fr/common.json`
@@ -449,6 +451,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ## Task 3: Remove auto-submit in `LetterTiles`, add Submit button (TDD)
 
 **Files:**
+
 - Create: `games/spelling-bee/src/__tests__/LetterTiles.test.tsx`
 - Modify: `games/spelling-bee/src/components/LetterTiles.tsx`
 - Modify: `games/spelling-bee/src/components/LetterTiles.module.css`
@@ -669,6 +672,7 @@ export function LetterTiles({ letters, wordLength, onSubmit }: LetterTilesProps)
 ```
 
 Key changes vs. the previous version:
+
 - No auto-submit: `handleTileTap` no longer composes an answer or calls `onSubmit`.
 - A `handleSubmit` handler, invoked only via the Submit button.
 - A new `isFull` derived flag gates the Submit button render.
@@ -760,6 +764,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ## Task 4: Add spelling-bee exit-confirmation i18n keys
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/locales/en/spelling-bee.json`
 - Modify: `games/spelling-bee/src/locales/fr/spelling-bee.json`
 
@@ -803,6 +808,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ## Task 5: Intercept back button in `SpellingBee.tsx` (TDD)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/__tests__/SpellingBee.test.tsx`
 - Modify: `games/spelling-bee/src/SpellingBee.tsx`
 
@@ -811,69 +817,69 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 Open `games/spelling-bee/src/__tests__/SpellingBee.test.tsx` and append a new `describe` block at the end of the file (inside the top-level `describe('SpellingBee', ...)` or as a sibling `describe`, matching existing style in the file):
 
 ```tsx
-  describe('back-button confirmation', () => {
-    it('does not call onExit when back is clicked (shows dialog instead)', () => {
-      const props = createMockProps();
-      render(<SpellingBee {...props} />);
-      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
-      expect(props.onExit).not.toHaveBeenCalled();
-      expect(screen.getByRole('dialog')).toBeInTheDocument();
-      expect(screen.getByText('exitConfirmTitle')).toBeInTheDocument();
-    });
-
-    it('calls onExit when the user confirms', () => {
-      const props = createMockProps();
-      render(<SpellingBee {...props} />);
-      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
-      fireEvent.click(screen.getByRole('button', { name: 'exitConfirmConfirm' }));
-      expect(props.onExit).toHaveBeenCalledOnce();
-    });
-
-    it('closes the dialog and does not call onExit on cancel', () => {
-      const props = createMockProps();
-      render(<SpellingBee {...props} />);
-      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
-      fireEvent.click(screen.getByRole('button', { name: 'exitConfirmCancel' }));
-      expect(props.onExit).not.toHaveBeenCalled();
-      expect(screen.queryByRole('dialog')).toBeNull();
-    });
-
-    it('shows the dialog in the playing phase too', () => {
-      const props = createMockProps();
-      render(<SpellingBee {...props} />);
-      fireEvent.click(screen.getByText('letsGo')); // dismiss instruction
-      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
-      expect(screen.getByRole('dialog')).toBeInTheDocument();
-    });
-
-    it('re-plays bgm on cancel for tiny when music was enabled', () => {
-      const props = createTinyProps();
-      render(<SpellingBee {...props} />);
-      // Clear the initial playMusic call from mount.
-      (props.audioManager.playMusic as unknown as ReturnType<typeof vi.fn>).mockClear();
-
-      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
-      // GameShell calls stopMusic on back-click.
-      expect(props.audioManager.stopMusic).toHaveBeenCalled();
-
-      fireEvent.click(screen.getByRole('button', { name: 'exitConfirmCancel' }));
-      expect(props.audioManager.playMusic).toHaveBeenCalledWith(
-        'music:spelling-bee-bgm',
-        expect.objectContaining({ loop: true }),
-      );
-    });
-
-    it('does not re-play bgm on cancel for non-tiny tiers', () => {
-      const props = createMockProps(); // junior by default
-      render(<SpellingBee {...props} />);
-      (props.audioManager.playMusic as unknown as ReturnType<typeof vi.fn>).mockClear();
-
-      fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
-      fireEvent.click(screen.getByRole('button', { name: 'exitConfirmCancel' }));
-
-      expect(props.audioManager.playMusic).not.toHaveBeenCalled();
-    });
+describe('back-button confirmation', () => {
+  it('does not call onExit when back is clicked (shows dialog instead)', () => {
+    const props = createMockProps();
+    render(<SpellingBee {...props} />);
+    fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+    expect(props.onExit).not.toHaveBeenCalled();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText('exitConfirmTitle')).toBeInTheDocument();
   });
+
+  it('calls onExit when the user confirms', () => {
+    const props = createMockProps();
+    render(<SpellingBee {...props} />);
+    fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+    fireEvent.click(screen.getByRole('button', { name: 'exitConfirmConfirm' }));
+    expect(props.onExit).toHaveBeenCalledOnce();
+  });
+
+  it('closes the dialog and does not call onExit on cancel', () => {
+    const props = createMockProps();
+    render(<SpellingBee {...props} />);
+    fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+    fireEvent.click(screen.getByRole('button', { name: 'exitConfirmCancel' }));
+    expect(props.onExit).not.toHaveBeenCalled();
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('shows the dialog in the playing phase too', () => {
+    const props = createMockProps();
+    render(<SpellingBee {...props} />);
+    fireEvent.click(screen.getByText('letsGo')); // dismiss instruction
+    fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('re-plays bgm on cancel for tiny when music was enabled', () => {
+    const props = createTinyProps();
+    render(<SpellingBee {...props} />);
+    // Clear the initial playMusic call from mount.
+    (props.audioManager.playMusic as unknown as ReturnType<typeof vi.fn>).mockClear();
+
+    fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+    // GameShell calls stopMusic on back-click.
+    expect(props.audioManager.stopMusic).toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: 'exitConfirmCancel' }));
+    expect(props.audioManager.playMusic).toHaveBeenCalledWith(
+      'music:spelling-bee-bgm',
+      expect.objectContaining({ loop: true }),
+    );
+  });
+
+  it('does not re-play bgm on cancel for non-tiny tiers', () => {
+    const props = createMockProps(); // junior by default
+    render(<SpellingBee {...props} />);
+    (props.audioManager.playMusic as unknown as ReturnType<typeof vi.fn>).mockClear();
+
+    fireEvent.click(screen.getByRole('button', { name: 'gameShell.goBack' }));
+    fireEvent.click(screen.getByRole('button', { name: 'exitConfirmCancel' }));
+
+    expect(props.audioManager.playMusic).not.toHaveBeenCalled();
+  });
+});
 ```
 
 ### - [ ] Step 5.2: Run the tests and verify they fail
@@ -911,9 +917,12 @@ import styles from './SpellingBee.module.css';
 
 function getWordPool(ageTier: AgeTier) {
   switch (ageTier) {
-    case 'tiny': return wordsTiny;
-    case 'junior': return wordsJunior;
-    case 'explorer': return wordsExplorer;
+    case 'tiny':
+      return wordsTiny;
+    case 'junior':
+      return wordsJunior;
+    case 'explorer':
+      return wordsExplorer;
   }
 }
 
@@ -1013,8 +1022,17 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
   if (session.sessionPhase === 'instruction') {
     return renderShell(
       <div className={styles.gameArea}>
-        <InstructionBubble text={isTiny ? t('instructionTiny') : t('instruction')} character={'\u{1F41D}'} characterSrc="/images/games/mascots/bee.webp" />
-        <OptionButton label={t('letsGo')} state="default" onSelect={session.dismissInstruction} size="large" />
+        <InstructionBubble
+          text={isTiny ? t('instructionTiny') : t('instruction')}
+          character={'\u{1F41D}'}
+          characterSrc="/images/games/mascots/bee.webp"
+        />
+        <OptionButton
+          label={t('letsGo')}
+          state="default"
+          onSelect={session.dismissInstruction}
+          size="large"
+        />
       </div>,
     );
   }
@@ -1076,6 +1094,7 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
 ```
 
 Key changes:
+
 - Added `useState` for `confirmExitOpen`, `ConfirmDialog` import.
 - Introduced `renderShell(children)` so the `<ConfirmDialog>` renders once alongside every `GameShell` branch (spec open question resolved in favour of the helper — avoids duplicating the dialog render in five branches).
 - `onBack={handleBackIntercept}` across all branches.
@@ -1156,6 +1175,7 @@ pnpm --filter platform dev
 ```
 
 Open `http://localhost:3000`, create or pick a **tiny** profile, launch Spelling Bee. Verify:
+
 - Tapping letters fills slots but does not auto-submit.
 - Once slots are full, a Submit button appears. Undo still works and removes the Submit button.
 - Clicking Submit commits the answer and advances as before.

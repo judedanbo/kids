@@ -26,16 +26,16 @@ A review of the Spelling Bee game surfaced three player-visible bugs worth fixin
 
 ## Design Decisions
 
-| Decision | Choice | Alternatives Considered |
-|----------|--------|------------------------|
-| Game-over UX | Distinct overlay variant with "Try again" button | Same overlay with different copy; full separate `GameOverOverlay` component |
-| Retry semantics | Full restart from level 1 at original `startDifficulty` | Retry current level only; user-choose |
-| Overlay implementation | New game-local `GameOverOverlay` component in `games/spelling-bee/src/components/` | Extend shared `CelebrationOverlay` with a variant prop |
-| Image fallback | Neutral placeholder (🐝 glyph) sized to match the image slot | Hide image area; show word text; cascading fallback URLs |
-| Image fallback location | Local state in `WordDisplay` | Lift into hook; preload check |
-| Empty-pool fallback | Layered relaxation inside `selectWords` (widen difficulty → allow repeats → whole pool) | Session-start guard; end-game-as-win; hook-level guard only |
-| Dev warnings | `console.warn` gated on `import.meta.env.DEV` | Silent; logging service; user-facing message |
-| Belt-and-braces guard | `useSpellingRound` sets sub-phase `'complete'` if `words.length === 0` | Throw; render error state |
+| Decision                | Choice                                                                                  | Alternatives Considered                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Game-over UX            | Distinct overlay variant with "Try again" button                                        | Same overlay with different copy; full separate `GameOverOverlay` component |
+| Retry semantics         | Full restart from level 1 at original `startDifficulty`                                 | Retry current level only; user-choose                                       |
+| Overlay implementation  | New game-local `GameOverOverlay` component in `games/spelling-bee/src/components/`      | Extend shared `CelebrationOverlay` with a variant prop                      |
+| Image fallback          | Neutral placeholder (🐝 glyph) sized to match the image slot                            | Hide image area; show word text; cascading fallback URLs                    |
+| Image fallback location | Local state in `WordDisplay`                                                            | Lift into hook; preload check                                               |
+| Empty-pool fallback     | Layered relaxation inside `selectWords` (widen difficulty → allow repeats → whole pool) | Session-start guard; end-game-as-win; hook-level guard only                 |
+| Dev warnings            | `console.warn` gated on `import.meta.env.DEV`                                           | Silent; logging service; user-facing message                                |
+| Belt-and-braces guard   | `useSpellingRound` sets sub-phase `'complete'` if `words.length === 0`                  | Throw; render error state                                                   |
 
 ## Fix 1: Game-Over UX
 

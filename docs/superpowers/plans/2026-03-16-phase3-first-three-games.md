@@ -19,6 +19,7 @@
 ### Task 1: Scaffold math-adventure workspace package
 
 **Files:**
+
 - Create: `games/math-adventure/package.json`
 - Create: `games/math-adventure/tsconfig.json`
 - Create: `games/math-adventure/src/index.ts` (stub)
@@ -148,7 +149,13 @@ const plugin: GamePlugin = {
       timeSpent,
       difficulty: _difficulty,
       completedAt: new Date().toISOString(),
-      metrics: { questionsCorrect: 0, avgAttempts: 0, additionCount: 0, subtractionCount: 0, multiplicationCount: 0 },
+      metrics: {
+        questionsCorrect: 0,
+        avgAttempts: 0,
+        additionCount: 0,
+        subtractionCount: 0,
+        multiplicationCount: 0,
+      },
     };
   },
 
@@ -193,6 +200,7 @@ git commit -m "feat: scaffold math-adventure game package with plugin stub"
 ### Task 2: Question generator — tests
 
 **Files:**
+
 - Create: `games/math-adventure/src/utils/questionGenerator.ts` (types only)
 - Create: `games/math-adventure/src/__tests__/questionGenerator.test.ts`
 
@@ -380,6 +388,7 @@ git commit -m "test: add question generator tests for math-adventure"
 ### Task 3: Question generator — implementation
 
 **Files:**
+
 - Modify: `games/math-adventure/src/utils/questionGenerator.ts`
 
 - [ ] **Step 1: Implement generateQuestion**
@@ -403,16 +412,26 @@ const OP_SYMBOLS: Record<Operation, string> = {
 
 function computeAnswer(a: number, b: number, op: Operation): number {
   switch (op) {
-    case 'add': return a + b;
-    case 'subtract': return a - b;
-    case 'multiply': return a * b;
+    case 'add':
+      return a + b;
+    case 'subtract':
+      return a - b;
+    case 'multiply':
+      return a * b;
   }
 }
 
 function generateDistractors(correct: number, count: number): number[] {
   const distractors = new Set<number>();
   // Common mistakes: off-by-one, off-by-two, double
-  const candidates = [correct - 1, correct + 1, correct - 2, correct + 2, correct * 2, Math.floor(correct / 2)];
+  const candidates = [
+    correct - 1,
+    correct + 1,
+    correct - 2,
+    correct + 2,
+    correct * 2,
+    Math.floor(correct / 2),
+  ];
   for (const c of candidates) {
     if (c >= 0 && c !== correct) distractors.add(c);
     if (distractors.size >= count) break;
@@ -525,6 +544,7 @@ git commit -m "feat: implement question generator for math-adventure"
 ### Task 4: VisualAid component
 
 **Files:**
+
 - Create: `games/math-adventure/src/components/VisualAid.tsx`
 - Create: `games/math-adventure/src/components/VisualAid.module.css`
 
@@ -541,12 +561,7 @@ interface VisualAidProps {
 
 function DotGroup({ count, color }: { count: number; color: string }) {
   const dots = Array.from({ length: count }, (_, i) => (
-    <span
-      key={i}
-      className={styles.dot}
-      style={{ backgroundColor: color }}
-      aria-hidden="true"
-    />
+    <span key={i} className={styles.dot} style={{ backgroundColor: color }} aria-hidden="true" />
   ));
 
   // Arrange in rows of 5
@@ -558,7 +573,9 @@ function DotGroup({ count, color }: { count: number; color: string }) {
   return (
     <div className={styles.dotGroup}>
       {rows.map((row, i) => (
-        <div key={i} className={styles.dotRow}>{row}</div>
+        <div key={i} className={styles.dotRow}>
+          {row}
+        </div>
       ))}
     </div>
   );
@@ -634,6 +651,7 @@ git commit -m "feat: add VisualAid dot display component for math-adventure"
 ### Task 5: MathAdventure game component — tests
 
 **Files:**
+
 - Create: `games/math-adventure/src/__tests__/MathAdventure.test.tsx`
 
 - [ ] **Step 1: Write component tests**
@@ -656,10 +674,22 @@ function createMockProps(overrides: Partial<GameProps> = {}): GameProps {
         ageTier: 'junior',
         createdAt: new Date().toISOString(),
         parentPin: '',
-        preferences: { musicVolume: 50, sfxVolume: 100, voiceVolume: 100, language: 'en', theme: 'default' },
+        preferences: {
+          musicVolume: 50,
+          sfxVolume: 100,
+          voiceVolume: 100,
+          language: 'en',
+          theme: 'default',
+        },
         progress: {},
         rewards: [],
-        stats: { totalPlayTime: 0, totalGamesPlayed: 0, currentStreak: 0, longestStreak: 0, lastPlayedAt: null },
+        stats: {
+          totalPlayTime: 0,
+          totalGamesPlayed: 0,
+          currentStreak: 0,
+          longestStreak: 0,
+          lastPlayedAt: null,
+        },
       },
       settings: { soundEnabled: true, musicEnabled: true, language: 'en', highContrastMode: false },
     },
@@ -703,7 +733,11 @@ describe('MathAdventure', () => {
   });
 
   it('shows visual aid at difficulty 1', () => {
-    render(<MathAdventure {...createMockProps({ config: { ...createMockProps().config, difficulty: 1 } })} />);
+    render(
+      <MathAdventure
+        {...createMockProps({ config: { ...createMockProps().config, difficulty: 1 } })}
+      />,
+    );
     expect(screen.getByRole('img')).toBeInTheDocument();
   });
 
@@ -766,6 +800,7 @@ git commit -m "test: add MathAdventure component tests"
 ### Task 6: MathAdventure game component — implementation
 
 **Files:**
+
 - Modify: `games/math-adventure/src/MathAdventure.tsx`
 - Modify: `games/math-adventure/src/MathAdventure.module.css`
 
@@ -896,11 +931,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
       <GameShell title="Math Adventure" onBack={onExit}>
         <div className={styles.gameArea}>
           <InstructionBubble text="Solve the math problems!" />
-          <OptionButton
-            label="Let's Go!"
-            onSelect={() => setShowInstruction(false)}
-            size="large"
-          />
+          <OptionButton label="Let's Go!" onSelect={() => setShowInstruction(false)} size="large" />
         </div>
       </GameShell>
     );
@@ -939,9 +970,7 @@ export function MathAdventure({ config, onScore, onComplete, onExit, audioManage
               operation={currentQuestion.operation}
             />
           )}
-          {attempts > 1 && (
-            <p className={styles.attemptHint}>Attempt {attempts} — keep trying!</p>
-          )}
+          {attempts > 1 && <p className={styles.attemptHint}>Attempt {attempts} — keep trying!</p>}
         </div>
 
         <div className={styles.optionsGrid}>
@@ -1030,6 +1059,7 @@ Expected: PASS
 
 Run: `pnpm dev`
 Navigate to Hub → click Math Adventure → verify:
+
 - Instruction bubble shows
 - Click "Let's Go!" → first question appears
 - 4 option buttons displayed
@@ -1052,6 +1082,7 @@ git commit -m "feat: implement MathAdventure game component with full gameplay"
 ### Task 7: Scaffold word-puzzle workspace package
 
 **Files:**
+
 - Create: `games/word-puzzle/package.json`
 - Create: `games/word-puzzle/tsconfig.json`
 - Create: `games/word-puzzle/src/index.ts`
@@ -1108,6 +1139,7 @@ export function WordPuzzle({ onExit }: GameProps) {
 - [ ] **Step 5: Create index.ts with GamePlugin**
 
 Follow the same pattern as math-adventure's `index.ts`:
+
 - `id: 'word-puzzle'`, manifest fields from spec
 - `entryPoint: '../../games/word-puzzle/src/index.ts'`
 - Plugin-level `_startTime`, `_score`, `_difficulty`
@@ -1130,6 +1162,7 @@ git commit -m "feat: scaffold word-puzzle game package with plugin stub"
 ### Task 8: Word data and scramble utilities — tests
 
 **Files:**
+
 - Create: `games/word-puzzle/src/data/words.ts` (types + empty data)
 - Create: `games/word-puzzle/src/utils/scramble.ts` (types + stubs)
 - Create: `games/word-puzzle/src/__tests__/words.test.ts`
@@ -1150,7 +1183,11 @@ export interface WordCategory {
 
 export const categories: WordCategory[] = [];
 
-export function getWordsForRound(categoryIndex: number, difficulty: number, count: number): WordEntry[] {
+export function getWordsForRound(
+  categoryIndex: number,
+  difficulty: number,
+  count: number,
+): WordEntry[] {
   throw new Error('Not implemented');
 }
 
@@ -1291,6 +1328,7 @@ git commit -m "test: add word data integrity and scramble tests for word-puzzle"
 ### Task 9: Word data and scramble utilities — implementation
 
 **Files:**
+
 - Modify: `games/word-puzzle/src/data/words.ts`
 - Modify: `games/word-puzzle/src/utils/scramble.ts`
 
@@ -1353,10 +1391,18 @@ export const categories: WordCategory[] = [
         { word: 'owl', clue: 'It hoots at night' },
         { word: 'ram', clue: 'A male sheep' },
       ],
-      2: [ /* 10+ 4-letter animal words with clues */ ],
-      3: [ /* 10+ 4-5-letter animal words with clues */ ],
-      4: [ /* 10+ 5-6-letter animal words with clues */ ],
-      5: [ /* 10+ 6+-letter animal words with clues */ ],
+      2: [
+        /* 10+ 4-letter animal words with clues */
+      ],
+      3: [
+        /* 10+ 4-5-letter animal words with clues */
+      ],
+      4: [
+        /* 10+ 5-6-letter animal words with clues */
+      ],
+      5: [
+        /* 10+ 6+-letter animal words with clues */
+      ],
     },
   },
   // ... Food, Nature categories
@@ -1366,7 +1412,11 @@ export const categories: WordCategory[] = [
 Implement `getWordsForRound`:
 
 ```typescript
-export function getWordsForRound(categoryIndex: number, difficulty: number, count: number): WordEntry[] {
+export function getWordsForRound(
+  categoryIndex: number,
+  difficulty: number,
+  count: number,
+): WordEntry[] {
   const category = categories[categoryIndex];
   if (!category) return [];
   const pool = category.words[difficulty] ?? category.words[1];
@@ -1399,6 +1449,7 @@ git commit -m "feat: implement word data and scramble utilities for word-puzzle"
 ### Task 10: LetterTile, ScrambleRow, AnswerSlots components
 
 **Files:**
+
 - Create: `games/word-puzzle/src/components/LetterTile.tsx`
 - Create: `games/word-puzzle/src/components/LetterTile.module.css`
 - Create: `games/word-puzzle/src/components/ScrambleRow.tsx`
@@ -1454,7 +1505,9 @@ export function LetterTile({ letter, state, onClick, disabled = false }: LetterT
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .tile:hover:not(:disabled) {
@@ -1488,9 +1541,16 @@ export function LetterTile({ letter, state, onClick, disabled = false }: LetterT
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1601,7 +1661,9 @@ export function AnswerSlots({ slots, state, onSlotClick }: AnswerSlotsProps) {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .filled {
@@ -1624,9 +1686,16 @@ export function AnswerSlots({ slots, state, onSlotClick }: AnswerSlotsProps) {
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1653,11 +1722,13 @@ git commit -m "feat: add LetterTile, ScrambleRow, AnswerSlots components for wor
 ### Task 11: WordPuzzle game component — tests
 
 **Files:**
+
 - Create: `games/word-puzzle/src/__tests__/WordPuzzle.test.tsx`
 
 - [ ] **Step 1: Write component tests**
 
 Follow the same pattern as `MathAdventure.test.tsx` using the `createMockProps` helper. Test:
+
 - Renders game shell with "Word Puzzle" title
 - Shows instruction bubble initially
 - After dismissing instruction, shows scrambled letters
@@ -1686,12 +1757,14 @@ git commit -m "test: add WordPuzzle component tests"
 ### Task 12: WordPuzzle game component — implementation
 
 **Files:**
+
 - Modify: `games/word-puzzle/src/WordPuzzle.tsx`
 - Modify: `games/word-puzzle/src/WordPuzzle.module.css`
 
 - [ ] **Step 1: Implement WordPuzzle.tsx**
 
 Core state:
+
 - `words: WordEntry[]` — the 8 words for this round
 - `currentIndex: number` — which word we're on
 - `scrambledLetters: string[]` — the scrambled letters of current word
@@ -1705,6 +1778,7 @@ Core state:
 - `showInstruction: boolean`
 
 Logic:
+
 - On mount: call `getWordsForRound(categoryIndex, difficulty, 8)` and `scrambleWord` for first word
 - `handleLetterClick(scrambleIndex)`: add letter to next empty answer slot, add to `placementOrder`
 - `handleSlotClick(slotIndex)`: remove letter, return to scramble row, remove from `placementOrder`
@@ -1746,6 +1820,7 @@ git commit -m "feat: implement WordPuzzle game component with full gameplay"
 ### Task 13: Scaffold memory-match workspace package
 
 **Files:**
+
 - Create: `games/memory-match/package.json`
 - Create: `games/memory-match/tsconfig.json`
 - Create: `games/memory-match/src/index.ts`
@@ -1783,6 +1858,7 @@ git commit -m "feat: scaffold memory-match game package with plugin stub"
 ### Task 14: Grid utilities — tests and implementation
 
 **Files:**
+
 - Create: `games/memory-match/src/utils/gridUtils.ts`
 - Create: `games/memory-match/src/__tests__/gridUtils.test.ts`
 
@@ -1805,9 +1881,30 @@ export const GRID_CONFIGS: Record<number, GridConfig> = {
   5: { pairs: 8, columns: 4, rows: 4, cardSize: 96, previewDuration: 1000 },
 };
 
-export type IllustrationName = 'cat' | 'fish' | 'butterfly' | 'bird' | 'flower' | 'sun' | 'tree' | 'star' | 'heart' | 'house';
+export type IllustrationName =
+  | 'cat'
+  | 'fish'
+  | 'butterfly'
+  | 'bird'
+  | 'flower'
+  | 'sun'
+  | 'tree'
+  | 'star'
+  | 'heart'
+  | 'house';
 
-export const ALL_ILLUSTRATIONS: IllustrationName[] = ['cat', 'fish', 'butterfly', 'bird', 'flower', 'sun', 'tree', 'star', 'heart', 'house'];
+export const ALL_ILLUSTRATIONS: IllustrationName[] = [
+  'cat',
+  'fish',
+  'butterfly',
+  'bird',
+  'flower',
+  'sun',
+  'tree',
+  'star',
+  'heart',
+  'house',
+];
 
 export interface CardData {
   id: number;
@@ -1848,6 +1945,7 @@ git commit -m "feat: implement grid utilities for memory-match"
 ### Task 15: CSSIllustration component
 
 **Files:**
+
 - Create: `games/memory-match/src/components/CSSIllustration.tsx`
 - Create: `games/memory-match/src/components/CSSIllustration.module.css`
 
@@ -1880,12 +1978,23 @@ The main export:
 ```tsx
 export function CSSIllustration({ name }: { name: IllustrationName }) {
   const illustrations: Record<IllustrationName, () => JSX.Element> = {
-    cat: Cat, fish: Fish, butterfly: Butterfly, bird: Bird,
-    flower: Flower, sun: Sun, tree: Tree, star: Star,
-    heart: Heart, house: House,
+    cat: Cat,
+    fish: Fish,
+    butterfly: Butterfly,
+    bird: Bird,
+    flower: Flower,
+    sun: Sun,
+    tree: Tree,
+    star: Star,
+    heart: Heart,
+    house: House,
   };
   const Component = illustrations[name];
-  return <div className={styles.illustration}><Component /></div>;
+  return (
+    <div className={styles.illustration}>
+      <Component />
+    </div>
+  );
 }
 ```
 
@@ -1907,6 +2016,7 @@ git commit -m "feat: add CSS illustration components for memory-match cards"
 ### Task 16: Card and CardGrid components
 
 **Files:**
+
 - Create: `games/memory-match/src/components/Card.tsx`
 - Create: `games/memory-match/src/components/Card.module.css`
 - Create: `games/memory-match/src/components/CardGrid.tsx`
@@ -1959,11 +2069,13 @@ export function Card({ illustration, isFlipped, isMatched, onClick, disabled, si
 ```
 
 **Critical CSS for Card.module.css** — the flip effect requires:
+
 - `.cardWrapper` — sets `perspective: 800px` (parent of rotated element)
 - `.cardInner` — needs `transform-style: preserve-3d; width: 100%; height: 100%`
 - `.cardBack` and `.cardFront` — both need `backface-visibility: hidden; position: absolute; inset: 0`
 - `.cardFront` — additionally needs `transform: rotateY(180deg)` (pre-rotated so it shows when parent rotates to 180°)
-```
+
+````
 
 - [ ] **Step 2: Create Card.module.css**
 
@@ -1988,13 +2100,14 @@ Test: renders face-down by default, shows illustration when flipped, calls onCli
 ```bash
 git add games/memory-match/src/components/ games/memory-match/src/__tests__/Card.test.tsx
 git commit -m "feat: add Card and CardGrid components for memory-match"
-```
+````
 
 ---
 
 ### Task 17: MemoryMatch game component — tests and implementation
 
 **Files:**
+
 - Create: `games/memory-match/src/__tests__/MemoryMatch.test.tsx`
 - Modify: `games/memory-match/src/MemoryMatch.tsx`
 - Modify: `games/memory-match/src/MemoryMatch.module.css`
@@ -2008,6 +2121,7 @@ Test: renders game shell with "Memory Match" title, shows instruction bubble, di
 - [ ] **Step 3: Implement MemoryMatch.tsx**
 
 Core state:
+
 - `cards: CardData[]`
 - `flippedIds: number[]` — currently flipped card IDs (max 2)
 - `matchedPairIds: Set<number>`
@@ -2020,6 +2134,7 @@ Core state:
 - `encourageMessage: string | null`
 
 Logic:
+
 - On mount: generate cards, show instruction
 - After instruction dismissed: start preview phase. Set `isPreview = true` which makes all cards render as flipped. After `getGridConfig(difficulty).previewDuration` ms, set `isPreview = false` to flip them all back. When `prefers-reduced-motion` is active, show cards statically (no flip animation) for the preview duration, then hide them.
 - `handleCardClick(cardId)`: if locked or already flipped/matched, ignore. Flip card. If 2 flipped, lock and compare:
@@ -2061,6 +2176,7 @@ git commit -m "feat: implement MemoryMatch game component with full gameplay"
 ### Task 18: Full integration verification
 
 **Files:**
+
 - No new files — verification only
 
 - [ ] **Step 1: Run full test suite**
@@ -2088,17 +2204,20 @@ Expected: PASS. Check that build completes without errors.
 Run: `pnpm dev`
 
 Test with a junior-tier profile (age 7):
+
 - Hub shows Math Adventure and Word Puzzle cards
 - Hub does NOT show Memory Match (age 3-5 only)
 - Play Math Adventure to completion
 - Play Word Puzzle to completion
 
 Switch to a tiny-tier profile (age 4):
+
 - Hub shows Memory Match card
 - Hub does NOT show Math Adventure or Word Puzzle (age 6-8 only)
 - Play Memory Match to completion
 
 Verify for each game:
+
 - Instruction bubble → gameplay → celebration → result screen
 - Score increments during play (onScore)
 - Correct/incorrect SFX plays
@@ -2115,6 +2234,7 @@ git commit -m "fix: integration fixes for Phase 3 games"
 - [ ] **Step 7: Update development plan status**
 
 Modify: `plans/development-plan.md`
+
 - Change Phase 3 status to ✅ COMPLETE
 - Update the phase dependency graph
 

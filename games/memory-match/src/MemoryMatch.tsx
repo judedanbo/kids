@@ -119,7 +119,19 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
         }, 1000);
       }
     },
-    [isLocked, flippedIds, cards, matchedPairIds, turns, score, gridConfig.pairs, onScore, audioManager, announce, t],
+    [
+      isLocked,
+      flippedIds,
+      cards,
+      matchedPairIds,
+      turns,
+      score,
+      gridConfig.pairs,
+      onScore,
+      audioManager,
+      announce,
+      t,
+    ],
   );
 
   const handleCelebrationComplete = useCallback(() => {
@@ -142,7 +154,12 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
 
   if (showCelebration) {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={score}
@@ -155,30 +172,45 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
 
   if (showInstruction) {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <div className={styles.gameArea}>
-          <InstructionBubble text={t('instruction')} character="🃏" characterSrc="/images/games/mascots/card-deck.webp" />
-          <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
+          <InstructionBubble
+            text={t('instruction')}
+            character="🃏"
+            characterSrc="/images/games/mascots/card-deck.webp"
+          />
+          <OptionButton
+            label={t('letsGo')}
+            state="default"
+            onSelect={handleDismissInstruction}
+            size="large"
+          />
         </div>
       </GameShell>
     );
   }
 
   // Build the effective set of flipped card IDs (preview flips all)
-  const effectiveFlippedIds: Set<number> = isPreview
-    ? new Set(cards.map((c) => c.id))
-    : flippedIds;
+  const effectiveFlippedIds: Set<number> = isPreview ? new Set(cards.map((c) => c.id)) : flippedIds;
 
   return (
-    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+    <GameShell
+      title={t('title')}
+      onBack={onExit}
+      audioManager={audioManager}
+      musicEnabled={config.settings.backgroundMusicEnabled}
+    >
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={score} maxScore={gridConfig.pairs * 10} showStars />
         </div>
         <ProgressBar current={matchedPairIds.size} total={gridConfig.pairs} showLabel />
-        {encourageMessage && (
-          <p className={styles.encourageMessage}>{encourageMessage}</p>
-        )}
+        {encourageMessage && <p className={styles.encourageMessage}>{encourageMessage}</p>}
         <CardGrid
           cards={cards}
           gridConfig={gridConfig}

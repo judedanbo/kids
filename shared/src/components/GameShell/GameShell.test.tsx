@@ -76,12 +76,7 @@ describe('GameShell', () => {
     const audioManager = createMockAudioManager();
     const onBack = vi.fn();
     render(
-      <GameShell
-        title="Test"
-        onBack={onBack}
-        audioManager={audioManager}
-        musicEnabled
-      >
+      <GameShell title="Test" onBack={onBack} audioManager={audioManager} musicEnabled>
         content
       </GameShell>,
     );
@@ -107,9 +102,7 @@ describe('GameShell', () => {
         content
       </GameShell>,
     );
-    expect(
-      screen.queryByLabelText('gameShell.pauseMusic'),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('gameShell.pauseMusic')).not.toBeInTheDocument();
   });
 
   it('toggles music via pauseMusic / resumeMusic when the music button is clicked', () => {

@@ -13,25 +13,25 @@ The Spelling Bee game currently plays as a single flat round of words. When fini
 
 ## Design Decisions
 
-| Decision | Choice | Alternatives Considered |
-|----------|--------|------------------------|
-| Number of levels per session | 5 | Fixed at 5 for all age tiers |
-| Words per level | Scaling: 3, 4, 5, 6, 7 | Fixed count per level; scale by age tier |
-| Difficulty mapping | Challenge Ladder (warm up → at level → stretch) | Sequential cursor; mixed difficulty per level |
-| Poor performance handling | Gentle fallback (always advance, clamp difficulty) | Retry same level; end session; move on regardless |
-| Lives | 3 for whole session (non-tiny); no lives for tiny | Per-level lives; growing lives; no lives for all |
+| Decision                     | Choice                                             | Alternatives Considered                           |
+| ---------------------------- | -------------------------------------------------- | ------------------------------------------------- |
+| Number of levels per session | 5                                                  | Fixed at 5 for all age tiers                      |
+| Words per level              | Scaling: 3, 4, 5, 6, 7                             | Fixed count per level; scale by age tier          |
+| Difficulty mapping           | Challenge Ladder (warm up → at level → stretch)    | Sequential cursor; mixed difficulty per level     |
+| Poor performance handling    | Gentle fallback (always advance, clamp difficulty) | Retry same level; end session; move on regardless |
+| Lives                        | 3 for whole session (non-tiny); no lives for tiny  | Per-level lives; growing lives; no lives for all  |
 
 ## Level Structure
 
 A session has 5 levels. Words per level scale up:
 
-| Level | Words | Role |
-|-------|-------|------|
-| 1 | 3 | Warm up |
-| 2 | 4 | At level |
-| 3 | 5 | At level |
-| 4 | 6 | Stretch |
-| 5 | 7 | Stretch |
+| Level | Words | Role     |
+| ----- | ----- | -------- |
+| 1     | 3     | Warm up  |
+| 2     | 4     | At level |
+| 3     | 5     | At level |
+| 4     | 6     | Stretch  |
+| 5     | 7     | Stretch  |
 
 Total: 25 words per session.
 
@@ -49,13 +49,13 @@ If lives run out (non-tiny only), the session ends early with a gentler game-ove
 
 Given the player's stored difficulty **N** from platform progress:
 
-| Level | Planned Difficulty | Role |
-|-------|-------------------|------|
-| 1 | max(N-1, 1) | Warm up — review easier words |
-| 2 | N | At level |
-| 3 | N | At level |
-| 4 | N+1 | Stretch |
-| 5 | N+1 | Stretch |
+| Level | Planned Difficulty | Role                          |
+| ----- | ------------------ | ----------------------------- |
+| 1     | max(N-1, 1)        | Warm up — review easier words |
+| 2     | N                  | At level                      |
+| 3     | N                  | At level                      |
+| 4     | N+1                | Stretch                       |
+| 5     | N+1                | Stretch                       |
 
 ### Gentle Fallback
 
@@ -78,11 +78,11 @@ The difficulty never drops below the warm-up level (max(N-1, 1)). It only clamps
 
 Current pools are too small for 25-word sessions with replayability:
 
-| Tier | Current | Difficulty Range | Target |
-|------|---------|-----------------|--------|
-| Tiny | 18 words | 1-4 | ~80 words (20 per difficulty) |
-| Junior | 16 words | 1-6 | ~90 words (15 per difficulty) |
-| Explorer | 16 words | 1-10 | ~100 words (10 per difficulty) |
+| Tier     | Current  | Difficulty Range | Target                         |
+| -------- | -------- | ---------------- | ------------------------------ |
+| Tiny     | 18 words | 1-4              | ~80 words (20 per difficulty)  |
+| Junior   | 16 words | 1-6              | ~90 words (15 per difficulty)  |
+| Explorer | 16 words | 1-10             | ~100 words (10 per difficulty) |
 
 ### Word selection per level
 
@@ -91,6 +91,7 @@ The existing `selectWords` function is called once per level (not once per sessi
 ### Word data format
 
 Unchanged. Each entry: `word`, `difficulty`, `image`, `definition`, `origin`, `sentence`.
+
 - Tiny tier words need `image` references (used by LetterTiles UI)
 - Junior and explorer words need `definition`, `origin`, and `sentence` (used by WordDisplay)
 
@@ -122,6 +123,7 @@ Unchanged. Each entry: `word`, `difficulty`, `image`, `definition`, `origin`, `s
 ### New: LevelTransition
 
 Shown between levels. Displays:
+
 - Level number just completed, star/checkmark, score so far, encouragement message
 - "Next Level" button to proceed
 - Tiny tier: bigger text, more animated, character voice encouragement

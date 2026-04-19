@@ -14,52 +14,53 @@
 
 ### 6D — Feature Flags (wiring existing infrastructure)
 
-| Action | File | Responsibility |
-|--------|------|----------------|
-| Create | `platform/src/config/featureFlags.json` | Static flag definitions |
-| Modify | `platform/src/main.tsx` | Wrap app in `FeatureFlagProvider` |
-| Modify | `platform/src/pages/Hub.tsx` | Filter games by feature flag |
-| Modify | `platform/src/pages/GameWrapper.tsx` | Guard game loading by flag |
-| Modify | `platform/src/components/GameCard/GameCard.tsx` | Show BETA badge |
-| Create | `platform/src/__tests__/featureFlags.integration.test.tsx` | Integration tests |
+| Action | File                                                       | Responsibility                    |
+| ------ | ---------------------------------------------------------- | --------------------------------- |
+| Create | `platform/src/config/featureFlags.json`                    | Static flag definitions           |
+| Modify | `platform/src/main.tsx`                                    | Wrap app in `FeatureFlagProvider` |
+| Modify | `platform/src/pages/Hub.tsx`                               | Filter games by feature flag      |
+| Modify | `platform/src/pages/GameWrapper.tsx`                       | Guard game loading by flag        |
+| Modify | `platform/src/components/GameCard/GameCard.tsx`            | Show BETA badge                   |
+| Create | `platform/src/__tests__/featureFlags.integration.test.tsx` | Integration tests                 |
 
 ### 6C — Game Developer Guide & Scaffolder
 
-| Action | File | Responsibility |
-|--------|------|----------------|
+| Action | File                      | Responsibility               |
+| ------ | ------------------------- | ---------------------------- |
 | Create | `GAME_DEVELOPER_GUIDE.md` | Full developer documentation |
-| Create | `scripts/create-game.ts` | Interactive game scaffolder |
-| Modify | `package.json` (root) | Add `create-game` script |
+| Create | `scripts/create-game.ts`  | Interactive game scaffolder  |
+| Modify | `package.json` (root)     | Add `create-game` script     |
 
 ### 6A — Comprehensive Testing
 
-| Action | File | Responsibility |
-|--------|------|----------------|
-| Create | `playwright.config.ts` | Playwright config (viewports, webServer) |
-| Create | `e2e/fixtures.ts` | Shared test fixtures |
-| Create | `e2e/profile.spec.ts` | Profile creation/switching E2E |
-| Create | `e2e/hub.spec.ts` | Hub browsing/filtering E2E |
-| Create | `e2e/gameplay.spec.ts` | Play games to completion E2E |
-| Create | `e2e/rewards.spec.ts` | Reward earning E2E |
-| Create | `e2e/parental.spec.ts` | Parental controls E2E |
-| Create | `e2e/offline.spec.ts` | Offline gameplay E2E |
-| Create | `e2e/a11y.spec.ts` | axe-core full-page scans |
-| Modify | `platform/vitest.config.ts` | Add coverage thresholds |
-| Modify | `shared/vitest.config.ts` | Add coverage thresholds |
+| Action | File                        | Responsibility                           |
+| ------ | --------------------------- | ---------------------------------------- |
+| Create | `playwright.config.ts`      | Playwright config (viewports, webServer) |
+| Create | `e2e/fixtures.ts`           | Shared test fixtures                     |
+| Create | `e2e/profile.spec.ts`       | Profile creation/switching E2E           |
+| Create | `e2e/hub.spec.ts`           | Hub browsing/filtering E2E               |
+| Create | `e2e/gameplay.spec.ts`      | Play games to completion E2E             |
+| Create | `e2e/rewards.spec.ts`       | Reward earning E2E                       |
+| Create | `e2e/parental.spec.ts`      | Parental controls E2E                    |
+| Create | `e2e/offline.spec.ts`       | Offline gameplay E2E                     |
+| Create | `e2e/a11y.spec.ts`          | axe-core full-page scans                 |
+| Modify | `platform/vitest.config.ts` | Add coverage thresholds                  |
+| Modify | `shared/vitest.config.ts`   | Add coverage thresholds                  |
 
 ### 6B — CI/CD Hardening
 
-| Action | File | Responsibility |
-|--------|------|----------------|
+| Action | File                       | Responsibility                         |
+| ------ | -------------------------- | -------------------------------------- |
 | Modify | `.github/workflows/ci.yml` | Add Playwright + coverage + a11y steps |
-| Create | `.changeset/config.json` | Changesets monorepo config |
-| Modify | `package.json` (root) | Add changeset scripts |
+| Create | `.changeset/config.json`   | Changesets monorepo config             |
+| Modify | `package.json` (root)      | Add changeset scripts                  |
 
 ---
 
 ## Task 1: Create Feature Flags JSON Config
 
 **Files:**
+
 - Create: `platform/src/config/featureFlags.json`
 
 This task creates the static feature flag definitions using the existing `FeatureFlags` type from `shared/src/types/platform.ts`. Each flag has `enabled`, `description`, and optional `rolloutPercentage`/`ageTiers`.
@@ -113,6 +114,7 @@ git commit -m "feat(flags): add static feature flags config"
 ## Task 2: Wire FeatureFlagProvider Into App
 
 **Files:**
+
 - Modify: `platform/src/main.tsx`
 
 The `FeatureFlagProvider` already exists in `shared/src/context/FeatureFlagContext.tsx`. This task imports the JSON config and wraps the app tree.
@@ -198,10 +200,7 @@ createRoot(document.getElementById('root')!).render(
         audioManager={audioManager}
         gameRegistry={gameRegistry}
       >
-        <FeatureFlagProvider
-          flags={featureFlags as FeatureFlags}
-          profileId={null}
-        >
+        <FeatureFlagProvider flags={featureFlags as FeatureFlags} profileId={null}>
           <App />
         </FeatureFlagProvider>
       </PlatformProvider>
@@ -229,6 +228,7 @@ git commit -m "feat(flags): wire FeatureFlagProvider into app tree"
 ## Task 3: Hub Feature Flag Filtering
 
 **Files:**
+
 - Modify: `platform/src/pages/Hub.tsx`
 
 Games in the Hub should only appear if their feature flag is enabled. A game needs both age-range match AND feature flag enabled.
@@ -339,6 +339,7 @@ git commit -m "feat(flags): filter Hub games by feature flags"
 ## Task 4: GameWrapper Feature Flag Guard
 
 **Files:**
+
 - Modify: `platform/src/pages/GameWrapper.tsx`
 
 Prevent direct URL navigation to a disabled game (e.g., `/game/dummy-game`).
@@ -458,6 +459,7 @@ git commit -m "feat(flags): guard GameWrapper against disabled game flags"
 ## Task 5: Beta Badge on GameCard
 
 **Files:**
+
 - Modify: `platform/src/components/GameCard/GameCard.tsx`
 - Modify: `platform/src/components/GameCard/GameCard.module.css`
 
@@ -481,7 +483,9 @@ const isBeta = manifest.status === 'beta' && flagEnabled;
 In the JSX, inside the `<div className={styles.thumbnail}>` block, after the existing NEW badge, add:
 
 ```tsx
-{isBeta && <span className={styles.betaBadge}>{t('gameCard.beta', 'BETA')}</span>}
+{
+  isBeta && <span className={styles.betaBadge}>{t('gameCard.beta', 'BETA')}</span>;
+}
 ```
 
 - [ ] **Step 2: Add BETA badge styles**
@@ -521,6 +525,7 @@ git commit -m "feat(flags): show BETA badge on game cards for beta-status games"
 ## Task 6: Game Developer Guide
 
 **Files:**
+
 - Create: `GAME_DEVELOPER_GUIDE.md`
 
 This task writes the full developer documentation for creating new games.
@@ -573,6 +578,7 @@ git commit -m "docs: add game developer guide"
 ## Task 7: Create Game Scaffolder Script
 
 **Files:**
+
 - Create: `scripts/create-game.ts`
 - Modify: `package.json` (root)
 
@@ -614,7 +620,10 @@ async function main() {
 
   // Gather info
   const rawName = await ask('Game name (kebab-case, e.g. "spelling-bee"): ');
-  const name = rawName.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-');
+  const name = rawName
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '-');
   const displayName = await ask('Display name (e.g. "Spelling Bee"): ');
 
   const ageRangeStr = await askChoice('Age range:', [
@@ -630,8 +639,14 @@ async function main() {
 
   console.log('\nSkill categories (comma-separated numbers):');
   const skillOptions = [
-    'literacy', 'numeracy', 'logic', 'memory',
-    'creativity', 'motor_skills', 'science', 'social_skills',
+    'literacy',
+    'numeracy',
+    'logic',
+    'memory',
+    'creativity',
+    'motor_skills',
+    'science',
+    'social_skills',
   ];
   skillOptions.forEach((s, i) => console.log(`  ${i + 1}. ${s}`));
   const skillInput = await ask('Choose: ');
@@ -886,7 +901,11 @@ export function ${componentName}({ config, onScore, onComplete, onExit }: GamePr
 
   // Locale files
   const enLocale = { title: displayName, instruction: 'TODO: Add instructions', play: 'Play' };
-  const frLocale = { title: displayName, instruction: 'TODO: Ajouter les instructions', play: 'Jouer' };
+  const frLocale = {
+    title: displayName,
+    instruction: 'TODO: Ajouter les instructions',
+    play: 'Jouer',
+  };
 
   fs.writeFileSync(
     path.join(gameDir, 'src', 'locales', 'en', `${name}.json`),
@@ -1006,9 +1025,15 @@ describe('${componentName}', () => {
   console.log(`  1. Run: pnpm install`);
   console.log(`  2. Add game manifest to platform/src/config/gameRegistry.ts`);
   console.log(`  3. Add locale imports to platform/src/i18n.ts:`);
-  console.log(`     import en${componentName} from '../../games/${name}/src/locales/en/${name}.json';`);
-  console.log(`     import fr${componentName} from '../../games/${name}/src/locales/fr/${name}.json';`);
-  console.log(`  4. Add to i18n resources: en: { '${name}': en${componentName} }, fr: { '${name}': fr${componentName} }`);
+  console.log(
+    `     import en${componentName} from '../../games/${name}/src/locales/en/${name}.json';`,
+  );
+  console.log(
+    `     import fr${componentName} from '../../games/${name}/src/locales/fr/${name}.json';`,
+  );
+  console.log(
+    `  4. Add to i18n resources: en: { '${name}': en${componentName} }, fr: { '${name}': fr${componentName} }`,
+  );
   console.log(`  5. Set feature flag "game.${name}" to enabled: true when ready`);
   console.log(`  6. Run: pnpm --filter @kids-games-zone/${name} test`);
   console.log(`  7. Start building your game in games/${name}/src/components/${componentName}.tsx`);
@@ -1033,12 +1058,14 @@ In `package.json` (root), add to `"scripts"`:
 Run: `pnpm create-game`
 
 Enter test values:
+
 - Name: `test-scaffold`
 - Display name: `Test Scaffold`
 - Age range: 2 (junior)
 - Skills: 1 (literacy)
 
 Verify:
+
 - `games/test-scaffold/` directory exists with all expected files
 - `pnpm install` succeeds
 - `pnpm --filter @kids-games-zone/test-scaffold typecheck` passes
@@ -1065,6 +1092,7 @@ git commit -m "feat: add create-game scaffolder script"
 ## Task 8: Install Playwright and E2E Dependencies
 
 **Files:**
+
 - Modify: `package.json` (root)
 - Create: `playwright.config.ts`
 
@@ -1093,7 +1121,9 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: process.env.CI ? [['html', { open: 'never' }], ['github']] : [['html', { open: 'on-failure' }]],
+  reporter: process.env.CI
+    ? [['html', { open: 'never' }], ['github']]
+    : [['html', { open: 'on-failure' }]],
   use: {
     baseURL: 'http://localhost:4173',
     trace: 'on-first-retry',
@@ -1156,6 +1186,7 @@ git commit -m "chore: install Playwright and configure E2E test runner"
 ## Task 9: E2E Test Fixtures
 
 **Files:**
+
 - Create: `e2e/fixtures.ts`
 
 Shared fixtures for common operations like creating a profile, navigating to a game, etc.
@@ -1169,11 +1200,7 @@ import { test as base, expect, type Page } from '@playwright/test';
 
 interface TestFixtures {
   /** Creates a profile and returns to the hub */
-  createProfile: (options?: {
-    name?: string;
-    age?: number;
-    skipPin?: boolean;
-  }) => Promise<void>;
+  createProfile: (options?: { name?: string; age?: number; skipPin?: boolean }) => Promise<void>;
 
   /** Navigates to a specific game from the hub */
   navigateToGame: (gameId: string) => Promise<void>;
@@ -1184,11 +1211,7 @@ interface TestFixtures {
 
 export const test = base.extend<TestFixtures>({
   createProfile: async ({ page }, use) => {
-    const fn = async (options?: {
-      name?: string;
-      age?: number;
-      skipPin?: boolean;
-    }) => {
+    const fn = async (options?: { name?: string; age?: number; skipPin?: boolean }) => {
       const name = options?.name ?? 'TestKid';
       const age = options?.age ?? 7;
 
@@ -1203,7 +1226,9 @@ export const test = base.extend<TestFixtures>({
       await ageInput.fill(String(age));
 
       // Select an avatar (click the first one)
-      const avatarButtons = page.locator('[data-testid="avatar-option"], button[aria-label*="avatar" i]');
+      const avatarButtons = page.locator(
+        '[data-testid="avatar-option"], button[aria-label*="avatar" i]',
+      );
       const count = await avatarButtons.count();
       if (count > 0) {
         await avatarButtons.first().click();
@@ -1230,7 +1255,9 @@ export const test = base.extend<TestFixtures>({
   navigateToGame: async ({ page }, use) => {
     const fn = async (gameId: string) => {
       // Click the game card
-      const gameCard = page.locator(`[href="/game/${gameId}"], button`).filter({ hasText: new RegExp(gameId.replace(/-/g, ' '), 'i') });
+      const gameCard = page
+        .locator(`[href="/game/${gameId}"], button`)
+        .filter({ hasText: new RegExp(gameId.replace(/-/g, ' '), 'i') });
       await gameCard.first().click();
       await page.waitForURL(`/game/${gameId}`, { timeout: 10_000 });
     };
@@ -1304,6 +1331,7 @@ git commit -m "test(e2e): add shared Playwright fixtures"
 ## Task 10: Profile E2E Tests
 
 **Files:**
+
 - Create: `e2e/profile.spec.ts`
 
 - [ ] **Step 1: Write profile E2E tests**
@@ -1367,6 +1395,7 @@ git commit -m "test(e2e): add profile management tests"
 ## Task 11: Hub E2E Tests
 
 **Files:**
+
 - Create: `e2e/hub.spec.ts`
 
 - [ ] **Step 1: Write hub E2E tests**
@@ -1464,6 +1493,7 @@ git commit -m "test(e2e): add hub browsing and filtering tests"
 ## Task 12: Gameplay E2E Tests
 
 **Files:**
+
 - Create: `e2e/gameplay.spec.ts`
 
 - [ ] **Step 1: Write gameplay E2E tests**
@@ -1574,7 +1604,9 @@ test.describe('Gameplay - Progress Persistence', () => {
     await playMemoryMatchToCompletion();
 
     // Go home
-    const homeButton = page.getByRole('button', { name: /go home|home/i }).or(page.getByRole('link', { name: /home/i }));
+    const homeButton = page
+      .getByRole('button', { name: /go home|home/i })
+      .or(page.getByRole('link', { name: /home/i }));
     await homeButton.first().click();
 
     // Hub should show "Continue Playing" section
@@ -1600,6 +1632,7 @@ git commit -m "test(e2e): add gameplay tests for all three games"
 ## Task 13: Rewards E2E Tests
 
 **Files:**
+
 - Create: `e2e/rewards.spec.ts`
 
 - [ ] **Step 1: Write rewards E2E tests**
@@ -1612,10 +1645,7 @@ import { test, expect } from './fixtures';
 test.describe('Rewards', () => {
   test.use({ project: { name: 'desktop' } });
 
-  test('rewards gallery shows locked rewards initially', async ({
-    page,
-    createProfile,
-  }) => {
+  test('rewards gallery shows locked rewards initially', async ({ page, createProfile }) => {
     await createProfile({ name: 'RewardKid', age: 7 });
 
     // Navigate to rewards page
@@ -1641,7 +1671,9 @@ test.describe('Rewards', () => {
     await page.waitForTimeout(3000);
 
     // Navigate home then to rewards
-    const homeButton = page.getByRole('button', { name: /go home|home/i }).or(page.getByRole('link', { name: /home/i }));
+    const homeButton = page
+      .getByRole('button', { name: /go home|home/i })
+      .or(page.getByRole('link', { name: /home/i }));
     await homeButton.first().click();
 
     await page.goto('/rewards');
@@ -1680,6 +1712,7 @@ git commit -m "test(e2e): add rewards gallery and earning tests"
 ## Task 14: Parental Controls E2E Tests
 
 **Files:**
+
 - Create: `e2e/parental.spec.ts`
 
 - [ ] **Step 1: Write parental E2E tests**
@@ -1698,9 +1731,7 @@ test.describe('Parental Controls', () => {
     await page.goto('/settings/parental');
 
     // Should see the adult gate (multiplication problem)
-    await expect(
-      page.getByText(/what is|solve|multiply|×|x/i),
-    ).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/what is|solve|multiply|×|x/i)).toBeVisible({ timeout: 5000 });
   });
 
   test('settings page has parental controls link', async ({ page, createProfile }) => {
@@ -1710,9 +1741,9 @@ test.describe('Parental Controls', () => {
 
     // Should see parental controls link/button
     await expect(
-      page.getByRole('link', { name: /parental/i }).or(
-        page.getByRole('button', { name: /parental/i }),
-      ),
+      page
+        .getByRole('link', { name: /parental/i })
+        .or(page.getByRole('button', { name: /parental/i })),
     ).toBeVisible();
   });
 
@@ -1722,7 +1753,10 @@ test.describe('Parental Controls', () => {
     await page.goto('/settings/parental');
 
     // Find the input for the adult gate answer
-    const answerInput = page.getByRole('textbox').or(page.locator('input[type="number"]')).or(page.locator('input[type="text"]'));
+    const answerInput = page
+      .getByRole('textbox')
+      .or(page.locator('input[type="number"]'))
+      .or(page.locator('input[type="text"]'));
     const inputVisible = await answerInput.isVisible({ timeout: 3000 }).catch(() => false);
 
     if (inputVisible) {
@@ -1755,6 +1789,7 @@ git commit -m "test(e2e): add parental controls tests"
 ## Task 15: Offline E2E Tests
 
 **Files:**
+
 - Create: `e2e/offline.spec.ts`
 
 - [ ] **Step 1: Write offline E2E tests**
@@ -1836,6 +1871,7 @@ git commit -m "test(e2e): add offline support tests"
 ## Task 16: Accessibility E2E Tests
 
 **Files:**
+
 - Create: `e2e/a11y.spec.ts`
 
 - [ ] **Step 1: Write a11y E2E tests**
@@ -1857,7 +1893,9 @@ test.describe('Accessibility Scans', () => {
       .disableRules(['color-contrast']) // May have false positives on dynamic theming
       .analyze();
 
-    expect(results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious')).toEqual([]);
+    expect(
+      results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious'),
+    ).toEqual([]);
   });
 
   test('Profile creation page has no critical a11y violations', async ({ page }) => {
@@ -1868,7 +1906,9 @@ test.describe('Accessibility Scans', () => {
       .disableRules(['color-contrast'])
       .analyze();
 
-    expect(results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious')).toEqual([]);
+    expect(
+      results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious'),
+    ).toEqual([]);
   });
 
   test('Settings page has no critical a11y violations', async ({ page, createProfile }) => {
@@ -1880,7 +1920,9 @@ test.describe('Accessibility Scans', () => {
       .disableRules(['color-contrast'])
       .analyze();
 
-    expect(results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious')).toEqual([]);
+    expect(
+      results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious'),
+    ).toEqual([]);
   });
 
   test('Rewards page has no critical a11y violations', async ({ page, createProfile }) => {
@@ -1892,7 +1934,9 @@ test.describe('Accessibility Scans', () => {
       .disableRules(['color-contrast'])
       .analyze();
 
-    expect(results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious')).toEqual([]);
+    expect(
+      results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious'),
+    ).toEqual([]);
   });
 
   test('Memory Match game has no critical a11y violations', async ({
@@ -1911,7 +1955,9 @@ test.describe('Accessibility Scans', () => {
       .disableRules(['color-contrast'])
       .analyze();
 
-    expect(results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious')).toEqual([]);
+    expect(
+      results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious'),
+    ).toEqual([]);
   });
 
   test('Parental dashboard gate has no critical a11y violations', async ({
@@ -1926,7 +1972,9 @@ test.describe('Accessibility Scans', () => {
       .disableRules(['color-contrast'])
       .analyze();
 
-    expect(results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious')).toEqual([]);
+    expect(
+      results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious'),
+    ).toEqual([]);
   });
 });
 ```
@@ -1948,6 +1996,7 @@ git commit -m "test(e2e): add axe-core accessibility scans on all pages"
 ## Task 17: Add Coverage Thresholds to Vitest
 
 **Files:**
+
 - Modify: `platform/vitest.config.ts`
 - Modify: `shared/vitest.config.ts`
 - Modify: `package.json` (root)
@@ -2031,6 +2080,7 @@ git commit -m "chore: add Vitest coverage thresholds (80% shared/platform)"
 ## Task 18: CI Pipeline — Add Playwright and Coverage
 
 **Files:**
+
 - Modify: `.github/workflows/ci.yml`
 
 - [ ] **Step 1: Update CI workflow**
@@ -2161,6 +2211,7 @@ jobs:
 ```
 
 Key design decisions:
+
 - **`e2e` and `a11y` jobs run in parallel** after `lint-and-test` passes (via `needs: lint-and-test`)
 - **a11y is a separate job** so failures are clearly visible in the PR checks list
 - **Only chromium** is installed (saves CI time — cross-browser testing can be added later)
@@ -2179,6 +2230,7 @@ git commit -m "ci: add Playwright E2E, a11y, and coverage to CI pipeline"
 ## Task 19: Set Up Changesets
 
 **Files:**
+
 - Create: `.changeset/config.json`
 - Modify: `package.json` (root)
 

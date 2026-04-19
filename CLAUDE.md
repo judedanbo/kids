@@ -26,6 +26,7 @@ pnpm --filter word-puzzle test    # (when game packages exist)
 ## Architecture
 
 **Monorepo layout** (`pnpm-workspace.yaml`):
+
 - `platform/` — React 19 + Vite 6 app. The hub/shell that handles routing, profiles, state, and loads games.
 - `shared/` — Shared TypeScript types, UI components, hooks, design tokens. Published as `@kids-games-zone/shared`.
 - `games/<name>/` — Each game is a self-contained workspace package that exports a `GamePlugin` interface.
@@ -49,5 +50,6 @@ pnpm --filter word-puzzle test    # (when game packages exist)
 ## Development Plan
 
 See `plans/development-plan.md` for the phased roadmap. Current status tracked there. Key spec documents:
+
 - `plans/games-zone-requirements.md` — High-level requirements
 - `plans/technical-specs.md` — Detailed technical specifications with all interfaces and data models

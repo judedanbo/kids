@@ -9,7 +9,5 @@ interface AgeTierProviderProps {
 }
 
 export function AgeTierProvider({ tier, children }: AgeTierProviderProps) {
-  return (
-    <AgeTierContext.Provider value={tier}>{children}</AgeTierContext.Provider>
-  );
+  return <AgeTierContext.Provider value={tier}>{children}</AgeTierContext.Provider>;
 }

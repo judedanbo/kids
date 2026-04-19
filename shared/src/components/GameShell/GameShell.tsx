@@ -91,11 +91,7 @@ export function GameShell({
                 className={styles.musicButton}
                 onClick={handleToggleMusic}
                 aria-pressed={musicPaused}
-                aria-label={
-                  musicPaused
-                    ? t('gameShell.resumeMusic')
-                    : t('gameShell.pauseMusic')
-                }
+                aria-label={musicPaused ? t('gameShell.resumeMusic') : t('gameShell.pauseMusic')}
               >
                 {musicPaused ? '▶' : '⏸'}
               </button>

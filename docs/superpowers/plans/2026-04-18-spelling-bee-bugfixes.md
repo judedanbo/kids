@@ -17,6 +17,7 @@
 ## File Structure
 
 **Create:**
+
 - `games/spelling-bee/src/components/GameOverOverlay.tsx` — new overlay (no confetti, no auto-dismiss, Try again + Back buttons)
 - `games/spelling-bee/src/components/GameOverOverlay.module.css` — styles for the overlay
 - `games/spelling-bee/src/__tests__/GameOverOverlay.test.tsx` — component tests
@@ -25,6 +26,7 @@
 - `games/spelling-bee/src/__tests__/WordDisplay.test.tsx` — image-fallback tests
 
 **Modify:**
+
 - `games/spelling-bee/src/utils/wordSelector.ts` — layered fallback
 - `games/spelling-bee/src/__tests__/wordSelector.test.ts` — update the "returns empty when all excluded" test to match the new fallback behavior; add fallback-layer coverage
 - `games/spelling-bee/src/hooks/useSessionLevels.ts` — add `outcome` state + `restart()`
@@ -41,6 +43,7 @@
 ## Task ordering rationale
 
 Tasks are ordered from smallest blast radius to largest, and fix-by-fix:
+
 - **Fix 3 (Tasks 1–2)** — pure utility + hook guard. No UI change.
 - **Fix 2 (Tasks 3–4)** — localized to `WordDisplay`. No hook changes.
 - **Fix 1 (Tasks 5–8)** — locales, hook state, new component, wire-up.
@@ -51,6 +54,7 @@ Tasks are ordered from smallest blast radius to largest, and fix-by-fix:
 ## Task 1: Layered fallback in `selectWords`
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/utils/wordSelector.ts`
 - Test: `games/spelling-bee/src/__tests__/wordSelector.test.ts`
 
@@ -63,27 +67,27 @@ Current `selectWords` returns `[]` when eligible pool is drained. We want it to 
 Open `games/spelling-bee/src/__tests__/wordSelector.test.ts`. Replace the block starting at line 55:
 
 ```ts
-  it('returns empty array when all eligible words are excluded', () => {
-    const allDiff1 = wordsTiny.filter((w) => w.difficulty <= 1);
-    const excludeAll = allDiff1.map((w) => w.word);
-    const result = selectWords(wordsTiny, { difficulty: 1, count: 5, exclude: excludeAll });
-    expect(result).toHaveLength(0);
-  });
+it('returns empty array when all eligible words are excluded', () => {
+  const allDiff1 = wordsTiny.filter((w) => w.difficulty <= 1);
+  const excludeAll = allDiff1.map((w) => w.word);
+  const result = selectWords(wordsTiny, { difficulty: 1, count: 5, exclude: excludeAll });
+  expect(result).toHaveLength(0);
+});
 ```
 
 with:
 
 ```ts
-  it('widens difficulty when the at-or-below pool is fully excluded', () => {
-    const allDiff1 = wordsTiny.filter((w) => w.difficulty <= 1);
-    const excludeAll = allDiff1.map((w) => w.word);
-    const result = selectWords(wordsTiny, { difficulty: 1, count: 5, exclude: excludeAll });
-    expect(result).toHaveLength(5);
-    for (const word of result) {
-      expect(word.difficulty).toBeLessThanOrEqual(3);
-      expect(excludeAll).not.toContain(word.word);
-    }
-  });
+it('widens difficulty when the at-or-below pool is fully excluded', () => {
+  const allDiff1 = wordsTiny.filter((w) => w.difficulty <= 1);
+  const excludeAll = allDiff1.map((w) => w.word);
+  const result = selectWords(wordsTiny, { difficulty: 1, count: 5, exclude: excludeAll });
+  expect(result).toHaveLength(5);
+  for (const word of result) {
+    expect(word.difficulty).toBeLessThanOrEqual(3);
+    expect(excludeAll).not.toContain(word.word);
+  }
+});
 ```
 
 - [ ] **Step 2: Add a test for the "allow repeats" fallback layer**
@@ -91,20 +95,20 @@ with:
 Append inside the `describe('selectWords', ...)` block:
 
 ```ts
-  it('allows repeats when widening is still not enough', () => {
-    const narrowPool = [
-      { word: 'a', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
-      { word: 'b', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
-    ];
-    const result = selectWords(narrowPool, {
-      difficulty: 1,
-      count: 5,
-      exclude: ['a', 'b'],
-    });
-    expect(result).toHaveLength(2);
-    const words = result.map((w) => w.word).sort();
-    expect(words).toEqual(['a', 'b']);
+it('allows repeats when widening is still not enough', () => {
+  const narrowPool = [
+    { word: 'a', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
+    { word: 'b', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
+  ];
+  const result = selectWords(narrowPool, {
+    difficulty: 1,
+    count: 5,
+    exclude: ['a', 'b'],
   });
+  expect(result).toHaveLength(2);
+  const words = result.map((w) => w.word).sort();
+  expect(words).toEqual(['a', 'b']);
+});
 ```
 
 (Pool has only 2 unique words and both are excluded, so repeats are drawn. `count: 5` requests 5 but the whole pool only offers 2 unique words — the function returns those 2 rather than fabricating entries.)
@@ -114,14 +118,14 @@ Append inside the `describe('selectWords', ...)` block:
 Append:
 
 ```ts
-  it('primary path prefers words at-or-below target and keeps exclude honored', () => {
-    const result = selectWords(wordsJunior, { difficulty: 4, count: 3, exclude: ['book'] });
-    expect(result).toHaveLength(3);
-    for (const word of result) {
-      expect(word.difficulty).toBeLessThanOrEqual(4);
-      expect(word.word).not.toBe('book');
-    }
-  });
+it('primary path prefers words at-or-below target and keeps exclude honored', () => {
+  const result = selectWords(wordsJunior, { difficulty: 4, count: 3, exclude: ['book'] });
+  expect(result).toHaveLength(3);
+  for (const word of result) {
+    expect(word.difficulty).toBeLessThanOrEqual(4);
+    expect(word.word).not.toBe('book');
+  }
+});
 ```
 
 - [ ] **Step 4: Run tests to see failures**
@@ -129,6 +133,7 @@ Append:
 Run: `pnpm test src/__tests__/wordSelector.test.ts`
 
 Expected:
+
 - "widens difficulty…" FAILS (current impl returns `[]`).
 - "allows repeats…" FAILS (current impl returns `[]`).
 - "primary path…" PASSES (this is the current-behavior assertion).
@@ -212,6 +217,7 @@ git -C C:/code/kids commit -m "fix(spelling-bee): layered fallback in selectWord
 ## Task 2: Defensive empty-words guard in `useSpellingRound`
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/hooks/useSpellingRound.ts`
 - Create: `games/spelling-bee/src/__tests__/useSpellingRound.test.ts`
 
@@ -279,52 +285,52 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 Replace lines 37–48:
 
 ```ts
-  const [phase, setPhase] = useState<RoundPhase>('playing');
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const wordsCorrectRef = useRef(0);
+const [phase, setPhase] = useState<RoundPhase>('playing');
+const [currentWordIndex, setCurrentWordIndex] = useState(0);
+const [score, setScore] = useState(0);
+const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+const wordsCorrectRef = useRef(0);
 
-  // Sync lives from props into a ref for reliable reads in callbacks
-  const livesRef = useRef(lives);
-  livesRef.current = lives;
+// Sync lives from props into a ref for reliable reads in callbacks
+const livesRef = useRef(lives);
+livesRef.current = lives;
 
-  const maxScore = words.length;
-  const currentWord = words[currentWordIndex] ?? words[0];
+const maxScore = words.length;
+const currentWord = words[currentWordIndex] ?? words[0];
 ```
 
 with:
 
 ```ts
-  const isEmpty = words.length === 0;
-  const [phase, setPhase] = useState<RoundPhase>(isEmpty ? 'complete' : 'playing');
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const wordsCorrectRef = useRef(0);
+const isEmpty = words.length === 0;
+const [phase, setPhase] = useState<RoundPhase>(isEmpty ? 'complete' : 'playing');
+const [currentWordIndex, setCurrentWordIndex] = useState(0);
+const [score, setScore] = useState(0);
+const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+const wordsCorrectRef = useRef(0);
 
-  // Sync lives from props into a ref for reliable reads in callbacks
-  const livesRef = useRef(lives);
-  livesRef.current = lives;
+// Sync lives from props into a ref for reliable reads in callbacks
+const livesRef = useRef(lives);
+livesRef.current = lives;
 
-  const maxScore = words.length;
-  const currentWord = words[currentWordIndex];
+const maxScore = words.length;
+const currentWord = words[currentWordIndex];
 
-  // If constructed with no words, notify the parent once (post-render, via
-  // effect) so the session hook can advance past the broken round instead
-  // of hanging on it. Calling parent callbacks during render is a React
-  // anti-pattern; the effect defers it safely.
-  useEffect(() => {
-    if (!isEmpty) return;
-    if (import.meta.env.DEV) {
-      console.error('[spelling-bee] useSpellingRound received empty words array');
-    }
-    onRoundComplete(0, 0);
-    // Intentionally only runs on the first render that sees an empty words
-    // array. If the parent re-renders with a non-empty array later, this
-    // effect correctly stays idle.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEmpty]);
+// If constructed with no words, notify the parent once (post-render, via
+// effect) so the session hook can advance past the broken round instead
+// of hanging on it. Calling parent callbacks during render is a React
+// anti-pattern; the effect defers it safely.
+useEffect(() => {
+  if (!isEmpty) return;
+  if (import.meta.env.DEV) {
+    console.error('[spelling-bee] useSpellingRound received empty words array');
+  }
+  onRoundComplete(0, 0);
+  // Intentionally only runs on the first render that sees an empty words
+  // array. If the parent re-renders with a non-empty array later, this
+  // effect correctly stays idle.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [isEmpty]);
 ```
 
 Note: `currentWord` is now `WordEntry | undefined`. Update the interface at line 16:
@@ -346,23 +352,23 @@ interface SpellingRoundState {
 `submitAnswer` on line 50 dereferences `currentWord.word`. Replace its body:
 
 ```ts
-  const submitAnswer = useCallback(
-    (answer: string) => {
-      if (!currentWord) return;
-      const correct = answer.toLowerCase() === currentWord.word.toLowerCase();
-      setIsCorrect(correct);
-      setPhase('feedback');
+const submitAnswer = useCallback(
+  (answer: string) => {
+    if (!currentWord) return;
+    const correct = answer.toLowerCase() === currentWord.word.toLowerCase();
+    setIsCorrect(correct);
+    setPhase('feedback');
 
-      if (correct) {
-        wordsCorrectRef.current += 1;
-        setScore((prev) => prev + 1);
-        onScorePoint(1);
-      } else if (!isTiny) {
-        onLifeLost();
-      }
-    },
-    [currentWord, isTiny, onScorePoint, onLifeLost],
-  );
+    if (correct) {
+      wordsCorrectRef.current += 1;
+      setScore((prev) => prev + 1);
+      onScorePoint(1);
+    } else if (!isTiny) {
+      onLifeLost();
+    }
+  },
+  [currentWord, isTiny, onScorePoint, onLifeLost],
+);
 ```
 
 - [ ] **Step 5: Update `LevelPlay` to tolerate undefined `currentWord`**
@@ -370,9 +376,9 @@ interface SpellingRoundState {
 `LevelPlay.tsx` reads `round.currentWord.word` at lines 54, 60, and passes `round.currentWord` to `WordDisplay` at line 91. With Task 1's fallback, this path is defensive only, but TypeScript will now flag it. In `games/spelling-bee/src/components/LevelPlay.tsx`, add an early return after the `useSpellingRound` call (around line 52, before `useMemo`):
 
 ```ts
-  if (round.phase === 'complete' || !round.currentWord) {
-    return null;
-  }
+if (round.phase === 'complete' || !round.currentWord) {
+  return null;
+}
 ```
 
 Delete the old `if (round.phase === 'complete') return null;` block at lines 76–78 (it's now subsumed).
@@ -401,6 +407,7 @@ git -C C:/code/kids commit -m "fix(spelling-bee): guard useSpellingRound against
 ## Task 3: Add `imageFallbackLabel` i18n key
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/locales/en/spelling-bee.json`
 - Modify: `games/spelling-bee/src/locales/fr/spelling-bee.json`
 
@@ -440,6 +447,7 @@ git -C C:/code/kids commit -m "i18n(spelling-bee): add imageFallbackLabel key"
 ## Task 4: Image fallback in `WordDisplay`
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/components/WordDisplay.tsx`
 - Modify: `games/spelling-bee/src/components/WordDisplay.module.css`
 - Create: `games/spelling-bee/src/__tests__/WordDisplay.test.tsx`
@@ -547,46 +555,44 @@ import { useCallback, useEffect, useState } from 'react';
 Inside the component, after the existing `useState` calls (around line 18), add:
 
 ```ts
-  const [imageError, setImageError] = useState(false);
+const [imageError, setImageError] = useState(false);
 
-  useEffect(() => {
-    setImageError(false);
-  }, [word.word]);
+useEffect(() => {
+  setImageError(false);
+}, [word.word]);
 ```
 
 Replace the image render block at lines 44–50:
 
 ```tsx
-      {isTiny && word.image && (
-        <img
-          src={`/images/spelling-bee/${word.image}`}
-          alt={word.word}
-          className={styles.wordImage}
-        />
-      )}
+{
+  isTiny && word.image && (
+    <img src={`/images/spelling-bee/${word.image}`} alt={word.word} className={styles.wordImage} />
+  );
+}
 ```
 
 with:
 
 ```tsx
-      {isTiny && word.image && !imageError && (
-        <img
-          src={`/images/spelling-bee/${word.image}`}
-          alt={word.word}
-          className={styles.wordImage}
-          onError={() => setImageError(true)}
-        />
-      )}
+{
+  isTiny && word.image && !imageError && (
+    <img
+      src={`/images/spelling-bee/${word.image}`}
+      alt={word.word}
+      className={styles.wordImage}
+      onError={() => setImageError(true)}
+    />
+  );
+}
 
-      {isTiny && (!word.image || imageError) && (
-        <div
-          className={styles.imageFallback}
-          role="img"
-          aria-label={t('imageFallbackLabel')}
-        >
-          <span aria-hidden="true">🐝</span>
-        </div>
-      )}
+{
+  isTiny && (!word.image || imageError) && (
+    <div className={styles.imageFallback} role="img" aria-label={t('imageFallbackLabel')}>
+      <span aria-hidden="true">🐝</span>
+    </div>
+  );
+}
 ```
 
 - [ ] **Step 4: Add the fallback CSS class**
@@ -628,6 +634,7 @@ git -C C:/code/kids commit -m "fix(spelling-bee): fall back to placeholder when 
 ## Task 5: Add game-over i18n keys
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/locales/en/spelling-bee.json`
 - Modify: `games/spelling-bee/src/locales/fr/spelling-bee.json`
 
@@ -675,6 +682,7 @@ git -C C:/code/kids commit -m "i18n(spelling-bee): add game-over copy keys"
 ## Task 6: Add `outcome` state and `restart()` to `useSessionLevels`
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/hooks/useSessionLevels.ts`
 - Create: `games/spelling-bee/src/__tests__/useSessionLevels.hook.test.tsx`
 
@@ -793,7 +801,7 @@ export type SessionOutcome = 'victory' | 'out-of-lives' | null;
 Extend the `SessionState` interface (lines 48–60) with:
 
 ```ts
-  outcome: SessionOutcome;
+outcome: SessionOutcome;
 ```
 
 Extend the `SessionActions` interface (lines 62–68) with:
@@ -805,87 +813,87 @@ Extend the `SessionActions` interface (lines 62–68) with:
 Inside the hook body, add an `outcome` state alongside the existing state (after line 87):
 
 ```ts
-  const [outcome, setOutcome] = useState<SessionOutcome>(null);
+const [outcome, setOutcome] = useState<SessionOutcome>(null);
 ```
 
 In `completeLevel` (lines 115–143), change the completion branch at lines 124–127. Replace:
 
 ```ts
-      if (currentLevelRef.current >= TOTAL_LEVELS || livesRef.current <= 0) {
-        setSessionPhase('complete');
-        return;
-      }
+if (currentLevelRef.current >= TOTAL_LEVELS || livesRef.current <= 0) {
+  setSessionPhase('complete');
+  return;
+}
 ```
 
 with:
 
 ```ts
-      // Victory takes precedence over out-of-lives: if the player reached
-      // the final level (even on their last life), reward the completion.
-      if (currentLevelRef.current >= TOTAL_LEVELS) {
-        setOutcome('victory');
-        setSessionPhase('complete');
-        return;
-      }
-      if (livesRef.current <= 0) {
-        setOutcome('out-of-lives');
-        setSessionPhase('complete');
-        return;
-      }
+// Victory takes precedence over out-of-lives: if the player reached
+// the final level (even on their last life), reward the completion.
+if (currentLevelRef.current >= TOTAL_LEVELS) {
+  setOutcome('victory');
+  setSessionPhase('complete');
+  return;
+}
+if (livesRef.current <= 0) {
+  setOutcome('out-of-lives');
+  setSessionPhase('complete');
+  return;
+}
 ```
 
 Add a `restart` callback before the `return` statement at line 163:
 
 ```ts
-  const restart = useCallback(() => {
-    ladderRef.current = buildLadder(startingDifficulty);
-    usedWordsRef.current = [];
-    livesRef.current = isTiny ? Infinity : SESSION_LIVES;
-    currentLevelRef.current = 1;
+const restart = useCallback(() => {
+  ladderRef.current = buildLadder(startingDifficulty);
+  usedWordsRef.current = [];
+  livesRef.current = isTiny ? Infinity : SESSION_LIVES;
+  currentLevelRef.current = 1;
 
-    const plan = ladderRef.current[0];
-    const words = selectWords(wordPool, {
-      difficulty: plan.difficulty,
-      count: plan.wordCount,
-      exclude: [],
-    });
-    usedWordsRef.current = words.map((w) => w.word);
+  const plan = ladderRef.current[0];
+  const words = selectWords(wordPool, {
+    difficulty: plan.difficulty,
+    count: plan.wordCount,
+    exclude: [],
+  });
+  usedWordsRef.current = words.map((w) => w.word);
 
-    setCurrentLevel(1);
-    setLives(isTiny ? Infinity : SESSION_LIVES);
-    setSessionScore(0);
-    setSessionMaxScore(0);
-    setLevelsCompleted(0);
-    setHighestDifficulty(startingDifficulty);
-    setLevelWords(words);
-    setOutcome(null);
-    setSessionPhase('playing');
-  }, [startingDifficulty, isTiny, wordPool]);
+  setCurrentLevel(1);
+  setLives(isTiny ? Infinity : SESSION_LIVES);
+  setSessionScore(0);
+  setSessionMaxScore(0);
+  setLevelsCompleted(0);
+  setHighestDifficulty(startingDifficulty);
+  setLevelWords(words);
+  setOutcome(null);
+  setSessionPhase('playing');
+}, [startingDifficulty, isTiny, wordPool]);
 ```
 
 Extend the return object at lines 163–180 to include `outcome` and `restart`:
 
 ```ts
-  return {
-    sessionPhase,
-    currentLevel,
-    totalLevels: TOTAL_LEVELS,
-    levelDifficulty,
-    levelWords,
-    lives,
-    maxLives: isTiny ? 0 : SESSION_LIVES,
-    sessionScore,
-    sessionMaxScore,
-    levelsCompleted,
-    highestDifficulty,
-    outcome,
-    dismissInstruction,
-    completeLevel,
-    loseLife,
-    startNextLevel,
-    addScore,
-    restart,
-  };
+return {
+  sessionPhase,
+  currentLevel,
+  totalLevels: TOTAL_LEVELS,
+  levelDifficulty,
+  levelWords,
+  lives,
+  maxLives: isTiny ? 0 : SESSION_LIVES,
+  sessionScore,
+  sessionMaxScore,
+  levelsCompleted,
+  highestDifficulty,
+  outcome,
+  dismissInstruction,
+  completeLevel,
+  loseLife,
+  startNextLevel,
+  addScore,
+  restart,
+};
 ```
 
 - [ ] **Step 4: Run the tests to verify they pass**
@@ -912,6 +920,7 @@ git -C C:/code/kids commit -m "feat(spelling-bee): add outcome state and restart
 ## Task 7: Create `GameOverOverlay` component
 
 **Files:**
+
 - Create: `games/spelling-bee/src/components/GameOverOverlay.tsx`
 - Create: `games/spelling-bee/src/components/GameOverOverlay.module.css`
 - Create: `games/spelling-bee/src/__tests__/GameOverOverlay.test.tsx`
@@ -1065,12 +1074,12 @@ Create `games/spelling-bee/src/components/GameOverOverlay.module.css`:
 }
 
 .primary {
-  background: var(--color-primary, #4A90D9);
+  background: var(--color-primary, #4a90d9);
   color: #ffffff;
 }
 
 .primary:focus-visible {
-  outline: 3px solid var(--color-focus, #FFD700);
+  outline: 3px solid var(--color-focus, #ffd700);
   outline-offset: 2px;
 }
 
@@ -1081,7 +1090,7 @@ Create `games/spelling-bee/src/components/GameOverOverlay.module.css`:
 }
 
 .secondary:focus-visible {
-  outline: 3px solid var(--color-focus, #FFD700);
+  outline: 3px solid var(--color-focus, #ffd700);
   outline-offset: 2px;
 }
 
@@ -1127,35 +1136,23 @@ export function GameOverOverlay({
   }, []);
 
   return (
-    <div
-      className={styles.overlay}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={titleId}
-    >
+    <div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby={titleId}>
       <div className={styles.content}>
-        <div className={styles.emoji} aria-hidden="true">🐝</div>
-        <h2 id={titleId} className={styles.title}>{t('gameOverTitle')}</h2>
-        <p className={styles.subtitle}>
-          {t('gameOverSubtitle', { level: levelReached })}
-        </p>
+        <div className={styles.emoji} aria-hidden="true">
+          🐝
+        </div>
+        <h2 id={titleId} className={styles.title}>
+          {t('gameOverTitle')}
+        </h2>
+        <p className={styles.subtitle}>{t('gameOverSubtitle', { level: levelReached })}</p>
         <p className={styles.score}>
           {score} / {maxScore}
         </p>
         <div className={styles.actions}>
-          <button
-            ref={retryRef}
-            type="button"
-            className={styles.primary}
-            onClick={onRetry}
-          >
+          <button ref={retryRef} type="button" className={styles.primary} onClick={onRetry}>
             {t('tryAgain')}
           </button>
-          <button
-            type="button"
-            className={styles.secondary}
-            onClick={onExit}
-          >
+          <button type="button" className={styles.secondary} onClick={onExit}>
             {t('backToHome')}
           </button>
         </div>
@@ -1185,6 +1182,7 @@ git -C C:/code/kids commit -m "feat(spelling-bee): add GameOverOverlay component
 ## Task 8: Wire `GameOverOverlay` into `SpellingBee`
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/SpellingBee.tsx`
 - Modify: `games/spelling-bee/src/__tests__/SpellingBee.test.tsx`
 
@@ -1193,63 +1191,63 @@ git -C C:/code/kids commit -m "feat(spelling-bee): add GameOverOverlay component
 Open `games/spelling-bee/src/__tests__/SpellingBee.test.tsx` and append inside the `describe('SpellingBee', ...)` block (after the existing axe test):
 
 ```tsx
-  it('renders GameOverOverlay when outcome is out-of-lives', () => {
-    const props = createMockProps();
-    render(<SpellingBee {...props} />);
-    fireEvent.click(screen.getByText('letsGo'));
+it('renders GameOverOverlay when outcome is out-of-lives', () => {
+  const props = createMockProps();
+  render(<SpellingBee {...props} />);
+  fireEvent.click(screen.getByText('letsGo'));
 
-    // Simulate losing all 3 lives by triggering three incorrect submissions.
-    // Use the Keyboard's text input path: type a wrong answer + Enter.
-    // Simpler: query for the round-complete flow via the internal state is
-    // not exposed, so this test verifies the branch by rendering with a
-    // session already completed. Use a separate, focused branch test below.
+  // Simulate losing all 3 lives by triggering three incorrect submissions.
+  // Use the Keyboard's text input path: type a wrong answer + Enter.
+  // Simpler: query for the round-complete flow via the internal state is
+  // not exposed, so this test verifies the branch by rendering with a
+  // session already completed. Use a separate, focused branch test below.
 
-    // Instead, assert the overlay is NOT rendered during normal play.
-    expect(screen.queryByRole('dialog')).toBeNull();
-  });
+  // Instead, assert the overlay is NOT rendered during normal play.
+  expect(screen.queryByRole('dialog')).toBeNull();
+});
 
-  it('renders CelebrationOverlay (not GameOverOverlay) when sessionComplete via victory', () => {
-    // Directly assert the component wiring exists by checking that at
-    // instruction/playing phase, no GameOverOverlay is mounted.
-    render(<SpellingBee {...createMockProps()} />);
-    expect(screen.queryByRole('dialog')).toBeNull();
-  });
+it('renders CelebrationOverlay (not GameOverOverlay) when sessionComplete via victory', () => {
+  // Directly assert the component wiring exists by checking that at
+  // instruction/playing phase, no GameOverOverlay is mounted.
+  render(<SpellingBee {...createMockProps()} />);
+  expect(screen.queryByRole('dialog')).toBeNull();
+});
 ```
 
-These are weaker than ideal — driving a full out-of-lives flow through the UI is brittle (requires typing wrong answers + Enter three times through the Keyboard component). The hook tests in Task 6 already cover the outcome logic thoroughly. Here we verify only the *wiring*: that `GameOverOverlay` is rendered when `outcome === 'out-of-lives'` and not otherwise. To get stronger wiring coverage, add this test that exercises the real flow:
+These are weaker than ideal — driving a full out-of-lives flow through the UI is brittle (requires typing wrong answers + Enter three times through the Keyboard component). The hook tests in Task 6 already cover the outcome logic thoroughly. Here we verify only the _wiring_: that `GameOverOverlay` is rendered when `outcome === 'out-of-lives'` and not otherwise. To get stronger wiring coverage, add this test that exercises the real flow:
 
 ```tsx
-  it('shows Try again button after losing all lives and submitting wrong answers', async () => {
-    const props = createMockProps();
-    render(<SpellingBee {...props} />);
-    fireEvent.click(screen.getByText('letsGo'));
+it('shows Try again button after losing all lives and submitting wrong answers', async () => {
+  const props = createMockProps();
+  render(<SpellingBee {...props} />);
+  fireEvent.click(screen.getByText('letsGo'));
 
-    // The keyboard has letter buttons and an Enter button. Submit 3 wrong
-    // answers — any non-matching string will cost a life each time.
-    // After 3 wrong submits, the round should detect out-of-lives on
-    // nextWord, complete the session, and render GameOverOverlay.
-    for (let i = 0; i < 3; i++) {
-      // Submit a single letter "z" three times — very unlikely to match.
-      const zKey = screen.queryByRole('button', { name: /^z$/i });
-      if (zKey) fireEvent.click(zKey);
-      const enter = screen.queryByRole('button', { name: /enter|submit/i });
-      if (enter) fireEvent.click(enter);
-      const next = screen.queryByText('nextWord');
-      if (next) fireEvent.click(next);
-    }
+  // The keyboard has letter buttons and an Enter button. Submit 3 wrong
+  // answers — any non-matching string will cost a life each time.
+  // After 3 wrong submits, the round should detect out-of-lives on
+  // nextWord, complete the session, and render GameOverOverlay.
+  for (let i = 0; i < 3; i++) {
+    // Submit a single letter "z" three times — very unlikely to match.
+    const zKey = screen.queryByRole('button', { name: /^z$/i });
+    if (zKey) fireEvent.click(zKey);
+    const enter = screen.queryByRole('button', { name: /enter|submit/i });
+    if (enter) fireEvent.click(enter);
+    const next = screen.queryByText('nextWord');
+    if (next) fireEvent.click(next);
+  }
 
-    // If the flow worked, the dialog is present. If not, this test is
-    // inconclusive (keyboard UI may have changed); fall back to verifying
-    // at least no crash.
-    // Expected: dialog appears; assert if possible, otherwise pass-through.
-    const dialog = screen.queryByRole('dialog');
-    if (dialog) {
-      expect(screen.getByRole('button', { name: 'tryAgain' })).toBeTruthy();
-    }
-  });
+  // If the flow worked, the dialog is present. If not, this test is
+  // inconclusive (keyboard UI may have changed); fall back to verifying
+  // at least no crash.
+  // Expected: dialog appears; assert if possible, otherwise pass-through.
+  const dialog = screen.queryByRole('dialog');
+  if (dialog) {
+    expect(screen.getByRole('button', { name: 'tryAgain' })).toBeTruthy();
+  }
+});
 ```
 
-This last test is intentionally tolerant — it asserts *if* the flow reached the overlay, the overlay's "Try again" button exists. The hook tests in Task 6 are the authoritative check; this is wiring-sanity only.
+This last test is intentionally tolerant — it asserts _if_ the flow reached the overlay, the overlay's "Try again" button exists. The hook tests in Task 6 are the authoritative check; this is wiring-sanity only.
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
@@ -1268,56 +1266,71 @@ import { GameOverOverlay } from './components/GameOverOverlay';
 Replace the `sessionPhase === 'complete'` branch at lines 102–118:
 
 ```tsx
-  if (session.sessionPhase === 'complete') {
-    const completionMessage =
-      session.levelsCompleted >= session.totalLevels
-        ? t('sessionComplete', { levels: session.levelsCompleted })
-        : t('reachedLevel', { level: session.levelsCompleted });
+if (session.sessionPhase === 'complete') {
+  const completionMessage =
+    session.levelsCompleted >= session.totalLevels
+      ? t('sessionComplete', { levels: session.levelsCompleted })
+      : t('reachedLevel', { level: session.levelsCompleted });
 
-    return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
-        <CelebrationOverlay
-          title={completionMessage}
-          score={session.sessionScore}
-          maxScore={session.sessionMaxScore}
-          onComplete={handleCelebrationComplete}
-        />
-      </GameShell>
-    );
-  }
+  return (
+    <GameShell
+      title={t('title')}
+      onBack={onExit}
+      audioManager={audioManager}
+      musicEnabled={config.settings.backgroundMusicEnabled}
+    >
+      <CelebrationOverlay
+        title={completionMessage}
+        score={session.sessionScore}
+        maxScore={session.sessionMaxScore}
+        onComplete={handleCelebrationComplete}
+      />
+    </GameShell>
+  );
+}
 ```
 
 with:
 
 ```tsx
-  if (session.sessionPhase === 'complete') {
-    if (session.outcome === 'out-of-lives') {
-      return (
-        <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
-          <GameOverOverlay
-            levelReached={session.levelsCompleted}
-            score={session.sessionScore}
-            maxScore={session.sessionMaxScore}
-            onRetry={session.restart}
-            onExit={onExit}
-          />
-        </GameShell>
-      );
-    }
-
-    const completionMessage = t('sessionComplete', { levels: session.levelsCompleted });
-
+if (session.sessionPhase === 'complete') {
+  if (session.outcome === 'out-of-lives') {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
-        <CelebrationOverlay
-          title={completionMessage}
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
+        <GameOverOverlay
+          levelReached={session.levelsCompleted}
           score={session.sessionScore}
           maxScore={session.sessionMaxScore}
-          onComplete={handleCelebrationComplete}
+          onRetry={session.restart}
+          onExit={onExit}
         />
       </GameShell>
     );
   }
+
+  const completionMessage = t('sessionComplete', { levels: session.levelsCompleted });
+
+  return (
+    <GameShell
+      title={t('title')}
+      onBack={onExit}
+      audioManager={audioManager}
+      musicEnabled={config.settings.backgroundMusicEnabled}
+    >
+      <CelebrationOverlay
+        title={completionMessage}
+        score={session.sessionScore}
+        maxScore={session.sessionMaxScore}
+        onComplete={handleCelebrationComplete}
+      />
+    </GameShell>
+  );
+}
 ```
 
 Note: the `reachedLevel` branch is removed. With `outcome`-based routing, victory always means `levelsCompleted === totalLevels`, so `sessionComplete` is the only message for `CelebrationOverlay`. `reachedLevel` remains in the JSON file (and in `GameOverOverlay`'s subtitle via `gameOverSubtitle`).
@@ -1354,6 +1367,7 @@ From `games/spelling-bee/`:
 Run: `pnpm test`
 
 Expected: all tests PASS. Expect counts roughly:
+
 - `wordSelector.test.ts` — ~10 tests (existing 8 + 2 new from Task 1, minus 1 deleted expectation = 9-10)
 - `letterScrambler.test.ts` — unchanged
 - `useSessionLevels.test.ts` — unchanged (pure-util tests)
@@ -1386,6 +1400,7 @@ Run the platform dev server from the repo root:
 Run: `pnpm --filter platform dev`
 
 In a browser at `http://localhost:3000`:
+
 1. Create or select a profile with age 7 (junior tier).
 2. Launch Spelling Bee.
 3. Type three wrong answers to exhaust the 3 lives.
@@ -1393,15 +1408,9 @@ In a browser at `http://localhost:3000`:
 5. Click "Try again" — verify the game returns to the playing state at Level 1 with lives restored.
 6. Close the overlay via "Back" — verify the platform shell is visible again.
 
-Then verify the victory path is unchanged:
-7. In a profile with easy-enough difficulty, clear all 5 levels correctly.
-8. Confirm the celebration confetti + `CelebrationOverlay` still renders.
+Then verify the victory path is unchanged: 7. In a profile with easy-enough difficulty, clear all 5 levels correctly. 8. Confirm the celebration confetti + `CelebrationOverlay` still renders.
 
-Then verify the image fallback:
-9. Switch to a tiny-tier profile (age 4).
-10. Temporarily edit `games/spelling-bee/src/data/words-tiny.json` to set `"image": "does-not-exist.webp"` for one entry.
-11. Play through until that word appears — confirm the 🐝 placeholder renders in place of the image, no broken-image icon.
-12. Revert the JSON change.
+Then verify the image fallback: 9. Switch to a tiny-tier profile (age 4). 10. Temporarily edit `games/spelling-bee/src/data/words-tiny.json` to set `"image": "does-not-exist.webp"` for one entry. 11. Play through until that word appears — confirm the 🐝 placeholder renders in place of the image, no broken-image icon. 12. Revert the JSON change.
 
 - [ ] **Step 5: Confirm all task-level commits are on the branch**
 

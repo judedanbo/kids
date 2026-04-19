@@ -58,9 +58,7 @@ export function Rewards() {
             <IconImage src="/images/ui/status-empty-target.webp" alt="" fallback="🎯" size={96} />
           </div>
           <h2 className={styles.emptyTitle}>{t('rewards.startCollection')}</h2>
-          <p className={styles.emptyText}>
-            {t('rewards.playToEarn')}
-          </p>
+          <p className={styles.emptyText}>{t('rewards.playToEarn')}</p>
         </div>
       )}
 
@@ -68,7 +66,7 @@ export function Rewards() {
         {REWARD_CATALOG.map((reward) => {
           const unlocked = unlockedIds.has(reward.id);
           const matchedReward = unlocked
-            ? profile.rewards.find((r) => r.id === reward.id) ?? reward
+            ? (profile.rewards.find((r) => r.id === reward.id) ?? reward)
             : reward;
           const progress = unlocked
             ? undefined
@@ -76,11 +74,7 @@ export function Rewards() {
 
           return (
             <li key={reward.id}>
-              <RewardCard
-                reward={matchedReward}
-                unlocked={unlocked}
-                progress={progress}
-              />
+              <RewardCard reward={matchedReward} unlocked={unlocked} progress={progress} />
             </li>
           );
         })}

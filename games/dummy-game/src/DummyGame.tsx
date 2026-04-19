@@ -59,7 +59,12 @@ export function DummyGame({ config, onScore, onComplete, onExit, audioManager }:
 
   if (showCelebration) {
     return (
-      <GameShell title="Click Counter" onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title="Click Counter"
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <CelebrationOverlay
           title="Amazing!"
           score={score}
@@ -71,7 +76,12 @@ export function DummyGame({ config, onScore, onComplete, onExit, audioManager }:
   }
 
   return (
-    <GameShell title="Click Counter" onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+    <GameShell
+      title="Click Counter"
+      onBack={onExit}
+      audioManager={audioManager}
+      musicEnabled={config.settings.backgroundMusicEnabled}
+    >
       <div className={styles.gameArea}>
         <ScoreDisplay score={score} maxScore={TOTAL_ROUNDS} showStars />
         <ProgressBar current={round} total={TOTAL_ROUNDS} showLabel />

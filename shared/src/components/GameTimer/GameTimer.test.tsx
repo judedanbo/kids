@@ -38,9 +38,7 @@ describe('GameTimer', () => {
   });
 
   it('pauses when paused prop is true', () => {
-    const { rerender } = render(
-      <GameTimer mode="countdown" duration={10} />,
-    );
+    const { rerender } = render(<GameTimer mode="countdown" duration={10} />);
 
     act(() => {
       vi.advanceTimersByTime(2000);

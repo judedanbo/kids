@@ -59,9 +59,7 @@ export function DifficultySelector({
           );
         })}
       </div>
-      {labels && labels[current - 1] && (
-        <span className={styles.label}>{labels[current - 1]}</span>
-      )}
+      {labels && labels[current - 1] && <span className={styles.label}>{labels[current - 1]}</span>}
     </div>
   );
 }

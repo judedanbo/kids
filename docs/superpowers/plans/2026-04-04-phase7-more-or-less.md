@@ -47,6 +47,7 @@ games/more-or-less/
 ```
 
 Platform files to modify:
+
 - `platform/src/config/gameRegistry.ts` — Add more-or-less manifest
 - `platform/src/config/featureFlags.json` — Add `game.more-or-less` flag
 
@@ -55,6 +56,7 @@ Platform files to modify:
 ### Task 1: Scaffold game package
 
 **Files:**
+
 - Create: `games/more-or-less/package.json`
 - Create: `games/more-or-less/tsconfig.json`
 - Create: `games/more-or-less/vitest.config.ts`
@@ -149,7 +151,7 @@ import { expect } from 'vitest';
 expect.extend(axeMatchers);
 ```
 
-- [ ] **Step 6: Create src/__mocks__/react-i18next.ts**
+- [ ] **Step 6: Create src/**mocks**/react-i18next.ts**
 
 ```typescript
 import { vi } from 'vitest';
@@ -179,6 +181,7 @@ git commit -m "feat(more-or-less): scaffold game package with build config"
 ### Task 2: Comparison generator utility
 
 **Files:**
+
 - Create: `games/more-or-less/src/utils/comparisonGenerator.ts`
 - Create: `games/more-or-less/src/__tests__/comparisonGenerator.test.ts`
 
@@ -400,7 +403,13 @@ function pickObjectType(): string {
   return OBJECT_TYPES[Math.floor(Math.random() * OBJECT_TYPES.length)];
 }
 
-function generateUniqueNumbers(count: number, min: number, max: number, allowDecimals = false, allowNegative = false): number[] {
+function generateUniqueNumbers(
+  count: number,
+  min: number,
+  max: number,
+  allowDecimals = false,
+  allowNegative = false,
+): number[] {
   const values = new Set<number>();
   const effectiveMin = allowNegative ? -Math.abs(max) : min;
   let attempts = 0;
@@ -443,9 +452,7 @@ function generateTinyComparison(difficulty: number): ObjectComparison {
     { objectType, count: b },
   ];
 
-  const correctIndex = prompt === 'more'
-    ? (a > b ? 0 : 1)
-    : (a < b ? 0 : 1);
+  const correctIndex = prompt === 'more' ? (a > b ? 0 : 1) : a < b ? 0 : 1;
 
   return { type: 'objects', groups, prompt, correctIndex };
 }
@@ -454,9 +461,16 @@ function generateJuniorComparison(difficulty: number): NumberComparison {
   const prompt = pickPrompt();
   let min: number, max: number;
 
-  if (difficulty <= 2) { min = 1; max = 9; }
-  else if (difficulty <= 4) { min = 10; max = 99; }
-  else { min = 100; max = 999; }
+  if (difficulty <= 2) {
+    min = 1;
+    max = 9;
+  } else if (difficulty <= 4) {
+    min = 10;
+    max = 99;
+  } else {
+    min = 100;
+    max = 999;
+  }
 
   const values = generateUniqueNumbers(3, min, max);
   const displayValues = values.map(formatValue);
@@ -542,6 +556,7 @@ git commit -m "feat(more-or-less): add comparison generator with tier-based diff
 ### Task 3: useComparisonRound hook
 
 **Files:**
+
 - Create: `games/more-or-less/src/hooks/useComparisonRound.ts`
 
 - [ ] **Step 1: Create the round management hook**
@@ -583,7 +598,9 @@ interface ComparisonRoundActions {
   nextRound: () => void;
 }
 
-export function useComparisonRound(options: UseComparisonRoundOptions): ComparisonRoundState & ComparisonRoundActions {
+export function useComparisonRound(
+  options: UseComparisonRoundOptions,
+): ComparisonRoundState & ComparisonRoundActions {
   const { ageTier, difficulty, onScorePoint } = options;
   const totalRounds = ROUNDS_BY_TIER[ageTier];
 
@@ -682,6 +699,7 @@ git commit -m "feat(more-or-less): add useComparisonRound hook for round managem
 ### Task 4: ObjectGroups component (tiny-tier)
 
 **Files:**
+
 - Create: `games/more-or-less/src/components/ObjectGroups.tsx`
 - Create: `games/more-or-less/src/components/ObjectGroups.module.css`
 
@@ -768,7 +786,9 @@ export function ObjectGroups({ groups, onSelect, disabled = false }: ObjectGroup
   border-radius: var(--radius-lg, 12px);
   background: var(--color-surface, #fff);
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .group:hover:not(:disabled) {
@@ -818,6 +838,7 @@ git commit -m "feat(more-or-less): add ObjectGroups component for tiny-tier"
 ### Task 5: NumberCards component (junior/explorer comparison)
 
 **Files:**
+
 - Create: `games/more-or-less/src/components/NumberCards.tsx`
 - Create: `games/more-or-less/src/components/NumberCards.module.css`
 
@@ -884,7 +905,9 @@ export function NumberCards({ values, onSelect, disabled = false }: NumberCardsP
   font-weight: 700;
   color: var(--color-text);
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .card:hover:not(:disabled) {
@@ -915,6 +938,7 @@ git commit -m "feat(more-or-less): add NumberCards component for junior/explorer
 ### Task 6: OrderingArea component (explorer ordering)
 
 **Files:**
+
 - Create: `games/more-or-less/src/components/OrderingArea.tsx`
 - Create: `games/more-or-less/src/components/OrderingArea.module.css`
 
@@ -1065,7 +1089,9 @@ export function OrderingArea({ values, displayValues, onSubmit, disabled = false
   font-weight: 700;
   color: var(--color-text);
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
 }
 
 .card:hover:not(:disabled) {
@@ -1115,6 +1141,7 @@ git commit -m "feat(more-or-less): add OrderingArea component for explorer-tier 
 ### Task 7: Locale files
 
 **Files:**
+
 - Create: `games/more-or-less/src/locales/en/more-or-less.json`
 - Create: `games/more-or-less/src/locales/fr/more-or-less.json`
 
@@ -1182,6 +1209,7 @@ git commit -m "feat(more-or-less): add English and French locale files"
 ### Task 8: Main MoreOrLess component and plugin export
 
 **Files:**
+
 - Create: `games/more-or-less/src/MoreOrLess.tsx`
 - Create: `games/more-or-less/src/MoreOrLess.module.css`
 - Create: `games/more-or-less/src/index.ts`
@@ -1483,6 +1511,7 @@ git commit -m "feat(more-or-less): add main MoreOrLess component and plugin expo
 ### Task 9: Register game in platform
 
 **Files:**
+
 - Modify: `platform/src/config/gameRegistry.ts`
 - Modify: `platform/src/config/featureFlags.json`
 
@@ -1533,6 +1562,7 @@ git commit -m "feat(more-or-less): register game in platform registry and featur
 ### Task 10: Main component tests
 
 **Files:**
+
 - Create: `games/more-or-less/src/__tests__/MoreOrLess.test.tsx`
 
 - [ ] **Step 1: Write the tests**
@@ -1744,11 +1774,13 @@ git commit -m "fix(more-or-less): resolve typecheck and lint issues"
 ### Task 12: Update development plan
 
 **Files:**
+
 - Modify: `plans/development-plan.md`
 
 - [ ] **Step 1: Update Phase 7 status in development plan**
 
 Mark Phase 7 as complete with the three games built:
+
 - Spelling Bee (all ages, literacy)
 - Safety Scout (ages 4-8, safety awareness)
 - More or Less (ages 3-10, numeracy)

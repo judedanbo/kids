@@ -5,9 +5,8 @@ import { RewardCelebration } from './RewardCelebration';
 import type { Reward } from '@kids-games-zone/shared';
 
 vi.mock('@kids-games-zone/shared', async () => {
-  const actual = await vi.importActual<typeof import('@kids-games-zone/shared')>(
-    '@kids-games-zone/shared',
-  );
+  const actual =
+    await vi.importActual<typeof import('@kids-games-zone/shared')>('@kids-games-zone/shared');
   return {
     ...actual,
     CelebrationOverlay: ({ onComplete }: { onComplete?: () => void }) => (
@@ -105,7 +104,9 @@ describe('RewardCelebration', () => {
 
   it('has no accessibility violations', async () => {
     const onComplete = vi.fn();
-    const { container } = render(<RewardCelebration rewards={mockRewards} onComplete={onComplete} />);
+    const { container } = render(
+      <RewardCelebration rewards={mockRewards} onComplete={onComplete} />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });

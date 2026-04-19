@@ -229,12 +229,23 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
           <h2 className={styles.prompt}>
             {step === 'pin' ? t('profile.setPin') : t('profile.confirmPin')}
           </h2>
-          <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--spacing-md)', fontSize: '0.9rem' }}>
-            {step === 'pin'
-              ? t('profile.pinInstruction')
-              : t('profile.confirmPinInstruction')}
+          <p
+            style={{
+              color: 'var(--color-text-secondary)',
+              marginBottom: 'var(--spacing-md)',
+              fontSize: '0.9rem',
+            }}
+          >
+            {step === 'pin' ? t('profile.pinInstruction') : t('profile.confirmPinInstruction')}
           </p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-lg)' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 'var(--spacing-md)',
+              marginBottom: 'var(--spacing-lg)',
+            }}
+          >
             {Array.from({ length: 4 }, (_, i) => (
               <div
                 key={i}
@@ -249,7 +260,17 @@ export function ProfileCreator({ onComplete, onCancel }: ProfileCreatorProps) {
               />
             ))}
           </div>
-          {pinError && <p style={{ color: 'var(--color-error, #e53935)', fontWeight: 600, marginBottom: 'var(--spacing-md)' }}>{pinError}</p>}
+          {pinError && (
+            <p
+              style={{
+                color: 'var(--color-error, #e53935)',
+                fontWeight: 600,
+                marginBottom: 'var(--spacing-md)',
+              }}
+            >
+              {pinError}
+            </p>
+          )}
           <NumberPad onDigit={handlePinDigit} onDelete={handlePinDelete} />
           <button
             className={styles.cancelButton}

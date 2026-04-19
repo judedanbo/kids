@@ -55,6 +55,7 @@ games/spelling-bee/
 ```
 
 Platform files to modify:
+
 - `platform/src/config/gameRegistry.ts` — Add spelling-bee manifest
 - `platform/src/config/featureFlags.json` — Add `game.spelling-bee` flag
 
@@ -63,6 +64,7 @@ Platform files to modify:
 ### Task 1: Scaffold game package
 
 **Files:**
+
 - Create: `games/spelling-bee/package.json`
 - Create: `games/spelling-bee/tsconfig.json`
 - Create: `games/spelling-bee/vitest.config.ts`
@@ -157,7 +159,7 @@ import { expect } from 'vitest';
 expect.extend(axeMatchers);
 ```
 
-- [ ] **Step 6: Create src/__mocks__/react-i18next.ts**
+- [ ] **Step 6: Create src/**mocks**/react-i18next.ts**
 
 ```typescript
 import { vi } from 'vitest';
@@ -192,6 +194,7 @@ git commit -m "feat(spelling-bee): scaffold game package with build config"
 ### Task 2: Word data files and word selector utility
 
 **Files:**
+
 - Create: `games/spelling-bee/src/data/words-tiny.json`
 - Create: `games/spelling-bee/src/data/words-junior.json`
 - Create: `games/spelling-bee/src/data/words-explorer.json`
@@ -202,24 +205,150 @@ git commit -m "feat(spelling-bee): scaffold game package with build config"
 
 ```json
 [
-  { "word": "cat", "difficulty": 1, "image": "cat.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "dog", "difficulty": 1, "image": "dog.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "sun", "difficulty": 1, "image": "sun.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "hat", "difficulty": 1, "image": "hat.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "cup", "difficulty": 1, "image": "cup.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "bed", "difficulty": 1, "image": "bed.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "pen", "difficulty": 2, "image": "pen.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "bus", "difficulty": 2, "image": "bus.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "box", "difficulty": 2, "image": "box.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "map", "difficulty": 2, "image": "map.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "tree", "difficulty": 3, "image": "tree.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "ball", "difficulty": 3, "image": "ball.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "fish", "difficulty": 3, "image": "fish.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "bird", "difficulty": 3, "image": "bird.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "cake", "difficulty": 4, "image": "cake.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "frog", "difficulty": 4, "image": "frog.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "star", "difficulty": 4, "image": "star.webp", "definition": "", "origin": "", "sentence": "" },
-  { "word": "rain", "difficulty": 4, "image": "rain.webp", "definition": "", "origin": "", "sentence": "" }
+  {
+    "word": "cat",
+    "difficulty": 1,
+    "image": "cat.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "dog",
+    "difficulty": 1,
+    "image": "dog.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "sun",
+    "difficulty": 1,
+    "image": "sun.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "hat",
+    "difficulty": 1,
+    "image": "hat.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "cup",
+    "difficulty": 1,
+    "image": "cup.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "bed",
+    "difficulty": 1,
+    "image": "bed.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "pen",
+    "difficulty": 2,
+    "image": "pen.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "bus",
+    "difficulty": 2,
+    "image": "bus.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "box",
+    "difficulty": 2,
+    "image": "box.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "map",
+    "difficulty": 2,
+    "image": "map.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "tree",
+    "difficulty": 3,
+    "image": "tree.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "ball",
+    "difficulty": 3,
+    "image": "ball.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "fish",
+    "difficulty": 3,
+    "image": "fish.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "bird",
+    "difficulty": 3,
+    "image": "bird.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "cake",
+    "difficulty": 4,
+    "image": "cake.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "frog",
+    "difficulty": 4,
+    "image": "frog.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "star",
+    "difficulty": 4,
+    "image": "star.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  },
+  {
+    "word": "rain",
+    "difficulty": 4,
+    "image": "rain.webp",
+    "definition": "",
+    "origin": "",
+    "sentence": ""
+  }
 ]
 ```
 
@@ -227,22 +356,134 @@ git commit -m "feat(spelling-bee): scaffold game package with build config"
 
 ```json
 [
-  { "word": "book", "difficulty": 1, "image": "", "definition": "A set of pages with words or pictures", "origin": "Old English", "sentence": "I read a book before bed." },
-  { "word": "fish", "difficulty": 1, "image": "", "definition": "An animal that lives in water", "origin": "Old English", "sentence": "The fish swam in the pond." },
-  { "word": "milk", "difficulty": 1, "image": "", "definition": "A white drink from cows", "origin": "Old English", "sentence": "She drank a glass of milk." },
-  { "word": "lamp", "difficulty": 2, "image": "", "definition": "A device that gives light", "origin": "Greek", "sentence": "Turn on the lamp please." },
-  { "word": "jump", "difficulty": 2, "image": "", "definition": "To push yourself up into the air", "origin": "Middle English", "sentence": "He can jump very high." },
-  { "word": "hand", "difficulty": 2, "image": "", "definition": "The part of your body at the end of your arm", "origin": "Old English", "sentence": "She raised her hand in class." },
-  { "word": "plant", "difficulty": 3, "image": "", "definition": "A living thing that grows in soil", "origin": "Latin", "sentence": "We planted a flower in the garden." },
-  { "word": "crane", "difficulty": 3, "image": "", "definition": "A large bird or a machine for lifting", "origin": "Old English", "sentence": "The crane lifted the heavy box." },
-  { "word": "stove", "difficulty": 3, "image": "", "definition": "A device used for cooking food", "origin": "Dutch", "sentence": "Dad cooked dinner on the stove." },
-  { "word": "brave", "difficulty": 4, "image": "", "definition": "Ready to face danger without fear", "origin": "French", "sentence": "The brave knight saved the village." },
-  { "word": "float", "difficulty": 4, "image": "", "definition": "To rest on top of water", "origin": "Old English", "sentence": "The leaf will float on the river." },
-  { "word": "bridge", "difficulty": 5, "image": "", "definition": "A structure built over a river or road so people can cross", "origin": "Old English", "sentence": "We walked across the bridge to get to the park." },
-  { "word": "frozen", "difficulty": 5, "image": "", "definition": "Turned into ice or very cold", "origin": "Old English", "sentence": "The lake was frozen in winter." },
-  { "word": "garden", "difficulty": 5, "image": "", "definition": "A piece of land where plants are grown", "origin": "French", "sentence": "She grows tomatoes in the garden." },
-  { "word": "market", "difficulty": 6, "image": "", "definition": "A place where people buy and sell things", "origin": "Latin", "sentence": "We bought fruit at the market." },
-  { "word": "winter", "difficulty": 6, "image": "", "definition": "The coldest season of the year", "origin": "Old English", "sentence": "Snow falls in winter." }
+  {
+    "word": "book",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A set of pages with words or pictures",
+    "origin": "Old English",
+    "sentence": "I read a book before bed."
+  },
+  {
+    "word": "fish",
+    "difficulty": 1,
+    "image": "",
+    "definition": "An animal that lives in water",
+    "origin": "Old English",
+    "sentence": "The fish swam in the pond."
+  },
+  {
+    "word": "milk",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A white drink from cows",
+    "origin": "Old English",
+    "sentence": "She drank a glass of milk."
+  },
+  {
+    "word": "lamp",
+    "difficulty": 2,
+    "image": "",
+    "definition": "A device that gives light",
+    "origin": "Greek",
+    "sentence": "Turn on the lamp please."
+  },
+  {
+    "word": "jump",
+    "difficulty": 2,
+    "image": "",
+    "definition": "To push yourself up into the air",
+    "origin": "Middle English",
+    "sentence": "He can jump very high."
+  },
+  {
+    "word": "hand",
+    "difficulty": 2,
+    "image": "",
+    "definition": "The part of your body at the end of your arm",
+    "origin": "Old English",
+    "sentence": "She raised her hand in class."
+  },
+  {
+    "word": "plant",
+    "difficulty": 3,
+    "image": "",
+    "definition": "A living thing that grows in soil",
+    "origin": "Latin",
+    "sentence": "We planted a flower in the garden."
+  },
+  {
+    "word": "crane",
+    "difficulty": 3,
+    "image": "",
+    "definition": "A large bird or a machine for lifting",
+    "origin": "Old English",
+    "sentence": "The crane lifted the heavy box."
+  },
+  {
+    "word": "stove",
+    "difficulty": 3,
+    "image": "",
+    "definition": "A device used for cooking food",
+    "origin": "Dutch",
+    "sentence": "Dad cooked dinner on the stove."
+  },
+  {
+    "word": "brave",
+    "difficulty": 4,
+    "image": "",
+    "definition": "Ready to face danger without fear",
+    "origin": "French",
+    "sentence": "The brave knight saved the village."
+  },
+  {
+    "word": "float",
+    "difficulty": 4,
+    "image": "",
+    "definition": "To rest on top of water",
+    "origin": "Old English",
+    "sentence": "The leaf will float on the river."
+  },
+  {
+    "word": "bridge",
+    "difficulty": 5,
+    "image": "",
+    "definition": "A structure built over a river or road so people can cross",
+    "origin": "Old English",
+    "sentence": "We walked across the bridge to get to the park."
+  },
+  {
+    "word": "frozen",
+    "difficulty": 5,
+    "image": "",
+    "definition": "Turned into ice or very cold",
+    "origin": "Old English",
+    "sentence": "The lake was frozen in winter."
+  },
+  {
+    "word": "garden",
+    "difficulty": 5,
+    "image": "",
+    "definition": "A piece of land where plants are grown",
+    "origin": "French",
+    "sentence": "She grows tomatoes in the garden."
+  },
+  {
+    "word": "market",
+    "difficulty": 6,
+    "image": "",
+    "definition": "A place where people buy and sell things",
+    "origin": "Latin",
+    "sentence": "We bought fruit at the market."
+  },
+  {
+    "word": "winter",
+    "difficulty": 6,
+    "image": "",
+    "definition": "The coldest season of the year",
+    "origin": "Old English",
+    "sentence": "Snow falls in winter."
+  }
 ]
 ```
 
@@ -250,22 +491,134 @@ git commit -m "feat(spelling-bee): scaffold game package with build config"
 
 ```json
 [
-  { "word": "house", "difficulty": 1, "image": "", "definition": "A building where people live", "origin": "Old English", "sentence": "They moved to a new house." },
-  { "word": "table", "difficulty": 1, "image": "", "definition": "A piece of furniture with a flat top", "origin": "Latin", "sentence": "Put the plates on the table." },
-  { "word": "ocean", "difficulty": 2, "image": "", "definition": "A very large body of salt water", "origin": "Greek", "sentence": "Whales live in the ocean." },
-  { "word": "forest", "difficulty": 2, "image": "", "definition": "A large area covered with trees", "origin": "Latin", "sentence": "The deer ran into the forest." },
-  { "word": "kitchen", "difficulty": 3, "image": "", "definition": "The room where food is prepared", "origin": "Latin", "sentence": "She baked cookies in the kitchen." },
-  { "word": "blanket", "difficulty": 3, "image": "", "definition": "A warm covering used on beds", "origin": "French", "sentence": "He pulled the blanket over himself." },
-  { "word": "dinosaur", "difficulty": 4, "image": "", "definition": "A large reptile that lived millions of years ago", "origin": "Greek", "sentence": "The museum has a dinosaur skeleton." },
-  { "word": "elephant", "difficulty": 4, "image": "", "definition": "The largest land animal with a trunk", "origin": "Greek", "sentence": "The elephant sprayed water with its trunk." },
-  { "word": "adventure", "difficulty": 5, "image": "", "definition": "An exciting and unusual experience", "origin": "Latin", "sentence": "They went on an adventure in the mountains." },
-  { "word": "geography", "difficulty": 5, "image": "", "definition": "The study of the Earth and its features", "origin": "Greek", "sentence": "In geography class we learned about rivers." },
-  { "word": "beautiful", "difficulty": 6, "image": "", "definition": "Very pleasing to look at or hear", "origin": "French", "sentence": "The sunset was beautiful." },
-  { "word": "celebration", "difficulty": 7, "image": "", "definition": "A special event to mark an occasion", "origin": "Latin", "sentence": "The birthday celebration was fun." },
-  { "word": "temperature", "difficulty": 7, "image": "", "definition": "How hot or cold something is", "origin": "Latin", "sentence": "The temperature dropped below zero." },
-  { "word": "magnificent", "difficulty": 8, "image": "", "definition": "Extremely beautiful or impressive", "origin": "Latin", "sentence": "The castle was magnificent." },
-  { "word": "encyclopedia", "difficulty": 9, "image": "", "definition": "A book or set of books containing information on many subjects", "origin": "Greek", "sentence": "She looked it up in the encyclopedia." },
-  { "word": "extraordinary", "difficulty": 10, "image": "", "definition": "Very unusual or remarkable", "origin": "Latin", "sentence": "The magician performed an extraordinary trick." }
+  {
+    "word": "house",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A building where people live",
+    "origin": "Old English",
+    "sentence": "They moved to a new house."
+  },
+  {
+    "word": "table",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A piece of furniture with a flat top",
+    "origin": "Latin",
+    "sentence": "Put the plates on the table."
+  },
+  {
+    "word": "ocean",
+    "difficulty": 2,
+    "image": "",
+    "definition": "A very large body of salt water",
+    "origin": "Greek",
+    "sentence": "Whales live in the ocean."
+  },
+  {
+    "word": "forest",
+    "difficulty": 2,
+    "image": "",
+    "definition": "A large area covered with trees",
+    "origin": "Latin",
+    "sentence": "The deer ran into the forest."
+  },
+  {
+    "word": "kitchen",
+    "difficulty": 3,
+    "image": "",
+    "definition": "The room where food is prepared",
+    "origin": "Latin",
+    "sentence": "She baked cookies in the kitchen."
+  },
+  {
+    "word": "blanket",
+    "difficulty": 3,
+    "image": "",
+    "definition": "A warm covering used on beds",
+    "origin": "French",
+    "sentence": "He pulled the blanket over himself."
+  },
+  {
+    "word": "dinosaur",
+    "difficulty": 4,
+    "image": "",
+    "definition": "A large reptile that lived millions of years ago",
+    "origin": "Greek",
+    "sentence": "The museum has a dinosaur skeleton."
+  },
+  {
+    "word": "elephant",
+    "difficulty": 4,
+    "image": "",
+    "definition": "The largest land animal with a trunk",
+    "origin": "Greek",
+    "sentence": "The elephant sprayed water with its trunk."
+  },
+  {
+    "word": "adventure",
+    "difficulty": 5,
+    "image": "",
+    "definition": "An exciting and unusual experience",
+    "origin": "Latin",
+    "sentence": "They went on an adventure in the mountains."
+  },
+  {
+    "word": "geography",
+    "difficulty": 5,
+    "image": "",
+    "definition": "The study of the Earth and its features",
+    "origin": "Greek",
+    "sentence": "In geography class we learned about rivers."
+  },
+  {
+    "word": "beautiful",
+    "difficulty": 6,
+    "image": "",
+    "definition": "Very pleasing to look at or hear",
+    "origin": "French",
+    "sentence": "The sunset was beautiful."
+  },
+  {
+    "word": "celebration",
+    "difficulty": 7,
+    "image": "",
+    "definition": "A special event to mark an occasion",
+    "origin": "Latin",
+    "sentence": "The birthday celebration was fun."
+  },
+  {
+    "word": "temperature",
+    "difficulty": 7,
+    "image": "",
+    "definition": "How hot or cold something is",
+    "origin": "Latin",
+    "sentence": "The temperature dropped below zero."
+  },
+  {
+    "word": "magnificent",
+    "difficulty": 8,
+    "image": "",
+    "definition": "Extremely beautiful or impressive",
+    "origin": "Latin",
+    "sentence": "The castle was magnificent."
+  },
+  {
+    "word": "encyclopedia",
+    "difficulty": 9,
+    "image": "",
+    "definition": "A book or set of books containing information on many subjects",
+    "origin": "Greek",
+    "sentence": "She looked it up in the encyclopedia."
+  },
+  {
+    "word": "extraordinary",
+    "difficulty": 10,
+    "image": "",
+    "definition": "Very unusual or remarkable",
+    "origin": "Latin",
+    "sentence": "The magician performed an extraordinary trick."
+  }
 ]
 ```
 
@@ -398,6 +751,7 @@ git commit -m "feat(spelling-bee): add word data files and word selector utility
 ### Task 3: Letter scrambler utility
 
 **Files:**
+
 - Create: `games/spelling-bee/src/utils/letterScrambler.ts`
 - Create: `games/spelling-bee/src/__tests__/letterScrambler.test.ts`
 
@@ -515,6 +869,7 @@ git commit -m "feat(spelling-bee): add letter scrambler with distractor generati
 ### Task 4: useSpellingRound hook
 
 **Files:**
+
 - Create: `games/spelling-bee/src/hooks/useSpellingRound.ts`
 
 - [ ] **Step 1: Create the round management hook**
@@ -556,7 +911,9 @@ interface SpellingRoundActions {
 
 const LIVES_COUNT = 3;
 
-export function useSpellingRound(options: UseSpellingRoundOptions): SpellingRoundState & SpellingRoundActions {
+export function useSpellingRound(
+  options: UseSpellingRoundOptions,
+): SpellingRoundState & SpellingRoundActions {
   const { words, ageTier, onScorePoint } = options;
   const isTiny = ageTier === 'tiny';
 
@@ -638,6 +995,7 @@ git commit -m "feat(spelling-bee): add useSpellingRound hook for round managemen
 ### Task 5: LetterTiles component (tiny-tier input)
 
 **Files:**
+
 - Create: `games/spelling-bee/src/components/LetterTiles.tsx`
 - Create: `games/spelling-bee/src/components/LetterTiles.module.css`
 
@@ -763,7 +1121,9 @@ export function LetterTiles({ letters, wordLength, onSubmit }: LetterTilesProps)
   font-size: 1.5rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
 }
 
 .tile:hover:not(:disabled) {
@@ -803,6 +1163,7 @@ git commit -m "feat(spelling-bee): add LetterTiles component for tiny-tier input
 ### Task 6: Keyboard component (junior/explorer input)
 
 **Files:**
+
 - Create: `games/spelling-bee/src/components/Keyboard.tsx`
 - Create: `games/spelling-bee/src/components/Keyboard.module.css`
 
@@ -977,6 +1338,7 @@ git commit -m "feat(spelling-bee): add on-screen Keyboard component for junior/e
 ### Task 7: WordDisplay and LivesDisplay components
 
 **Files:**
+
 - Create: `games/spelling-bee/src/components/WordDisplay.tsx`
 - Create: `games/spelling-bee/src/components/WordDisplay.module.css`
 - Create: `games/spelling-bee/src/components/LivesDisplay.tsx`
@@ -1209,6 +1571,7 @@ git commit -m "feat(spelling-bee): add WordDisplay and LivesDisplay components"
 ### Task 8: Locale files
 
 **Files:**
+
 - Create: `games/spelling-bee/src/locales/en/spelling-bee.json`
 - Create: `games/spelling-bee/src/locales/fr/spelling-bee.json`
 
@@ -1286,6 +1649,7 @@ git commit -m "feat(spelling-bee): add English and French locale files"
 ### Task 9: Main SpellingBee component
 
 **Files:**
+
 - Create: `games/spelling-bee/src/SpellingBee.tsx`
 - Create: `games/spelling-bee/src/SpellingBee.module.css`
 
@@ -1522,6 +1886,7 @@ git commit -m "feat(spelling-bee): add main SpellingBee game component"
 ### Task 10: GamePlugin export (index.ts)
 
 **Files:**
+
 - Create: `games/spelling-bee/src/index.ts`
 
 - [ ] **Step 1: Create the plugin export**
@@ -1601,6 +1966,7 @@ git commit -m "feat(spelling-bee): add GamePlugin export with manifest"
 ### Task 11: Register game in platform
 
 **Files:**
+
 - Modify: `platform/src/config/gameRegistry.ts`
 - Modify: `platform/src/config/featureFlags.json`
 
@@ -1651,6 +2017,7 @@ git commit -m "feat(spelling-bee): register game in platform registry and featur
 ### Task 12: Main component tests
 
 **Files:**
+
 - Create: `games/spelling-bee/src/__tests__/SpellingBee.test.tsx`
 
 - [ ] **Step 1: Write the tests**

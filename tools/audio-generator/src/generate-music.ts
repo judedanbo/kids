@@ -5,10 +5,7 @@ import { join, resolve } from 'node:path';
 import { loadLock, saveLock } from './lockfile.js';
 import type { Lockfile } from './lockfile.js';
 import { MusicManifestSchema, type MusicManifest } from './music-manifest.js';
-import {
-  ElevenLabsMusicProvider,
-  type MusicProvider,
-} from './providers/elevenlabs-music.js';
+import { ElevenLabsMusicProvider, type MusicProvider } from './providers/elevenlabs-music.js';
 
 export interface MusicRunOptions {
   repoRoot: string;
@@ -26,17 +23,13 @@ export interface MusicRunSummary {
   totalSeconds: number;
 }
 
-export async function runMusicGeneration(
-  opts: MusicRunOptions,
-): Promise<MusicRunSummary> {
+export async function runMusicGeneration(opts: MusicRunOptions): Promise<MusicRunSummary> {
   const manifest = await loadMusicManifest(opts.manifestPath);
   if (!opts.dryRun) {
     await mkdir(opts.cacheDir, { recursive: true });
   }
 
-  const lock: Lockfile = opts.dryRun
-    ? { version: 1, entries: {} }
-    : await loadLock(opts.lockPath);
+  const lock: Lockfile = opts.dryRun ? { version: 1, entries: {} } : await loadLock(opts.lockPath);
 
   const provider: MusicProvider | null = opts.dryRun
     ? null
@@ -69,16 +62,13 @@ export async function runMusicGeneration(
         hash,
         path: outPath,
         bytes: size,
-        generatedAt:
-          lock.entries[lockKey]?.generatedAt ?? new Date().toISOString(),
+        generatedAt: lock.entries[lockKey]?.generatedAt ?? new Date().toISOString(),
       };
       cached++;
       continue;
     }
 
-    process.stdout.write(
-      `  music/${track.id} (${(track.durationMs / 1000).toFixed(1)}s) … `,
-    );
+    process.stdout.write(`  music/${track.id} (${(track.durationMs / 1000).toFixed(1)}s) … `);
     const buf = await provider!.generate({
       prompt: track.prompt,
       durationMs: track.durationMs,
@@ -122,9 +112,7 @@ function trackHash(
 function makeMusicProvider(): MusicProvider {
   const key = process.env.ELEVENLABS_API_KEY;
   if (!key) {
-    throw new Error(
-      'ELEVENLABS_API_KEY is not set. Add it to tools/audio-generator/.env.',
-    );
+    throw new Error('ELEVENLABS_API_KEY is not set. Add it to tools/audio-generator/.env.');
   }
   return new ElevenLabsMusicProvider(key);
 }

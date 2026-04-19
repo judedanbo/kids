@@ -31,12 +31,10 @@ export function checkTimeLimit(
   }
 
   // Check reminder threshold
-  const sessionRemaining = config.sessionLimitMinutes > 0
-    ? config.sessionLimitMinutes - sessionMinutes
-    : Infinity;
-  const dailyRemaining = config.dailyLimitMinutes > 0
-    ? config.dailyLimitMinutes - totalDailyMinutes
-    : Infinity;
+  const sessionRemaining =
+    config.sessionLimitMinutes > 0 ? config.sessionLimitMinutes - sessionMinutes : Infinity;
+  const dailyRemaining =
+    config.dailyLimitMinutes > 0 ? config.dailyLimitMinutes - totalDailyMinutes : Infinity;
   const minRemaining = Math.min(sessionRemaining, dailyRemaining);
 
   if (config.reminderBeforeEndMinutes > 0 && minRemaining <= config.reminderBeforeEndMinutes) {
@@ -57,7 +55,8 @@ export function isWithinSchedule(config: TimeLimitConfig): boolean {
   const hour = now.getHours();
 
   if (!config.schedule.allowedDays.includes(day)) return false;
-  if (hour < config.schedule.allowedStartHour || hour >= config.schedule.allowedEndHour) return false;
+  if (hour < config.schedule.allowedStartHour || hour >= config.schedule.allowedEndHour)
+    return false;
 
   return true;
 }

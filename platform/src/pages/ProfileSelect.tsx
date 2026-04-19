@@ -55,10 +55,7 @@ export default function ProfileSelect() {
             <span className={styles.name}>{profile.name}</span>
           </button>
         ))}
-        <button
-          className={styles.createCard}
-          onClick={() => setShowCreator(true)}
-        >
+        <button className={styles.createCard} onClick={() => setShowCreator(true)}>
           <span className={styles.createIcon}>+</span>
           <span className={styles.createLabel}>{t('profile.newPlayer')}</span>
         </button>

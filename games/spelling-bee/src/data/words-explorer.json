@@ -1,99 +1,778 @@
 [
-  { "word": "house", "difficulty": 1, "image": "", "definition": "A building where people live", "origin": "Old English", "sentence": "They moved to a new house." },
-  { "word": "table", "difficulty": 1, "image": "", "definition": "A piece of furniture with a flat top", "origin": "Latin", "sentence": "Put the plates on the table." },
-  { "word": "water", "difficulty": 1, "image": "", "definition": "A clear liquid essential for life", "origin": "Old English", "sentence": "She filled the glass with cold water." },
-  { "word": "light", "difficulty": 1, "image": "", "definition": "Brightness that lets you see", "origin": "Old English", "sentence": "The light from the sun warmed the room." },
-  { "word": "music", "difficulty": 1, "image": "", "definition": "Sounds arranged in a pleasing pattern", "origin": "Greek", "sentence": "She played beautiful music on the piano." },
-  { "word": "paper", "difficulty": 1, "image": "", "definition": "A thin sheet used for writing", "origin": "Latin", "sentence": "He folded the paper into an airplane." },
-  { "word": "river", "difficulty": 1, "image": "", "definition": "A large stream of water that flows to the sea", "origin": "Latin", "sentence": "The river flowed through the valley." },
-  { "word": "smile", "difficulty": 1, "image": "", "definition": "A happy expression on the face", "origin": "Scandinavian", "sentence": "Her smile brightened everyone's day." },
-  { "word": "tower", "difficulty": 1, "image": "", "definition": "A tall narrow building or structure", "origin": "Latin", "sentence": "The tower reached high above the city." },
-  { "word": "green", "difficulty": 1, "image": "", "definition": "The color of grass and leaves", "origin": "Old English", "sentence": "The green leaves rustled in the wind." },
-  { "word": "window", "difficulty": 2, "image": "", "definition": "An opening in a wall fitted with glass", "origin": "Old Norse", "sentence": "She looked out the window at the garden." },
-  { "word": "travel", "difficulty": 2, "image": "", "definition": "To go from one place to another", "origin": "French", "sentence": "They love to travel to new countries." },
-  { "word": "energy", "difficulty": 2, "image": "", "definition": "The power to do work or move", "origin": "Greek", "sentence": "Solar panels turn sunlight into energy." },
-  { "word": "desert", "difficulty": 2, "image": "", "definition": "A very dry area with little rain", "origin": "Latin", "sentence": "The desert can be very hot during the day." },
-  { "word": "island", "difficulty": 2, "image": "", "definition": "Land surrounded by water", "origin": "Old English", "sentence": "The island had beautiful sandy beaches." },
-  { "word": "puzzle", "difficulty": 2, "image": "", "definition": "A game that tests your thinking", "origin": "English", "sentence": "She solved the puzzle in ten minutes." },
-  { "word": "temple", "difficulty": 2, "image": "", "definition": "A building used for worship", "origin": "Latin", "sentence": "The ancient temple stood on top of the hill." },
-  { "word": "shadow", "difficulty": 2, "image": "", "definition": "A dark shape made when light is blocked", "origin": "Old English", "sentence": "His shadow stretched across the sidewalk." },
-  { "word": "kitchen", "difficulty": 3, "image": "", "definition": "The room where food is prepared", "origin": "Latin", "sentence": "She baked cookies in the kitchen." },
-  { "word": "balance", "difficulty": 3, "image": "", "definition": "Steady position or equal distribution", "origin": "Latin", "sentence": "She kept her balance on the beam." },
-  { "word": "compass", "difficulty": 3, "image": "", "definition": "A tool that shows direction", "origin": "Latin", "sentence": "The compass pointed north through the forest." },
-  { "word": "crystal", "difficulty": 3, "image": "", "definition": "A clear mineral or glass-like solid", "origin": "Greek", "sentence": "The crystal sparkled in the sunlight." },
-  { "word": "gateway", "difficulty": 3, "image": "", "definition": "An entrance or opening in a wall or fence", "origin": "Old English", "sentence": "The gateway led to a beautiful garden." },
-  { "word": "harvest", "difficulty": 3, "image": "", "definition": "The gathering of crops", "origin": "Old English", "sentence": "Farmers celebrate the autumn harvest." },
-  { "word": "pattern", "difficulty": 3, "image": "", "definition": "A repeated design or arrangement", "origin": "French", "sentence": "The quilt had a colorful pattern." },
-  { "word": "whisper", "difficulty": 3, "image": "", "definition": "To speak very softly", "origin": "Old English", "sentence": "She had to whisper in the library." },
-  { "word": "chimney", "difficulty": 3, "image": "", "definition": "A structure that carries smoke from a fire", "origin": "French", "sentence": "Smoke rose from the chimney on the roof." },
-  { "word": "dinosaur", "difficulty": 4, "image": "", "definition": "A large reptile that lived millions of years ago", "origin": "Greek", "sentence": "The museum has a dinosaur skeleton." },
-  { "word": "elephant", "difficulty": 4, "image": "", "definition": "The largest land animal with a trunk", "origin": "Greek", "sentence": "The elephant sprayed water with its trunk." },
-  { "word": "champion", "difficulty": 4, "image": "", "definition": "A winner or top competitor", "origin": "French", "sentence": "She became the spelling champion of her school." },
-  { "word": "discover", "difficulty": 4, "image": "", "definition": "To find something for the first time", "origin": "Latin", "sentence": "Scientists discover new species every year." },
-  { "word": "midnight", "difficulty": 4, "image": "", "definition": "Twelve o'clock at night", "origin": "Old English", "sentence": "The clock struck midnight on New Year's Eve." },
-  { "word": "platform", "difficulty": 4, "image": "", "definition": "A raised flat surface to stand on", "origin": "French", "sentence": "They waited for the train on the platform." },
-  { "word": "sandwich", "difficulty": 4, "image": "", "definition": "Food placed between two slices of bread", "origin": "English", "sentence": "He made a cheese sandwich for lunch." },
-  { "word": "treasure", "difficulty": 4, "image": "", "definition": "Valuable items like gold and jewels", "origin": "Greek", "sentence": "The pirates searched for buried treasure." },
-  { "word": "umbrella", "difficulty": 4, "image": "", "definition": "A folding cover that protects from rain", "origin": "Italian", "sentence": "She opened her umbrella when it started raining." },
-  { "word": "vacation", "difficulty": 4, "image": "", "definition": "A period of rest from work or school", "origin": "Latin", "sentence": "The family went on vacation to the beach." },
-  { "word": "adventure", "difficulty": 5, "image": "", "definition": "An exciting and unusual experience", "origin": "Latin", "sentence": "They went on an adventure in the mountains." },
-  { "word": "geography", "difficulty": 5, "image": "", "definition": "The study of the Earth and its features", "origin": "Greek", "sentence": "In geography class we learned about rivers." },
-  { "word": "butterfly", "difficulty": 5, "image": "", "definition": "An insect with large colorful wings", "origin": "Old English", "sentence": "A butterfly landed on the flower." },
-  { "word": "detective", "difficulty": 5, "image": "", "definition": "A person who investigates crimes", "origin": "Latin", "sentence": "The detective searched for clues at the scene." },
-  { "word": "education", "difficulty": 5, "image": "", "definition": "The process of learning and gaining knowledge", "origin": "Latin", "sentence": "Education helps people understand the world." },
-  { "word": "furniture", "difficulty": 5, "image": "", "definition": "Tables, chairs, and other movable items in a room", "origin": "French", "sentence": "They bought new furniture for the living room." },
-  { "word": "horseback", "difficulty": 5, "image": "", "definition": "The back of a horse; riding a horse", "origin": "Old English", "sentence": "She learned to ride horseback at the ranch." },
-  { "word": "invention", "difficulty": 5, "image": "", "definition": "Something new that is created", "origin": "Latin", "sentence": "The telephone was an amazing invention." },
-  { "word": "landscape", "difficulty": 5, "image": "", "definition": "A wide view of natural scenery", "origin": "Dutch", "sentence": "The landscape was filled with rolling hills." },
-  { "word": "narrative", "difficulty": 5, "image": "", "definition": "A spoken or written account of events", "origin": "Latin", "sentence": "The book tells a thrilling narrative." },
-  { "word": "beautiful", "difficulty": 6, "image": "", "definition": "Very pleasing to look at or hear", "origin": "French", "sentence": "The sunset was beautiful." },
-  { "word": "dangerous", "difficulty": 6, "image": "", "definition": "Likely to cause harm or injury", "origin": "French", "sentence": "Swimming in the stormy sea is dangerous." },
-  { "word": "excellent", "difficulty": 6, "image": "", "definition": "Extremely good or outstanding", "origin": "Latin", "sentence": "She did an excellent job on her project." },
-  { "word": "guarantee", "difficulty": 6, "image": "", "definition": "A promise that something will happen", "origin": "French", "sentence": "The store offers a money-back guarantee." },
-  { "word": "hurricane", "difficulty": 6, "image": "", "definition": "A powerful tropical storm with strong winds", "origin": "Spanish", "sentence": "The hurricane brought heavy rain and wind." },
-  { "word": "imaginary", "difficulty": 6, "image": "", "definition": "Existing only in the mind; not real", "origin": "Latin", "sentence": "The child had an imaginary friend." },
-  { "word": "knowledge", "difficulty": 6, "image": "", "definition": "Facts and skills learned through experience", "origin": "Old English", "sentence": "Reading builds knowledge about many topics." },
-  { "word": "necessary", "difficulty": 6, "image": "", "definition": "Needed or required", "origin": "Latin", "sentence": "Water is necessary for all living things." },
-  { "word": "labyrinth", "difficulty": 6, "image": "", "definition": "A complicated maze or network of paths", "origin": "Greek", "sentence": "They got lost in the garden labyrinth." },
-  { "word": "wonderful", "difficulty": 6, "image": "", "definition": "Inspiring delight or admiration", "origin": "Old English", "sentence": "The fireworks show was truly wonderful." },
-  { "word": "celebration", "difficulty": 7, "image": "", "definition": "A special event to mark an occasion", "origin": "Latin", "sentence": "The birthday celebration was fun." },
-  { "word": "temperature", "difficulty": 7, "image": "", "definition": "How hot or cold something is", "origin": "Latin", "sentence": "The temperature dropped below zero." },
-  { "word": "accomplish", "difficulty": 7, "image": "", "definition": "To successfully complete a task", "origin": "Latin", "sentence": "She worked hard to accomplish her goal." },
-  { "word": "centimeter", "difficulty": 7, "image": "", "definition": "A unit of length equal to one hundredth of a meter", "origin": "Latin", "sentence": "The bug was only one centimeter long." },
-  { "word": "conference", "difficulty": 7, "image": "", "definition": "A formal meeting for discussion", "origin": "Latin", "sentence": "Scientists gathered at the conference to share ideas." },
-  { "word": "experiment", "difficulty": 7, "image": "", "definition": "A test done to discover something new", "origin": "Latin", "sentence": "The science experiment created colorful bubbles." },
-  { "word": "generation", "difficulty": 7, "image": "", "definition": "All people born around the same time", "origin": "Latin", "sentence": "Each generation brings new ideas to the world." },
-  { "word": "inhabitant", "difficulty": 7, "image": "", "definition": "A person or animal that lives in a place", "origin": "Latin", "sentence": "Every inhabitant of the village knew the baker." },
-  { "word": "masterpiece", "difficulty": 7, "image": "", "definition": "An outstanding work of art or skill", "origin": "Dutch", "sentence": "The painting in the museum is a masterpiece." },
-  { "word": "thunderbolt", "difficulty": 7, "image": "", "definition": "A flash of lightning with a crash of thunder", "origin": "Old English", "sentence": "A thunderbolt lit up the dark sky." },
-  { "word": "magnificent", "difficulty": 8, "image": "", "definition": "Extremely beautiful or impressive", "origin": "Latin", "sentence": "The castle was magnificent." },
-  { "word": "anniversary", "difficulty": 8, "image": "", "definition": "A yearly celebration of a past event", "origin": "Latin", "sentence": "My parents celebrated their wedding anniversary." },
-  { "word": "comfortable", "difficulty": 8, "image": "", "definition": "Giving physical ease and relaxation", "origin": "French", "sentence": "The chair was very comfortable." },
-  { "word": "demonstrate", "difficulty": 8, "image": "", "definition": "To show how something works", "origin": "Latin", "sentence": "The teacher will demonstrate the experiment." },
-  { "word": "environment", "difficulty": 8, "image": "", "definition": "The natural world around us", "origin": "French", "sentence": "We must protect the environment from pollution." },
-  { "word": "furthermore", "difficulty": 8, "image": "", "definition": "In addition to what has been said", "origin": "Old English", "sentence": "The trip was fun and furthermore it was educational." },
-  { "word": "imagination", "difficulty": 8, "image": "", "definition": "The ability to form pictures in the mind", "origin": "Latin", "sentence": "Her imagination created amazing stories." },
-  { "word": "marketplace", "difficulty": 8, "image": "", "definition": "A place where goods are bought and sold", "origin": "Old English", "sentence": "The marketplace was busy with shoppers." },
-  { "word": "nonetheless", "difficulty": 8, "image": "", "definition": "In spite of that; nevertheless", "origin": "Old English", "sentence": "It rained, but they went hiking nonetheless." },
-  { "word": "mathematics", "difficulty": 8, "image": "", "definition": "The study of numbers, shapes, and patterns", "origin": "Greek", "sentence": "Mathematics helps us solve everyday problems." },
-  { "word": "encyclopedia", "difficulty": 9, "image": "", "definition": "A book containing information on many subjects", "origin": "Greek", "sentence": "She looked it up in the encyclopedia." },
-  { "word": "appreciation", "difficulty": 9, "image": "", "definition": "Recognition of the value of something", "origin": "Latin", "sentence": "He showed appreciation for his teacher's help." },
-  { "word": "circumstance", "difficulty": 9, "image": "", "definition": "A condition or fact connected to an event", "origin": "Latin", "sentence": "Under the circumstance, they decided to wait." },
-  { "word": "disappointed", "difficulty": 9, "image": "", "definition": "Sad because hopes were not met", "origin": "French", "sentence": "She was disappointed when the game was canceled." },
-  { "word": "enthusiastic", "difficulty": 9, "image": "", "definition": "Having strong excitement or interest", "origin": "Greek", "sentence": "The students were enthusiastic about the field trip." },
-  { "word": "independence", "difficulty": 9, "image": "", "definition": "Freedom from control by others", "origin": "Latin", "sentence": "The country celebrated its independence day." },
-  { "word": "overwhelming", "difficulty": 9, "image": "", "definition": "Very great in amount or effect", "origin": "Old English", "sentence": "The support from friends was overwhelming." },
-  { "word": "professional", "difficulty": 9, "image": "", "definition": "Relating to a job that requires special training", "origin": "Latin", "sentence": "The professional athlete trained every day." },
-  { "word": "relationship", "difficulty": 9, "image": "", "definition": "A connection between people or things", "origin": "Latin", "sentence": "She has a good relationship with her neighbors." },
-  { "word": "understanding", "difficulty": 9, "image": "", "definition": "The ability to comprehend something", "origin": "Old English", "sentence": "Reading helps build understanding of the world." },
-  { "word": "extraordinary", "difficulty": 10, "image": "", "definition": "Very unusual or remarkable", "origin": "Latin", "sentence": "The magician performed an extraordinary trick." },
-  { "word": "accomplishment", "difficulty": 10, "image": "", "definition": "Something achieved successfully", "origin": "French", "sentence": "Graduating from school is a great accomplishment." },
-  { "word": "communication", "difficulty": 10, "image": "", "definition": "The sharing of information between people", "origin": "Latin", "sentence": "Good communication helps teams work together." },
-  { "word": "demonstration", "difficulty": 10, "image": "", "definition": "An act of showing how something works", "origin": "Latin", "sentence": "The chef gave a cooking demonstration." },
-  { "word": "characteristic", "difficulty": 10, "image": "", "definition": "A feature or quality of a person or thing", "origin": "Greek", "sentence": "Kindness is her most admirable characteristic." },
-  { "word": "heartbreaking", "difficulty": 10, "image": "", "definition": "Causing overwhelming sadness", "origin": "Old English", "sentence": "The movie had a heartbreaking ending." },
-  { "word": "infrastructure", "difficulty": 10, "image": "", "definition": "Basic systems needed for a society to function", "origin": "Latin", "sentence": "Roads and bridges are part of our infrastructure." },
-  { "word": "transformation", "difficulty": 10, "image": "", "definition": "A complete change in form or appearance", "origin": "Latin", "sentence": "The caterpillar's transformation into a butterfly was amazing." },
-  { "word": "recommendation", "difficulty": 10, "image": "", "definition": "A suggestion about what to do", "origin": "Latin", "sentence": "The teacher's recommendation helped her choose a good book." },
-  { "word": "unforgettable", "difficulty": 10, "image": "", "definition": "Impossible to forget; very memorable", "origin": "Old English", "sentence": "The trip to the Grand Canyon was unforgettable." }
+  {
+    "word": "house",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A building where people live",
+    "origin": "Old English",
+    "sentence": "They moved to a new house."
+  },
+  {
+    "word": "table",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A piece of furniture with a flat top",
+    "origin": "Latin",
+    "sentence": "Put the plates on the table."
+  },
+  {
+    "word": "water",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A clear liquid essential for life",
+    "origin": "Old English",
+    "sentence": "She filled the glass with cold water."
+  },
+  {
+    "word": "light",
+    "difficulty": 1,
+    "image": "",
+    "definition": "Brightness that lets you see",
+    "origin": "Old English",
+    "sentence": "The light from the sun warmed the room."
+  },
+  {
+    "word": "music",
+    "difficulty": 1,
+    "image": "",
+    "definition": "Sounds arranged in a pleasing pattern",
+    "origin": "Greek",
+    "sentence": "She played beautiful music on the piano."
+  },
+  {
+    "word": "paper",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A thin sheet used for writing",
+    "origin": "Latin",
+    "sentence": "He folded the paper into an airplane."
+  },
+  {
+    "word": "river",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A large stream of water that flows to the sea",
+    "origin": "Latin",
+    "sentence": "The river flowed through the valley."
+  },
+  {
+    "word": "smile",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A happy expression on the face",
+    "origin": "Scandinavian",
+    "sentence": "Her smile brightened everyone's day."
+  },
+  {
+    "word": "tower",
+    "difficulty": 1,
+    "image": "",
+    "definition": "A tall narrow building or structure",
+    "origin": "Latin",
+    "sentence": "The tower reached high above the city."
+  },
+  {
+    "word": "green",
+    "difficulty": 1,
+    "image": "",
+    "definition": "The color of grass and leaves",
+    "origin": "Old English",
+    "sentence": "The green leaves rustled in the wind."
+  },
+  {
+    "word": "window",
+    "difficulty": 2,
+    "image": "",
+    "definition": "An opening in a wall fitted with glass",
+    "origin": "Old Norse",
+    "sentence": "She looked out the window at the garden."
+  },
+  {
+    "word": "travel",
+    "difficulty": 2,
+    "image": "",
+    "definition": "To go from one place to another",
+    "origin": "French",
+    "sentence": "They love to travel to new countries."
+  },
+  {
+    "word": "energy",
+    "difficulty": 2,
+    "image": "",
+    "definition": "The power to do work or move",
+    "origin": "Greek",
+    "sentence": "Solar panels turn sunlight into energy."
+  },
+  {
+    "word": "desert",
+    "difficulty": 2,
+    "image": "",
+    "definition": "A very dry area with little rain",
+    "origin": "Latin",
+    "sentence": "The desert can be very hot during the day."
+  },
+  {
+    "word": "island",
+    "difficulty": 2,
+    "image": "",
+    "definition": "Land surrounded by water",
+    "origin": "Old English",
+    "sentence": "The island had beautiful sandy beaches."
+  },
+  {
+    "word": "puzzle",
+    "difficulty": 2,
+    "image": "",
+    "definition": "A game that tests your thinking",
+    "origin": "English",
+    "sentence": "She solved the puzzle in ten minutes."
+  },
+  {
+    "word": "temple",
+    "difficulty": 2,
+    "image": "",
+    "definition": "A building used for worship",
+    "origin": "Latin",
+    "sentence": "The ancient temple stood on top of the hill."
+  },
+  {
+    "word": "shadow",
+    "difficulty": 2,
+    "image": "",
+    "definition": "A dark shape made when light is blocked",
+    "origin": "Old English",
+    "sentence": "His shadow stretched across the sidewalk."
+  },
+  {
+    "word": "kitchen",
+    "difficulty": 3,
+    "image": "",
+    "definition": "The room where food is prepared",
+    "origin": "Latin",
+    "sentence": "She baked cookies in the kitchen."
+  },
+  {
+    "word": "balance",
+    "difficulty": 3,
+    "image": "",
+    "definition": "Steady position or equal distribution",
+    "origin": "Latin",
+    "sentence": "She kept her balance on the beam."
+  },
+  {
+    "word": "compass",
+    "difficulty": 3,
+    "image": "",
+    "definition": "A tool that shows direction",
+    "origin": "Latin",
+    "sentence": "The compass pointed north through the forest."
+  },
+  {
+    "word": "crystal",
+    "difficulty": 3,
+    "image": "",
+    "definition": "A clear mineral or glass-like solid",
+    "origin": "Greek",
+    "sentence": "The crystal sparkled in the sunlight."
+  },
+  {
+    "word": "gateway",
+    "difficulty": 3,
+    "image": "",
+    "definition": "An entrance or opening in a wall or fence",
+    "origin": "Old English",
+    "sentence": "The gateway led to a beautiful garden."
+  },
+  {
+    "word": "harvest",
+    "difficulty": 3,
+    "image": "",
+    "definition": "The gathering of crops",
+    "origin": "Old English",
+    "sentence": "Farmers celebrate the autumn harvest."
+  },
+  {
+    "word": "pattern",
+    "difficulty": 3,
+    "image": "",
+    "definition": "A repeated design or arrangement",
+    "origin": "French",
+    "sentence": "The quilt had a colorful pattern."
+  },
+  {
+    "word": "whisper",
+    "difficulty": 3,
+    "image": "",
+    "definition": "To speak very softly",
+    "origin": "Old English",
+    "sentence": "She had to whisper in the library."
+  },
+  {
+    "word": "chimney",
+    "difficulty": 3,
+    "image": "",
+    "definition": "A structure that carries smoke from a fire",
+    "origin": "French",
+    "sentence": "Smoke rose from the chimney on the roof."
+  },
+  {
+    "word": "dinosaur",
+    "difficulty": 4,
+    "image": "",
+    "definition": "A large reptile that lived millions of years ago",
+    "origin": "Greek",
+    "sentence": "The museum has a dinosaur skeleton."
+  },
+  {
+    "word": "elephant",
+    "difficulty": 4,
+    "image": "",
+    "definition": "The largest land animal with a trunk",
+    "origin": "Greek",
+    "sentence": "The elephant sprayed water with its trunk."
+  },
+  {
+    "word": "champion",
+    "difficulty": 4,
+    "image": "",
+    "definition": "A winner or top competitor",
+    "origin": "French",
+    "sentence": "She became the spelling champion of her school."
+  },
+  {
+    "word": "discover",
+    "difficulty": 4,
+    "image": "",
+    "definition": "To find something for the first time",
+    "origin": "Latin",
+    "sentence": "Scientists discover new species every year."
+  },
+  {
+    "word": "midnight",
+    "difficulty": 4,
+    "image": "",
+    "definition": "Twelve o'clock at night",
+    "origin": "Old English",
+    "sentence": "The clock struck midnight on New Year's Eve."
+  },
+  {
+    "word": "platform",
+    "difficulty": 4,
+    "image": "",
+    "definition": "A raised flat surface to stand on",
+    "origin": "French",
+    "sentence": "They waited for the train on the platform."
+  },
+  {
+    "word": "sandwich",
+    "difficulty": 4,
+    "image": "",
+    "definition": "Food placed between two slices of bread",
+    "origin": "English",
+    "sentence": "He made a cheese sandwich for lunch."
+  },
+  {
+    "word": "treasure",
+    "difficulty": 4,
+    "image": "",
+    "definition": "Valuable items like gold and jewels",
+    "origin": "Greek",
+    "sentence": "The pirates searched for buried treasure."
+  },
+  {
+    "word": "umbrella",
+    "difficulty": 4,
+    "image": "",
+    "definition": "A folding cover that protects from rain",
+    "origin": "Italian",
+    "sentence": "She opened her umbrella when it started raining."
+  },
+  {
+    "word": "vacation",
+    "difficulty": 4,
+    "image": "",
+    "definition": "A period of rest from work or school",
+    "origin": "Latin",
+    "sentence": "The family went on vacation to the beach."
+  },
+  {
+    "word": "adventure",
+    "difficulty": 5,
+    "image": "",
+    "definition": "An exciting and unusual experience",
+    "origin": "Latin",
+    "sentence": "They went on an adventure in the mountains."
+  },
+  {
+    "word": "geography",
+    "difficulty": 5,
+    "image": "",
+    "definition": "The study of the Earth and its features",
+    "origin": "Greek",
+    "sentence": "In geography class we learned about rivers."
+  },
+  {
+    "word": "butterfly",
+    "difficulty": 5,
+    "image": "",
+    "definition": "An insect with large colorful wings",
+    "origin": "Old English",
+    "sentence": "A butterfly landed on the flower."
+  },
+  {
+    "word": "detective",
+    "difficulty": 5,
+    "image": "",
+    "definition": "A person who investigates crimes",
+    "origin": "Latin",
+    "sentence": "The detective searched for clues at the scene."
+  },
+  {
+    "word": "education",
+    "difficulty": 5,
+    "image": "",
+    "definition": "The process of learning and gaining knowledge",
+    "origin": "Latin",
+    "sentence": "Education helps people understand the world."
+  },
+  {
+    "word": "furniture",
+    "difficulty": 5,
+    "image": "",
+    "definition": "Tables, chairs, and other movable items in a room",
+    "origin": "French",
+    "sentence": "They bought new furniture for the living room."
+  },
+  {
+    "word": "horseback",
+    "difficulty": 5,
+    "image": "",
+    "definition": "The back of a horse; riding a horse",
+    "origin": "Old English",
+    "sentence": "She learned to ride horseback at the ranch."
+  },
+  {
+    "word": "invention",
+    "difficulty": 5,
+    "image": "",
+    "definition": "Something new that is created",
+    "origin": "Latin",
+    "sentence": "The telephone was an amazing invention."
+  },
+  {
+    "word": "landscape",
+    "difficulty": 5,
+    "image": "",
+    "definition": "A wide view of natural scenery",
+    "origin": "Dutch",
+    "sentence": "The landscape was filled with rolling hills."
+  },
+  {
+    "word": "narrative",
+    "difficulty": 5,
+    "image": "",
+    "definition": "A spoken or written account of events",
+    "origin": "Latin",
+    "sentence": "The book tells a thrilling narrative."
+  },
+  {
+    "word": "beautiful",
+    "difficulty": 6,
+    "image": "",
+    "definition": "Very pleasing to look at or hear",
+    "origin": "French",
+    "sentence": "The sunset was beautiful."
+  },
+  {
+    "word": "dangerous",
+    "difficulty": 6,
+    "image": "",
+    "definition": "Likely to cause harm or injury",
+    "origin": "French",
+    "sentence": "Swimming in the stormy sea is dangerous."
+  },
+  {
+    "word": "excellent",
+    "difficulty": 6,
+    "image": "",
+    "definition": "Extremely good or outstanding",
+    "origin": "Latin",
+    "sentence": "She did an excellent job on her project."
+  },
+  {
+    "word": "guarantee",
+    "difficulty": 6,
+    "image": "",
+    "definition": "A promise that something will happen",
+    "origin": "French",
+    "sentence": "The store offers a money-back guarantee."
+  },
+  {
+    "word": "hurricane",
+    "difficulty": 6,
+    "image": "",
+    "definition": "A powerful tropical storm with strong winds",
+    "origin": "Spanish",
+    "sentence": "The hurricane brought heavy rain and wind."
+  },
+  {
+    "word": "imaginary",
+    "difficulty": 6,
+    "image": "",
+    "definition": "Existing only in the mind; not real",
+    "origin": "Latin",
+    "sentence": "The child had an imaginary friend."
+  },
+  {
+    "word": "knowledge",
+    "difficulty": 6,
+    "image": "",
+    "definition": "Facts and skills learned through experience",
+    "origin": "Old English",
+    "sentence": "Reading builds knowledge about many topics."
+  },
+  {
+    "word": "necessary",
+    "difficulty": 6,
+    "image": "",
+    "definition": "Needed or required",
+    "origin": "Latin",
+    "sentence": "Water is necessary for all living things."
+  },
+  {
+    "word": "labyrinth",
+    "difficulty": 6,
+    "image": "",
+    "definition": "A complicated maze or network of paths",
+    "origin": "Greek",
+    "sentence": "They got lost in the garden labyrinth."
+  },
+  {
+    "word": "wonderful",
+    "difficulty": 6,
+    "image": "",
+    "definition": "Inspiring delight or admiration",
+    "origin": "Old English",
+    "sentence": "The fireworks show was truly wonderful."
+  },
+  {
+    "word": "celebration",
+    "difficulty": 7,
+    "image": "",
+    "definition": "A special event to mark an occasion",
+    "origin": "Latin",
+    "sentence": "The birthday celebration was fun."
+  },
+  {
+    "word": "temperature",
+    "difficulty": 7,
+    "image": "",
+    "definition": "How hot or cold something is",
+    "origin": "Latin",
+    "sentence": "The temperature dropped below zero."
+  },
+  {
+    "word": "accomplish",
+    "difficulty": 7,
+    "image": "",
+    "definition": "To successfully complete a task",
+    "origin": "Latin",
+    "sentence": "She worked hard to accomplish her goal."
+  },
+  {
+    "word": "centimeter",
+    "difficulty": 7,
+    "image": "",
+    "definition": "A unit of length equal to one hundredth of a meter",
+    "origin": "Latin",
+    "sentence": "The bug was only one centimeter long."
+  },
+  {
+    "word": "conference",
+    "difficulty": 7,
+    "image": "",
+    "definition": "A formal meeting for discussion",
+    "origin": "Latin",
+    "sentence": "Scientists gathered at the conference to share ideas."
+  },
+  {
+    "word": "experiment",
+    "difficulty": 7,
+    "image": "",
+    "definition": "A test done to discover something new",
+    "origin": "Latin",
+    "sentence": "The science experiment created colorful bubbles."
+  },
+  {
+    "word": "generation",
+    "difficulty": 7,
+    "image": "",
+    "definition": "All people born around the same time",
+    "origin": "Latin",
+    "sentence": "Each generation brings new ideas to the world."
+  },
+  {
+    "word": "inhabitant",
+    "difficulty": 7,
+    "image": "",
+    "definition": "A person or animal that lives in a place",
+    "origin": "Latin",
+    "sentence": "Every inhabitant of the village knew the baker."
+  },
+  {
+    "word": "masterpiece",
+    "difficulty": 7,
+    "image": "",
+    "definition": "An outstanding work of art or skill",
+    "origin": "Dutch",
+    "sentence": "The painting in the museum is a masterpiece."
+  },
+  {
+    "word": "thunderbolt",
+    "difficulty": 7,
+    "image": "",
+    "definition": "A flash of lightning with a crash of thunder",
+    "origin": "Old English",
+    "sentence": "A thunderbolt lit up the dark sky."
+  },
+  {
+    "word": "magnificent",
+    "difficulty": 8,
+    "image": "",
+    "definition": "Extremely beautiful or impressive",
+    "origin": "Latin",
+    "sentence": "The castle was magnificent."
+  },
+  {
+    "word": "anniversary",
+    "difficulty": 8,
+    "image": "",
+    "definition": "A yearly celebration of a past event",
+    "origin": "Latin",
+    "sentence": "My parents celebrated their wedding anniversary."
+  },
+  {
+    "word": "comfortable",
+    "difficulty": 8,
+    "image": "",
+    "definition": "Giving physical ease and relaxation",
+    "origin": "French",
+    "sentence": "The chair was very comfortable."
+  },
+  {
+    "word": "demonstrate",
+    "difficulty": 8,
+    "image": "",
+    "definition": "To show how something works",
+    "origin": "Latin",
+    "sentence": "The teacher will demonstrate the experiment."
+  },
+  {
+    "word": "environment",
+    "difficulty": 8,
+    "image": "",
+    "definition": "The natural world around us",
+    "origin": "French",
+    "sentence": "We must protect the environment from pollution."
+  },
+  {
+    "word": "furthermore",
+    "difficulty": 8,
+    "image": "",
+    "definition": "In addition to what has been said",
+    "origin": "Old English",
+    "sentence": "The trip was fun and furthermore it was educational."
+  },
+  {
+    "word": "imagination",
+    "difficulty": 8,
+    "image": "",
+    "definition": "The ability to form pictures in the mind",
+    "origin": "Latin",
+    "sentence": "Her imagination created amazing stories."
+  },
+  {
+    "word": "marketplace",
+    "difficulty": 8,
+    "image": "",
+    "definition": "A place where goods are bought and sold",
+    "origin": "Old English",
+    "sentence": "The marketplace was busy with shoppers."
+  },
+  {
+    "word": "nonetheless",
+    "difficulty": 8,
+    "image": "",
+    "definition": "In spite of that; nevertheless",
+    "origin": "Old English",
+    "sentence": "It rained, but they went hiking nonetheless."
+  },
+  {
+    "word": "mathematics",
+    "difficulty": 8,
+    "image": "",
+    "definition": "The study of numbers, shapes, and patterns",
+    "origin": "Greek",
+    "sentence": "Mathematics helps us solve everyday problems."
+  },
+  {
+    "word": "encyclopedia",
+    "difficulty": 9,
+    "image": "",
+    "definition": "A book containing information on many subjects",
+    "origin": "Greek",
+    "sentence": "She looked it up in the encyclopedia."
+  },
+  {
+    "word": "appreciation",
+    "difficulty": 9,
+    "image": "",
+    "definition": "Recognition of the value of something",
+    "origin": "Latin",
+    "sentence": "He showed appreciation for his teacher's help."
+  },
+  {
+    "word": "circumstance",
+    "difficulty": 9,
+    "image": "",
+    "definition": "A condition or fact connected to an event",
+    "origin": "Latin",
+    "sentence": "Under the circumstance, they decided to wait."
+  },
+  {
+    "word": "disappointed",
+    "difficulty": 9,
+    "image": "",
+    "definition": "Sad because hopes were not met",
+    "origin": "French",
+    "sentence": "She was disappointed when the game was canceled."
+  },
+  {
+    "word": "enthusiastic",
+    "difficulty": 9,
+    "image": "",
+    "definition": "Having strong excitement or interest",
+    "origin": "Greek",
+    "sentence": "The students were enthusiastic about the field trip."
+  },
+  {
+    "word": "independence",
+    "difficulty": 9,
+    "image": "",
+    "definition": "Freedom from control by others",
+    "origin": "Latin",
+    "sentence": "The country celebrated its independence day."
+  },
+  {
+    "word": "overwhelming",
+    "difficulty": 9,
+    "image": "",
+    "definition": "Very great in amount or effect",
+    "origin": "Old English",
+    "sentence": "The support from friends was overwhelming."
+  },
+  {
+    "word": "professional",
+    "difficulty": 9,
+    "image": "",
+    "definition": "Relating to a job that requires special training",
+    "origin": "Latin",
+    "sentence": "The professional athlete trained every day."
+  },
+  {
+    "word": "relationship",
+    "difficulty": 9,
+    "image": "",
+    "definition": "A connection between people or things",
+    "origin": "Latin",
+    "sentence": "She has a good relationship with her neighbors."
+  },
+  {
+    "word": "understanding",
+    "difficulty": 9,
+    "image": "",
+    "definition": "The ability to comprehend something",
+    "origin": "Old English",
+    "sentence": "Reading helps build understanding of the world."
+  },
+  {
+    "word": "extraordinary",
+    "difficulty": 10,
+    "image": "",
+    "definition": "Very unusual or remarkable",
+    "origin": "Latin",
+    "sentence": "The magician performed an extraordinary trick."
+  },
+  {
+    "word": "accomplishment",
+    "difficulty": 10,
+    "image": "",
+    "definition": "Something achieved successfully",
+    "origin": "French",
+    "sentence": "Graduating from school is a great accomplishment."
+  },
+  {
+    "word": "communication",
+    "difficulty": 10,
+    "image": "",
+    "definition": "The sharing of information between people",
+    "origin": "Latin",
+    "sentence": "Good communication helps teams work together."
+  },
+  {
+    "word": "demonstration",
+    "difficulty": 10,
+    "image": "",
+    "definition": "An act of showing how something works",
+    "origin": "Latin",
+    "sentence": "The chef gave a cooking demonstration."
+  },
+  {
+    "word": "characteristic",
+    "difficulty": 10,
+    "image": "",
+    "definition": "A feature or quality of a person or thing",
+    "origin": "Greek",
+    "sentence": "Kindness is her most admirable characteristic."
+  },
+  {
+    "word": "heartbreaking",
+    "difficulty": 10,
+    "image": "",
+    "definition": "Causing overwhelming sadness",
+    "origin": "Old English",
+    "sentence": "The movie had a heartbreaking ending."
+  },
+  {
+    "word": "infrastructure",
+    "difficulty": 10,
+    "image": "",
+    "definition": "Basic systems needed for a society to function",
+    "origin": "Latin",
+    "sentence": "Roads and bridges are part of our infrastructure."
+  },
+  {
+    "word": "transformation",
+    "difficulty": 10,
+    "image": "",
+    "definition": "A complete change in form or appearance",
+    "origin": "Latin",
+    "sentence": "The caterpillar's transformation into a butterfly was amazing."
+  },
+  {
+    "word": "recommendation",
+    "difficulty": 10,
+    "image": "",
+    "definition": "A suggestion about what to do",
+    "origin": "Latin",
+    "sentence": "The teacher's recommendation helped her choose a good book."
+  },
+  {
+    "word": "unforgettable",
+    "difficulty": 10,
+    "image": "",
+    "definition": "Impossible to forget; very memorable",
+    "origin": "Old English",
+    "sentence": "The trip to the Grand Canyon was unforgettable."
+  }
 ]

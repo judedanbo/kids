@@ -35,8 +35,7 @@ export function ScoreDisplay({
   starCount = 5,
   animate = true,
 }: ScoreDisplayProps) {
-  const filledStars =
-    showStars && maxScore ? Math.round((score / maxScore) * starCount) : 0;
+  const filledStars = showStars && maxScore ? Math.round((score / maxScore) * starCount) : 0;
 
   let ariaLabel = `Score: ${score}`;
   if (maxScore) ariaLabel += ` out of ${maxScore}`;

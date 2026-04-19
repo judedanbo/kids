@@ -28,11 +28,14 @@ export function useGameLifecycle(plugin: GamePlugin): GameLifecycle {
     setGameState('LOADED');
   }, [plugin, setGameState]);
 
-  const start = useCallback((config: GameConfig) => {
-    if (stateRef.current !== 'LOADED') return;
-    plugin.onStart(config);
-    setGameState('PLAYING');
-  }, [plugin, setGameState]);
+  const start = useCallback(
+    (config: GameConfig) => {
+      if (stateRef.current !== 'LOADED') return;
+      plugin.onStart(config);
+      setGameState('PLAYING');
+    },
+    [plugin, setGameState],
+  );
 
   const pause = useCallback(() => {
     if (stateRef.current !== 'PLAYING') return;

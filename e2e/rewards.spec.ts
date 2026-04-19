@@ -39,19 +39,14 @@ test.describe('Rewards Gallery', () => {
     await page.waitForURL('/rewards');
 
     // Should show at least 1 reward unlocked (may also earn "Speed Demon")
-    await expect(
-      page.locator('text=/[1-7] \\/ 7 unlocked/'),
-    ).toBeVisible();
+    await expect(page.locator('text=/[1-7] \\/ 7 unlocked/')).toBeVisible();
 
     // "First Star" should show "Earned" date instead of locked indicator
     await expect(page.locator('text=First Star')).toBeVisible();
     await expect(page.locator('text=Earned').first()).toBeVisible();
   });
 
-  test('rewards page renders on mobile viewport', async ({
-    page,
-    createProfile,
-  }) => {
+  test('rewards page renders on mobile viewport', async ({ page, createProfile }) => {
     await page.setViewportSize({ width: 375, height: 667 });
     await createProfile({ name: 'MobileKid', age: '5' });
 

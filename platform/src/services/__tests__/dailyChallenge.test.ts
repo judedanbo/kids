@@ -34,7 +34,13 @@ function makeProfile(overrides: Partial<UserProfile> = {}): UserProfile {
     preferences: { musicVolume: 1, sfxVolume: 1, voiceVolume: 1, language: 'en', theme: 'light' },
     progress: {},
     rewards: [],
-    stats: { totalPlayTime: 0, totalGamesPlayed: 0, currentStreak: 0, longestStreak: 0, lastPlayedAt: '' },
+    stats: {
+      totalPlayTime: 0,
+      totalGamesPlayed: 0,
+      currentStreak: 0,
+      longestStreak: 0,
+      lastPlayedAt: '',
+    },
     deletedAt: null,
     ...overrides,
   };
@@ -82,7 +88,13 @@ describe('getDailyChallenge', () => {
 
 describe('checkChallengeCompletion', () => {
   it('detects play_count completion', () => {
-    const challenge = { id: 'daily-test', date: '2026-03-26', type: 'play_count' as const, description: 'Play 2 games', target: 2 };
+    const challenge = {
+      id: 'daily-test',
+      date: '2026-03-26',
+      type: 'play_count' as const,
+      description: 'Play 2 games',
+      target: 2,
+    };
     const profile = makeProfile();
     const results = [
       { gameId: 'a', score: 5, maxScore: 10 },
@@ -92,36 +104,92 @@ describe('checkChallengeCompletion', () => {
   });
 
   it('returns false when play_count not met', () => {
-    const challenge = { id: 'daily-test', date: '2026-03-26', type: 'play_count' as const, description: 'Play 3 games', target: 3 };
+    const challenge = {
+      id: 'daily-test',
+      date: '2026-03-26',
+      type: 'play_count' as const,
+      description: 'Play 3 games',
+      target: 3,
+    };
     const profile = makeProfile();
     const results = [{ gameId: 'a', score: 5, maxScore: 10 }];
     expect(checkChallengeCompletion(challenge, profile, results)).toBe(false);
   });
 
   it('detects score_threshold completion', () => {
-    const challenge = { id: 'daily-test', date: '2026-03-26', type: 'score_threshold' as const, description: 'Score 80%+', target: 80 };
+    const challenge = {
+      id: 'daily-test',
+      date: '2026-03-26',
+      type: 'score_threshold' as const,
+      description: 'Score 80%+',
+      target: 80,
+    };
     const profile = makeProfile();
     const results = [{ gameId: 'a', score: 9, maxScore: 10 }];
     expect(checkChallengeCompletion(challenge, profile, results)).toBe(true);
   });
 
   it('returns false when score below threshold', () => {
-    const challenge = { id: 'daily-test', date: '2026-03-26', type: 'score_threshold' as const, description: 'Score 80%+', target: 80 };
+    const challenge = {
+      id: 'daily-test',
+      date: '2026-03-26',
+      type: 'score_threshold' as const,
+      description: 'Score 80%+',
+      target: 80,
+    };
     const profile = makeProfile();
     const results = [{ gameId: 'a', score: 5, maxScore: 10 }];
     expect(checkChallengeCompletion(challenge, profile, results)).toBe(false);
   });
 
   it('detects try_new_game completion', () => {
-    const challenge = { id: 'daily-test', date: '2026-03-26', type: 'try_new_game' as const, description: 'Try a new game', target: 1 };
-    const profile = makeProfile({ progress: { 'old-game': { gameId: 'old-game', highScore: 10, currentLevel: 1, maxLevelReached: 1, totalAttempts: 1, totalTimePlayed: 60, lastPlayedAt: '', difficulty: 1 } } });
+    const challenge = {
+      id: 'daily-test',
+      date: '2026-03-26',
+      type: 'try_new_game' as const,
+      description: 'Try a new game',
+      target: 1,
+    };
+    const profile = makeProfile({
+      progress: {
+        'old-game': {
+          gameId: 'old-game',
+          highScore: 10,
+          currentLevel: 1,
+          maxLevelReached: 1,
+          totalAttempts: 1,
+          totalTimePlayed: 60,
+          lastPlayedAt: '',
+          difficulty: 1,
+        },
+      },
+    });
     const results = [{ gameId: 'new-game', score: 5, maxScore: 10 }];
     expect(checkChallengeCompletion(challenge, profile, results)).toBe(true);
   });
 
   it('returns false for try_new_game when only played existing games', () => {
-    const challenge = { id: 'daily-test', date: '2026-03-26', type: 'try_new_game' as const, description: 'Try a new game', target: 1 };
-    const profile = makeProfile({ progress: { 'old-game': { gameId: 'old-game', highScore: 10, currentLevel: 1, maxLevelReached: 1, totalAttempts: 1, totalTimePlayed: 60, lastPlayedAt: '', difficulty: 1 } } });
+    const challenge = {
+      id: 'daily-test',
+      date: '2026-03-26',
+      type: 'try_new_game' as const,
+      description: 'Try a new game',
+      target: 1,
+    };
+    const profile = makeProfile({
+      progress: {
+        'old-game': {
+          gameId: 'old-game',
+          highScore: 10,
+          currentLevel: 1,
+          maxLevelReached: 1,
+          totalAttempts: 1,
+          totalTimePlayed: 60,
+          lastPlayedAt: '',
+          difficulty: 1,
+        },
+      },
+    });
     const results = [{ gameId: 'old-game', score: 5, maxScore: 10 }];
     expect(checkChallengeCompletion(challenge, profile, results)).toBe(false);
   });

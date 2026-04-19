@@ -25,21 +25,15 @@ describe('blankSentence', () => {
 
   it('does not blank substrings that are not whole-word matches', () => {
     // "cat" must not match inside "caterpillar"
-    expect(blankSentence('The caterpillar crawled.', 'cat')).toBe(
-      'The caterpillar crawled.',
-    );
+    expect(blankSentence('The caterpillar crawled.', 'cat')).toBe('The caterpillar crawled.');
   });
 
   it('returns the sentence unchanged when the word is absent', () => {
-    expect(blankSentence('Nothing to see here.', 'cat')).toBe(
-      'Nothing to see here.',
-    );
+    expect(blankSentence('Nothing to see here.', 'cat')).toBe('Nothing to see here.');
   });
 
   it('escapes regex metacharacters in the word', () => {
     // Contrived, but guards against crashes if a word contains a dot.
-    expect(blankSentence('A c.t walked by.', 'c.t')).toBe(
-      `A ${SENTENCE_BLANK} walked by.`,
-    );
+    expect(blankSentence('A c.t walked by.', 'c.t')).toBe(`A ${SENTENCE_BLANK} walked by.`);
   });
 });

@@ -9,6 +9,7 @@
 **Description:** A visually rich landing page that serves as the entry point to all available games.
 
 **Functional Specs:**
+
 - Display games as large, animated thumbnail cards (minimum 150x150px) in a scrollable grid
 - Each card shows: game icon/thumbnail, game name, age badge, skill category icon, locked/unlocked state
 - Cards animate on hover/touch (subtle scale or bounce) to invite interaction
@@ -18,39 +19,41 @@
 - New games highlighted with a "NEW" animated badge
 
 **Data Model:**
+
 ```typescript
 interface GameManifest {
-  id: string;                    // unique game identifier e.g. "word-puzzle"
-  name: string;                  // display name
-  description: string;           // short description (1-2 sentences)
-  thumbnail: string;             // path to thumbnail asset
-  ageRange: [number, number];    // e.g. [3, 5]
-  skills: SkillCategory[];       // e.g. ["literacy", "memory"]
-  version: string;               // semver
-  entryPoint: string;            // lazy-load path e.g. "/games/word-puzzle"
-  minDifficulty: number;         // 1-5 scale
+  id: string; // unique game identifier e.g. "word-puzzle"
+  name: string; // display name
+  description: string; // short description (1-2 sentences)
+  thumbnail: string; // path to thumbnail asset
+  ageRange: [number, number]; // e.g. [3, 5]
+  skills: SkillCategory[]; // e.g. ["literacy", "memory"]
+  version: string; // semver
+  entryPoint: string; // lazy-load path e.g. "/games/word-puzzle"
+  minDifficulty: number; // 1-5 scale
   maxDifficulty: number;
-  estimatedPlayTime: number;     // in minutes
+  estimatedPlayTime: number; // in minutes
   offlineCapable: boolean;
-  status: "active" | "beta" | "coming_soon" | "retired";
-  releaseDate: string;           // ISO date
+  status: 'active' | 'beta' | 'coming_soon' | 'retired';
+  releaseDate: string; // ISO date
   tags: string[];
 }
 
 type SkillCategory =
-  | "literacy"
-  | "numeracy"
-  | "logic"
-  | "memory"
-  | "creativity"
-  | "motor_skills"
-  | "science"
-  | "social_skills";
+  | 'literacy'
+  | 'numeracy'
+  | 'logic'
+  | 'memory'
+  | 'creativity'
+  | 'motor_skills'
+  | 'science'
+  | 'social_skills';
 ```
 
 ### 1.2 Age-Based Filtering
 
 **Functional Specs:**
+
 - Three age tiers: **Tiny (3-5)**, **Junior (6-8)**, **Explorer (9-12)**
 - Age tier selected during profile creation; stored on the user profile
 - Hub automatically filters to the child's age tier on load
@@ -58,6 +61,7 @@ type SkillCategory =
 - Visual theme subtly adapts per tier (e.g., rounder shapes for Tiny, sharper for Explorer)
 
 **Filter Logic:**
+
 ```
 display_game = game.ageRange[0] <= profile.age <= game.ageRange[1]
              OR profile.crossTierAccess === true
@@ -66,6 +70,7 @@ display_game = game.ageRange[0] <= profile.age <= game.ageRange[1]
 ### 1.3 Navigation System
 
 **Functional Specs:**
+
 - Persistent bottom navigation bar (mobile) or sidebar (desktop) with icon-only buttons:
   - Home (hub), My Profile (avatar), Rewards (trophy), Settings (gear)
 - Floating "Home" button always visible inside any game (top-left corner, semi-transparent)
@@ -81,6 +86,7 @@ display_game = game.ageRange[0] <= profile.age <= game.ageRange[1]
 ### 2.1 Touch & Interaction Design
 
 **Specs:**
+
 - Minimum touch target size: **48x48dp** (following Material Design guidelines)
 - Recommended button size for ages 3-5: **64x64dp or larger**
 - Tap feedback: visual press state (scale to 0.95) + haptic vibration (where supported)
@@ -92,6 +98,7 @@ display_game = game.ageRange[0] <= profile.age <= game.ageRange[1]
 ### 2.2 Visual Design System
 
 **Specs:**
+
 - **Color palette:** High contrast, warm and inviting colors
   - Primary: Vibrant blue (#4A90D9), Secondary: Warm orange (#FF8C42)
   - Success: Green (#4CAF50), Error: Soft red (#E57373, not harsh)
@@ -105,14 +112,15 @@ display_game = game.ageRange[0] <= profile.age <= game.ageRange[1]
 - **Illustrations:** Friendly characters with diverse representation
 
 **Design Tokens (CSS Custom Properties):**
+
 ```css
 :root {
-  --color-primary: #4A90D9;
-  --color-secondary: #FF8C42;
-  --color-success: #4CAF50;
-  --color-error: #E57373;
-  --color-bg-primary: #FFF8F0;
-  --color-bg-secondary: #F0F4FF;
+  --color-primary: #4a90d9;
+  --color-secondary: #ff8c42;
+  --color-success: #4caf50;
+  --color-error: #e57373;
+  --color-bg-primary: #fff8f0;
+  --color-bg-secondary: #f0f4ff;
 
   --radius-small: 8px;
   --radius-medium: 16px;
@@ -140,6 +148,7 @@ display_game = game.ageRange[0] <= profile.age <= game.ageRange[1]
 ### 2.3 Audio System
 
 **Specs:**
+
 - **Audio Manager** singleton handles all sound playback across the platform
 - Sound categories with independent volume controls:
   - **Music:** Background loops per game (default 30% volume)
@@ -152,15 +161,16 @@ display_game = game.ageRange[0] <= profile.age <= game.ageRange[1]
 - Audio sprites for SFX (single file, multiple sounds) to reduce HTTP requests
 
 **Audio Manager Interface:**
+
 ```typescript
 interface AudioManager {
   playMusic(trackId: string, options?: { loop?: boolean; fadeIn?: number }): void;
   stopMusic(options?: { fadeOut?: number }): void;
   playSFX(sfxId: string): void;
   playVoice(voiceId: string, onComplete?: () => void): void;
-  setVolume(category: "music" | "sfx" | "voice", level: number): void;
-  mute(category?: "music" | "sfx" | "voice"): void;
-  unmute(category?: "music" | "sfx" | "voice"): void;
+  setVolume(category: 'music' | 'sfx' | 'voice', level: number): void;
+  mute(category?: 'music' | 'sfx' | 'voice'): void;
+  unmute(category?: 'music' | 'sfx' | 'voice'): void;
   preload(assetIds: string[]): Promise<void>;
 }
 ```
@@ -168,6 +178,7 @@ interface AudioManager {
 ### 2.4 Feedback System
 
 **Specs:**
+
 - **Correct answer:** Green glow animation + cheerful SFX + optional confetti burst + score increment animation
 - **Incorrect answer:** Gentle shake animation + soft "try again" SFX + encouraging message (never punitive)
 - **Level complete:** Celebration animation (stars, fireworks) + reward reveal + progress bar fill
@@ -186,6 +197,7 @@ interface AudioManager {
 **Architecture:** Each game is a standalone module that conforms to a `GamePlugin` interface and is lazy-loaded into the platform shell.
 
 **Directory Structure:**
+
 ```
 kids/
 ├── platform/                    # Shell application
@@ -219,17 +231,18 @@ kids/
 ```
 
 **Game Plugin Interface:**
+
 ```typescript
 interface GamePlugin {
   manifest: GameManifest;
 
   // Lifecycle hooks
-  onLoad(): Promise<void>;           // Called when game module loads
+  onLoad(): Promise<void>; // Called when game module loads
   onStart(config: GameConfig): void; // Called when game begins
-  onPause(): void;                   // Called on app background/blur
-  onResume(): void;                  // Called on app foreground/focus
-  onEnd(): GameResult;               // Called when game session ends
-  onUnload(): void;                  // Cleanup when leaving game
+  onPause(): void; // Called on app background/blur
+  onResume(): void; // Called on app foreground/focus
+  onEnd(): GameResult; // Called when game session ends
+  onUnload(): void; // Cleanup when leaving game
 
   // Required export
   GameComponent: React.ComponentType<GameProps>;
@@ -254,9 +267,9 @@ interface GameResult {
   gameId: string;
   score: number;
   maxScore: number;
-  timeSpent: number;           // seconds
+  timeSpent: number; // seconds
   difficulty: number;
-  completedAt: string;         // ISO timestamp
+  completedAt: string; // ISO timestamp
   metrics: Record<string, number>; // game-specific metrics
 }
 ```
@@ -265,24 +278,25 @@ interface GameResult {
 
 **Core Components:**
 
-| Component | Description | Props |
-|-----------|-------------|-------|
-| `<GameTimer>` | Countdown or count-up timer with visual ring | `mode`, `duration`, `onExpire`, `paused` |
-| `<ScoreDisplay>` | Animated score counter with optional star rating | `score`, `maxScore`, `animate` |
-| `<ProgressBar>` | Visual progress indicator | `current`, `total`, `color`, `showLabel` |
-| `<DifficultySelector>` | Star-based difficulty picker | `levels`, `current`, `onChange` |
-| `<CelebrationOverlay>` | Confetti/stars/fireworks overlay | `type`, `duration`, `onComplete` |
-| `<InstructionBubble>` | Speech bubble with optional audio narration | `text`, `audioSrc`, `character` |
-| `<DragItem>` / `<DropZone>` | Accessible drag-and-drop primitives | `data`, `onDrop`, `snapTo` |
-| `<OptionButton>` | Large, animated answer/choice button | `label`, `icon`, `state`, `onSelect` |
-| `<PauseMenu>` | Standardized pause overlay | `onResume`, `onRestart`, `onExit` |
-| `<GameShell>` | Wrapper providing header, back button, pause | `title`, `showTimer`, `children` |
+| Component                   | Description                                      | Props                                    |
+| --------------------------- | ------------------------------------------------ | ---------------------------------------- |
+| `<GameTimer>`               | Countdown or count-up timer with visual ring     | `mode`, `duration`, `onExpire`, `paused` |
+| `<ScoreDisplay>`            | Animated score counter with optional star rating | `score`, `maxScore`, `animate`           |
+| `<ProgressBar>`             | Visual progress indicator                        | `current`, `total`, `color`, `showLabel` |
+| `<DifficultySelector>`      | Star-based difficulty picker                     | `levels`, `current`, `onChange`          |
+| `<CelebrationOverlay>`      | Confetti/stars/fireworks overlay                 | `type`, `duration`, `onComplete`         |
+| `<InstructionBubble>`       | Speech bubble with optional audio narration      | `text`, `audioSrc`, `character`          |
+| `<DragItem>` / `<DropZone>` | Accessible drag-and-drop primitives              | `data`, `onDrop`, `snapTo`               |
+| `<OptionButton>`            | Large, animated answer/choice button             | `label`, `icon`, `state`, `onSelect`     |
+| `<PauseMenu>`               | Standardized pause overlay                       | `onResume`, `onRestart`, `onExit`        |
+| `<GameShell>`               | Wrapper providing header, back button, pause     | `title`, `showTimer`, `children`         |
 
 ### 3.3 Shared State Management
 
 **Technology:** React Context + useReducer for global state; per-game state is local.
 
 **Global State Shape:**
+
 ```typescript
 interface GlobalState {
   currentProfile: UserProfile | null;
@@ -299,11 +313,11 @@ interface GlobalState {
 interface UserProfile {
   id: string;
   name: string;
-  avatar: string;                // avatar asset ID
+  avatar: string; // avatar asset ID
   age: number;
-  ageTier: "tiny" | "junior" | "explorer";
+  ageTier: 'tiny' | 'junior' | 'explorer';
   createdAt: string;
-  parentPin: string;             // hashed 4-digit PIN
+  parentPin: string; // hashed 4-digit PIN
   preferences: {
     musicVolume: number;
     sfxVolume: number;
@@ -311,10 +325,10 @@ interface UserProfile {
     language: string;
     theme: string;
   };
-  progress: Record<string, GameProgress>;  // keyed by gameId
+  progress: Record<string, GameProgress>; // keyed by gameId
   rewards: Reward[];
   stats: {
-    totalPlayTime: number;       // seconds
+    totalPlayTime: number; // seconds
     totalGamesPlayed: number;
     currentStreak: number;
     longestStreak: number;
@@ -331,13 +345,14 @@ interface GameProgress {
   totalTimePlayed: number;
   lastPlayedAt: string;
   difficulty: number;
-  checkpointData?: unknown;      // game-specific save state
+  checkpointData?: unknown; // game-specific save state
 }
 ```
 
 ### 3.4 Game Lifecycle
 
 **State Machine:**
+
 ```
 [IDLE] → onLoad() → [LOADED] → onStart() → [PLAYING]
                                                  ↕
@@ -347,6 +362,7 @@ interface GameProgress {
 ```
 
 **Platform responsibilities at each stage:**
+
 - **IDLE → LOADED:** Lazy-import game module, display loading animation, preload audio assets
 - **LOADED → PLAYING:** Pass `GameConfig` with profile-appropriate difficulty, start session timer
 - **PLAYING ↔ PAUSED:** Triggered by app blur, home button, or pause button; auto-save checkpoint
@@ -362,16 +378,19 @@ interface GameProgress {
 **Storage:** IndexedDB (via a wrapper library) for local persistence; optional cloud sync.
 
 **Per-Game Progress:**
+
 - Track: level reached, high score, total attempts, time played, last difficulty
 - Checkpoint saves for resuming mid-game (stored as serialized JSON blob)
 - Progress bar on hub card shows `currentLevel / totalLevels`
 
 **Overall Progress:**
+
 - Aggregate stats: total games played, total time, favorite category
 - Weekly activity heatmap (visual calendar showing play days)
 - Skill radar chart showing strength across categories
 
 **Storage Interface:**
+
 ```typescript
 interface StorageManager {
   // Profile
@@ -398,8 +417,9 @@ interface StorageManager {
 ### 4.2 Reward System
 
 **Reward Types:**
+
 ```typescript
-type RewardType = "star" | "badge" | "avatar_item" | "theme_unlock" | "character_unlock";
+type RewardType = 'star' | 'badge' | 'avatar_item' | 'theme_unlock' | 'character_unlock';
 
 interface Reward {
   id: string;
@@ -412,8 +432,8 @@ interface Reward {
 }
 
 interface RewardCriteria {
-  type: "score" | "streak" | "completion" | "time" | "category_mastery";
-  gameId?: string;             // null = platform-wide
+  type: 'score' | 'streak' | 'completion' | 'time' | 'category_mastery';
+  gameId?: string; // null = platform-wide
   threshold: number;
 }
 ```
@@ -430,6 +450,7 @@ interface RewardCriteria {
 | Master | Reach max level in any game | character_unlock |
 
 **Reward Evaluation Engine:**
+
 - Runs after every `GameResult` submission
 - Checks all unearned rewards against updated profile stats
 - Queues unlocked rewards for celebration display
@@ -438,15 +459,16 @@ interface RewardCriteria {
 ### 4.3 Difficulty Scaling
 
 **Adaptive Difficulty Algorithm:**
+
 ```typescript
 function calculateNextDifficulty(history: GameResult[], currentDifficulty: number): number {
   const recentResults = history.slice(-5); // last 5 attempts
-  const avgScorePercent = average(recentResults.map(r => r.score / r.maxScore));
+  const avgScorePercent = average(recentResults.map((r) => r.score / r.maxScore));
 
   if (avgScorePercent >= 0.85 && recentResults.length >= 3) {
-    return Math.min(currentDifficulty + 1, MAX_DIFFICULTY);  // increase
-  } else if (avgScorePercent <= 0.40 && recentResults.length >= 3) {
-    return Math.max(currentDifficulty - 1, MIN_DIFFICULTY);  // decrease
+    return Math.min(currentDifficulty + 1, MAX_DIFFICULTY); // increase
+  } else if (avgScorePercent <= 0.4 && recentResults.length >= 3) {
+    return Math.max(currentDifficulty - 1, MIN_DIFFICULTY); // decrease
   }
   return currentDifficulty; // maintain
 }
@@ -459,12 +481,14 @@ function calculateNextDifficulty(history: GameResult[], currentDifficulty: numbe
 ### 4.4 Streaks & Daily Challenges
 
 **Streak Logic:**
+
 - A "play day" counts if at least one game is completed
 - Streak increments daily; resets to 0 after missing a full calendar day
 - Streak milestones: 3, 7, 14, 30 days — each unlocks a reward
 - Visual streak counter on the hub (flame icon with number)
 
 **Daily Challenges:**
+
 - One challenge per day, rotated from a predefined pool
 - Challenge types: "Play 3 games", "Score 80%+ on any math game", "Try a new game"
 - Completing the daily challenge awards bonus stars
@@ -485,6 +509,7 @@ function getDailyChallenge(date: string, gameRegistry: GameManifest[]): DailyCha
 ### 5.1 Parental Access Gate
 
 **Specs:**
+
 - All parental features protected behind a **4-digit PIN** set during first profile creation
 - PIN entry uses a custom number pad (not a text input) to prevent keyboard-based bypasses
 - Additional gate for sensitive actions: **"adult verification" challenge** (e.g., solve a simple math problem like "What is 14 x 3?") to prevent young children from guessing the PIN
@@ -494,6 +519,7 @@ function getDailyChallenge(date: string, gameRegistry: GameManifest[]): DailyCha
 ### 5.2 Parental Dashboard
 
 **Features:**
+
 - Per-child activity summary: games played today/this week, time spent, scores
 - Visual charts: play time by day (bar chart), skill category breakdown (pie chart)
 - Game-by-game progress report
@@ -505,22 +531,24 @@ function getDailyChallenge(date: string, gameRegistry: GameManifest[]): DailyCha
 ### 5.3 Time Limits
 
 **Specs:**
+
 ```typescript
 interface TimeLimitConfig {
   enabled: boolean;
-  dailyLimitMinutes: number;        // e.g., 60
-  sessionLimitMinutes: number;      // e.g., 30
+  dailyLimitMinutes: number; // e.g., 60
+  sessionLimitMinutes: number; // e.g., 30
   reminderBeforeEndMinutes: number; // e.g., 5
-  cooldownMinutes: number;          // forced break between sessions, e.g., 15
+  cooldownMinutes: number; // forced break between sessions, e.g., 15
   schedule?: {
-    allowedDays: number[];          // 0=Sun, 6=Sat
-    allowedStartHour: number;       // e.g., 8
-    allowedEndHour: number;         // e.g., 20
+    allowedDays: number[]; // 0=Sun, 6=Sat
+    allowedStartHour: number; // e.g., 8
+    allowedEndHour: number; // e.g., 20
   };
 }
 ```
 
 **Behavior:**
+
 - Gentle on-screen reminder at `reminderBeforeEndMinutes` (friendly character says "Almost time to take a break!")
 - At limit: game auto-pauses, checkpoint saved, kind message displayed ("Great playing today! Time for a break.")
 - Timer pauses when app is backgrounded
@@ -530,6 +558,7 @@ interface TimeLimitConfig {
 ### 5.4 Privacy & COPPA Compliance
 
 **Requirements:**
+
 - No account creation requiring email or personal info from children
 - Profiles stored 100% on-device (IndexedDB) — no server transmission of child data
 - If cloud sync is added later: requires verifiable parental consent, data encrypted in transit and at rest
@@ -545,6 +574,7 @@ interface TimeLimitConfig {
 ### 6.1 Color & Visual Accessibility
 
 **Specs:**
+
 - All color-conveying elements must also use shape, icon, pattern, or label differentiation
   - Correct answers: green + checkmark icon
   - Incorrect answers: red + X icon
@@ -555,15 +585,17 @@ interface TimeLimitConfig {
 ### 6.2 Responsive Design
 
 **Breakpoints:**
+
 ```css
 /* Mobile-first approach */
---bp-mobile: 320px;    /* small phones */
---bp-tablet: 768px;    /* tablets — primary target */
---bp-desktop: 1024px;  /* desktop/laptop */
---bp-large: 1440px;    /* large screens */
+--bp-mobile: 320px; /* small phones */
+--bp-tablet: 768px; /* tablets — primary target */
+--bp-desktop: 1024px; /* desktop/laptop */
+--bp-large: 1440px; /* large screens */
 ```
 
 **Layout Rules:**
+
 - Hub grid: 2 columns (mobile), 3 columns (tablet), 4-5 columns (desktop)
 - Game area: always fills available viewport; games use relative units
 - Orientation: support both portrait and landscape; games may prefer one (indicated in manifest)
@@ -571,15 +603,16 @@ interface TimeLimitConfig {
 
 ### 6.3 Input Support
 
-| Input Method | Support Level | Notes |
-|-------------|---------------|-------|
-| Touch | Primary | All interactions must be touch-compatible |
-| Mouse | Full | Hover states, click equivalents |
-| Keyboard | Full navigation | Tab order, Enter/Space to activate, arrow keys for lists |
-| Gamepad | Future | Map to directional + confirm/cancel |
-| Switch access | Future | Sequential focus navigation |
+| Input Method  | Support Level   | Notes                                                    |
+| ------------- | --------------- | -------------------------------------------------------- |
+| Touch         | Primary         | All interactions must be touch-compatible                |
+| Mouse         | Full            | Hover states, click equivalents                          |
+| Keyboard      | Full navigation | Tab order, Enter/Space to activate, arrow keys for lists |
+| Gamepad       | Future          | Map to directional + confirm/cancel                      |
+| Switch access | Future          | Sequential focus navigation                              |
 
 **Keyboard Navigation:**
+
 - Logical tab order matching visual layout (left-to-right, top-to-bottom)
 - Visible focus indicators (thick outline, not just color change)
 - Escape key always triggers pause/back
@@ -596,12 +629,13 @@ interface TimeLimitConfig {
 ### 6.5 Multilingual Support
 
 **Architecture:**
+
 ```typescript
 // i18n namespace per game + shared platform namespace
 interface I18nConfig {
-  defaultLocale: string;           // "en"
-  supportedLocales: string[];      // ["en", "fr", "es", "tw", "ha"]
-  fallbackLocale: string;          // "en"
+  defaultLocale: string; // "en"
+  supportedLocales: string[]; // ["en", "fr", "es", "tw", "ha"]
+  fallbackLocale: string; // "en"
 }
 
 // Translation files structure
@@ -623,23 +657,23 @@ interface I18nConfig {
 
 **Skill-to-Game Matrix:**
 
-| Skill Category | Age 3-5 Games | Age 6-8 Games | Age 9-12 Games |
-|---------------|---------------|---------------|----------------|
-| Literacy | Letter recognition, Phonics match | Word puzzle, Spelling bee | Reading comprehension, Vocabulary builder |
-| Numeracy | Counting, Shape sorting | Addition/subtraction, Patterns | Multiplication, Fractions, Word problems |
-| Logic | Simple sequences, Odd-one-out | Sudoku lite, Code puzzles | Strategy games, Logic grids |
-| Memory | Card matching (4-8 cards) | Card matching (12-16 cards), Simon says | Memory palace, Sequence recall |
-| Creativity | Coloring, Free drawing | Story builder, Music maker | Comic creator, Animation tool |
-| Motor Skills | Tap targets, Tracing | Maze navigation, Drawing shapes | Typing practice, Precision games |
+| Skill Category | Age 3-5 Games                     | Age 6-8 Games                           | Age 9-12 Games                            |
+| -------------- | --------------------------------- | --------------------------------------- | ----------------------------------------- |
+| Literacy       | Letter recognition, Phonics match | Word puzzle, Spelling bee               | Reading comprehension, Vocabulary builder |
+| Numeracy       | Counting, Shape sorting           | Addition/subtraction, Patterns          | Multiplication, Fractions, Word problems  |
+| Logic          | Simple sequences, Odd-one-out     | Sudoku lite, Code puzzles               | Strategy games, Logic grids               |
+| Memory         | Card matching (4-8 cards)         | Card matching (12-16 cards), Simon says | Memory palace, Sequence recall            |
+| Creativity     | Coloring, Free drawing            | Story builder, Music maker              | Comic creator, Animation tool             |
+| Motor Skills   | Tap targets, Tracing              | Maze navigation, Drawing shapes         | Typing practice, Precision games          |
 
 ### 7.2 Game Metadata Tags
 
 ```typescript
 interface EducationalMetadata {
   skills: SkillCategory[];
-  learningObjectives: string[];    // e.g., ["Recognize uppercase letters A-Z"]
-  curriculumStandards?: string[];  // e.g., ["CCSS.ELA-LITERACY.RF.K.1"]
-  difficultyProgression: string;   // description of how difficulty scales
+  learningObjectives: string[]; // e.g., ["Recognize uppercase letters A-Z"]
+  curriculumStandards?: string[]; // e.g., ["CCSS.ELA-LITERACY.RF.K.1"]
+  difficultyProgression: string; // description of how difficulty scales
   estimatedLearningOutcome: string;
 }
 ```
@@ -658,21 +692,21 @@ interface EducationalMetadata {
 
 ### 8.1 Technology Stack
 
-| Layer | Technology | Justification |
-|-------|-----------|---------------|
-| Framework | React 18+ | Component model, ecosystem, existing team knowledge |
-| Language | TypeScript (strict mode) | Type safety across platform and games |
-| Build | Vite | Fast HMR, native ESM, optimized builds |
-| Routing | React Router v6+ | Lazy route loading, nested routes |
-| State | React Context + useReducer | Simple, no extra dependency for global state |
-| Storage | IndexedDB (via idb wrapper) | Large local storage, structured data |
-| Styling | CSS Modules + CSS Custom Properties | Scoped styles, theming via variables |
-| Audio | Howler.js | Cross-browser audio, sprites, spatial audio |
-| i18n | i18next + react-i18next | Lightweight, namespace support per game |
-| Animation | Framer Motion | Declarative, gesture support, accessible |
-| Testing | Vitest + React Testing Library + Playwright | Unit, component, and E2E coverage |
-| Linting | ESLint + Prettier | Consistent code style |
-| Package mgmt | pnpm workspaces | Monorepo support, efficient disk usage |
+| Layer        | Technology                                  | Justification                                       |
+| ------------ | ------------------------------------------- | --------------------------------------------------- |
+| Framework    | React 18+                                   | Component model, ecosystem, existing team knowledge |
+| Language     | TypeScript (strict mode)                    | Type safety across platform and games               |
+| Build        | Vite                                        | Fast HMR, native ESM, optimized builds              |
+| Routing      | React Router v6+                            | Lazy route loading, nested routes                   |
+| State        | React Context + useReducer                  | Simple, no extra dependency for global state        |
+| Storage      | IndexedDB (via idb wrapper)                 | Large local storage, structured data                |
+| Styling      | CSS Modules + CSS Custom Properties         | Scoped styles, theming via variables                |
+| Audio        | Howler.js                                   | Cross-browser audio, sprites, spatial audio         |
+| i18n         | i18next + react-i18next                     | Lightweight, namespace support per game             |
+| Animation    | Framer Motion                               | Declarative, gesture support, accessible            |
+| Testing      | Vitest + React Testing Library + Playwright | Unit, component, and E2E coverage                   |
+| Linting      | ESLint + Prettier                           | Consistent code style                               |
+| Package mgmt | pnpm workspaces                             | Monorepo support, efficient disk usage              |
 
 ### 8.2 Responsive Design Implementation
 
@@ -689,11 +723,11 @@ interface EducationalMetadata {
 ```typescript
 // Service worker caching strategy
 const CACHE_STRATEGIES = {
-  platformShell: "cache-first",      // HTML, CSS, JS for the hub
-  gameModules: "cache-first",        // individual game bundles (versioned)
-  sharedAssets: "cache-first",       // images, audio, fonts
-  gameData: "cache-first",           // question sets, level data
-  userProgress: "indexeddb-only",    // never cached in SW, always from IndexedDB
+  platformShell: 'cache-first', // HTML, CSS, JS for the hub
+  gameModules: 'cache-first', // individual game bundles (versioned)
+  sharedAssets: 'cache-first', // images, audio, fonts
+  gameData: 'cache-first', // question sets, level data
+  userProgress: 'indexeddb-only', // never cached in SW, always from IndexedDB
 };
 ```
 
@@ -705,18 +739,19 @@ const CACHE_STRATEGIES = {
 
 ### 8.4 Performance Budgets
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| First Contentful Paint | < 1.5s | Lighthouse |
-| Largest Contentful Paint | < 2.5s | Lighthouse |
-| Time to Interactive | < 3.0s | Lighthouse |
-| Game module load time | < 1.0s | Custom metric |
-| Total bundle (platform shell) | < 150KB gzipped | Build output |
-| Per-game bundle | < 100KB gzipped | Build output |
-| Audio asset per game | < 2MB total | Asset audit |
-| Image assets per game | < 1MB total | Asset audit |
+| Metric                        | Target          | Measurement   |
+| ----------------------------- | --------------- | ------------- |
+| First Contentful Paint        | < 1.5s          | Lighthouse    |
+| Largest Contentful Paint      | < 2.5s          | Lighthouse    |
+| Time to Interactive           | < 3.0s          | Lighthouse    |
+| Game module load time         | < 1.0s          | Custom metric |
+| Total bundle (platform shell) | < 150KB gzipped | Build output  |
+| Per-game bundle               | < 100KB gzipped | Build output  |
+| Audio asset per game          | < 2MB total     | Asset audit   |
+| Image assets per game         | < 1MB total     | Asset audit   |
 
 **Optimization Strategies:**
+
 - Route-based code splitting via `React.lazy()` and `Suspense`
 - Game modules loaded on demand, never in the main bundle
 - Image optimization: WebP with PNG fallback, responsive `srcset`
@@ -765,6 +800,7 @@ class GameErrorBoundary extends React.Component<Props, State> {
 ### 9.1 Game Template / SDK
 
 **New Game Scaffolding CLI:**
+
 ```bash
 pnpm create-game <game-name>
 
@@ -788,6 +824,7 @@ pnpm create-game <game-name>
 ```
 
 **Developer Checklist (enforced by CI):**
+
 - [ ] Exports valid `GamePlugin` interface
 - [ ] Has manifest with all required fields
 - [ ] Includes at least 1 unit test
@@ -799,6 +836,7 @@ pnpm create-game <game-name>
 ### 9.2 Shared Asset Library
 
 **Structure:**
+
 ```
 shared/assets/
 ├── characters/          # Reusable mascot/character SVGs and animations
@@ -823,17 +861,21 @@ shared/assets/
 interface FeatureFlags {
   [flagName: string]: {
     enabled: boolean;
-    rolloutPercentage?: number;    // 0-100 for gradual rollout
-    ageTiers?: AgeTier[];          // restrict to specific tiers
+    rolloutPercentage?: number; // 0-100 for gradual rollout
+    ageTiers?: AgeTier[]; // restrict to specific tiers
     description: string;
   };
 }
 
 // Example flags
 const defaultFlags: FeatureFlags = {
-  "daily-challenges": { enabled: true, description: "Daily challenge system" },
-  "new-game-math-adventure": { enabled: false, rolloutPercentage: 25, description: "Math Adventure game beta" },
-  "cloud-sync": { enabled: false, description: "Cloud progress sync" },
+  'daily-challenges': { enabled: true, description: 'Daily challenge system' },
+  'new-game-math-adventure': {
+    enabled: false,
+    rolloutPercentage: 25,
+    description: 'Math Adventure game beta',
+  },
+  'cloud-sync': { enabled: false, description: 'Cloud progress sync' },
 };
 ```
 
@@ -848,7 +890,7 @@ const defaultFlags: FeatureFlags = {
 ```typescript
 interface AnalyticsEvent {
   id: string;
-  type: "game_start" | "game_end" | "level_complete" | "reward_unlocked" | "error" | "navigation";
+  type: 'game_start' | 'game_end' | 'level_complete' | 'reward_unlocked' | 'error' | 'navigation';
   profileId: string;
   gameId?: string;
   timestamp: string;
@@ -868,23 +910,24 @@ interface AnalyticsEvent {
 ### 10.1 CI/CD Pipeline
 
 **Pipeline Stages:**
+
 ```
 [Push/PR] → [Lint + Type Check] → [Unit Tests] → [Build] → [Bundle Size Check] → [E2E Tests] → [Deploy Preview] → [Production Deploy]
 ```
 
 **Per-Stage Details:**
 
-| Stage | Tool | Criteria |
-|-------|------|----------|
-| Lint | ESLint + Prettier | Zero errors, zero warnings |
-| Type Check | tsc --noEmit | Zero errors |
-| Unit Tests | Vitest | 80%+ coverage on shared lib, 70%+ per game |
-| Build | Vite | Successful production build |
-| Bundle Size | bundlesize / size-limit | Under defined budgets |
-| Accessibility | axe-core (via Playwright) | Zero critical/serious violations |
-| E2E Tests | Playwright | Core user flows passing |
-| Deploy Preview | Vercel/Netlify preview | Auto-generated per PR |
-| Production | Vercel/Netlify/Cloudflare Pages | Triggered on main branch merge |
+| Stage          | Tool                            | Criteria                                   |
+| -------------- | ------------------------------- | ------------------------------------------ |
+| Lint           | ESLint + Prettier               | Zero errors, zero warnings                 |
+| Type Check     | tsc --noEmit                    | Zero errors                                |
+| Unit Tests     | Vitest                          | 80%+ coverage on shared lib, 70%+ per game |
+| Build          | Vite                            | Successful production build                |
+| Bundle Size    | bundlesize / size-limit         | Under defined budgets                      |
+| Accessibility  | axe-core (via Playwright)       | Zero critical/serious violations           |
+| E2E Tests      | Playwright                      | Core user flows passing                    |
+| Deploy Preview | Vercel/Netlify preview          | Auto-generated per PR                      |
+| Production     | Vercel/Netlify/Cloudflare Pages | Triggered on main branch merge             |
 
 ### 10.2 Versioning Strategy
 

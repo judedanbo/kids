@@ -13,15 +13,7 @@ interface OptionButtonProps {
 }
 
 export const OptionButton = forwardRef<HTMLButtonElement, OptionButtonProps>(function OptionButton(
-  {
-    label,
-    icon,
-    state = 'default',
-    disabled = false,
-    selected,
-    onSelect,
-    size = 'normal',
-  },
+  { label, icon, state = 'default', disabled = false, selected, onSelect, size = 'normal' },
   ref,
 ) {
   const shouldReduceMotion = useReducedMotion();
@@ -48,9 +40,7 @@ export const OptionButton = forwardRef<HTMLButtonElement, OptionButtonProps>(fun
       onClick={handleClick}
       disabled={disabled}
       aria-pressed={selected}
-      whileTap={
-        !disabled && !shouldReduceMotion ? { scale: 0.95 } : undefined
-      }
+      whileTap={!disabled && !shouldReduceMotion ? { scale: 0.95 } : undefined}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}
     >
       {state === 'correct' && <span className={styles.stateIcon}>✓</span>}

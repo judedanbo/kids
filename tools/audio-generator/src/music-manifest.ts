@@ -1,9 +1,7 @@
 import { z } from 'zod';
 
 export const MusicTrackSchema = z.object({
-  id: z
-    .string()
-    .regex(/^[a-z0-9][a-z0-9-]*$/, 'id must be kebab-case (a-z, 0-9, -)'),
+  id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'id must be kebab-case (a-z, 0-9, -)'),
   prompt: z.string().min(10),
   durationMs: z.number().int().min(5_000).max(300_000),
 });

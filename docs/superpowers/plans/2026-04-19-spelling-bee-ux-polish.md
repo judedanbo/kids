@@ -15,6 +15,7 @@
 ## Task 0: Branch setup
 
 **Files:**
+
 - No code edits. Git operations only.
 
 **Context:** A spec commit (`96c190c`) currently sits on `fix/spelling-bee-review-followups-2`. We want the feature branch off `main` with only that spec commit (and then the implementation commits).
@@ -63,6 +64,7 @@ Confirm with the operator before running. No commit here.
 ## Task 1: Register spelling-bee i18n namespace (Layer 1)
 
 **Files:**
+
 - Modify: `platform/src/i18n.ts`
 - Modify: `platform/src/__tests__/i18n.test.ts`
 
@@ -148,6 +150,7 @@ EOF
 ## Task 2: Word-data integrity test (Layer 2 — first half)
 
 **Files:**
+
 - Create: `games/spelling-bee/src/__tests__/wordData.test.ts`
 
 **Context:** Layer 3 will blank the target word in the sentence using an exact-match word-boundary regex. For that to be reliable, every entry in the three word-data JSON files needs a `sentence` that contains its `word` verbatim. Write the test first (it will fail on the current data), then clean the data in Task 3 to make it pass.
@@ -195,6 +198,7 @@ describe('word data integrity', () => {
 
 Run: `pnpm --filter spelling-bee test -- src/__tests__/wordData.test.ts`
 Expected: FAIL for every entry whose sentence uses an inflected form. Examples to expect:
+
 - `plant` — "We **planted** a flower…"
 - `grape` — "She ate a bunch of purple **grapes**."
 
@@ -224,6 +228,7 @@ Committing a known-failing test here is intentional — the very next commit mak
 ## Task 3: Clean word-data sentences (Layer 2 — second half)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/data/words-tiny.json`
 - Modify: `games/spelling-bee/src/data/words-junior.json`
 - Modify: `games/spelling-bee/src/data/words-explorer.json`
@@ -239,6 +244,7 @@ For every failing entry surfaced in Task 2, open the relevant JSON file and rewr
 - `stung` (already contains the exact word — verify and leave alone).
 
 General rules:
+
 - Only change `sentence`. Leave `word`, `definition`, `origin`, `image`, and `difficulty` untouched.
 - Keep the sentence to ~6–10 words. Children's reading level.
 - Preserve JSON shape and trailing commas — use your editor's JSON linter if available.
@@ -279,6 +285,7 @@ EOF
 ## Task 4: `blankSentence` utility + unit tests (Layer 3 — first slice)
 
 **Files:**
+
 - Create: `games/spelling-bee/src/utils/blankSentence.ts`
 - Create: `games/spelling-bee/src/__tests__/blankSentence.test.ts`
 
@@ -316,22 +323,16 @@ describe('blankSentence', () => {
 
   it('does not blank substrings that are not whole-word matches', () => {
     // "cat" must not match inside "caterpillar"
-    expect(blankSentence('The caterpillar crawled.', 'cat')).toBe(
-      'The caterpillar crawled.',
-    );
+    expect(blankSentence('The caterpillar crawled.', 'cat')).toBe('The caterpillar crawled.');
   });
 
   it('returns the sentence unchanged when the word is absent', () => {
-    expect(blankSentence('Nothing to see here.', 'cat')).toBe(
-      'Nothing to see here.',
-    );
+    expect(blankSentence('Nothing to see here.', 'cat')).toBe('Nothing to see here.');
   });
 
   it('escapes regex metacharacters in the word', () => {
     // Contrived, but guards against crashes if a word contains a dot.
-    expect(blankSentence('A c.t walked by.', 'c.t')).toBe(
-      `A ${SENTENCE_BLANK} walked by.`,
-    );
+    expect(blankSentence('A c.t walked by.', 'c.t')).toBe(`A ${SENTENCE_BLANK} walked by.`);
   });
 });
 ```
@@ -388,6 +389,7 @@ EOF
 ## Task 5: `ClueButton` component (Layer 3 — second slice)
 
 **Files:**
+
 - Create: `games/spelling-bee/src/components/ClueButton.tsx`
 - Create: `games/spelling-bee/src/components/ClueButton.module.css`
 
@@ -412,7 +414,9 @@ Create `games/spelling-bee/src/components/ClueButton.module.css`:
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .button:hover {
@@ -457,7 +461,9 @@ export function ClueButton({ label, icon, onClick, ariaLabel }: ClueButtonProps)
       whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}
     >
-      <span className={styles.icon} aria-hidden="true">{icon}</span>
+      <span className={styles.icon} aria-hidden="true">
+        {icon}
+      </span>
       {label}
     </motion.button>
   );
@@ -490,11 +496,13 @@ EOF
 ## Task 6: WordDisplay redesign (Layer 3 — final slice)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/components/WordDisplay.tsx`
 - Modify: `games/spelling-bee/src/components/WordDisplay.module.css`
 - Modify: `games/spelling-bee/src/__tests__/WordDisplay.test.tsx`
 
 **Context:** Four behavior changes to `WordDisplay`:
+
 1. Replace the raw `Hear the word` button with `OptionButton` (large, primary, 🔊 icon).
 2. Replace the three raw clue buttons with `ClueButton`s using emoji icons.
 3. Reset `showDefinition` / `showOrigin` / `showSentence` when the word changes.
@@ -505,13 +513,15 @@ EOF
 Open `games/spelling-bee/src/__tests__/WordDisplay.test.tsx`. The existing `makeWord` factory needs some overrides; extend it first, then add new tests. Update the signature:
 
 ```ts
-function makeWord(overrides: Partial<{
-  word: string;
-  image: string;
-  definition: string;
-  origin: string;
-  sentence: string;
-}> = {}) {
+function makeWord(
+  overrides: Partial<{
+    word: string;
+    image: string;
+    definition: string;
+    origin: string;
+    sentence: string;
+  }> = {},
+) {
   return {
     word: 'cat',
     difficulty: 1,
@@ -652,11 +662,7 @@ export function WordDisplay({ word, ageTier, audioManager }: WordDisplayProps) {
       )}
 
       {isTiny && (!word.image || imageError) && (
-        <div
-          className={styles.imageFallback}
-          role="img"
-          aria-label={t('imageFallbackLabel')}
-        >
+        <div className={styles.imageFallback} role="img" aria-label={t('imageFallbackLabel')}>
           <span aria-hidden="true">🐝</span>
         </div>
       )}
@@ -692,13 +698,19 @@ export function WordDisplay({ word, ageTier, audioManager }: WordDisplayProps) {
       )}
 
       {showDefinition && word.definition && (
-        <p className={styles.clueText} aria-live="polite">{word.definition}</p>
+        <p className={styles.clueText} aria-live="polite">
+          {word.definition}
+        </p>
       )}
       {showOrigin && word.origin && (
-        <p className={styles.clueText} aria-live="polite">{t('originLabel', { origin: word.origin })}</p>
+        <p className={styles.clueText} aria-live="polite">
+          {t('originLabel', { origin: word.origin })}
+        </p>
       )}
       {showSentence && word.sentence && (
-        <p className={styles.clueText} aria-live="polite">{blankSentence(word.sentence, word.word)}</p>
+        <p className={styles.clueText} aria-live="polite">
+          {blankSentence(word.sentence, word.word)}
+        </p>
       )}
     </div>
   );
@@ -758,6 +770,7 @@ EOF
 ## Task 7: LevelIndicator polish (Layer 4)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/components/LevelIndicator.tsx`
 - Modify: `games/spelling-bee/src/components/LevelIndicator.module.css`
 - Create: `games/spelling-bee/src/__tests__/LevelIndicator.test.tsx`
@@ -817,7 +830,9 @@ export function LevelIndicator({ current, total }: LevelIndicatorProps) {
 
   return (
     <div className={styles.indicator} aria-label={t('levelOf', { current, total })}>
-      <span className={styles.star} aria-hidden="true">⭐</span>
+      <span className={styles.star} aria-hidden="true">
+        ⭐
+      </span>
       <span className={styles.label}>{t('levelOf', { current, total })}</span>
     </div>
   );
@@ -882,6 +897,7 @@ EOF
 ## Task 8: Keyboard i18n (Layer 5)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/locales/en/spelling-bee.json`
 - Modify: `games/spelling-bee/src/locales/fr/spelling-bee.json`
 - Modify: `games/spelling-bee/src/components/Keyboard.tsx`
@@ -990,9 +1006,7 @@ export function Keyboard({ onSubmit, disabled = false }: KeyboardProps) {
       const target = event.target;
       if (
         target instanceof HTMLElement &&
-        (target.tagName === 'INPUT' ||
-          target.tagName === 'TEXTAREA' ||
-          target.isContentEditable)
+        (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
       ) {
         return;
       }
@@ -1099,6 +1113,7 @@ EOF
 ## Task 9: OptionButton forwardRef (Layer 6 — prep)
 
 **Files:**
+
 - Modify: `shared/src/components/OptionButton/OptionButton.tsx`
 - Modify: `shared/src/components/OptionButton/OptionButton.test.tsx`
 
@@ -1149,15 +1164,7 @@ interface OptionButtonProps {
 }
 
 export const OptionButton = forwardRef<HTMLButtonElement, OptionButtonProps>(function OptionButton(
-  {
-    label,
-    icon,
-    state = 'default',
-    disabled = false,
-    selected,
-    onSelect,
-    size = 'normal',
-  },
+  { label, icon, state = 'default', disabled = false, selected, onSelect, size = 'normal' },
   ref,
 ) {
   const shouldReduceMotion = useReducedMotion();
@@ -1184,9 +1191,7 @@ export const OptionButton = forwardRef<HTMLButtonElement, OptionButtonProps>(fun
       onClick={handleClick}
       disabled={disabled}
       aria-pressed={selected}
-      whileTap={
-        !disabled && !shouldReduceMotion ? { scale: 0.95 } : undefined
-      }
+      whileTap={!disabled && !shouldReduceMotion ? { scale: 0.95 } : undefined}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}
     >
       {state === 'correct' && <span className={styles.stateIcon}>✓</span>}
@@ -1232,6 +1237,7 @@ EOF
 ## Task 10: GameOverOverlay button consistency (Layer 6 — final)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/components/GameOverOverlay.tsx`
 - Modify: `games/spelling-bee/src/components/GameOverOverlay.module.css`
 
@@ -1308,17 +1314,8 @@ export function GameOverOverlay({
             {score} / {maxScore}
           </p>
           <div className={styles.actions}>
-            <OptionButton
-              ref={retryRef}
-              label={t('tryAgain')}
-              size="large"
-              onSelect={onRetry}
-            />
-            <OptionButton
-              label={t('backToHome')}
-              size="normal"
-              onSelect={onExit}
-            />
+            <OptionButton ref={retryRef} label={t('tryAgain')} size="large" onSelect={onRetry} />
+            <OptionButton label={t('backToHome')} size="normal" onSelect={onExit} />
           </div>
         </div>
       </div>
@@ -1335,6 +1332,7 @@ Open `games/spelling-bee/src/components/GameOverOverlay.module.css`. Delete the 
 
 Run: `pnpm --filter spelling-bee test -- src/__tests__/GameOverOverlay.test.tsx`
 Expected: all 8 existing tests PASS, including:
+
 - `moves focus to the Try again button on mount` (relies on `ref.current?.focus()` now hitting OptionButton's forwarded ref)
 - `has no accessibility violations`
 
@@ -1383,6 +1381,7 @@ EOF
 ## Task 11: Final verification + PR
 
 **Files:**
+
 - No code changes.
 
 - [ ] **Step 11.1: Run the full gate**

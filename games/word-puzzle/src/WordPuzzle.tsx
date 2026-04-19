@@ -50,18 +50,15 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
   const wordsCorrectRef = useRef(0);
   const totalAttemptsRef = useRef<number[]>([]);
 
-  const initWord = useCallback(
-    (wordEntry: WordEntry) => {
-      const scrambled = scrambleWord(wordEntry.word).split('');
-      setScrambledLetters(scrambled);
-      setPlacedIndices(new Set());
-      setPlacementOrder([]);
-      setAnswerSlots(new Array(wordEntry.word.length).fill(null));
-      setAttempts(0);
-      setAnswerState('default');
-    },
-    [],
-  );
+  const initWord = useCallback((wordEntry: WordEntry) => {
+    const scrambled = scrambleWord(wordEntry.word).split('');
+    setScrambledLetters(scrambled);
+    setPlacedIndices(new Set());
+    setPlacementOrder([]);
+    setAnswerSlots(new Array(wordEntry.word.length).fill(null));
+    setAttempts(0);
+    setAnswerState('default');
+  }, []);
 
   useEffect(() => {
     if (!showInstruction && words.length > 0) {
@@ -246,9 +243,14 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
       completedAt: new Date().toISOString(),
       metrics: {
         wordsCorrect: wordsCorrectRef.current,
-        avgAttempts: totalAttemptsRef.current.length > 0
-          ? Math.round((totalAttemptsRef.current.reduce((a, b) => a + b, 0) / totalAttemptsRef.current.length) * 100) / 100
-          : 1,
+        avgAttempts:
+          totalAttemptsRef.current.length > 0
+            ? Math.round(
+                (totalAttemptsRef.current.reduce((a, b) => a + b, 0) /
+                  totalAttemptsRef.current.length) *
+                  100,
+              ) / 100
+            : 1,
         categoryIndex,
       },
     };
@@ -257,7 +259,12 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
 
   if (showCelebration) {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <CelebrationOverlay
           title={t('celebrationTitle')}
           score={score}
@@ -270,14 +277,24 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
 
   if (showInstruction) {
     return (
-      <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+      <GameShell
+        title={t('title')}
+        onBack={onExit}
+        audioManager={audioManager}
+        musicEnabled={config.settings.backgroundMusicEnabled}
+      >
         <div className={styles.gameArea}>
           <InstructionBubble
             text={t('instruction')}
             character="🔤"
             characterSrc="/images/games/mascots/letters.webp"
           />
-          <OptionButton label={t('letsGo')} state="default" onSelect={handleDismissInstruction} size="large" />
+          <OptionButton
+            label={t('letsGo')}
+            state="default"
+            onSelect={handleDismissInstruction}
+            size="large"
+          />
         </div>
       </GameShell>
     );
@@ -287,7 +304,12 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
   const categoryKey = `category_${categories[categoryIndex].name.toLowerCase()}`;
 
   return (
-    <GameShell title={t('title')} onBack={onExit} audioManager={audioManager} musicEnabled={config.settings.backgroundMusicEnabled}>
+    <GameShell
+      title={t('title')}
+      onBack={onExit}
+      audioManager={audioManager}
+      musicEnabled={config.settings.backgroundMusicEnabled}
+    >
       <div className={styles.gameArea}>
         <div className={styles.topBar}>
           <ScoreDisplay score={score} maxScore={TOTAL_WORDS * 10} showStars />
@@ -301,11 +323,7 @@ export function WordPuzzle({ config, onScore, onComplete, onExit, audioManager }
               {attempts === 1 ? t('tryAgain') : t('attempt', { count: attempts + 1 })}
             </p>
           )}
-          <AnswerSlots
-            slots={answerSlots}
-            state={answerState}
-            onSlotClick={handleSlotClick}
-          />
+          <AnswerSlots slots={answerSlots} state={answerState} onSlotClick={handleSlotClick} />
           <ScrambleRow
             letters={scrambledLetters}
             placedIndices={placedIndices}

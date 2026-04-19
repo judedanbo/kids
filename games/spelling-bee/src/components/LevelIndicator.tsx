@@ -11,7 +11,9 @@ export function LevelIndicator({ current, total }: LevelIndicatorProps) {
 
   return (
     <div className={styles.indicator} aria-label={t('levelOf', { current, total })}>
-      <span className={styles.star} aria-hidden="true">⭐</span>
+      <span className={styles.star} aria-hidden="true">
+        ⭐
+      </span>
       <span className={styles.label}>{t('levelOf', { current, total })}</span>
     </div>
   );

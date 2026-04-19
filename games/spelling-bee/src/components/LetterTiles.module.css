@@ -44,7 +44,9 @@
   font-size: 1.5rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
 }
 
 .tile:hover:not(:disabled) {

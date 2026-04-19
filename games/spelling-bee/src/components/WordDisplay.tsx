@@ -62,11 +62,7 @@ export function WordDisplay({ word, ageTier, audioManager }: WordDisplayProps) {
       )}
 
       {isTiny && (!word.image || imageError) && (
-        <div
-          className={styles.imageFallback}
-          role="img"
-          aria-label={t('imageFallbackLabel')}
-        >
+        <div className={styles.imageFallback} role="img" aria-label={t('imageFallbackLabel')}>
           <span aria-hidden="true">🐝</span>
         </div>
       )}
@@ -102,13 +98,19 @@ export function WordDisplay({ word, ageTier, audioManager }: WordDisplayProps) {
       )}
 
       {showDefinition && word.definition && (
-        <p className={styles.clueText} aria-live="polite">{word.definition}</p>
+        <p className={styles.clueText} aria-live="polite">
+          {word.definition}
+        </p>
       )}
       {showOrigin && word.origin && (
-        <p className={styles.clueText} aria-live="polite">{t('originLabel', { origin: word.origin })}</p>
+        <p className={styles.clueText} aria-live="polite">
+          {t('originLabel', { origin: word.origin })}
+        </p>
       )}
       {showSentence && word.sentence && (
-        <p className={styles.clueText} aria-live="polite">{blankSentence(word.sentence, word.word)}</p>
+        <p className={styles.clueText} aria-live="polite">
+          {blankSentence(word.sentence, word.word)}
+        </p>
       )}
     </div>
   );

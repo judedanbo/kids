@@ -10,7 +10,12 @@ interface OrderingAreaProps {
   disabled?: boolean;
 }
 
-export function OrderingArea({ values, displayValues, onSubmit, disabled = false }: OrderingAreaProps) {
+export function OrderingArea({
+  values,
+  displayValues,
+  onSubmit,
+  disabled = false,
+}: OrderingAreaProps) {
   const { t } = useTranslation('more-or-less');
   const announce = useAnnounce();
   const [selectedOrder, setSelectedOrder] = useState<number[]>([]);

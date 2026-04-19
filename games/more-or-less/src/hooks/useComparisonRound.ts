@@ -34,7 +34,9 @@ interface ComparisonRoundActions {
   nextRound: () => void;
 }
 
-export function useComparisonRound(options: UseComparisonRoundOptions): ComparisonRoundState & ComparisonRoundActions {
+export function useComparisonRound(
+  options: UseComparisonRoundOptions,
+): ComparisonRoundState & ComparisonRoundActions {
   const { ageTier, difficulty, onScorePoint } = options;
   const totalRounds = ROUNDS_BY_TIER[ageTier];
 

@@ -14,6 +14,7 @@ This plan breaks the Kids Games Zone build into **6 phases**, ordered so that fo
 ---
 
 ## Phase 0 — Project Bootstrap & Monorepo Setup ✅ COMPLETE
+
 **Completed:** 2026-03-15
 **Milestone:** `pnpm dev` starts the platform shell with hot-reload; CI pipeline runs lint + type-check on push.
 
@@ -31,6 +32,7 @@ This plan breaks the Kids Games Zone build into **6 phases**, ordered so that fo
 7. **Design tokens** — CSS custom properties from the spec already in `platform/src/styles/global.css` (colors, spacing, radii, fonts, transitions, shadows).
 
 ### Acceptance Criteria
+
 - [x] `pnpm install` from root installs all workspaces.
 - [x] `pnpm --filter platform dev` starts dev server.
 - [x] `pnpm lint` and `pnpm typecheck` pass with zero errors.
@@ -38,6 +40,7 @@ This plan breaks the Kids Games Zone build into **6 phases**, ordered so that fo
 - [ ] GitHub Actions CI completes green on a push (not yet pushed to remote).
 
 ### Notes
+
 - Shared types from Phase 1A were completed early as part of the bootstrap (game types + user types).
 - Design tokens from Phase 1B were partially completed (embedded in `platform/src/styles/global.css`; will be extracted to `shared/styles/tokens.css` in Phase 1).
 - ESLint uses flat config format (`eslint.config.js`) compatible with ESLint 9.
@@ -45,12 +48,14 @@ This plan breaks the Kids Games Zone build into **6 phases**, ordered so that fo
 ---
 
 ## Phase 1 — Shared Library & Design System ✅ COMPLETE
+
 **Completed:** 2026-03-15
 **Milestone:** The `shared` package exports all core types, design tokens, and the first set of shared UI components usable by both `platform` and any game.
 
 ### Tasks
 
 #### 1A. Core Types & Interfaces (Week 1) — ✅ PARTIALLY DONE
+
 Core game and user types already defined in Phase 0. Remaining types to add in `shared/types/`:
 
 - ~~`GameManifest`, `GamePlugin`, `GameConfig`, `GameProps`, `GameResult`~~ — done in `shared/src/types/game.ts`
@@ -62,55 +67,63 @@ Core game and user types already defined in Phase 0. Remaining types to add in `
 - `AnalyticsEvent` — still needed (Section 9.4).
 
 #### 1B. Design Tokens & Global Styles (Week 1)
+
 - Create `shared/styles/tokens.css` with all CSS custom properties from Section 2.2 (colors, radii, spacing, fonts, transitions, shadows).
 - Create `shared/styles/reset.css` — minimal CSS reset.
 - Create `shared/styles/breakpoints.css` — responsive breakpoint custom media queries.
 - Import Google Fonts: Baloo 2 (display) and Nunito (body) with font subsetting.
 
 #### 1C. Shared UI Components (Weeks 2-3)
+
 Build each component with CSS Modules, Framer Motion for animation, full ARIA attributes, and a unit test file:
 
-| Priority | Component | Notes |
-|----------|-----------|-------|
-| P0 | `<GameShell>` | Wrapper: header with title, back/home button, pause button, children slot |
-| P0 | `<OptionButton>` | Large tap target (64dp for tiny tier), press animation, correct/incorrect states |
-| P0 | `<ScoreDisplay>` | Animated counter, optional star rating |
-| P0 | `<ProgressBar>` | Current/total, color prop, label toggle |
-| P0 | `<CelebrationOverlay>` | Confetti/stars via Framer Motion, auto-dismiss |
-| P1 | `<GameTimer>` | Countdown/count-up, visual ring, pause support |
-| P1 | `<DifficultySelector>` | Star-based picker, 1-5 scale |
-| P1 | `<InstructionBubble>` | Speech bubble, optional audio trigger |
-| P1 | `<PauseMenu>` | Resume, restart, exit options |
-| P2 | `<DragItem>` / `<DropZone>` | Accessible drag-and-drop primitives |
+| Priority | Component                   | Notes                                                                            |
+| -------- | --------------------------- | -------------------------------------------------------------------------------- |
+| P0       | `<GameShell>`               | Wrapper: header with title, back/home button, pause button, children slot        |
+| P0       | `<OptionButton>`            | Large tap target (64dp for tiny tier), press animation, correct/incorrect states |
+| P0       | `<ScoreDisplay>`            | Animated counter, optional star rating                                           |
+| P0       | `<ProgressBar>`             | Current/total, color prop, label toggle                                          |
+| P0       | `<CelebrationOverlay>`      | Confetti/stars via Framer Motion, auto-dismiss                                   |
+| P1       | `<GameTimer>`               | Countdown/count-up, visual ring, pause support                                   |
+| P1       | `<DifficultySelector>`      | Star-based picker, 1-5 scale                                                     |
+| P1       | `<InstructionBubble>`       | Speech bubble, optional audio trigger                                            |
+| P1       | `<PauseMenu>`               | Resume, restart, exit options                                                    |
+| P2       | `<DragItem>` / `<DropZone>` | Accessible drag-and-drop primitives                                              |
 
 #### 1D. Shared Hooks
+
 - `useGameLifecycle(plugin: GamePlugin)` — manages IDLE -> LOADED -> PLAYING -> COMPLETED state machine.
 - `useFeatureFlag(name: string)` — reads from feature flag context.
 - `useAgeTier()` — returns current profile's age tier for conditional rendering.
 
 ### Acceptance Criteria
+
 - [ ] `shared` package builds cleanly and can be imported from `platform`.
 - [ ] Each component has at least one unit test (Vitest + React Testing Library).
 - [ ] Design tokens render correctly across all breakpoints (manual check).
 - [ ] Components respect `prefers-reduced-motion`.
 
 ### Dependencies
+
 - Phase 0 (monorepo must be set up).
 
 ---
 
 ## Phase 2 — Platform Shell & Core Services ✅ COMPLETE
+
 **Completed:** 2026-03-16
 **Milestone:** The platform shell renders a functional game hub with profile creation, game loading via the plugin system, and data persistence via IndexedDB. No real games yet — a "dummy game" is used for integration testing.
 
 ### Tasks
 
 #### 2A. State Management (Week 1)
+
 - Implement `GlobalState` with React Context + `useReducer` in `platform/src/context/`.
 - Actions: `SET_PROFILE`, `UPDATE_PROGRESS`, `REGISTER_GAME`, `START_SESSION`, `END_SESSION`, `UNLOCK_REWARD`.
 - `PlatformProvider` wraps the entire app, provides state and dispatch.
 
 #### 2B. Storage Service (Week 1)
+
 - Implement `StorageManager` in `platform/src/services/storage.ts` using the `idb` library.
 - IndexedDB schema: `profiles` store, `progress` store (keyed by `profileId+gameId`), `rewards` store, `events` store.
 - All methods from the `StorageManager` interface in the technical spec.
@@ -118,6 +131,7 @@ Build each component with CSS Modules, Framer Motion for animation, full ARIA at
 - Data migration strategy: version the DB schema from day one.
 
 #### 2C. Audio Service (Week 1-2)
+
 - Implement `AudioManager` singleton in `platform/src/services/audio.ts` using Howler.js.
 - Three independent channels: music, sfx, voice — each with volume control.
 - Mute/unmute state persisted per profile via StorageManager.
@@ -125,6 +139,7 @@ Build each component with CSS Modules, Framer Motion for animation, full ARIA at
 - Placeholder audio files in `shared/assets/audio/sfx/` (click, correct, incorrect, celebrate).
 
 #### 2D. Game Hub (Home Screen) (Week 2-3)
+
 - `platform/src/pages/Hub.tsx` — the main landing page.
 - Game card grid: responsive columns (2 mobile, 3 tablet, 4-5 desktop) using CSS Grid.
 - Each card displays: thumbnail, name, age badge, skill icons, progress bar, locked/unlocked state.
@@ -134,6 +149,7 @@ Build each component with CSS Modules, Framer Motion for animation, full ARIA at
 - Search bar visible for age 6+ profiles, hidden for 3-5.
 
 #### 2E. Game Plugin Loader (Week 2-3)
+
 - `platform/src/services/gameLoader.ts` — dynamic `import()` based on `GameManifest.entryPoint`.
 - `React.lazy()` + `Suspense` wrapping with a kid-friendly loading animation.
 - `GameErrorBoundary` component wrapping every loaded game — friendly error screen on crash.
@@ -141,6 +157,7 @@ Build each component with CSS Modules, Framer Motion for animation, full ARIA at
 - Visibility change listener (document blur/focus) triggers pause/resume.
 
 #### 2F. Routing (Week 3)
+
 - React Router v6 setup in `platform/src/App.tsx`.
 - Routes:
   - `/` — Hub
@@ -152,6 +169,7 @@ Build each component with CSS Modules, Framer Motion for animation, full ARIA at
 - Persistent navigation bar: Home, Profile, Rewards, Settings (icons only).
 
 #### 2G. Profile System (Week 3)
+
 - Profile creation flow: name, age, avatar selection (from a preset gallery).
 - PIN setup for parental access.
 - Profile selector screen (supports multiple child profiles).
@@ -159,12 +177,14 @@ Build each component with CSS Modules, Framer Motion for animation, full ARIA at
 - Profile stored in IndexedDB via StorageManager.
 
 #### 2H. Dummy Game for Integration Testing (Week 3)
+
 - Create `games/dummy-game/` — a minimal game that implements `GamePlugin`.
 - It displays a button, counts clicks, and returns a `GameResult` after 5 clicks.
 - Purpose: validate the entire plugin loading, lifecycle, and score-reporting pipeline end-to-end.
 - Delete or keep as a developer reference after real games are integrated.
 
 ### Acceptance Criteria
+
 - [ ] Profile creation, selection, and persistence work across browser restarts.
 - [ ] Hub displays game cards filtered by the active profile's age tier.
 - [ ] Dummy game loads via dynamic import, starts, receives `GameProps`, and reports results back to the platform.
@@ -174,20 +194,24 @@ Build each component with CSS Modules, Framer Motion for animation, full ARIA at
 - [ ] All data persists in IndexedDB; clearing storage resets everything.
 
 ### Dependencies
+
 - Phase 1 (shared types and components used throughout).
 
 ---
 
 ## Phase 3 — First Three Games ✅ COMPLETE
+
 **Completed:** 2026-03-16
 **Milestone:** Three fully functional games are playable from the hub, covering different age tiers and skill categories.
 
 ### Game 1: Word Puzzle (migrate existing) — Literacy, Ages 6-8
+
 **Duration:** 1-1.5 weeks
 
 The existing standalone app at `game/jerome/word-puzzle/` needs to be migrated into the monorepo plugin architecture.
 
 **Migration tasks:**
+
 1. Create `games/word-puzzle/` workspace package.
 2. Extract game logic from the existing `App.tsx` into a component that accepts `GameProps`.
 3. Create `index.tsx` exporting a `GamePlugin` with manifest and lifecycle hooks.
@@ -203,11 +227,13 @@ The existing standalone app at `game/jerome/word-puzzle/` needs to be migrated i
 10. Create game manifest with: `ageRange: [6, 8]`, `skills: ["literacy"]`.
 
 ### Game 2: Math Adventure — Numeracy, Ages 6-8
+
 **Duration:** 1.5-2 weeks
 
 A new game covering addition, subtraction, and pattern recognition.
 
 **Design:**
+
 - Multiple-choice math problems displayed with `<OptionButton>` components.
 - 10 questions per round, progressive difficulty.
 - Difficulty 1: single-digit addition. Difficulty 3: two-digit add/subtract. Difficulty 5: mixed operations with carrying.
@@ -216,6 +242,7 @@ A new game covering addition, subtraction, and pattern recognition.
 - Celebration overlay on completion.
 
 **Tasks:**
+
 1. Create `games/math-adventure/` workspace package.
 2. Implement question generator (procedural, not static data) in `games/math-adventure/src/utils/questionGenerator.ts`.
 3. Build game component using shared `<GameShell>`, `<OptionButton>`, `<ScoreDisplay>`, `<ProgressBar>`, `<CelebrationOverlay>`.
@@ -225,11 +252,13 @@ A new game covering addition, subtraction, and pattern recognition.
 7. Manifest: `ageRange: [6, 8]`, `skills: ["numeracy"]`.
 
 ### Game 3: Memory Match — Memory, Ages 3-5
+
 **Duration:** 1.5-2 weeks
 
 A card-matching game suitable for the youngest age tier.
 
 **Design:**
+
 - Grid of face-down cards. Tap to reveal, match pairs.
 - Difficulty 1: 4 cards (2 pairs). Difficulty 3: 8 cards. Difficulty 5: 16 cards.
 - Cards show colorful animal/object illustrations (from shared assets).
@@ -239,6 +268,7 @@ A card-matching game suitable for the youngest age tier.
 - Celebration with confetti on completion.
 
 **Tasks:**
+
 1. Create `games/memory-match/` workspace package.
 2. Build card grid component with flip animation (Framer Motion `rotateY`).
 3. Implement match logic, turn tracking, and pair-found tracking.
@@ -249,6 +279,7 @@ A card-matching game suitable for the youngest age tier.
 8. Manifest: `ageRange: [3, 5]`, `skills: ["memory"]`.
 
 ### Acceptance Criteria
+
 - [ ] All three games load from the hub and play to completion.
 - [ ] Each game correctly reports `GameResult` to the platform.
 - [ ] Progress (high score, level reached) persists between sessions.
@@ -258,17 +289,20 @@ A card-matching game suitable for the youngest age tier.
 - [ ] All games work with keyboard navigation (tab, enter, escape).
 
 ### Dependencies
+
 - Phase 2 (platform shell, plugin loader, storage, audio all required).
 
 ---
 
 ## Phase 4 — Progress, Rewards & Parental Controls ✅ COMPLETE
+
 **Completed:** 2026-03-26
 **Milestone:** Players earn rewards, see their progress, and parents can view dashboards and set time limits.
 
 ### What Was Delivered
 
 #### 4A. Reward System — ✅ COMPLETE
+
 - `RewardEngine` in `platform/src/services/rewards.ts` — evaluates all unearned rewards after every `GameResult`.
 - 7 reward milestones defined in `platform/src/config/rewardCatalog.ts` (First Star, Speed Demon, Bookworm, Math Wizard, Super Streak, Explorer, Master).
 - `RewardCard` component with locked/unlocked states and progress hints.
@@ -278,6 +312,7 @@ A card-matching game suitable for the youngest age tier.
 - 17 unit tests covering all criteria types.
 
 #### 4B. Difficulty Scaling — ✅ COMPLETE
+
 - `calculateNextDifficulty()` in `platform/src/services/difficulty.ts` — per spec §4.3 (85%+ avg → increase, 40%- → decrease, needs 3+ results).
 - `recentScores` ring buffer (last 5) added to `GameProgress` type.
 - Auto-adjusts after every game completion in `GameWrapper.tsx`.
@@ -285,6 +320,7 @@ A card-matching game suitable for the youngest age tier.
 - 9 unit tests.
 
 #### 4C. Streaks & Daily Challenges — ✅ COMPLETE
+
 - `updateStreak()` in `platform/src/services/streaks.ts` — calendar-day comparison, increment/reset logic.
 - Streak updates integrated into `GameWrapper.tsx` on game completion.
 - `UPDATE_STATS` action added to `PlatformContext`.
@@ -296,6 +332,7 @@ A card-matching game suitable for the youngest age tier.
 - 19 unit tests (7 streak + 12 daily challenge).
 
 #### 4D. Parental Controls — ✅ COMPLETE
+
 - `hashPin()` / `verifyPin()` in `platform/src/utils/pin.ts` — PBKDF2 via SubtleCrypto, salted hash.
 - `NumberPad` component — custom grid number pad (not text input, per spec).
 - `AdultGate` component — random multiplication problem verification gate.
@@ -312,6 +349,7 @@ A card-matching game suitable for the youngest age tier.
 - 16 unit tests (6 PIN + 10 time limit).
 
 ### Acceptance Criteria
+
 - [x] Rewards unlock correctly after meeting criteria; celebration displays.
 - [x] Difficulty auto-adjusts after 3+ game completions.
 - [x] Streak counter increments daily and resets correctly.
@@ -321,20 +359,24 @@ A card-matching game suitable for the youngest age tier.
 - [x] Time limits pause gameplay and show a friendly message.
 
 ### Dependencies
+
 - Phase 3 (needs real games generating real `GameResult` data to test rewards and progress).
 
 ---
 
 ## Phase 5 — Accessibility, i18n & Offline
+
 **Duration:** 2-3 weeks
 **Milestone:** The app is accessible, supports at least 2 languages, and works fully offline after first load.
 
 ### Tasks
 
 #### 5A. Accessibility Audit & Fixes — ✅ COMPLETE
+
 **Completed:** 2026-03-27
 
 **What was delivered:**
+
 - axe-core dev overlay and vitest-axe test integration across all packages
 - Global focus-visible indicators with focus ring design tokens
 - High-contrast mode with OS detection (`prefers-contrast: more`) and manual toggle in Settings
@@ -347,9 +389,11 @@ A card-matching game suitable for the youngest age tier.
 - axe violation checks added to component test suites
 
 #### 5B. Internationalization (Week 1-2) — ✅ COMPLETE
+
 **Completed:** 2026-04-04
 
 **What was delivered:**
+
 - i18next + react-i18next initialized with LanguageDetector and browser language detection
 - Namespace structure: `common` (platform) + per-game namespaces (`word-puzzle`, `math-adventure`, `memory-match`)
 - All hardcoded strings extracted to JSON locale files across platform, shared components, and all 3 games
@@ -360,9 +404,11 @@ A card-matching game suitable for the youngest age tier.
 - Stable react-i18next test mocks across all packages preventing infinite re-render loops
 
 #### 5C. Offline Support (Week 2-3) — ✅ COMPLETE
+
 **Completed:** 2026-04-04
 
 **What was delivered:**
+
 - vite-plugin-pwa with generateSW mode precaching 71 entries (~1.3MB)
 - Cache-first strategy for fonts, audio; navigateFallback for SPA routing
 - Self-hosted Google Fonts via @fontsource (Baloo 2 + Nunito), removing external CDN dependency
@@ -372,9 +418,11 @@ A card-matching game suitable for the youngest age tier.
 - IndexedDB persistence already in place from Phase 2 (5 stores, auto-save checkpoints)
 
 #### 5D. Performance Optimization (Week 2-3) — ✅ COMPLETE
+
 **Completed:** 2026-04-04
 
 **What was delivered:**
+
 - Font subsetting: latin + latin-ext only (removed Devanagari, Vietnamese, Cyrillic) — 31→14 font files, saved 337KB
 - Bundle splitting via manualChunks: app code 84KB gz, vendor chunks 85KB gz (react, framer-motion, i18next, howler)
 - SW precache optimized: 71→43 entries, 1.26MB→684KB (fonts moved to runtime CacheFirst cache)
@@ -383,6 +431,7 @@ A card-matching game suitable for the youngest age tier.
 - Image/audio optimization deferred — no real images exist yet, audio is only 44KB total
 
 ### Acceptance Criteria
+
 - [x] axe-core reports zero critical/serious accessibility violations.
 - [x] Full keyboard-only navigation works end-to-end.
 - [x] App renders correctly in English and French (or chosen second language).
@@ -391,17 +440,20 @@ A card-matching game suitable for the youngest age tier.
 - [x] Bundle sizes within budget (verified by CI).
 
 ### Dependencies
+
 - Phase 4 (all features must exist before accessibility/i18n can be applied comprehensively).
 
 ---
 
 ## Phase 6 — Testing, CI/CD Hardening & Deployment ✅ COMPLETE
+
 **Completed:** 2026-04-04
 **Milestone:** Production-ready deployment with comprehensive test coverage, preview deploys on PRs, and automated production deploys on merge to main.
 
 ### What Was Delivered
 
 #### 6D. Feature Flags — ✅ COMPLETE
+
 - Static JSON config at `platform/src/config/featureFlags.json` (6 flags: 3 game, 3 feature)
 - `FeatureFlagProvider` wired into app tree in `main.tsx`
 - Hub filters games by feature flags (disabled games hidden)
@@ -410,12 +462,14 @@ A card-matching game suitable for the youngest age tier.
 - 5 integration tests
 
 #### 6C. Game Developer Guide & Scaffolder — ✅ COMPLETE
+
 - `GAME_DEVELOPER_GUIDE.md` at repo root (12 sections, pre-submit checklist)
 - `scripts/create-game.ts` interactive scaffolder generates 13 files (package.json, tsconfig, vitest config, GamePlugin entry, component, CSS module, locale files, test file)
 - Scaffolder auto-registers feature flag (disabled by default)
 - Run via `pnpm create-game`
 
 #### 6A. Comprehensive Testing — ✅ COMPLETE
+
 - 7 Playwright E2E test suites (33 tests): profile, hub, gameplay, rewards, parental, offline, a11y
 - `@axe-core/playwright` full-page accessibility scans on 6 routes
 - E2E fixtures: `createProfile`, `navigateToGame`, `playMemoryMatchToCompletion`, `solveMathProblem`
@@ -424,6 +478,7 @@ A card-matching game suitable for the youngest age tier.
 - `@vitest/coverage-v8` installed with `pnpm test:coverage` script
 
 #### 6B. CI/CD Pipeline Hardening — ✅ COMPLETE
+
 - GitHub Actions split into 3 jobs: `lint-and-test`, `e2e` (parallel), `a11y` (parallel)
 - E2E job: builds, installs Chromium, runs desktop + mobile tests, uploads report + traces
 - A11y job: runs axe-core scans separately for clear PR check visibility
@@ -433,6 +488,7 @@ A card-matching game suitable for the youngest age tier.
 ### Original Tasks (Reference)
 
 #### 6A. Comprehensive Testing (Week 1)
+
 - **Unit tests** (Vitest + React Testing Library):
   - Shared library: 80%+ coverage. Focus on: StorageManager, RewardEngine, AudioManager, difficulty algorithm, daily challenge generator.
   - Per game: 70%+ coverage. Focus on: game logic, question generators, answer validation.
@@ -449,6 +505,7 @@ A card-matching game suitable for the youngest age tier.
   - Automated a11y scan on every page/state.
 
 #### 6B. CI/CD Pipeline Hardening (Week 1-2)
+
 - Enhance GitHub Actions workflow:
   - Add Playwright E2E tests to CI.
   - Add bundle size check (`size-limit`).
@@ -460,6 +517,7 @@ A card-matching game suitable for the youngest age tier.
 - Add `changesets` for versioning and changelog generation.
 
 #### 6C. Game Developer SDK Documentation (Week 2)
+
 - Write `GAME_DEVELOPER_GUIDE.md`:
   - How to scaffold a new game.
   - `GamePlugin` interface reference.
@@ -472,19 +530,22 @@ A card-matching game suitable for the youngest age tier.
 - Create a `create-game` script for scaffolding new games.
 
 #### 6D. Feature Flags Setup (Week 2)
+
 - Implement feature flag system: JSON config loaded at app start.
 - `useFeatureFlag(name)` hook.
 - Set up flags for the three existing games (all `enabled: true`).
 - Document how to add a new game behind a feature flag (status `"beta"`).
 
 ### Acceptance Criteria
+
 - [x] All tests pass (unit, integration, E2E, a11y, performance).
-- [ ] PR preview deploys are generated automatically. *(deferred — deployment platform not yet chosen)*
-- [ ] Production deploy succeeds on merge to main. *(deferred — deployment platform not yet chosen)*
+- [ ] PR preview deploys are generated automatically. _(deferred — deployment platform not yet chosen)_
+- [ ] Production deploy succeeds on merge to main. _(deferred — deployment platform not yet chosen)_
 - [x] Game developer guide is complete and a new developer could follow it to add a game.
 - [x] Feature flags work: disabling a flag hides the game from the hub.
 
 ### Dependencies
+
 - Phase 5 (all features must be finalized before comprehensive testing).
 
 ---
@@ -519,14 +580,14 @@ Phases are sequential. However, within each phase, the lettered sub-tasks (A, B,
 
 ## Risk Register
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Bundle size exceeds budget | Slow load times, poor UX | Enforce `size-limit` in CI from Phase 0; audit imports regularly |
-| IndexedDB limits on some browsers | Data loss | Test on Safari (known IDB quirks); implement storage quota check |
-| Howler.js adds too much to bundle | Budget exceeded | Evaluate lighter alternatives (Tone.js, native Web Audio) if needed |
-| Migrating word-puzzle from Tailwind to CSS Modules is tedious | Delays Phase 3 | Consider keeping Tailwind as a dev dependency for the transition; refactor incrementally |
-| Accessibility retrofit is expensive | Delays Phase 5 | Build accessible from Phase 1 — use semantic HTML, ARIA, focus management from the start |
-| Offline Service Worker caching bugs | Stale content served | Version all caches; implement "update available" prompt; thorough Playwright offline testing |
+| Risk                                                          | Impact                   | Mitigation                                                                                   |
+| ------------------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------- |
+| Bundle size exceeds budget                                    | Slow load times, poor UX | Enforce `size-limit` in CI from Phase 0; audit imports regularly                             |
+| IndexedDB limits on some browsers                             | Data loss                | Test on Safari (known IDB quirks); implement storage quota check                             |
+| Howler.js adds too much to bundle                             | Budget exceeded          | Evaluate lighter alternatives (Tone.js, native Web Audio) if needed                          |
+| Migrating word-puzzle from Tailwind to CSS Modules is tedious | Delays Phase 3           | Consider keeping Tailwind as a dev dependency for the transition; refactor incrementally     |
+| Accessibility retrofit is expensive                           | Delays Phase 5           | Build accessible from Phase 1 — use semantic HTML, ARIA, focus management from the start     |
+| Offline Service Worker caching bugs                           | Stale content served     | Version all caches; implement "update available" prompt; thorough Playwright offline testing |
 
 ---
 

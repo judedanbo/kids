@@ -17,7 +17,9 @@
   fill: none;
   stroke: var(--timer-color, var(--color-primary));
   stroke-linecap: round;
-  transition: stroke-dashoffset 1s linear, stroke var(--transition-fast);
+  transition:
+    stroke-dashoffset 1s linear,
+    stroke var(--transition-fast);
 }
 
 .progressCircle.warning {

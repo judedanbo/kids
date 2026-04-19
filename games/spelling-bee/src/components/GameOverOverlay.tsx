@@ -64,17 +64,8 @@ export function GameOverOverlay({
             {score} / {maxScore}
           </p>
           <div className={styles.actions}>
-            <OptionButton
-              ref={retryRef}
-              label={t('tryAgain')}
-              size="large"
-              onSelect={onRetry}
-            />
-            <OptionButton
-              label={t('backToHome')}
-              size="normal"
-              onSelect={onExit}
-            />
+            <OptionButton ref={retryRef} label={t('tryAgain')} size="large" onSelect={onRetry} />
+            <OptionButton label={t('backToHome')} size="normal" onSelect={onExit} />
           </div>
         </div>
       </div>

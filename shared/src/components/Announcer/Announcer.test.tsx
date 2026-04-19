@@ -4,9 +4,7 @@ import { Announcer, useAnnounce } from './Announcer';
 
 function TestConsumer() {
   const announce = useAnnounce();
-  return (
-    <button onClick={() => announce('Score updated to 5')}>Announce</button>
-  );
+  return <button onClick={() => announce('Score updated to 5')}>Announce</button>;
 }
 
 describe('Announcer', () => {

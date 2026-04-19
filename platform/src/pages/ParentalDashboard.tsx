@@ -54,7 +54,15 @@ export default function ParentalDashboard() {
     );
   }
 
-  return <Dashboard profile={profile} events={events} dispatch={dispatch} storageManager={storageManager} navigate={navigate} />;
+  return (
+    <Dashboard
+      profile={profile}
+      events={events}
+      dispatch={dispatch}
+      storageManager={storageManager}
+      navigate={navigate}
+    />
+  );
 }
 
 // --- Dashboard sub-component ---
@@ -79,10 +87,7 @@ function Dashboard({
   const today = new Date().toISOString().slice(0, 10);
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  const gameEndEvents = useMemo(
-    () => events.filter((e) => e.type === 'game_end'),
-    [events],
-  );
+  const gameEndEvents = useMemo(() => events.filter((e) => e.type === 'game_end'), [events]);
 
   const todayGames = useMemo(
     () => gameEndEvents.filter((e) => e.timestamp.startsWith(today)),

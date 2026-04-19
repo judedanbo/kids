@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useReducer,
-  useEffect,
-  type ReactNode,
-} from 'react';
+import React, { createContext, useContext, useReducer, useEffect, type ReactNode } from 'react';
 import type {
   UserProfile,
   GameManifest,
@@ -48,7 +42,10 @@ export interface GlobalState {
 export type PlatformAction =
   | { type: 'SET_PROFILE'; payload: UserProfile }
   | { type: 'ADD_PROFILE'; payload: UserProfile }
-  | { type: 'UPDATE_PROGRESS'; payload: { profileId: string; gameId: string; progress: GameProgress } }
+  | {
+      type: 'UPDATE_PROGRESS';
+      payload: { profileId: string; gameId: string; progress: GameProgress };
+    }
   | { type: 'REGISTER_GAME'; payload: GameManifest }
   | { type: 'START_SESSION'; payload: { gameId: string } }
   | { type: 'END_SESSION' }
@@ -156,11 +153,8 @@ export function platformReducer(state: GlobalState, action: PlatformAction): Glo
       const now = new Date().toISOString();
       return {
         ...state,
-        profiles: state.profiles.map((p) =>
-          p.id === profileId ? { ...p, deletedAt: now } : p,
-        ),
-        currentProfile:
-          state.currentProfile?.id === profileId ? null : state.currentProfile,
+        profiles: state.profiles.map((p) => (p.id === profileId ? { ...p, deletedAt: now } : p)),
+        currentProfile: state.currentProfile?.id === profileId ? null : state.currentProfile,
       };
     }
 
@@ -168,9 +162,7 @@ export function platformReducer(state: GlobalState, action: PlatformAction): Glo
       const { profileId } = action.payload;
       return {
         ...state,
-        profiles: state.profiles.map((p) =>
-          p.id === profileId ? { ...p, deletedAt: null } : p,
-        ),
+        profiles: state.profiles.map((p) => (p.id === profileId ? { ...p, deletedAt: null } : p)),
       };
     }
 
@@ -179,8 +171,7 @@ export function platformReducer(state: GlobalState, action: PlatformAction): Glo
       return {
         ...state,
         profiles: state.profiles.filter((p) => p.id !== profileId),
-        currentProfile:
-          state.currentProfile?.id === profileId ? null : state.currentProfile,
+        currentProfile: state.currentProfile?.id === profileId ? null : state.currentProfile,
       };
     }
 
@@ -188,9 +179,7 @@ export function platformReducer(state: GlobalState, action: PlatformAction): Glo
       const { profileId } = action.payload;
       return {
         ...state,
-        profiles: state.profiles.map((p) =>
-          p.id === profileId ? { ...p, progress: {} } : p,
-        ),
+        profiles: state.profiles.map((p) => (p.id === profileId ? { ...p, progress: {} } : p)),
         currentProfile:
           state.currentProfile?.id === profileId
             ? { ...state.currentProfile, progress: {} }
@@ -324,10 +313,7 @@ export function PlatformProvider({
   useEffect(() => {
     if (typeof window === 'undefined' || !window.localStorage) return;
     try {
-      window.localStorage.setItem(
-        SETTINGS_STORAGE_KEY,
-        JSON.stringify(state.settings),
-      );
+      window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(state.settings));
     } catch {
       // Full disk, private-mode Safari, etc. — acceptable to drop.
     }
@@ -342,9 +328,7 @@ export function PlatformProvider({
   }, [state.settings.backgroundMusicEnabled, audioManager]);
 
   return (
-    <PlatformContext.Provider
-      value={{ state, dispatch, storageManager, audioManager }}
-    >
+    <PlatformContext.Provider value={{ state, dispatch, storageManager, audioManager }}>
       {children}
     </PlatformContext.Provider>
   );

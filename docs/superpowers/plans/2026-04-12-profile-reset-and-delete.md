@@ -15,30 +15,36 @@
 ## File Structure
 
 **Shared types** (`shared/src/types/`)
+
 - `user.ts` — add `deletedAt: string | null` to `UserProfile`.
 - `services.ts` — update `StorageManager` interface: replace `deleteProfile` with `purgeProfile`; add `listActiveProfiles`, `softDeleteProfile`, `restoreProfile`, `resetProfileProgress`.
 
 **Platform storage** (`platform/src/services/`)
+
 - `storage.ts` — DB v2 migration; implement new methods; replace `deleteProfile` with `purgeProfile`.
 - `storage.test.ts` — new test cases.
 
 **Platform context** (`platform/src/context/`)
+
 - `PlatformContext.tsx` — four new reducer actions.
 - `PlatformContext.test.tsx` — reducer test cases for new actions.
 
 **UI components** (`platform/src/components/`)
+
 - `TypedConfirmModal/TypedConfirmModal.tsx` — **new** reusable modal; user must type an expected string to confirm.
 - `TypedConfirmModal/TypedConfirmModal.module.css` — styles.
 - `TypedConfirmModal/index.ts` — barrel.
 - `TypedConfirmModal/TypedConfirmModal.test.tsx` — tests.
 
 **Pages** (`platform/src/pages/`)
+
 - `ParentalDashboard.tsx` — new "Profiles" section + per-row actions + wiring to `TypedConfirmModal`.
 - `ParentalDashboard.module.css` — styles for the new section.
 - `ParentalDashboard.test.tsx` — **new** component tests (file may not exist yet).
 - `ProfileSelect.tsx` — filter out profiles where `deletedAt !== null`; show creator when active list is empty.
 
 **i18n** (`platform/src/locales/`)
+
 - `en/common.json` — new `parental.profiles.*` strings.
 - `fr/common.json` — same keys, French.
 
@@ -47,6 +53,7 @@
 ## Task 1: Add `deletedAt` field to `UserProfile` type
 
 **Files:**
+
 - Modify: `shared/src/types/user.ts`
 
 - [ ] **Step 1: Add the `deletedAt` field**
@@ -152,6 +159,7 @@ git commit -m "feat(types): add deletedAt field to UserProfile for soft-delete"
 ## Task 2: Update `StorageManager` interface
 
 **Files:**
+
 - Modify: `shared/src/types/services.ts`
 
 - [ ] **Step 1: Replace `deleteProfile` and add new method signatures**
@@ -213,6 +221,7 @@ git commit -m "feat(types): extend StorageManager with soft-delete and reset met
 ## Task 3: Implement new storage methods and DB v2 migration
 
 **Files:**
+
 - Modify: `platform/src/services/storage.ts`
 - Modify: `platform/src/services/storage.test.ts`
 
@@ -566,6 +575,7 @@ git commit -m "feat(storage): add soft-delete, restore, purge (cascade), and pro
 ## Task 4: Add reducer actions to `PlatformContext`
 
 **Files:**
+
 - Modify: `platform/src/context/PlatformContext.tsx`
 - Modify: `platform/src/context/PlatformContext.test.tsx`
 
@@ -726,7 +736,10 @@ In `PlatformContext.tsx`, extend the `PlatformAction` union with:
 export type PlatformAction =
   | { type: 'SET_PROFILE'; payload: UserProfile }
   | { type: 'ADD_PROFILE'; payload: UserProfile }
-  | { type: 'UPDATE_PROGRESS'; payload: { profileId: string; gameId: string; progress: GameProgress } }
+  | {
+      type: 'UPDATE_PROGRESS';
+      payload: { profileId: string; gameId: string; progress: GameProgress };
+    }
   | { type: 'REGISTER_GAME'; payload: GameManifest }
   | { type: 'START_SESSION'; payload: { gameId: string } }
   | { type: 'END_SESSION' }
@@ -815,6 +828,7 @@ git commit -m "feat(context): reducer actions for soft-delete, restore, purge, r
 ## Task 5: Filter deleted profiles from `ProfileSelect`
 
 **Files:**
+
 - Modify: `platform/src/pages/ProfileSelect.tsx`
 
 - [ ] **Step 1: Filter active profiles and route to creator when empty**
@@ -879,10 +893,7 @@ export default function ProfileSelect() {
             <span className={styles.name}>{profile.name}</span>
           </button>
         ))}
-        <button
-          className={styles.createCard}
-          onClick={() => setShowCreator(true)}
-        >
+        <button className={styles.createCard} onClick={() => setShowCreator(true)}>
           <span className={styles.createIcon}>+</span>
           <span className={styles.createLabel}>{t('profile.newPlayer')}</span>
         </button>
@@ -909,6 +920,7 @@ git commit -m "feat(profile-select): hide soft-deleted profiles from picker"
 ## Task 6: Build reusable `TypedConfirmModal` component
 
 **Files:**
+
 - Create: `platform/src/components/TypedConfirmModal/TypedConfirmModal.tsx`
 - Create: `platform/src/components/TypedConfirmModal/TypedConfirmModal.module.css`
 - Create: `platform/src/components/TypedConfirmModal/index.ts`
@@ -1035,9 +1047,16 @@ export function TypedConfirmModal({
   }
 
   return (
-    <div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby={`${inputId}-title`}>
+    <div
+      className={styles.overlay}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={`${inputId}-title`}
+    >
       <div className={styles.card}>
-        <h2 id={`${inputId}-title`} className={styles.title}>{title}</h2>
+        <h2 id={`${inputId}-title`} className={styles.title}>
+          {title}
+        </h2>
         <p className={styles.description}>{description}</p>
         {warning && <p className={styles.warning}>{warning}</p>}
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -1057,11 +1076,7 @@ export function TypedConfirmModal({
             <button type="button" className={styles.cancelBtn} onClick={onCancel}>
               {t('typedConfirm.cancel')}
             </button>
-            <button
-              type="submit"
-              className={styles.confirmBtn}
-              disabled={!matches}
-            >
+            <button type="submit" className={styles.confirmBtn} disabled={!matches}>
               {confirmLabel}
             </button>
           </div>
@@ -1214,6 +1229,7 @@ git commit -m "feat(ui): add TypedConfirmModal for destructive-action confirmati
 ## Task 7: Add Profiles section to `ParentalDashboard`
 
 **Files:**
+
 - Modify: `platform/src/pages/ParentalDashboard.tsx`
 - Modify: `platform/src/pages/ParentalDashboard.module.css`
 - Modify: `platform/src/locales/en/common.json`
@@ -1447,7 +1463,9 @@ async function confirmPending() {
 Now add the new section JSX inside the returned element, after the "Game Progress Table" section:
 
 ```tsx
-{/* Profiles */}
+{
+  /* Profiles */
+}
 <section className={styles.section}>
   <h2 className={styles.sectionTitle}>{t('parental.profiles.title')}</h2>
   {actionError && <p className={styles.error}>{actionError}</p>}
@@ -1483,9 +1501,7 @@ Now add the new section JSX inside the returned element, after the "Game Progres
                     : t('parental.profiles.statusActive')}
                 </span>
               </td>
-              <td>
-                {isDeleted ? '—' : formatLastPlayed(p.stats.lastPlayedAt)}
-              </td>
+              <td>{isDeleted ? '—' : formatLastPlayed(p.stats.lastPlayedAt)}</td>
               <td>
                 <div className={styles.profileActions}>
                   {!isDeleted && (
@@ -1522,30 +1538,36 @@ Now add the new section JSX inside the returned element, after the "Game Progres
       </tbody>
     </table>
   </div>
-</section>
+</section>;
 
-{/* Typed-confirmation modals for destructive actions */}
-{pending?.kind === 'delete' && (
-  <TypedConfirmModal
-    title={t('parental.profiles.confirmDeleteTitle', { name: pending.profile.name })}
-    description={t('parental.profiles.confirmDeleteBody', { name: pending.profile.name })}
-    expected={pending.profile.name}
-    confirmLabel={t('parental.profiles.confirmDeleteAction')}
-    onConfirm={confirmPending}
-    onCancel={() => setPending(null)}
-  />
-)}
-{pending?.kind === 'purge' && (
-  <TypedConfirmModal
-    title={t('parental.profiles.confirmPurgeTitle', { name: pending.profile.name })}
-    description={t('parental.profiles.confirmPurgeBody', { name: pending.profile.name })}
-    warning={t('parental.profiles.confirmPurgeWarning')}
-    expected={pending.profile.name}
-    confirmLabel={t('parental.profiles.confirmPurgeAction')}
-    onConfirm={confirmPending}
-    onCancel={() => setPending(null)}
-  />
-)}
+{
+  /* Typed-confirmation modals for destructive actions */
+}
+{
+  pending?.kind === 'delete' && (
+    <TypedConfirmModal
+      title={t('parental.profiles.confirmDeleteTitle', { name: pending.profile.name })}
+      description={t('parental.profiles.confirmDeleteBody', { name: pending.profile.name })}
+      expected={pending.profile.name}
+      confirmLabel={t('parental.profiles.confirmDeleteAction')}
+      onConfirm={confirmPending}
+      onCancel={() => setPending(null)}
+    />
+  );
+}
+{
+  pending?.kind === 'purge' && (
+    <TypedConfirmModal
+      title={t('parental.profiles.confirmPurgeTitle', { name: pending.profile.name })}
+      description={t('parental.profiles.confirmPurgeBody', { name: pending.profile.name })}
+      warning={t('parental.profiles.confirmPurgeWarning')}
+      expected={pending.profile.name}
+      confirmLabel={t('parental.profiles.confirmPurgeAction')}
+      onConfirm={confirmPending}
+      onCancel={() => setPending(null)}
+    />
+  );
+}
 ```
 
 - [ ] **Step 4: Write a component test for the Profiles section**
@@ -1683,9 +1705,7 @@ describe('ParentalDashboard — Profiles section', () => {
     expect(confirmBtn).toBeEnabled();
     await user.click(confirmBtn);
 
-    await waitFor(() =>
-      expect(storage.softDeleteProfile).toHaveBeenCalledWith('a'),
-    );
+    await waitFor(() => expect(storage.softDeleteProfile).toHaveBeenCalledWith('a'));
   });
 });
 ```

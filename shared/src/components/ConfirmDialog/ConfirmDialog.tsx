@@ -46,9 +46,7 @@ export function ConfirmDialog({
   if (!open) return null;
 
   const confirmClass =
-    tone === 'danger'
-      ? `${styles.confirmButton} ${styles.danger}`
-      : styles.confirmButton;
+    tone === 'danger' ? `${styles.confirmButton} ${styles.danger}` : styles.confirmButton;
 
   return (
     <FocusTrap
@@ -57,7 +55,14 @@ export function ConfirmDialog({
         initialFocus: CANCEL_BUTTON_SELECTOR,
       }}
     >
-      <div className={styles.backdrop} onClick={onCancel}>
+      <div
+        className={styles.backdrop}
+        role="presentation"
+        onClick={onCancel}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') onCancel();
+        }}
+      >
         <motion.div
           className={styles.dialog}
           role="dialog"

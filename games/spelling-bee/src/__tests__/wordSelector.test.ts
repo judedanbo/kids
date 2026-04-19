@@ -45,7 +45,11 @@ describe('selectWords', () => {
   });
 
   it('excludes specified words from selection', () => {
-    const result = selectWords(wordsTiny, { difficulty: 4, count: 10, exclude: ['cat', 'dog', 'sun'] });
+    const result = selectWords(wordsTiny, {
+      difficulty: 4,
+      count: 10,
+      exclude: ['cat', 'dog', 'sun'],
+    });
     const words = result.map((w) => w.word);
     expect(words).not.toContain('cat');
     expect(words).not.toContain('dog');

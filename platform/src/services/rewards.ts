@@ -57,9 +57,7 @@ export function evaluateRewards(
 }
 
 function checkCompletion(profile: UserProfile, threshold: number): boolean {
-  const gamesPlayed = Object.values(profile.progress).filter(
-    (p) => p.totalAttempts > 0,
-  ).length;
+  const gamesPlayed = Object.values(profile.progress).filter((p) => p.totalAttempts > 0).length;
   return gamesPlayed >= threshold;
 }
 
@@ -82,28 +80,20 @@ function checkCategoryMastery(
   threshold: number,
   gameRegistry: GameManifest[],
 ): boolean {
-  const gamesInCategory = gameRegistry.filter((g) =>
-    g.skills.includes(skillCategory as never),
-  );
+  const gamesInCategory = gameRegistry.filter((g) => g.skills.includes(skillCategory as never));
   const playedCount = gamesInCategory.filter(
     (g) => profile.progress[g.id]?.totalAttempts > 0,
   ).length;
   return playedCount >= threshold;
 }
 
-function checkExplorer(
-  profile: UserProfile,
-  gameRegistry: GameManifest[],
-): boolean {
+function checkExplorer(profile: UserProfile, gameRegistry: GameManifest[]): boolean {
   const activeGames = gameRegistry.filter((g) => g.status === 'active');
   if (activeGames.length === 0) return false;
   return activeGames.every((g) => profile.progress[g.id]?.totalAttempts > 0);
 }
 
-function checkMaster(
-  result: GameResult,
-  gameRegistry: GameManifest[],
-): boolean {
+function checkMaster(result: GameResult, gameRegistry: GameManifest[]): boolean {
   const manifest = gameRegistry.find((g) => g.id === result.gameId);
   if (!manifest) return false;
   const atMaxDifficulty = result.difficulty >= manifest.maxDifficulty;
@@ -121,9 +111,7 @@ export function getRewardProgress(
 ): string {
   if (reward.id === 'explorer') {
     const activeGames = gameRegistry.filter((g) => g.status === 'active');
-    const played = activeGames.filter(
-      (g) => profile.progress[g.id]?.totalAttempts > 0,
-    ).length;
+    const played = activeGames.filter((g) => profile.progress[g.id]?.totalAttempts > 0).length;
     return `${played} / ${activeGames.length} games played`;
   }
 
@@ -133,9 +121,7 @@ export function getRewardProgress(
 
   switch (reward.criteria.type) {
     case 'completion': {
-      const gamesPlayed = Object.values(profile.progress).filter(
-        (p) => p.totalAttempts > 0,
-      ).length;
+      const gamesPlayed = Object.values(profile.progress).filter((p) => p.totalAttempts > 0).length;
       return `${gamesPlayed} / ${reward.criteria.threshold} games completed`;
     }
     case 'time':

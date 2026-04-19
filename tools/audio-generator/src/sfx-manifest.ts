@@ -1,9 +1,7 @@
 import { z } from 'zod';
 
 export const SFXEntrySchema = z.object({
-  id: z
-    .string()
-    .regex(/^[a-z0-9][a-z0-9-]*$/, 'id must be kebab-case (a-z, 0-9, -)'),
+  id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'id must be kebab-case (a-z, 0-9, -)'),
   prompt: z.string().min(3),
   durationSeconds: z.number().min(0.5).max(22).optional(),
   promptInfluence: z.number().min(0).max(1).optional(),

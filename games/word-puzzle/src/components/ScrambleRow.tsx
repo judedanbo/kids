@@ -15,7 +15,12 @@ interface ScrambleRowProps {
   getLetterProps: (index: number) => LetterItemProps;
 }
 
-export function ScrambleRow({ letters, placedIndices, onLetterClick, getLetterProps }: ScrambleRowProps) {
+export function ScrambleRow({
+  letters,
+  placedIndices,
+  onLetterClick,
+  getLetterProps,
+}: ScrambleRowProps) {
   return (
     <div className={styles.row} role="group" aria-label="Scrambled letters">
       {letters.map((letter, i) => {

@@ -28,13 +28,10 @@ export function useRovingTabindex({
   const [activeIndex, setActiveIndex] = useState(0);
   const itemRefs = useRef<Map<number, HTMLElement>>(new Map());
 
-  const moveTo = useCallback(
-    (index: number) => {
-      setActiveIndex(index);
-      itemRefs.current.get(index)?.focus();
-    },
-    [],
-  );
+  const moveTo = useCallback((index: number) => {
+    setActiveIndex(index);
+    itemRefs.current.get(index)?.focus();
+  }, []);
 
   const handleKeyDown = useCallback(
     (index: number, e: KeyboardEvent) => {

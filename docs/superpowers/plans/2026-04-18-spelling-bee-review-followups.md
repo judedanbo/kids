@@ -17,6 +17,7 @@
 ## File Structure
 
 **Modify:**
+
 - `games/spelling-bee/src/locales/en/spelling-bee.json` — remove dead keys (#9)
 - `games/spelling-bee/src/locales/fr/spelling-bee.json` — remove dead keys (#9)
 - `games/spelling-bee/src/hooks/useSessionLevels.ts` — update victory-precedence comment (I-2)
@@ -45,6 +46,7 @@ Ordered from smallest blast radius (doc-only) to largest (code + test), so earli
 ## Task 1: Delete dead `encourageTiny` / `encourageJunior` locale keys
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/locales/en/spelling-bee.json`
 - Modify: `games/spelling-bee/src/locales/fr/spelling-bee.json`
 
@@ -96,36 +98,37 @@ git -C C:/code/kids commit -m "i18n(spelling-bee): remove dead encourageTiny/enc
 ## Task 2: Update victory-precedence comment (I-2)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/hooks/useSessionLevels.ts`
 
-The comment above the victory branch reads "if the player reached the final level (even on their last life), reward the completion." Reviewer pointed out that the actual rule is weaker: *any* completion at level 5 fires victory, including a 0-correct run after losing the last life. The behavior is intentional (kid-friendly). Make the comment match reality.
+The comment above the victory branch reads "if the player reached the final level (even on their last life), reward the completion." Reviewer pointed out that the actual rule is weaker: _any_ completion at level 5 fires victory, including a 0-correct run after losing the last life. The behavior is intentional (kid-friendly). Make the comment match reality.
 
 - [ ] **Step 1: Update the comment**
 
 In `games/spelling-bee/src/hooks/useSessionLevels.ts`, locate the block (currently around lines 129–135):
 
 ```ts
-      // Victory takes precedence over out-of-lives: if the player reached
-      // the final level (even on their last life), reward the completion.
-      if (currentLevelRef.current >= TOTAL_LEVELS) {
-        setOutcome('victory');
-        setSessionPhase('complete');
-        return;
-      }
+// Victory takes precedence over out-of-lives: if the player reached
+// the final level (even on their last life), reward the completion.
+if (currentLevelRef.current >= TOTAL_LEVELS) {
+  setOutcome('victory');
+  setSessionPhase('complete');
+  return;
+}
 ```
 
 Replace the comment only — the code is unchanged:
 
 ```ts
-      // Any completion at level 5 is treated as a victory, regardless of
-      // that level's accuracy — reaching level 5 is itself an achievement
-      // for kids, and tightening to require a passing score would punish
-      // players who got unlucky on their final-life attempt.
-      if (currentLevelRef.current >= TOTAL_LEVELS) {
-        setOutcome('victory');
-        setSessionPhase('complete');
-        return;
-      }
+// Any completion at level 5 is treated as a victory, regardless of
+// that level's accuracy — reaching level 5 is itself an achievement
+// for kids, and tightening to require a passing score would punish
+// players who got unlucky on their final-life attempt.
+if (currentLevelRef.current >= TOTAL_LEVELS) {
+  setOutcome('victory');
+  setSessionPhase('complete');
+  return;
+}
 ```
 
 - [ ] **Step 2: Verify nothing broke**
@@ -148,6 +151,7 @@ git -C C:/code/kids commit -m "docs(spelling-bee): accurately describe victory-p
 ## Task 3: Add dev-only double-fire note to `useSpellingRound` empty-words effect (M-3)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/hooks/useSpellingRound.ts`
 
 The reviewer pointed out that React strict-mode's double-mount in dev fires the empty-words `useEffect` twice (fresh refs per mount defeat the `hasNotifiedRef` guard). The path is unreachable in production because `selectWords`'s Layer 4 guarantees non-empty arrays. Document this rather than complicate the implementation.
@@ -157,28 +161,28 @@ The reviewer pointed out that React strict-mode's double-mount in dev fires the 
 In `games/spelling-bee/src/hooks/useSpellingRound.ts`, locate the existing comment block above the empty-words `useEffect` (currently around lines 55–60). The current comment explains the effect's one-shot behavior. Extend it with a dev-only-strict-mode note. Find:
 
 ```ts
-  // If constructed with an empty words array, notify the parent once
-  // (post-render, via effect) so the session hook can advance past the
-  // broken round instead of hanging on it. The hasNotifiedRef gate ensures
-  // this fires at most once per hook instance, so repeated empty→non-empty
-  // transitions (unusual) don't cascade into duplicate notifications.
+// If constructed with an empty words array, notify the parent once
+// (post-render, via effect) so the session hook can advance past the
+// broken round instead of hanging on it. The hasNotifiedRef gate ensures
+// this fires at most once per hook instance, so repeated empty→non-empty
+// transitions (unusual) don't cascade into duplicate notifications.
 ```
 
 Replace with:
 
 ```ts
-  // If constructed with an empty words array, notify the parent once
-  // (post-render, via effect) so the session hook can advance past the
-  // broken round instead of hanging on it. The hasNotifiedRef gate ensures
-  // this fires at most once per hook instance, so repeated empty→non-empty
-  // transitions (unusual) don't cascade into duplicate notifications.
-  //
-  // Dev-only note: React strict-mode mounts components twice, so this
-  // effect fires twice in dev when it fires at all. The ref is fresh per
-  // mount, so the guard doesn't help across strict-mode's throwaway mount.
-  // Not worth fixing because the empty-words path is unreachable in
-  // practice — Layer 4 of selectWords guarantees a non-empty array for
-  // any real word pool.
+// If constructed with an empty words array, notify the parent once
+// (post-render, via effect) so the session hook can advance past the
+// broken round instead of hanging on it. The hasNotifiedRef gate ensures
+// this fires at most once per hook instance, so repeated empty→non-empty
+// transitions (unusual) don't cascade into duplicate notifications.
+//
+// Dev-only note: React strict-mode mounts components twice, so this
+// effect fires twice in dev when it fires at all. The ref is fresh per
+// mount, so the guard doesn't help across strict-mode's throwaway mount.
+// Not worth fixing because the empty-words path is unreachable in
+// practice — Layer 4 of selectWords guarantees a non-empty array for
+// any real word pool.
 ```
 
 - [ ] **Step 2: Verify nothing broke**
@@ -201,6 +205,7 @@ git -C C:/code/kids commit -m "docs(spelling-bee): note strict-mode double-fire 
 ## Task 4: Add reduced-motion design note to `SpellingBee.tsx` (#8)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/SpellingBee.tsx`
 
 Today nothing in spelling-bee animates except the shared `CelebrationOverlay` and `PauseMenu` (which already gate on `useReducedMotion()` from framer-motion). Rather than adding infrastructure for animations that don't exist, leave a grep-able reminder at the top of the file.
@@ -236,6 +241,7 @@ git -C C:/code/kids commit -m "docs(spelling-bee): note reduced-motion expectati
 ## Task 5: Rename misleading Layer 3 test (M-4)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/__tests__/wordSelector.test.ts`
 
 The test `allows repeats when widening is still not enough` uses a 2-word pool with `count: 5`. In the `selectWords` flow, this actually falls through to Layer 4 (whole-pool fallback), not Layer 3 — the "allows repeats" name is misleading. Layer 3 proper is covered by a separate test.
@@ -245,43 +251,43 @@ The test `allows repeats when widening is still not enough` uses a 2-word pool w
 In `games/spelling-bee/src/__tests__/wordSelector.test.ts`, find the test (currently around lines 66–79):
 
 ```ts
-  it('allows repeats when widening is still not enough', () => {
-    const narrowPool = [
-      { word: 'a', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
-      { word: 'b', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
-    ];
-    const result = selectWords(narrowPool, {
-      difficulty: 1,
-      count: 5,
-      exclude: ['a', 'b'],
-    });
-    expect(result).toHaveLength(2);
-    const words = result.map((w) => w.word).sort();
-    expect(words).toEqual(['a', 'b']);
+it('allows repeats when widening is still not enough', () => {
+  const narrowPool = [
+    { word: 'a', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
+    { word: 'b', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
+  ];
+  const result = selectWords(narrowPool, {
+    difficulty: 1,
+    count: 5,
+    exclude: ['a', 'b'],
   });
+  expect(result).toHaveLength(2);
+  const words = result.map((w) => w.word).sort();
+  expect(words).toEqual(['a', 'b']);
+});
 ```
 
 Replace with:
 
 ```ts
-  it('falls through to whole-pool fallback when the pool is smaller than count', () => {
-    // Pool has 2 unique words and both are excluded — Layer 3 can't
-    // satisfy count (2 < 5), so Layer 4 returns whatever the whole pool
-    // offers. Layer 3 proper is covered by the 'uses repeats while
-    // honoring the +2 difficulty ceiling (Layer 3)' test below.
-    const narrowPool = [
-      { word: 'a', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
-      { word: 'b', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
-    ];
-    const result = selectWords(narrowPool, {
-      difficulty: 1,
-      count: 5,
-      exclude: ['a', 'b'],
-    });
-    expect(result).toHaveLength(2);
-    const words = result.map((w) => w.word).sort();
-    expect(words).toEqual(['a', 'b']);
+it('falls through to whole-pool fallback when the pool is smaller than count', () => {
+  // Pool has 2 unique words and both are excluded — Layer 3 can't
+  // satisfy count (2 < 5), so Layer 4 returns whatever the whole pool
+  // offers. Layer 3 proper is covered by the 'uses repeats while
+  // honoring the +2 difficulty ceiling (Layer 3)' test below.
+  const narrowPool = [
+    { word: 'a', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
+    { word: 'b', difficulty: 1, image: '', definition: '', origin: '', sentence: '' },
+  ];
+  const result = selectWords(narrowPool, {
+    difficulty: 1,
+    count: 5,
+    exclude: ['a', 'b'],
   });
+  expect(result).toHaveLength(2);
+  const words = result.map((w) => w.word).sort();
+  expect(words).toEqual(['a', 'b']);
+});
 ```
 
 - [ ] **Step 2: Verify the test still passes under the new name**
@@ -304,6 +310,7 @@ git -C C:/code/kids commit -m "test(spelling-bee): rename misleading Layer 4 fal
 ## Task 6: Bucketed Fisher-Yates shuffle in `pickFrom` (#7)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/utils/wordSelector.ts`
 
 Current `pickFrom` uses `Math.random() - 0.5` as a sort tiebreaker, which is an unstable-sort anti-pattern. Naïvely removing it would eliminate per-session variety among same-distance candidates. Replace the approach with bucketed shuffling: group candidates by distance-to-target, shuffle within each bucket, concat closest-first, take the top `count`, then final-shuffle the output.
@@ -378,6 +385,7 @@ From `C:\code\kids\games\spelling-bee`:
 Run: `pnpm test src/__tests__/wordSelector.test.ts`
 
 Expected: all 12 tests PASS. In particular:
+
 - `'shuffles the result (non-deterministic, run multiple times)'` — continues to assert variety across runs; the bucketed implementation preserves variety.
 - `'prioritizes words closest to the target difficulty'` — still holds because buckets are traversed closest-first.
 - All Layer 1–4 tests — still hold.
@@ -404,6 +412,7 @@ git -C C:/code/kids commit -m "refactor(spelling-bee): replace unstable sort tie
 ## Task 7: Strict-mode audio guard in `LevelPlay` + test (#10)
 
 **Files:**
+
 - Modify: `games/spelling-bee/src/components/LevelPlay.tsx`
 - Modify: `games/spelling-bee/src/__tests__/SpellingBee.test.tsx`
 
@@ -430,23 +439,23 @@ import { StrictMode } from 'react';
 Then append a new test inside the `describe('SpellingBee', ...)` block, after the existing tests:
 
 ```tsx
-  it('plays word audio exactly once after dismissing instruction, even in StrictMode', () => {
-    const props = createMockProps();
-    render(
-      <StrictMode>
-        <SpellingBee {...props} />
-      </StrictMode>,
-    );
+it('plays word audio exactly once after dismissing instruction, even in StrictMode', () => {
+  const props = createMockProps();
+  render(
+    <StrictMode>
+      <SpellingBee {...props} />
+    </StrictMode>,
+  );
 
-    // Dismiss instruction → phase becomes 'playing', the play-word
-    // effect fires. Without the guard, StrictMode fires it twice.
-    fireEvent.click(screen.getByText('letsGo'));
+  // Dismiss instruction → phase becomes 'playing', the play-word
+  // effect fires. Without the guard, StrictMode fires it twice.
+  fireEvent.click(screen.getByText('letsGo'));
 
-    const wordPlays = (props.audioManager.playVoice as ReturnType<typeof vi.fn>).mock.calls.filter(
-      (call: unknown[]) => typeof call[0] === 'string' && call[0].startsWith('voice:word-'),
-    );
-    expect(wordPlays).toHaveLength(1);
-  });
+  const wordPlays = (props.audioManager.playVoice as ReturnType<typeof vi.fn>).mock.calls.filter(
+    (call: unknown[]) => typeof call[0] === 'string' && call[0].startsWith('voice:word-'),
+  );
+  expect(wordPlays).toHaveLength(1);
+});
 ```
 
 The filter on `'voice:word-'` is important because other voice calls (`voice:encouragement-*`) may also fire during the round, and we only care about the word-pronunciation fires here.
@@ -470,31 +479,47 @@ import { useEffect, useMemo, useRef } from 'react';
 Inside the component body, after the `useSpellingRound` call and before the `useMemo` for tiles (around line 52), add:
 
 ```ts
-  const lastPlayedKeyRef = useRef<string | null>(null);
+const lastPlayedKeyRef = useRef<string | null>(null);
 ```
 
 Then replace the play-word effect (currently lines 58–63):
 
 ```ts
-  useEffect(() => {
-    if (round.phase === 'playing' && round.currentWord) {
-      audioManager.playVoice(`voice:word-${round.currentWord.word}`);
-      announce(t('wordOf', { current: round.currentWordIndex + 1, total: words.length }));
-    }
-  }, [round.phase, round.currentWordIndex, round.currentWord, audioManager, announce, t, words.length]);
+useEffect(() => {
+  if (round.phase === 'playing' && round.currentWord) {
+    audioManager.playVoice(`voice:word-${round.currentWord.word}`);
+    announce(t('wordOf', { current: round.currentWordIndex + 1, total: words.length }));
+  }
+}, [
+  round.phase,
+  round.currentWordIndex,
+  round.currentWord,
+  audioManager,
+  announce,
+  t,
+  words.length,
+]);
 ```
 
 with:
 
 ```ts
-  useEffect(() => {
-    if (round.phase !== 'playing' || !round.currentWord) return;
-    const key = `playing:${round.currentWord.word}`;
-    if (lastPlayedKeyRef.current === key) return;
-    lastPlayedKeyRef.current = key;
-    audioManager.playVoice(`voice:word-${round.currentWord.word}`);
-    announce(t('wordOf', { current: round.currentWordIndex + 1, total: words.length }));
-  }, [round.phase, round.currentWordIndex, round.currentWord, audioManager, announce, t, words.length]);
+useEffect(() => {
+  if (round.phase !== 'playing' || !round.currentWord) return;
+  const key = `playing:${round.currentWord.word}`;
+  if (lastPlayedKeyRef.current === key) return;
+  lastPlayedKeyRef.current = key;
+  audioManager.playVoice(`voice:word-${round.currentWord.word}`);
+  announce(t('wordOf', { current: round.currentWordIndex + 1, total: words.length }));
+}, [
+  round.phase,
+  round.currentWordIndex,
+  round.currentWord,
+  audioManager,
+  announce,
+  t,
+  words.length,
+]);
 ```
 
 The key `playing:${word}` changes when the phase re-enters playing with a new word, so the guard only suppresses same-phase same-word duplicate fires (which is exactly what StrictMode's double-mount and React's dev-mode re-render can produce).
@@ -567,6 +592,7 @@ Run the platform dev server from the repo root:
 Run: `pnpm --filter platform dev`
 
 In a browser at `http://localhost:3000`:
+
 1. Create or select a junior-tier profile (age 7). Launch Spelling Bee.
 2. Dismiss the instruction screen.
 3. **Verify #10**: listen for the word pronunciation — it should play once, not twice. (Open devtools console, check `Audio` prepare/play logs.)
@@ -574,6 +600,7 @@ In a browser at `http://localhost:3000`:
 5. Run out of lives. Confirm the `GameOverOverlay` renders as before. Click "Try again" and complete the session this time.
 
 All observed behavior should match the pre-PR state except:
+
 - No dev-console "double play" noise (was audible in strict-mode dev before; shouldn't be anymore).
 
 ---

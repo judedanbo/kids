@@ -33,11 +33,7 @@ export function RewardCelebration({ rewards, onComplete }: RewardCelebrationProp
 
   return (
     <div className={styles.container} role="alert" aria-label="Reward unlocked">
-      <CelebrationOverlay
-        type="stars"
-        duration={3000}
-        onComplete={handleOverlayComplete}
-      />
+      <CelebrationOverlay type="stars" duration={3000} onComplete={handleOverlayComplete} />
       <AnimatePresence mode="wait">
         <motion.div
           key={reward.id}

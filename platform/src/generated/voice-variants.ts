@@ -4,37 +4,37 @@
 import type { VoiceVariants } from '../services/audio-manager';
 
 export const voiceVariants: VoiceVariants = {
-  'en': {
-    "encouragement-correct": [
-      "encouragement-correct-1",
-      "encouragement-correct-2",
-      "encouragement-correct-3",
-      "encouragement-correct-4",
-      "encouragement-correct-5"
+  en: {
+    'encouragement-correct': [
+      'encouragement-correct-1',
+      'encouragement-correct-2',
+      'encouragement-correct-3',
+      'encouragement-correct-4',
+      'encouragement-correct-5',
     ],
-    "encouragement-tryagain": [
-      "encouragement-tryagain-1",
-      "encouragement-tryagain-2",
-      "encouragement-tryagain-3",
-      "encouragement-tryagain-4"
+    'encouragement-tryagain': [
+      'encouragement-tryagain-1',
+      'encouragement-tryagain-2',
+      'encouragement-tryagain-3',
+      'encouragement-tryagain-4',
     ],
-    "encouragement-almost": [
-      "encouragement-almost-1",
-      "encouragement-almost-2",
-      "encouragement-almost-3",
-      "encouragement-almost-4"
+    'encouragement-almost': [
+      'encouragement-almost-1',
+      'encouragement-almost-2',
+      'encouragement-almost-3',
+      'encouragement-almost-4',
     ],
-    "encouragement-amazing": [
-      "encouragement-amazing-1",
-      "encouragement-amazing-2",
-      "encouragement-amazing-3",
-      "encouragement-amazing-4"
+    'encouragement-amazing': [
+      'encouragement-amazing-1',
+      'encouragement-amazing-2',
+      'encouragement-amazing-3',
+      'encouragement-amazing-4',
     ],
-    "encouragement-streak": [
-      "encouragement-streak-1",
-      "encouragement-streak-2",
-      "encouragement-streak-3",
-      "encouragement-streak-4"
-    ]
+    'encouragement-streak': [
+      'encouragement-streak-1',
+      'encouragement-streak-2',
+      'encouragement-streak-3',
+      'encouragement-streak-4',
+    ],
   },
 };

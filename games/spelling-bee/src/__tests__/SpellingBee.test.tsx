@@ -223,5 +223,4 @@ describe('SpellingBee', () => {
       expect(props.audioManager.playMusic).not.toHaveBeenCalled();
     });
   });
-
 });

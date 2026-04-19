@@ -1,10 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import type {
-  AgeTier,
-  SpellingTierFile,
-  SpellingWordList,
-} from '@kids-games-zone/shared';
+import type { AgeTier, SpellingTierFile, SpellingWordList } from '@kids-games-zone/shared';
 
 const TIER_FILES: Record<AgeTier, string> = {
   tiny: 'games/spelling-bee/src/data/words-tiny.json',
@@ -12,10 +8,7 @@ const TIER_FILES: Record<AgeTier, string> = {
   explorer: 'games/spelling-bee/src/data/words-explorer.json',
 };
 
-export async function loadTierFile(
-  repoRoot: string,
-  tier: AgeTier,
-): Promise<SpellingTierFile> {
+export async function loadTierFile(repoRoot: string, tier: AgeTier): Promise<SpellingTierFile> {
   const path = resolve(repoRoot, TIER_FILES[tier]);
   const raw: unknown = JSON.parse(await readFile(path, 'utf8'));
   if (!Array.isArray(raw)) {
@@ -24,9 +17,7 @@ export async function loadTierFile(
   return { tier, path, words: raw as SpellingWordList };
 }
 
-export async function loadAllTierFiles(
-  repoRoot: string,
-): Promise<SpellingTierFile[]> {
+export async function loadAllTierFiles(repoRoot: string): Promise<SpellingTierFile[]> {
   const tiers: AgeTier[] = ['tiny', 'junior', 'explorer'];
   return Promise.all(tiers.map((t) => loadTierFile(repoRoot, t)));
 }

@@ -12,14 +12,14 @@ Phase 1 builds the shared foundation that the platform shell (Phase 2) and all g
 
 ## Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Component scope | P0 + P1 (9 components) | DragItem/DropZone (P2) deferred — no Phase 3 game needs drag-and-drop |
-| Animation library | Framer Motion | Rich declarative API, gesture support, built-in prefers-reduced-motion. ~30KB but shell budget has room (61KB current) |
-| Celebration effects | canvas-confetti (~3KB) + Framer Motion overlay | canvas-confetti handles particle burst performantly; Framer Motion handles overlay structure/dismiss |
-| Component theming API | Props + CSS custom properties | Props for common cases (color, size), CSS custom properties for advanced theming. Props map to custom properties internally |
-| Default theme | Light mode | Warm pastels (#FFF8F0), matches kid-app conventions. Dark mode available via `[data-theme="dark"]` on `<html>` |
-| Testing strategy | Behavioral tests | Test interactions, callbacks, ARIA attributes, reduced-motion. One test file per component. Visual regression deferred to Phase 6 |
+| Decision              | Choice                                         | Rationale                                                                                                                         |
+| --------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Component scope       | P0 + P1 (9 components)                         | DragItem/DropZone (P2) deferred — no Phase 3 game needs drag-and-drop                                                             |
+| Animation library     | Framer Motion                                  | Rich declarative API, gesture support, built-in prefers-reduced-motion. ~30KB but shell budget has room (61KB current)            |
+| Celebration effects   | canvas-confetti (~3KB) + Framer Motion overlay | canvas-confetti handles particle burst performantly; Framer Motion handles overlay structure/dismiss                              |
+| Component theming API | Props + CSS custom properties                  | Props for common cases (color, size), CSS custom properties for advanced theming. Props map to custom properties internally       |
+| Default theme         | Light mode                                     | Warm pastels (#FFF8F0), matches kid-app conventions. Dark mode available via `[data-theme="dark"]` on `<html>`                    |
+| Testing strategy      | Behavioral tests                               | Test interactions, callbacks, ARIA attributes, reduced-motion. One test file per component. Visual regression deferred to Phase 6 |
 
 ---
 
@@ -30,18 +30,20 @@ Two new files in `shared/src/types/`, plus updates to existing types.
 ### Existing type updates
 
 **`game.ts`** — Update `GameProps` to include service dependencies (aligns with technical spec Section 3.1):
+
 ```typescript
 interface GameProps {
   config: GameConfig;
   onScore: (points: number) => void;
   onComplete: (result: GameResult) => void;
   onExit: () => void;
-  audioManager: AudioManager;     // add
+  audioManager: AudioManager; // add
   storageManager: StorageManager; // add
 }
 ```
 
 **`game.ts`** — Define `GameSettings` to replace `Record<string, unknown>` in `GameConfig`:
+
 ```typescript
 interface GameSettings {
   soundEnabled: boolean;
@@ -53,7 +55,7 @@ interface GameSettings {
 interface GameConfig {
   difficulty: number;
   profile: UserProfile;
-  settings: GameSettings;  // was Record<string, unknown>
+  settings: GameSettings; // was Record<string, unknown>
 }
 ```
 
@@ -67,7 +69,7 @@ interface TimeLimitConfig {
   reminderBeforeEndMinutes: number;
   cooldownMinutes: number;
   schedule?: {
-    allowedDays: number[];       // 0=Sun, 6=Sat
+    allowedDays: number[]; // 0=Sun, 6=Sat
     allowedStartHour: number;
     allowedEndHour: number;
   };
@@ -76,7 +78,7 @@ interface TimeLimitConfig {
 interface FeatureFlags {
   [flagName: string]: {
     enabled: boolean;
-    rolloutPercentage?: number;  // 0-100
+    rolloutPercentage?: number; // 0-100
     ageTiers?: AgeTier[];
     description: string;
   };
@@ -91,9 +93,9 @@ interface AudioManager {
   stopMusic(options?: { fadeOut?: number }): void;
   playSFX(sfxId: string): void;
   playVoice(voiceId: string, onComplete?: () => void): void;
-  setVolume(category: "music" | "sfx" | "voice", level: number): void;
-  mute(category?: "music" | "sfx" | "voice"): void;
-  unmute(category?: "music" | "sfx" | "voice"): void;
+  setVolume(category: 'music' | 'sfx' | 'voice', level: number): void;
+  mute(category?: 'music' | 'sfx' | 'voice'): void;
+  unmute(category?: 'music' | 'sfx' | 'voice'): void;
   preload(assetIds: string[]): Promise<void>;
 }
 
@@ -114,7 +116,14 @@ interface StorageManager {
 
 interface AnalyticsEvent {
   id: string;
-  type: "game_start" | "game_end" | "level_complete" | "reward_unlocked" | "game_error" | "error" | "navigation";
+  type:
+    | 'game_start'
+    | 'game_end'
+    | 'level_complete'
+    | 'reward_unlocked'
+    | 'game_error'
+    | 'error'
+    | 'navigation';
   profileId: string;
   gameId?: string;
   timestamp: string;
@@ -124,7 +133,7 @@ interface AnalyticsEvent {
 interface EventFilter {
   profileId?: string;
   gameId?: string;
-  type?: AnalyticsEvent["type"];
+  type?: AnalyticsEvent['type'];
   startDate?: string;
   endDate?: string;
 }
@@ -143,6 +152,7 @@ Three files in `shared/src/styles/`:
 Extracted from `platform/src/styles/global.css` with additions for theming.
 
 **Existing tokens** (move from platform):
+
 - Colors: `--color-primary`, `--color-secondary`, `--color-success`, `--color-error`, `--color-bg-primary`, `--color-bg-secondary`
 - Spacing: `--spacing-xs` through `--spacing-xl`
 - Radii: `--radius-small` through `--radius-round`
@@ -151,6 +161,7 @@ Extracted from `platform/src/styles/global.css` with additions for theming.
 - Shadows: `--shadow-card`, `--shadow-button`
 
 **New semantic tokens** for theming:
+
 - `--color-surface` — component background (white in light, #2a2a4a in dark)
 - `--color-surface-raised` — elevated surface (white in light, #333360 in dark)
 - `--color-text-primary` — main text (#333 in light, #eee in dark)
@@ -159,13 +170,19 @@ Extracted from `platform/src/styles/global.css` with additions for theming.
 - `--color-overlay` — modal backdrops
 
 **Age-tier tokens:**
+
 - `--touch-target-size` — 64px (tiny), 48px (junior/explorer)
 - `--font-size-base` — 24px (tiny), 18px (junior), 16px (explorer)
 
 **Theme structure:**
+
 ```css
-:root { /* light mode — default */ }
-[data-theme="dark"] { /* dark overrides */ }
+:root {
+  /* light mode — default */
+}
+[data-theme='dark'] {
+  /* dark overrides */
+}
 ```
 
 ### `reset.css`
@@ -175,6 +192,7 @@ Minimal reset: `box-sizing: border-box`, margin/padding reset, `img { max-width:
 ### `breakpoints.css`
 
 Breakpoint values defined as CSS custom properties for documentation/reference, plus concrete `@media` mixins as plain comments. Since native `@custom-media` lacks browser support and we're not adding PostCSS, components use hardcoded `@media (min-width: 768px)` queries with the breakpoint values documented in this file for consistency:
+
 - `--bp-mobile`: 320px
 - `--bp-tablet`: 768px
 - `--bp-desktop`: 1024px
@@ -191,6 +209,7 @@ Platform's `global.css` updated to `@import` from `shared/src/styles/tokens.css`
 ### File structure
 
 Each component follows this pattern:
+
 ```
 shared/src/components/<Name>/
 ├── <Name>.tsx
@@ -207,6 +226,7 @@ All exported via `shared/src/components/index.ts`.
 Wrapper for every game. Provides consistent header with back/home navigation, title, and pause button. Children slot for game content.
 
 **Props:**
+
 - `title: string` — game name displayed in header
 - `onBack?: () => void` — back button handler
 - `onPause?: () => void` — pause button handler
@@ -216,6 +236,7 @@ Wrapper for every game. Provides consistent header with back/home navigation, ti
 > **Note:** The technical spec table lists `showTimer` as a GameShell prop. This design intentionally removes it — `<GameTimer>` is a separate component that games compose inside GameShell's children slot, giving games full control over timer placement and behavior.
 
 **Behavior:**
+
 - Header uses `--color-primary` background with white text
 - Back button on left, title centered, pause on right
 - Children fill remaining viewport height
@@ -228,6 +249,7 @@ Wrapper for every game. Provides consistent header with back/home navigation, ti
 Large answer/choice button with three visual states and press animation.
 
 **Props:**
+
 - `label: string` — button text
 - `icon?: ReactNode` — optional leading icon
 - `state?: "default" | "correct" | "incorrect"` — visual state
@@ -236,6 +258,7 @@ Large answer/choice button with three visual states and press animation.
 - `size?: "normal" | "large"` — large = 64dp for tiny tier
 
 **Behavior:**
+
 - Default: `--color-surface` background, `--color-border` border
 - Correct: green background tint + checkmark icon + `--color-success` border
 - Incorrect: red background tint + X icon + `--color-error` border
@@ -250,6 +273,7 @@ Large answer/choice button with three visual states and press animation.
 Animated score counter with optional star rating.
 
 **Props:**
+
 - `score: number`
 - `maxScore?: number`
 - `showStars?: boolean` — default false
@@ -257,6 +281,7 @@ Animated score counter with optional star rating.
 - `animate?: boolean` — default true
 
 **Behavior:**
+
 - Score number rolls up/down on change using Framer Motion `useSpring`
 - Stars filled proportionally based on `score / maxScore`
 - Stars use `--color-secondary` (orange) when filled, `--color-border` when empty
@@ -269,6 +294,7 @@ Animated score counter with optional star rating.
 Visual progress indicator with animated fill.
 
 **Props:**
+
 - `current: number`
 - `total: number`
 - `color?: string` — CSS color or custom property name
@@ -276,6 +302,7 @@ Visual progress indicator with animated fill.
 - `label?: string` — custom label, defaults to "X of Y"
 
 **Behavior:**
+
 - Fill width transitions smoothly via CSS transition
 - Color defaults to `--color-primary`, overridable via prop → sets `--progress-bar-color`
 - `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`
@@ -287,6 +314,7 @@ Visual progress indicator with animated fill.
 Full-screen celebration with canvas-confetti burst and Framer Motion overlay.
 
 **Props:**
+
 - `type?: "confetti" | "stars"` — confetti burst style
 - `duration?: number` — auto-dismiss in ms, default 3000
 - `onComplete?: () => void` — called after dismiss
@@ -296,6 +324,7 @@ Full-screen celebration with canvas-confetti burst and Framer Motion overlay.
 - `intensity?: "low" | "medium" | "high"` — maps to age tier feedback levels
 
 **Behavior:**
+
 - Overlay entrance via Framer Motion `AnimatePresence` (fade + scale)
 - canvas-confetti fires on mount with particle count scaled by intensity (low: 50, medium: 100, high: 200). Call `confetti.reset()` on unmount to clean up the canvas element and prevent memory leaks.
 - Auto-dismisses after `duration` with fade-out
@@ -312,6 +341,7 @@ Full-screen celebration with canvas-confetti burst and Framer Motion overlay.
 Countdown or count-up timer with SVG ring visual.
 
 **Props:**
+
 - `mode: "countdown" | "countup"`
 - `duration?: number` — seconds (required for countdown)
 - `paused?: boolean`
@@ -320,6 +350,7 @@ Countdown or count-up timer with SVG ring visual.
 - `size?: number` — ring diameter in px, default 80
 
 **Behavior:**
+
 - SVG circle with `stroke-dashoffset` animated proportionally
 - Countdown: ring depletes, fires `onExpire` at zero, color shifts to `--color-error` in last 10 seconds
 - Count-up: ring fills, no expiry
@@ -333,12 +364,14 @@ Countdown or count-up timer with SVG ring visual.
 Star-based difficulty picker, 1-5 scale.
 
 **Props:**
+
 - `levels?: number` — default 5
 - `current: number`
 - `onChange: (level: number) => void`
 - `labels?: string[]` — e.g., ["Very Easy", "Easy", "Medium", "Hard", "Very Hard"]
 
 **Behavior:**
+
 - Stars fill on hover (preview) and click (select)
 - Selected level label shown below stars
 - Stars use `--color-secondary` when filled
@@ -351,12 +384,14 @@ Star-based difficulty picker, 1-5 scale.
 Speech bubble with optional audio trigger.
 
 **Props:**
+
 - `text: string`
 - `audioSrc?: string` — audio file to play
 - `character?: string` — character name/avatar
 - `onAudioPlay?: () => void`
 
 **Behavior:**
+
 - Speech bubble shape via CSS (rounded corners, tail pointing to character)
 - Speaker SVG icon shown when `audioSrc` provided, triggers playback on click (use an SVG icon component, not a Unicode emoji)
 - Character name shown below bubble
@@ -369,11 +404,13 @@ Speech bubble with optional audio trigger.
 Modal overlay with game control options.
 
 **Props:**
+
 - `onResume: () => void`
 - `onRestart: () => void`
 - `onExit: () => void`
 
 **Behavior:**
+
 - Centered modal over semi-transparent backdrop
 - Framer Motion entrance (scale from 0.9 + fade) and exit
 - Resume button uses `--color-primary`, restart and exit use `--color-surface`
@@ -392,6 +429,7 @@ Modal overlay with game control options.
 **Location:** `shared/src/hooks/useGameLifecycle.ts`
 
 Manages the game state machine:
+
 ```
 IDLE → LOADED → PLAYING ↔ PAUSED → COMPLETED → IDLE
 ```
@@ -399,6 +437,7 @@ IDLE → LOADED → PLAYING ↔ PAUSED → COMPLETED → IDLE
 **Returns:** `{ state, load, start, pause, resume, end, reset }`
 
 **Behavior:**
+
 - `load()` calls `plugin.onLoad()`, transitions IDLE → LOADED
 - `start(config)` calls `plugin.onStart(config)`, transitions LOADED → PLAYING
 - `pause()` calls `plugin.onPause()`, transitions PLAYING → PAUSED
@@ -449,12 +488,12 @@ All animated components check `prefers-reduced-motion` via Framer Motion's built
 
 ### Z-index scale
 
-| Layer | Z-index | Component |
-|-------|---------|-----------|
-| Game content | 0 | Default |
-| GameShell header | 10 | Sticky header |
-| CelebrationOverlay | 100 | End-of-game celebration |
-| PauseMenu backdrop | 200 | Pause takes priority |
+| Layer              | Z-index | Component               |
+| ------------------ | ------- | ----------------------- |
+| Game content       | 0       | Default                 |
+| GameShell header   | 10      | Sticky header           |
+| CelebrationOverlay | 100     | End-of-game celebration |
+| PauseMenu backdrop | 200     | Pause takes priority    |
 
 ---
 

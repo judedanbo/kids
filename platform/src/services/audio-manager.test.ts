@@ -128,9 +128,7 @@ describe('RealAudioManager', () => {
       // backend.stop should NOT have been called with 'pb-old' by the second playMusic
       // (stopMusic already cleared the currentPlaybackId)
       const stopCalls = (backend.stop as ReturnType<typeof vi.fn>).mock.calls;
-      const stopCallsFromPlayMusic = stopCalls.filter(
-        (call: string[]) => call[0] === 'pb-old',
-      );
+      const stopCallsFromPlayMusic = stopCalls.filter((call: string[]) => call[0] === 'pb-old');
       expect(stopCallsFromPlayMusic).toHaveLength(0);
     });
   });
@@ -184,13 +182,11 @@ describe('RealAudioManager', () => {
     });
 
     it('falls back to /audio/voice/ when narration is missing', async () => {
-      (backend.load as ReturnType<typeof vi.fn>).mockImplementation(
-        async (id: string) => {
-          if (id.startsWith('narration/')) {
-            throw new Error('not found');
-          }
-        },
-      );
+      (backend.load as ReturnType<typeof vi.fn>).mockImplementation(async (id: string) => {
+        if (id.startsWith('narration/')) {
+          throw new Error('not found');
+        }
+      });
 
       await audio.playVoice('voice:welcome');
 
@@ -198,10 +194,7 @@ describe('RealAudioManager', () => {
         'narration/en/welcome',
         '/audio/narration/en/welcome.mp3',
       );
-      expect(backend.load).toHaveBeenCalledWith(
-        'voice/welcome',
-        '/audio/voice/welcome.mp3',
-      );
+      expect(backend.load).toHaveBeenCalledWith('voice/welcome', '/audio/voice/welcome.mp3');
       expect(backend.play).toHaveBeenCalledWith('voice/welcome', {
         volume: 1.0,
       });

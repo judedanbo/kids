@@ -10,7 +10,9 @@ export function OfflineBanner() {
 
   return (
     <div className={styles.banner} role="status" aria-live="polite">
-      <span className={styles.icon} aria-hidden="true">📡</span>
+      <span className={styles.icon} aria-hidden="true">
+        📡
+      </span>
       <span>{t('offline.banner')}</span>
     </div>
   );
