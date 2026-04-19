@@ -35,5 +35,7 @@
   "gameOverTitle": "Bien essayé !",
   "gameOverSubtitle": "Tu as atteint le niveau {{level}}",
   "tryAgain": "Réessayer",
-  "backToHome": "Retour"
+  "backToHome": "Retour",
+  "typePlaceholder": "Tape ta réponse...",
+  "undoLetter": "← Annuler"
 }

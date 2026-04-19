@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAnnounce } from '@kids-games-zone/shared';
 import styles from './LetterTiles.module.css';
 
@@ -9,6 +10,7 @@ interface LetterTilesProps {
 }
 
 export function LetterTiles({ letters, wordLength, onSubmit }: LetterTilesProps) {
+  const { t } = useTranslation('spelling-bee');
   const announce = useAnnounce();
   const [selected, setSelected] = useState<number[]>([]);
 
@@ -60,7 +62,7 @@ export function LetterTiles({ letters, wordLength, onSubmit }: LetterTilesProps)
 
       {selected.length > 0 && (
         <button className={styles.undoButton} onClick={handleUndo} aria-label="Undo last letter">
-          ← Undo
+          {t('undoLetter')}
         </button>
       )}
     </div>

@@ -1,6 +1,15 @@
 import { describe, it, expect, vi } from 'vitest';
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { useSpellingRound } from '../hooks/useSpellingRound';
+
+const wordEntry = (word: string) => ({
+  word,
+  difficulty: 1,
+  image: '',
+  definition: '',
+  origin: '',
+  sentence: '',
+});
 
 describe('useSpellingRound', () => {
   it('starts in phase "complete" when words is empty and fires onRoundComplete', () => {
@@ -34,5 +43,30 @@ describe('useSpellingRound', () => {
         }),
       ),
     ).not.toThrow();
+  });
+
+  it('fires onRoundComplete exactly once when nextWord is double-invoked on the final word', () => {
+    const onRoundComplete = vi.fn();
+    const { result } = renderHook(() =>
+      useSpellingRound({
+        words: [wordEntry('cat')],
+        ageTier: 'junior',
+        onScorePoint: vi.fn(),
+        lives: 3,
+        onLifeLost: vi.fn(),
+        onRoundComplete,
+      }),
+    );
+
+    act(() => {
+      result.current.submitAnswer('cat');
+    });
+    act(() => {
+      result.current.nextWord();
+      result.current.nextWord();
+    });
+
+    expect(onRoundComplete).toHaveBeenCalledTimes(1);
+    expect(onRoundComplete).toHaveBeenCalledWith(1, 1);
   });
 });
