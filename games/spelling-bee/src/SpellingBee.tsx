@@ -160,7 +160,7 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
           score={session.sessionScore}
           maxScore={session.sessionMaxScore}
           onRetry={session.restart}
-          onExit={onExit}
+          onExit={handleBackIntercept}
         />,
       );
     }
