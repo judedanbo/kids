@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { axe } from 'vitest-axe';
 import { ConfirmDialog } from './ConfirmDialog';
@@ -42,6 +43,39 @@ describe('ConfirmDialog', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Stay' }));
     expect(defaultProps.onCancel).toHaveBeenCalledOnce();
     expect(defaultProps.onConfirm).not.toHaveBeenCalled();
+  });
+
+  it('returns focus to the trigger element when closed', async () => {
+    const TestHarness = () => {
+      const [open, setOpen] = React.useState(false);
+      return (
+        <>
+          <button data-testid="trigger" onClick={() => setOpen(true)}>
+            Open
+          </button>
+          <ConfirmDialog
+            {...defaultProps}
+            open={open}
+            onConfirm={() => setOpen(false)}
+            onCancel={() => setOpen(false)}
+          />
+        </>
+      );
+    };
+    render(<TestHarness />);
+    const trigger = screen.getByTestId('trigger');
+    trigger.focus();
+    expect(document.activeElement).toBe(trigger);
+
+    fireEvent.click(trigger);
+    // Dialog now open; focus moved into the dialog.
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Stay' }));
+
+    // focus-trap-react restores focus asynchronously; wait a microtask cycle.
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(document.activeElement).toBe(trigger);
   });
 
   it('fires onCancel on Escape key', () => {
