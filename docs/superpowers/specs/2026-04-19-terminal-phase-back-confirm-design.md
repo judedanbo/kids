@@ -17,6 +17,7 @@ The other 5 production games render `<CelebrationOverlay>` (or a `phase === 'com
 In scope: math-adventure, memory-match, more-or-less, safety-scout, word-puzzle.
 
 Out of scope:
+
 - `dummy-game` — scaffold/template, not user-facing.
 - Word Puzzle's custom document-level Escape listener for letter-undo (`WordPuzzle.tsx:198–233`) — already correctly scoped by placement state and answer state, no conflict with the shell.
 - Other Spelling Bee fixes (i18n sweeps, reduced-motion gating, StrictMode double-fire guards, keyboard input rework). Each is a separate audit if desired.
@@ -25,13 +26,13 @@ Out of scope:
 
 One single-prop addition per game, on the terminal-phase `<GameShell>` instance:
 
-| Game | File | Branch | Line of `<GameShell>` to edit |
-|---|---|---|---|
-| math-adventure | `games/math-adventure/src/MathAdventure.tsx` | `if (showCelebration)` | ~156 |
-| memory-match | `games/memory-match/src/MemoryMatch.tsx` | `if (showCelebration)` | ~157 |
-| more-or-less | `games/more-or-less/src/MoreOrLess.tsx` | `if (round.phase === 'complete')` | ~122 |
-| safety-scout | `games/safety-scout/src/SafetyScout.tsx` | `if (round.phase === 'complete')` | ~163 |
-| word-puzzle | `games/word-puzzle/src/WordPuzzle.tsx` | `if (showCelebration)` | ~262 |
+| Game           | File                                         | Branch                            | Line of `<GameShell>` to edit |
+| -------------- | -------------------------------------------- | --------------------------------- | ----------------------------- |
+| math-adventure | `games/math-adventure/src/MathAdventure.tsx` | `if (showCelebration)`            | ~156                          |
+| memory-match   | `games/memory-match/src/MemoryMatch.tsx`     | `if (showCelebration)`            | ~157                          |
+| more-or-less   | `games/more-or-less/src/MoreOrLess.tsx`      | `if (round.phase === 'complete')` | ~122                          |
+| safety-scout   | `games/safety-scout/src/SafetyScout.tsx`     | `if (round.phase === 'complete')` | ~163                          |
+| word-puzzle    | `games/word-puzzle/src/WordPuzzle.tsx`       | `if (showCelebration)`            | ~262                          |
 
 Each edit adds `disableBackConfirm` as a prop on the `<GameShell>` opening tag in the terminal branch. No other change.
 
@@ -50,6 +51,7 @@ No new tests added. `shared/src/components/GameShell/GameShell.test.tsx` already
 ## Verification
 
 After the changes:
+
 - `pnpm typecheck` and `pnpm lint` pass.
 - `pnpm test` passes (no test changes expected).
 - Manual smoke test for each game: reach the celebration screen, click Back, confirm immediate exit (no dialog).

@@ -28,6 +28,7 @@ Each game commit is independently revertable. The doc commit lands last.
 ### Task 1: math-adventure — terminal-phase back-confirm
 
 **Files:**
+
 - Modify: `games/math-adventure/src/MathAdventure.tsx:154-161`
 
 - [ ] **Step 1: Add `disableBackConfirm` to the celebration-branch `<GameShell>`**
@@ -91,6 +92,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ### Task 2: memory-match — terminal-phase back-confirm
 
 **Files:**
+
 - Modify: `games/memory-match/src/MemoryMatch.tsx:155-162`
 
 - [ ] **Step 1: Add `disableBackConfirm` to the celebration-branch `<GameShell>`**
@@ -154,6 +156,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ### Task 3: more-or-less — terminal-phase back-confirm
 
 **Files:**
+
 - Modify: `games/more-or-less/src/MoreOrLess.tsx:120-127`
 
 - [ ] **Step 1: Add `disableBackConfirm` to the complete-branch `<GameShell>`**
@@ -217,6 +220,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ### Task 4: safety-scout — terminal-phase back-confirm
 
 **Files:**
+
 - Modify: `games/safety-scout/src/SafetyScout.tsx:161-168`
 
 - [ ] **Step 1: Add `disableBackConfirm` to the complete-branch `<GameShell>`**
@@ -280,6 +284,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ### Task 5: word-puzzle — terminal-phase back-confirm
 
 **Files:**
+
 - Modify: `games/word-puzzle/src/WordPuzzle.tsx:260-267`
 
 - [ ] **Step 1: Add `disableBackConfirm` to the celebration-branch `<GameShell>`**
@@ -343,6 +348,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ### Task 6: GAME_DEVELOPER_GUIDE.md — document the terminal-phase pattern
 
 **Files:**
+
 - Modify: `GAME_DEVELOPER_GUIDE.md:395`
 
 - [ ] **Step 1: Update the GameShell row in the Component reference table**
@@ -352,13 +358,13 @@ In `GAME_DEVELOPER_GUIDE.md`, the GameShell row is at line 395. Add `disableBack
 Replace:
 
 ```markdown
-| `GameShell`          | `title`, `onBack?`, `onPause?`, `showPauseButton?`, `children`                                                                            | Wraps every game. Renders header with Back button, title, and pause button. Includes `SkipLink` and `Announcer` for accessibility. Press Escape to trigger `onPause`. |
+| `GameShell` | `title`, `onBack?`, `onPause?`, `showPauseButton?`, `children` | Wraps every game. Renders header with Back button, title, and pause button. Includes `SkipLink` and `Announcer` for accessibility. Press Escape to trigger `onPause`. |
 ```
 
 With:
 
 ```markdown
-| `GameShell`          | `title`, `onBack?`, `onPause?`, `showPauseButton?`, `disableBackConfirm?`, `children`                                                     | Wraps every game. Renders header with Back button, title, and pause button. Includes `SkipLink` and `Announcer` for accessibility. Press Escape to trigger `onPause`. The Back button shows a "lose your progress" confirm dialog by default — pass `disableBackConfirm` on terminal phases (game-over, celebration) so Back exits immediately. See `SpellingBee.tsx` terminal branches for the canonical example. |
+| `GameShell` | `title`, `onBack?`, `onPause?`, `showPauseButton?`, `disableBackConfirm?`, `children` | Wraps every game. Renders header with Back button, title, and pause button. Includes `SkipLink` and `Announcer` for accessibility. Press Escape to trigger `onPause`. The Back button shows a "lose your progress" confirm dialog by default — pass `disableBackConfirm` on terminal phases (game-over, celebration) so Back exits immediately. See `SpellingBee.tsx` terminal branches for the canonical example. |
 ```
 
 - [ ] **Step 2: Verify formatting**
@@ -414,10 +420,11 @@ pnpm dev
 ```
 
 Open `http://localhost:3000` and for each of the 5 games:
+
 1. Play (or speed through using difficulty 1) until the celebration screen appears.
 2. Click the Back button in the header.
 3. Confirm: the game exits immediately to the Hub. No "Are you sure?" dialog.
-4. Sanity check the *non-terminal* path still confirms: start a fresh game, click Back during play. Confirm dialog appears, "Cancel" stays in the game, "Exit" leaves.
+4. Sanity check the _non-terminal_ path still confirms: start a fresh game, click Back during play. Confirm dialog appears, "Cancel" stays in the game, "Exit" leaves.
 
 Spelling Bee: behaviour unchanged from `main`. No need to re-test, but a quick spot-check is fine.
 
