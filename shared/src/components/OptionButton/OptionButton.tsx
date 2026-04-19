@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import styles from './OptionButton.module.css';
 
@@ -12,15 +12,18 @@ interface OptionButtonProps {
   size?: 'normal' | 'large';
 }
 
-export function OptionButton({
-  label,
-  icon,
-  state = 'default',
-  disabled = false,
-  selected,
-  onSelect,
-  size = 'normal',
-}: OptionButtonProps) {
+export const OptionButton = forwardRef<HTMLButtonElement, OptionButtonProps>(function OptionButton(
+  {
+    label,
+    icon,
+    state = 'default',
+    disabled = false,
+    selected,
+    onSelect,
+    size = 'normal',
+  },
+  ref,
+) {
   const shouldReduceMotion = useReducedMotion();
 
   const classNames = [
@@ -40,6 +43,7 @@ export function OptionButton({
 
   return (
     <motion.button
+      ref={ref}
       className={classNames}
       onClick={handleClick}
       disabled={disabled}
@@ -55,4 +59,4 @@ export function OptionButton({
       {label}
     </motion.button>
   );
-}
+});
