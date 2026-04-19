@@ -126,11 +126,14 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
   }
 
   if (session.sessionPhase === 'complete') {
+    // Terminal phases — session is already over, so exit is immediate; matches
+    // the in-overlay "Back to Home" button which also exits directly.
     if (session.outcome === 'out-of-lives') {
       return (
         <GameShell
           title={t('title')}
           onBack={onExit}
+          disableBackConfirm
           audioManager={audioManager}
           musicEnabled={config.settings.backgroundMusicEnabled}
         >
@@ -151,6 +154,7 @@ export function SpellingBee({ config, onScore, onComplete, onExit, audioManager 
       <GameShell
         title={t('title')}
         onBack={onExit}
+        disableBackConfirm
         audioManager={audioManager}
         musicEnabled={config.settings.backgroundMusicEnabled}
       >
