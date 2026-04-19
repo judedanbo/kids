@@ -70,3 +70,32 @@
   font-size: 1rem;
   cursor: pointer;
 }
+
+.actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.submitButton {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: 2px solid var(--color-primary, #4a90d9);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-primary, #4a90d9);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  min-height: var(--touch-target-size);
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  opacity: 0.9;
+}
+
+.submitButton:focus-visible {
+  outline: 3px solid var(--color-focus, #1a73e8);
+  outline-offset: 2px;
+}

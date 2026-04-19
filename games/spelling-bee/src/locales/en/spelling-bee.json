@@ -38,6 +38,8 @@
   "backToHome": "Back",
   "typePlaceholder": "Type your answer...",
   "undoLetter": "← Undo",
+  "submit": "Submit",
+  "readyToSubmit": "Ready to submit",
   "keyboard": {
     "placeholder": "Type your answer...",
     "typedPrefix": "Typed: ",

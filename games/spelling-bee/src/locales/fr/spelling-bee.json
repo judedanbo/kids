@@ -38,6 +38,8 @@
   "backToHome": "Retour",
   "typePlaceholder": "Tape ta réponse...",
   "undoLetter": "← Annuler",
+  "submit": "Valider",
+  "readyToSubmit": "Prêt à valider",
   "keyboard": {
     "placeholder": "Écris ta réponse…",
     "typedPrefix": "Saisi : ",
