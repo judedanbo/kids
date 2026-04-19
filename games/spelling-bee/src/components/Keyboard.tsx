@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAnnounce } from '@kids-games-zone/shared';
 import styles from './Keyboard.module.css';
@@ -32,11 +32,55 @@ export function Keyboard({ onSubmit, disabled = false }: KeyboardProps) {
     setTyped((prev) => prev.slice(0, -1));
   }, []);
 
+  // typedRef tracks the latest value so the document keydown listener
+  // below doesn't need to re-bind every keystroke.
+  const typedRef = useRef(typed);
+  typedRef.current = typed;
+
   const handleSubmit = useCallback(() => {
-    if (typed.length === 0) return;
-    onSubmit(typed);
+    if (typedRef.current.length === 0) return;
+    onSubmit(typedRef.current);
     setTyped('');
-  }, [typed, onSubmit]);
+  }, [onSubmit]);
+
+  // Physical keyboard support for junior/explorer players. Ignores keypresses
+  // while disabled (feedback phase), during IME composition, or when the
+  // target is a form input elsewhere on the page.
+  useEffect(() => {
+    if (disabled) return;
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.isComposing || event.defaultPrevented) return;
+      if (event.ctrlKey || event.metaKey || event.altKey) return;
+
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (event.key === 'Backspace') {
+        event.preventDefault();
+        handleBackspace();
+        return;
+      }
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        handleSubmit();
+        return;
+      }
+      if (event.key.length === 1 && /[a-zA-Z]/.test(event.key)) {
+        handleKey(event.key.toUpperCase());
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [disabled, handleKey, handleBackspace, handleSubmit]);
 
   return (
     <div className={styles.container}>

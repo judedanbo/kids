@@ -117,6 +117,11 @@ export function useSessionLevels(
     setSessionScore((prev) => prev + points);
   }, []);
 
+  // Empty deps are intentional: every non-setter value read inside is a ref
+  // (ladderRef, currentLevelRef, livesRef), every setter is React-stable, and
+  // the only non-local values (TOTAL_LEVELS, adjustDifficulty) are module
+  // constants. Keep this shape when editing — introducing a prop-derived or
+  // state-derived read here would silently stale this callback.
   const completeLevel = useCallback(
     (wordsCorrect: number, wordsAttempted: number) => {
       const accuracy = wordsAttempted > 0 ? wordsCorrect / wordsAttempted : 0;

@@ -24,7 +24,6 @@ interface SpellingRoundState {
   score: number;
   maxScore: number;
   isCorrect: boolean | null;
-  wordsCorrect: number;
 }
 
 interface SpellingRoundActions {
@@ -124,7 +123,6 @@ export function useSpellingRound(
     score,
     maxScore,
     isCorrect,
-    wordsCorrect: wordsCorrectRef.current,
     submitAnswer,
     nextWord,
   };
