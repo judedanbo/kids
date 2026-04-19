@@ -136,6 +136,9 @@
   "pause.exitToHub": "Retour à l'accueil",
   "pause.ariaLabel": "Jeu en pause",
 
+  "confirmDialog.confirm": "Confirmer",
+  "confirmDialog.cancel": "Annuler",
+
   "gameShell.goBack": "Retour",
   "gameShell.pauseGame": "Mettre en pause",
   "gameShell.pauseMusic": "Mettre la musique en pause",
