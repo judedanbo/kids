@@ -1,14 +1,20 @@
 .indicator {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs) var(--spacing-sm);
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
   background-color: var(--color-primary);
   color: white;
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius-large, 16px);
   font-family: var(--font-family-display);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 1.25rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.star {
+  font-size: 1.4em;
+  line-height: 1;
 }
 
 .label {
