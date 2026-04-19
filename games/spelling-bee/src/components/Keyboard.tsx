@@ -82,13 +82,15 @@ export function Keyboard({ onSubmit, disabled = false }: KeyboardProps) {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [disabled, handleKey, handleBackspace, handleSubmit]);
 
+  const typedStatus = `${t('keyboard.typedPrefix')}${typed || t('keyboard.typedEmpty')}`;
+
   return (
     <div className={styles.container}>
-      <div className={styles.typedWord} aria-live="polite" aria-label={`Typed: ${typed || 'nothing yet'}`}>
-        {typed || <span className={styles.placeholder}>{t('typePlaceholder')}</span>}
+      <div className={styles.typedWord} aria-live="polite" aria-label={typedStatus}>
+        {typed || <span className={styles.placeholder}>{t('keyboard.placeholder')}</span>}
       </div>
 
-      <div className={styles.keyboard} role="group" aria-label="On-screen keyboard">
+      <div className={styles.keyboard} role="group" aria-label={t('keyboard.groupLabel')}>
         {ROWS.map((row, rowIdx) => (
           <div key={rowIdx} className={styles.row}>
             {row.map((letter) => (
@@ -105,11 +107,21 @@ export function Keyboard({ onSubmit, disabled = false }: KeyboardProps) {
           </div>
         ))}
         <div className={styles.row}>
-          <button className={`${styles.key} ${styles.actionKey}`} onClick={handleBackspace} disabled={disabled || typed.length === 0} aria-label="Backspace">
+          <button
+            className={`${styles.key} ${styles.actionKey}`}
+            onClick={handleBackspace}
+            disabled={disabled || typed.length === 0}
+            aria-label={t('keyboard.backspace')}
+          >
             ⌫
           </button>
-          <button className={`${styles.key} ${styles.submitKey}`} onClick={handleSubmit} disabled={disabled || typed.length === 0} aria-label="Submit answer">
-            Submit
+          <button
+            className={`${styles.key} ${styles.submitKey}`}
+            onClick={handleSubmit}
+            disabled={disabled || typed.length === 0}
+            aria-label={t('keyboard.submit')}
+          >
+            {t('keyboard.submit')}
           </button>
         </div>
       </div>

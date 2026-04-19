@@ -99,7 +99,7 @@ describe('SpellingBee', () => {
   it('shows on-screen keyboard for junior-tier after dismissing instruction', () => {
     render(<SpellingBee {...createMockProps()} />);
     fireEvent.click(screen.getByText('letsGo'));
-    expect(screen.getByRole('group', { name: 'On-screen keyboard' })).toBeTruthy();
+    expect(screen.getByRole('group', { name: 'keyboard.groupLabel' })).toBeTruthy();
   });
 
   it('shows letter tiles for tiny-tier after dismissing instruction', () => {
