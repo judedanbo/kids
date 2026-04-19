@@ -17,7 +17,13 @@ const mockAudio = {
   setLanguage: vi.fn(),
 } as unknown as AudioManager;
 
-function makeWord(overrides: Partial<{ word: string; image: string }> = {}) {
+function makeWord(overrides: Partial<{
+  word: string;
+  image: string;
+  definition: string;
+  origin: string;
+  sentence: string;
+}> = {}) {
   return {
     word: 'cat',
     difficulty: 1,
@@ -73,5 +79,51 @@ describe('WordDisplay — tiny-tier image fallback', () => {
     render(<WordDisplay word={makeWord()} ageTier="junior" audioManager={mockAudio} />);
     expect(screen.queryByAltText('cat')).toBeNull();
     expect(screen.queryByRole('img', { name: 'imageFallbackLabel' })).toBeNull();
+  });
+});
+
+describe('WordDisplay — clue buttons (non-tiny)', () => {
+  it('hides the target word from the rendered sentence using a fixed blank', () => {
+    render(
+      <WordDisplay
+        word={makeWord({ word: 'cat', sentence: 'The cat sat on the mat.' })}
+        ageTier="junior"
+        audioManager={mockAudio}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'getSentence' }));
+    const rendered = screen.getByText(/sat on the mat/i).textContent ?? '';
+    expect(rendered.toLowerCase()).not.toContain('cat');
+    expect(rendered).toContain('_____');
+  });
+
+  it('resets clue visibility when the word prop changes', () => {
+    const { rerender } = render(
+      <WordDisplay
+        word={makeWord({ word: 'cat', definition: 'A small furry pet.' })}
+        ageTier="junior"
+        audioManager={mockAudio}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'getDefinition' }));
+    expect(screen.getByText('A small furry pet.')).toBeTruthy();
+
+    rerender(
+      <WordDisplay
+        word={makeWord({ word: 'dog', definition: 'A loyal four-legged friend.' })}
+        ageTier="junior"
+        audioManager={mockAudio}
+      />,
+    );
+    expect(screen.queryByText('A small furry pet.')).toBeNull();
+    expect(screen.queryByText('A loyal four-legged friend.')).toBeNull();
+  });
+
+  it('plays the pronunciation when the Hear button is clicked', () => {
+    render(
+      <WordDisplay word={makeWord({ word: 'cat' })} ageTier="junior" audioManager={mockAudio} />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /hearWord/ }));
+    expect(mockAudio.playVoice).toHaveBeenCalledWith('voice:word-cat');
   });
 });

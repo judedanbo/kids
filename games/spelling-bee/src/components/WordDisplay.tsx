@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { OptionButton } from '@kids-games-zone/shared';
 import type { AgeTier, AudioManager } from '@kids-games-zone/shared';
 import type { WordEntry } from '../utils/wordSelector';
+import { blankSentence } from '../utils/blankSentence';
+import { ClueButton } from './ClueButton';
 import styles from './WordDisplay.module.css';
 
 interface WordDisplayProps {
@@ -20,6 +23,9 @@ export function WordDisplay({ word, ageTier, audioManager }: WordDisplayProps) {
 
   useEffect(() => {
     setImageError(false);
+    setShowDefinition(false);
+    setShowOrigin(false);
+    setShowSentence(false);
   }, [word.word]);
 
   const handlePlayWord = useCallback(() => {
@@ -65,21 +71,33 @@ export function WordDisplay({ word, ageTier, audioManager }: WordDisplayProps) {
         </div>
       )}
 
-      <button className={styles.playButton} onClick={handlePlayWord} aria-label={t('playWord')}>
-        🔊 {t('hearWord')}
-      </button>
+      <OptionButton
+        label={t('hearWord')}
+        icon={<span aria-hidden="true">🔊</span>}
+        size="large"
+        onSelect={handlePlayWord}
+      />
 
       {!isTiny && (
         <div className={styles.clueButtons}>
-          <button className={styles.clueButton} onClick={handleDefinition} aria-label={t('getDefinition')}>
-            {t('definition')}
-          </button>
-          <button className={styles.clueButton} onClick={handleOrigin} aria-label={t('getOrigin')}>
-            {t('origin')}
-          </button>
-          <button className={styles.clueButton} onClick={handleSentence} aria-label={t('getSentence')}>
-            {t('sentence')}
-          </button>
+          <ClueButton
+            label={t('definition')}
+            icon="📖"
+            onClick={handleDefinition}
+            ariaLabel={t('getDefinition')}
+          />
+          <ClueButton
+            label={t('origin')}
+            icon="📜"
+            onClick={handleOrigin}
+            ariaLabel={t('getOrigin')}
+          />
+          <ClueButton
+            label={t('sentence')}
+            icon="💬"
+            onClick={handleSentence}
+            ariaLabel={t('getSentence')}
+          />
         </div>
       )}
 
@@ -90,7 +108,7 @@ export function WordDisplay({ word, ageTier, audioManager }: WordDisplayProps) {
         <p className={styles.clueText} aria-live="polite">{t('originLabel', { origin: word.origin })}</p>
       )}
       {showSentence && word.sentence && (
-        <p className={styles.clueText} aria-live="polite">{word.sentence}</p>
+        <p className={styles.clueText} aria-live="polite">{blankSentence(word.sentence, word.word)}</p>
       )}
     </div>
   );
