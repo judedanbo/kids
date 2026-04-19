@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAnnounce } from '@kids-games-zone/shared';
 import styles from './LetterTiles.module.css';
@@ -38,10 +38,12 @@ export function LetterTiles({ letters, wordLength, onSubmit }: LetterTilesProps)
     setSelected([]);
   }, [selected, letters, wordLength, onSubmit]);
 
+  const wasFullRef = useRef(false);
   useEffect(() => {
-    if (isFull) {
+    if (isFull && !wasFullRef.current) {
       announce(t('readyToSubmit'));
     }
+    wasFullRef.current = isFull;
   }, [isFull, announce, t]);
 
   return (
