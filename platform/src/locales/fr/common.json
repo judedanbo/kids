@@ -139,6 +139,11 @@
   "confirmDialog.confirm": "Confirmer",
   "confirmDialog.cancel": "Annuler",
 
+  "backConfirm.title": "Quitter le jeu ?",
+  "backConfirm.message": "Ta progression sera perdue.",
+  "backConfirm.confirm": "Quitter",
+  "backConfirm.cancel": "Continuer",
+
   "gameShell.goBack": "Retour",
   "gameShell.pauseGame": "Mettre en pause",
   "gameShell.pauseMusic": "Mettre la musique en pause",
