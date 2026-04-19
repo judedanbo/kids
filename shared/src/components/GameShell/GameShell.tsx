@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SkipLink } from '../SkipLink/SkipLink';
 import { Announcer } from '../Announcer/Announcer';
+import { ConfirmDialog } from '../ConfirmDialog/ConfirmDialog';
 import type { AudioManager } from '../../types/services';
 import styles from './GameShell.module.css';
 
@@ -12,11 +13,13 @@ interface GameShellProps {
   showPauseButton?: boolean;
   /**
    * When provided alongside `musicEnabled`, GameShell renders a music pause/play
-   * toggle in the header and stops music when the back button is clicked.
+   * toggle in the header and stops music when the user confirms exiting.
    */
   audioManager?: AudioManager;
   /** Master toggle from platform settings. When false, the music button is hidden. */
   musicEnabled?: boolean;
+  /** Skip the back-button confirmation dialog and fire onBack directly. Default: false. */
+  disableBackConfirm?: boolean;
   children: ReactNode;
 }
 
@@ -27,10 +30,12 @@ export function GameShell({
   showPauseButton = true,
   audioManager,
   musicEnabled = false,
+  disableBackConfirm = false,
   children,
 }: GameShellProps) {
   const { t } = useTranslation('common');
   const [musicPaused, setMusicPaused] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const showMusicToggle = Boolean(audioManager) && musicEnabled;
 
@@ -47,11 +52,22 @@ export function GameShell({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onPause]);
 
-  const handleBack = () => {
-    if (audioManager) {
-      audioManager.stopMusic({ fadeOut: 300 });
+  const handleBackClick = () => {
+    if (disableBackConfirm) {
+      onBack?.();
+      return;
     }
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmExit = () => {
+    setConfirmOpen(false);
+    audioManager?.stopMusic({ fadeOut: 300 });
     onBack?.();
+  };
+
+  const handleCancelExit = () => {
+    setConfirmOpen(false);
   };
 
   const handleToggleMusic = () => {
@@ -73,7 +89,7 @@ export function GameShell({
           {onBack ? (
             <button
               className={styles.backButton}
-              onClick={handleBack}
+              onClick={handleBackClick}
               aria-label={t('gameShell.goBack')}
             >
               ← Back
@@ -113,6 +129,17 @@ export function GameShell({
         <main id="game-content" className={styles.content}>
           {children}
         </main>
+
+        <ConfirmDialog
+          open={confirmOpen}
+          title={t('backConfirm.title')}
+          message={t('backConfirm.message')}
+          confirmLabel={t('backConfirm.confirm')}
+          cancelLabel={t('backConfirm.cancel')}
+          tone="danger"
+          onConfirm={handleConfirmExit}
+          onCancel={handleCancelExit}
+        />
       </div>
     </Announcer>
   );

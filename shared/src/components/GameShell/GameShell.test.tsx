@@ -30,7 +30,7 @@ describe('GameShell', () => {
     expect(screen.getByText('Game content here')).toBeInTheDocument();
   });
 
-  it('fires onBack when back button is clicked', () => {
+  it('opens the confirmation dialog when back is clicked (does not call onBack directly)', () => {
     const onBack = vi.fn();
     render(
       <GameShell title="Test" onBack={onBack}>
@@ -38,7 +38,8 @@ describe('GameShell', () => {
       </GameShell>,
     );
     fireEvent.click(screen.getByLabelText('gameShell.goBack'));
-    expect(onBack).toHaveBeenCalledOnce();
+    expect(onBack).not.toHaveBeenCalled();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
   it('fires onPause when pause button is clicked', () => {
@@ -72,7 +73,7 @@ describe('GameShell', () => {
     expect(onPause).toHaveBeenCalledOnce();
   });
 
-  it('stops music when back is clicked and audioManager is provided', () => {
+  it('does NOT stop music when back is clicked (music stops only on confirm)', () => {
     const audioManager = createMockAudioManager();
     const onBack = vi.fn();
     render(
@@ -81,8 +82,8 @@ describe('GameShell', () => {
       </GameShell>,
     );
     fireEvent.click(screen.getByLabelText('gameShell.goBack'));
-    expect(audioManager.stopMusic).toHaveBeenCalledWith({ fadeOut: 300 });
-    expect(onBack).toHaveBeenCalledOnce();
+    expect(audioManager.stopMusic).not.toHaveBeenCalled();
+    expect(onBack).not.toHaveBeenCalled();
   });
 
   it('renders a music toggle when audioManager and musicEnabled are provided', () => {
@@ -119,6 +120,84 @@ describe('GameShell', () => {
     const resumeToggle = screen.getByLabelText('gameShell.resumeMusic');
     fireEvent.click(resumeToggle);
     expect(audioManager.resumeMusic).toHaveBeenCalledOnce();
+  });
+
+  it('calls onBack when the user confirms', () => {
+    const onBack = vi.fn();
+    render(
+      <GameShell title="Test" onBack={onBack}>
+        content
+      </GameShell>,
+    );
+    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+    fireEvent.click(screen.getByRole('button', { name: 'backConfirm.confirm' }));
+    expect(onBack).toHaveBeenCalledOnce();
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('does not call onBack when the user cancels', () => {
+    const onBack = vi.fn();
+    render(
+      <GameShell title="Test" onBack={onBack}>
+        content
+      </GameShell>,
+    );
+    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+    fireEvent.click(screen.getByRole('button', { name: 'backConfirm.cancel' }));
+    expect(onBack).not.toHaveBeenCalled();
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('stops music on confirm (with fadeOut 300)', () => {
+    const audioManager = createMockAudioManager();
+    const onBack = vi.fn();
+    render(
+      <GameShell title="Test" onBack={onBack} audioManager={audioManager} musicEnabled>
+        content
+      </GameShell>,
+    );
+    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+    fireEvent.click(screen.getByRole('button', { name: 'backConfirm.confirm' }));
+    expect(audioManager.stopMusic).toHaveBeenCalledWith({ fadeOut: 300 });
+    expect(audioManager.stopMusic).toHaveBeenCalledOnce();
+  });
+
+  it('does not stop music on cancel', () => {
+    const audioManager = createMockAudioManager();
+    const onBack = vi.fn();
+    render(
+      <GameShell title="Test" onBack={onBack} audioManager={audioManager} musicEnabled>
+        content
+      </GameShell>,
+    );
+    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+    fireEvent.click(screen.getByRole('button', { name: 'backConfirm.cancel' }));
+    expect(audioManager.stopMusic).not.toHaveBeenCalled();
+  });
+
+  it('disableBackConfirm bypasses the dialog and fires onBack directly', () => {
+    const onBack = vi.fn();
+    render(
+      <GameShell title="Test" onBack={onBack} disableBackConfirm>
+        content
+      </GameShell>,
+    );
+    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+    expect(onBack).toHaveBeenCalledOnce();
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('closes the dialog on Escape and does not call onBack', () => {
+    const onBack = vi.fn();
+    render(
+      <GameShell title="Test" onBack={onBack}>
+        content
+      </GameShell>,
+    );
+    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(onBack).not.toHaveBeenCalled();
+    expect(screen.queryByRole('dialog')).toBeNull();
   });
 
   it('has no accessibility violations', async () => {
