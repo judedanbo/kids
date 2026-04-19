@@ -37,5 +37,13 @@
   "tryAgain": "Réessayer",
   "backToHome": "Retour",
   "typePlaceholder": "Tape ta réponse...",
-  "undoLetter": "← Annuler"
+  "undoLetter": "← Annuler",
+  "keyboard": {
+    "placeholder": "Écris ta réponse…",
+    "typedPrefix": "Saisi : ",
+    "typedEmpty": "rien pour l'instant",
+    "groupLabel": "Clavier à l'écran",
+    "backspace": "Retour arrière",
+    "submit": "Valider"
+  }
 }

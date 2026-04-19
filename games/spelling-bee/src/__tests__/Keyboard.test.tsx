@@ -38,7 +38,7 @@ describe('Keyboard physical-key support', () => {
 
     expect(onSubmit).not.toHaveBeenCalled();
     // The typed display announces the running buffer via aria-label.
-    expect(screen.getByLabelText('Typed: nothing yet')).toBeInTheDocument();
+    expect(screen.getByLabelText(/keyboard\.typedPrefix.*keyboard\.typedEmpty/)).toBeInTheDocument();
   });
 
   it('ignores modifier combos so Ctrl+C / Cmd+R etc. pass through', () => {

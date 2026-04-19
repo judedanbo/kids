@@ -37,5 +37,13 @@
   "tryAgain": "Try again",
   "backToHome": "Back",
   "typePlaceholder": "Type your answer...",
-  "undoLetter": "← Undo"
+  "undoLetter": "← Undo",
+  "keyboard": {
+    "placeholder": "Type your answer...",
+    "typedPrefix": "Typed: ",
+    "typedEmpty": "nothing yet",
+    "groupLabel": "On-screen keyboard",
+    "backspace": "Backspace",
+    "submit": "Submit"
+  }
 }

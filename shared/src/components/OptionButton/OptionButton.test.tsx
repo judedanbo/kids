@@ -46,4 +46,10 @@ describe('OptionButton', () => {
     const { container } = render(<OptionButton label="Answer A" />);
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it('forwards ref to the underlying button element', () => {
+    const ref = { current: null as HTMLButtonElement | null };
+    render(<OptionButton label="Cat" ref={ref} />);
+    expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+  });
 });

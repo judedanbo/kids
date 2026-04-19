@@ -27,46 +27,11 @@
   line-height: 1;
 }
 
-.playButton {
-  padding: var(--spacing-md) var(--spacing-lg);
-  border: 2px solid var(--color-primary, #4a90d9);
-  border-radius: var(--radius-md, 8px);
-  background: var(--color-primary-light, #e8f0fe);
-  color: var(--color-text);
-  font-size: 1.25rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.playButton:focus-visible {
-  outline: 3px solid var(--color-focus, #1a73e8);
-  outline-offset: 2px;
-}
-
 .clueButtons {
   display: flex;
   gap: var(--spacing-sm);
   flex-wrap: wrap;
   justify-content: center;
-}
-
-.clueButton {
-  padding: var(--spacing-xs) var(--spacing-md);
-  border: 1px solid var(--color-border, #ccc);
-  border-radius: var(--radius-sm, 4px);
-  background: var(--color-surface, #fff);
-  color: var(--color-text-muted, #666);
-  font-size: 0.875rem;
-  cursor: pointer;
-}
-
-.clueButton:hover {
-  background: var(--color-surface-alt, #f0f0f0);
-}
-
-.clueButton:focus-visible {
-  outline: 3px solid var(--color-focus, #1a73e8);
-  outline-offset: 2px;
 }
 
 .clueText {

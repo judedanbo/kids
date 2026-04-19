@@ -27,4 +27,13 @@ describe('i18n setup', () => {
   it('returns key for missing translation', () => {
     expect(i18n.t('nonexistent.key')).toBe('nonexistent.key');
   });
+
+  it('loads the spelling-bee namespace in English', () => {
+    expect(i18n.t('title', { ns: 'spelling-bee' })).toBe('Spelling Bee');
+  });
+
+  it('loads the spelling-bee namespace in French', async () => {
+    await i18n.changeLanguage('fr');
+    expect(i18n.t('title', { ns: 'spelling-bee' })).toBe("Concours d'orthographe");
+  });
 });

@@ -11,6 +11,8 @@ import enMathAdventure from '../../games/math-adventure/src/locales/en/math-adve
 import frMathAdventure from '../../games/math-adventure/src/locales/fr/math-adventure.json';
 import enWordPuzzle from '../../games/word-puzzle/src/locales/en/word-puzzle.json';
 import frWordPuzzle from '../../games/word-puzzle/src/locales/fr/word-puzzle.json';
+import enSpellingBee from '../../games/spelling-bee/src/locales/en/spelling-bee.json';
+import frSpellingBee from '../../games/spelling-bee/src/locales/fr/spelling-bee.json';
 
 const supportedLngs = SUPPORTED_LANGUAGES.map((l) => l.code);
 
@@ -24,12 +26,14 @@ i18n
         'memory-match': enMemoryMatch,
         'math-adventure': enMathAdventure,
         'word-puzzle': enWordPuzzle,
+        'spelling-bee': enSpellingBee,
       },
       fr: {
         common: frCommon,
         'memory-match': frMemoryMatch,
         'math-adventure': frMathAdventure,
         'word-puzzle': frWordPuzzle,
+        'spelling-bee': frSpellingBee,
       },
     },
     supportedLngs,
