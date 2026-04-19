@@ -50,18 +50,18 @@
 In `shared/src/components/GameShell/GameShell.test.tsx`, find the test `'stops music when back is clicked and audioManager is provided'` (currently lines 75–86). Replace its body with:
 
 ```tsx
-  it('does NOT stop music when back is clicked (music stops only on confirm)', () => {
-    const audioManager = createMockAudioManager();
-    const onBack = vi.fn();
-    render(
-      <GameShell title="Test" onBack={onBack} audioManager={audioManager} musicEnabled>
-        content
-      </GameShell>,
-    );
-    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
-    expect(audioManager.stopMusic).not.toHaveBeenCalled();
-    expect(onBack).not.toHaveBeenCalled();
-  });
+it('does NOT stop music when back is clicked (music stops only on confirm)', () => {
+  const audioManager = createMockAudioManager();
+  const onBack = vi.fn();
+  render(
+    <GameShell title="Test" onBack={onBack} audioManager={audioManager} musicEnabled>
+      content
+    </GameShell>,
+  );
+  fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+  expect(audioManager.stopMusic).not.toHaveBeenCalled();
+  expect(onBack).not.toHaveBeenCalled();
+});
 ```
 
 This replaces the stale assertion with a regression guard for the new flow.
@@ -69,17 +69,17 @@ This replaces the stale assertion with a regression guard for the new flow.
 Also update the existing test `'fires onBack when back button is clicked'` (currently lines 33–42) — it will now fail because clicking back no longer calls `onBack` directly. Replace its body with:
 
 ```tsx
-  it('opens the confirmation dialog when back is clicked (does not call onBack directly)', () => {
-    const onBack = vi.fn();
-    render(
-      <GameShell title="Test" onBack={onBack}>
-        content
-      </GameShell>,
-    );
-    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
-    expect(onBack).not.toHaveBeenCalled();
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-  });
+it('opens the confirmation dialog when back is clicked (does not call onBack directly)', () => {
+  const onBack = vi.fn();
+  render(
+    <GameShell title="Test" onBack={onBack}>
+      content
+    </GameShell>,
+  );
+  fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+  expect(onBack).not.toHaveBeenCalled();
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+});
 ```
 
 ### - [ ] Step 1.2: Add the new back-confirm tests
@@ -87,83 +87,83 @@ Also update the existing test `'fires onBack when back button is clicked'` (curr
 In the same file, add these 6 new tests anywhere after the existing ones, before the `'has no accessibility violations'` test (keep the axe test last):
 
 ```tsx
-  it('calls onBack when the user confirms', () => {
-    const onBack = vi.fn();
-    render(
-      <GameShell title="Test" onBack={onBack}>
-        content
-      </GameShell>,
-    );
-    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
-    fireEvent.click(screen.getByRole('button', { name: 'backConfirm.confirm' }));
-    expect(onBack).toHaveBeenCalledOnce();
-    expect(screen.queryByRole('dialog')).toBeNull();
-  });
+it('calls onBack when the user confirms', () => {
+  const onBack = vi.fn();
+  render(
+    <GameShell title="Test" onBack={onBack}>
+      content
+    </GameShell>,
+  );
+  fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+  fireEvent.click(screen.getByRole('button', { name: 'backConfirm.confirm' }));
+  expect(onBack).toHaveBeenCalledOnce();
+  expect(screen.queryByRole('dialog')).toBeNull();
+});
 
-  it('does not call onBack when the user cancels', () => {
-    const onBack = vi.fn();
-    render(
-      <GameShell title="Test" onBack={onBack}>
-        content
-      </GameShell>,
-    );
-    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
-    fireEvent.click(screen.getByRole('button', { name: 'backConfirm.cancel' }));
-    expect(onBack).not.toHaveBeenCalled();
-    expect(screen.queryByRole('dialog')).toBeNull();
-  });
+it('does not call onBack when the user cancels', () => {
+  const onBack = vi.fn();
+  render(
+    <GameShell title="Test" onBack={onBack}>
+      content
+    </GameShell>,
+  );
+  fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+  fireEvent.click(screen.getByRole('button', { name: 'backConfirm.cancel' }));
+  expect(onBack).not.toHaveBeenCalled();
+  expect(screen.queryByRole('dialog')).toBeNull();
+});
 
-  it('stops music on confirm (with fadeOut 300)', () => {
-    const audioManager = createMockAudioManager();
-    const onBack = vi.fn();
-    render(
-      <GameShell title="Test" onBack={onBack} audioManager={audioManager} musicEnabled>
-        content
-      </GameShell>,
-    );
-    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
-    fireEvent.click(screen.getByRole('button', { name: 'backConfirm.confirm' }));
-    expect(audioManager.stopMusic).toHaveBeenCalledWith({ fadeOut: 300 });
-    expect(audioManager.stopMusic).toHaveBeenCalledOnce();
-  });
+it('stops music on confirm (with fadeOut 300)', () => {
+  const audioManager = createMockAudioManager();
+  const onBack = vi.fn();
+  render(
+    <GameShell title="Test" onBack={onBack} audioManager={audioManager} musicEnabled>
+      content
+    </GameShell>,
+  );
+  fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+  fireEvent.click(screen.getByRole('button', { name: 'backConfirm.confirm' }));
+  expect(audioManager.stopMusic).toHaveBeenCalledWith({ fadeOut: 300 });
+  expect(audioManager.stopMusic).toHaveBeenCalledOnce();
+});
 
-  it('does not stop music on cancel', () => {
-    const audioManager = createMockAudioManager();
-    const onBack = vi.fn();
-    render(
-      <GameShell title="Test" onBack={onBack} audioManager={audioManager} musicEnabled>
-        content
-      </GameShell>,
-    );
-    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
-    fireEvent.click(screen.getByRole('button', { name: 'backConfirm.cancel' }));
-    expect(audioManager.stopMusic).not.toHaveBeenCalled();
-  });
+it('does not stop music on cancel', () => {
+  const audioManager = createMockAudioManager();
+  const onBack = vi.fn();
+  render(
+    <GameShell title="Test" onBack={onBack} audioManager={audioManager} musicEnabled>
+      content
+    </GameShell>,
+  );
+  fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+  fireEvent.click(screen.getByRole('button', { name: 'backConfirm.cancel' }));
+  expect(audioManager.stopMusic).not.toHaveBeenCalled();
+});
 
-  it('disableBackConfirm bypasses the dialog and fires onBack directly', () => {
-    const onBack = vi.fn();
-    render(
-      <GameShell title="Test" onBack={onBack} disableBackConfirm>
-        content
-      </GameShell>,
-    );
-    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
-    expect(onBack).toHaveBeenCalledOnce();
-    expect(screen.queryByRole('dialog')).toBeNull();
-  });
+it('disableBackConfirm bypasses the dialog and fires onBack directly', () => {
+  const onBack = vi.fn();
+  render(
+    <GameShell title="Test" onBack={onBack} disableBackConfirm>
+      content
+    </GameShell>,
+  );
+  fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+  expect(onBack).toHaveBeenCalledOnce();
+  expect(screen.queryByRole('dialog')).toBeNull();
+});
 
-  it('closes the dialog on Escape and does not call onBack', () => {
-    const onBack = vi.fn();
-    render(
-      <GameShell title="Test" onBack={onBack}>
-        content
-      </GameShell>,
-    );
-    fireEvent.click(screen.getByLabelText('gameShell.goBack'));
-    fireEvent.keyDown(document, { key: 'Escape' });
-    expect(onBack).not.toHaveBeenCalled();
-    expect(screen.queryByRole('dialog')).toBeNull();
-  });
+it('closes the dialog on Escape and does not call onBack', () => {
+  const onBack = vi.fn();
+  render(
+    <GameShell title="Test" onBack={onBack}>
+      content
+    </GameShell>,
+  );
+  fireEvent.click(screen.getByLabelText('gameShell.goBack'));
+  fireEvent.keyDown(document, { key: 'Escape' });
+  expect(onBack).not.toHaveBeenCalled();
+  expect(screen.queryByRole('dialog')).toBeNull();
+});
 ```
 
 The test uses `name: 'backConfirm.confirm'` and `name: 'backConfirm.cancel'` because the shared i18n mock returns keys as their rendered text.
@@ -697,12 +697,12 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 In `games/spelling-bee/src/__tests__/GameOverOverlay.test.tsx`, find the test `'calls onExit when Escape is pressed'` (currently around lines 47–52). Replace its body with:
 
 ```tsx
-  it('does not call onExit when Escape is pressed (exit flow owned by GameShell)', () => {
-    const onExit = vi.fn();
-    renderOverlay({ onExit });
-    fireEvent.keyDown(document, { key: 'Escape' });
-    expect(onExit).not.toHaveBeenCalled();
-  });
+it('does not call onExit when Escape is pressed (exit flow owned by GameShell)', () => {
+  const onExit = vi.fn();
+  renderOverlay({ onExit });
+  fireEvent.keyDown(document, { key: 'Escape' });
+  expect(onExit).not.toHaveBeenCalled();
+});
 ```
 
 Rename the test title to reflect new behaviour, or replace in-place — either is fine.
@@ -722,22 +722,22 @@ In `games/spelling-bee/src/components/GameOverOverlay.tsx`:
 1. Delete the `onExitRef` lines (currently lines 26–27):
 
 ```tsx
-  const onExitRef = useRef(onExit);
-  onExitRef.current = onExit;
+const onExitRef = useRef(onExit);
+onExitRef.current = onExit;
 ```
 
 2. Delete the entire Escape-key `useEffect` block (currently lines 33–41):
 
 ```tsx
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        onExitRef.current();
-      }
+useEffect(() => {
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      onExitRef.current();
     }
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }
+  document.addEventListener('keydown', handleKeyDown);
+  return () => document.removeEventListener('keydown', handleKeyDown);
+}, []);
 ```
 
 3. After removing both, audit the import list. `useEffect` is still used (for the retry-focus effect). `useRef` may become unused if it was only used for `onExitRef` — check: the `retryRef = useRef<HTMLButtonElement>(null)` on line 25 keeps `useRef` needed. Leave it.

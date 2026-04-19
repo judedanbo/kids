@@ -159,5 +159,4 @@ describe('SpellingBee', () => {
     render(<SpellingBee {...createTinyProps()} />);
     expect(screen.queryByRole('dialog')).toBeNull();
   });
-
 });
