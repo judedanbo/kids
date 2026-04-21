@@ -512,8 +512,8 @@ A card-matching game suitable for the youngest age tier.
   - Add Lighthouse CI performance check.
   - Add axe-core accessibility check.
   - Fail PR if any check fails.
-- Deploy previews: configure Vercel/Netlify/Cloudflare Pages for auto-preview on every PR.
-- Production deploy: auto-deploy on merge to `main`.
+- Deploy previews: configure Vercel/Netlify/Cloudflare Pages for auto-preview on every PR. _(Cloudflare Pages chosen — see `plans/deployment-strategy.md`)_
+- Production deploy: auto-deploy on merge to `main`. _(Cloudflare Pages via `.github/workflows/deploy.yml`)_
 - Add `changesets` for versioning and changelog generation.
 
 #### 6C. Game Developer SDK Documentation (Week 2)
@@ -539,8 +539,8 @@ A card-matching game suitable for the youngest age tier.
 ### Acceptance Criteria
 
 - [x] All tests pass (unit, integration, E2E, a11y, performance).
-- [ ] PR preview deploys are generated automatically. _(deferred — deployment platform not yet chosen)_
-- [ ] Production deploy succeeds on merge to main. _(deferred — deployment platform not yet chosen)_
+- [x] PR preview deploys are generated automatically. _(Cloudflare Pages via `.github/workflows/deploy.yml` — see `plans/deployment-strategy.md`)_
+- [x] Production deploy succeeds on merge to main. _(Cloudflare Pages via `.github/workflows/deploy.yml` — see `plans/deployment-strategy.md`)_
 - [x] Game developer guide is complete and a new developer could follow it to add a game.
 - [x] Feature flags work: disabling a flag hides the game from the hub.
 
