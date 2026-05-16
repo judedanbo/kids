@@ -157,6 +157,7 @@ export function MemoryMatch({ config, onScore, onComplete, onExit, audioManager 
       <GameShell
         title={t('title')}
         onBack={onExit}
+        disableBackConfirm
         audioManager={audioManager}
         musicEnabled={config.settings.backgroundMusicEnabled}
       >
