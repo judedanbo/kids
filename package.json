@@ -7,7 +7,7 @@
     "build": "pnpm --filter platform build",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "typecheck": "pnpm -r --parallel run typecheck",
-    "test": "pnpm -r --parallel run test",
+    "test": "pnpm -r run test",
     "format": "prettier --write \"**/*.{ts,tsx,css,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,css,json,md}\"",
     "create-game": "tsx scripts/create-game.ts",
@@ -58,6 +58,18 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
-    ]
+    ],
+    "overrides": {
+      "serialize-javascript@<7.0.5": "^7.0.5",
+      "fast-uri@<3.1.2": "^3.1.2",
+      "@babel/plugin-transform-modules-systemjs@<7.29.4": "^7.29.4",
+      "flatted@<3.4.2": "^3.4.2",
+      "lodash-es@<4.18.0": "^4.18.0",
+      "picomatch@>=4.0.0 <4.0.4": "^4.0.4",
+      "brace-expansion@<1.1.13": "^1.1.13",
+      "brace-expansion@>=4.0.0 <5.0.5": "^5.0.5",
+      "postcss@<8.5.10": "^8.5.10",
+      "vite@<6.4.2": "^6.4.2"
+    }
   }
 }
