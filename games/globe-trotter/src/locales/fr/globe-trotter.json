@@ -1,0 +1,23 @@
+{
+  "title": "Globe-trotteur",
+  "instruction": "Voyage autour du monde ! Réponds à des questions sur les pays, les capitales, les drapeaux et les continents.",
+  "instructionTiny": "Regardons les drapeaux et trouvons où sont les pays !",
+  "letsGo": "C'est parti !",
+  "prompt.flag": "À quel pays appartient ce drapeau ?",
+  "prompt.fact": "De quel pays parle-t-on ?",
+  "prompt.capital": "Quelle est la capitale de {{country}} ?",
+  "prompt.continent": "Sur quel continent se trouve {{country}} ?",
+  "flagOf": "Drapeau de {{country}}",
+  "answers": "Choix de réponses",
+  "correct": "C'est exact !",
+  "incorrect": "Pas tout à fait !",
+  "next": "Suivant",
+  "questionOf": "Question {{current}} sur {{total}}",
+  "celebrationTitle": "Explorateur du monde !",
+  "continent.africa": "Afrique",
+  "continent.asia": "Asie",
+  "continent.europe": "Europe",
+  "continent.northAmerica": "Amérique du Nord",
+  "continent.southAmerica": "Amérique du Sud",
+  "continent.oceania": "Océanie"
+}

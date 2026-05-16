@@ -23,6 +23,10 @@
     "enabled": true,
     "description": "Memory Match game — find matching card pairs"
   },
+  "game.globe-trotter": {
+    "enabled": false,
+    "description": "Globe Trotter game — countries, capitals, flags, and continents"
+  },
   "game.dummy-game": {
     "enabled": false,
     "description": "Developer test game — click counter"

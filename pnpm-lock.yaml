@@ -108,6 +108,24 @@ importers:
         specifier: ^19.0.0
         version: 19.2.4(react@19.2.4)
 
+  games/globe-trotter:
+    dependencies:
+      '@kids-games-zone/shared':
+        specifier: workspace:*
+        version: link:../../shared
+      focus-trap-react:
+        specifier: ^10.0.0
+        version: 10.3.1(prop-types@15.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
+      react-i18next:
+        specifier: '>=16.0.0'
+        version: 16.6.6(i18next@25.10.10(typescript@5.9.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3)
+
   games/math-adventure:
     dependencies:
       '@kids-games-zone/shared':

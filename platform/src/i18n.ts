@@ -13,6 +13,8 @@ import enWordPuzzle from '../../games/word-puzzle/src/locales/en/word-puzzle.jso
 import frWordPuzzle from '../../games/word-puzzle/src/locales/fr/word-puzzle.json';
 import enSpellingBee from '../../games/spelling-bee/src/locales/en/spelling-bee.json';
 import frSpellingBee from '../../games/spelling-bee/src/locales/fr/spelling-bee.json';
+import enGlobeTrotter from '../../games/globe-trotter/src/locales/en/globe-trotter.json';
+import frGlobeTrotter from '../../games/globe-trotter/src/locales/fr/globe-trotter.json';
 
 const supportedLngs = SUPPORTED_LANGUAGES.map((l) => l.code);
 
@@ -27,6 +29,7 @@ i18n
         'math-adventure': enMathAdventure,
         'word-puzzle': enWordPuzzle,
         'spelling-bee': enSpellingBee,
+        'globe-trotter': enGlobeTrotter,
       },
       fr: {
         common: frCommon,
@@ -34,6 +37,7 @@ i18n
         'math-adventure': frMathAdventure,
         'word-puzzle': frWordPuzzle,
         'spelling-bee': frSpellingBee,
+        'globe-trotter': frGlobeTrotter,
       },
     },
     supportedLngs,

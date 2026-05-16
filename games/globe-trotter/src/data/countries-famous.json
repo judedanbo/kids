@@ -1,0 +1,547 @@
+[
+  {
+    "code": "US",
+    "name": "United States",
+    "nameFr": "États-Unis",
+    "capital": "Washington, D.C.",
+    "capitalFr": "Washington",
+    "continent": "North America",
+    "difficulty": 1,
+    "facts": ["The Statue of Liberty stands in New York."]
+  },
+  {
+    "code": "CA",
+    "name": "Canada",
+    "capital": "Ottawa",
+    "continent": "North America",
+    "difficulty": 1,
+    "facts": ["Canada has a red maple leaf on its flag."]
+  },
+  {
+    "code": "MX",
+    "name": "Mexico",
+    "nameFr": "Mexique",
+    "capital": "Mexico City",
+    "capitalFr": "Mexico",
+    "continent": "North America",
+    "difficulty": 1,
+    "facts": ["Mexico is famous for tacos and chocolate."]
+  },
+  {
+    "code": "BR",
+    "name": "Brazil",
+    "nameFr": "Brésil",
+    "capital": "Brasília",
+    "capitalFr": "Brasilia",
+    "continent": "South America",
+    "difficulty": 1,
+    "facts": ["The Amazon rainforest covers much of Brazil."]
+  },
+  {
+    "code": "AR",
+    "name": "Argentina",
+    "nameFr": "Argentine",
+    "capital": "Buenos Aires",
+    "continent": "South America",
+    "difficulty": 1,
+    "facts": ["Argentina is famous for football and dancing the tango."]
+  },
+  {
+    "code": "GB",
+    "name": "United Kingdom",
+    "nameFr": "Royaume-Uni",
+    "capital": "London",
+    "capitalFr": "Londres",
+    "continent": "Europe",
+    "difficulty": 1,
+    "facts": ["Big Ben is a famous clock tower in London."]
+  },
+  {
+    "code": "FR",
+    "name": "France",
+    "capital": "Paris",
+    "continent": "Europe",
+    "difficulty": 1,
+    "facts": ["The Eiffel Tower is in Paris."]
+  },
+  {
+    "code": "DE",
+    "name": "Germany",
+    "nameFr": "Allemagne",
+    "capital": "Berlin",
+    "continent": "Europe",
+    "difficulty": 1,
+    "facts": ["Germany is famous for fairy-tale castles."]
+  },
+  {
+    "code": "IT",
+    "name": "Italy",
+    "nameFr": "Italie",
+    "capital": "Rome",
+    "continent": "Europe",
+    "difficulty": 1,
+    "facts": ["Italy is shaped like a boot."]
+  },
+  {
+    "code": "ES",
+    "name": "Spain",
+    "nameFr": "Espagne",
+    "capital": "Madrid",
+    "continent": "Europe",
+    "difficulty": 1,
+    "facts": ["Spain is famous for flamenco dancing."]
+  },
+  {
+    "code": "PT",
+    "name": "Portugal",
+    "capital": "Lisbon",
+    "capitalFr": "Lisbonne",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Portugal is on the edge of the Atlantic Ocean."]
+  },
+  {
+    "code": "NL",
+    "name": "Netherlands",
+    "nameFr": "Pays-Bas",
+    "capital": "Amsterdam",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["The Netherlands is famous for windmills and tulips."]
+  },
+  {
+    "code": "RU",
+    "name": "Russia",
+    "nameFr": "Russie",
+    "capital": "Moscow",
+    "capitalFr": "Moscou",
+    "continent": "Europe",
+    "difficulty": 1,
+    "facts": ["Russia is the largest country in the world."]
+  },
+  {
+    "code": "CN",
+    "name": "China",
+    "nameFr": "Chine",
+    "capital": "Beijing",
+    "capitalFr": "Pékin",
+    "continent": "Asia",
+    "difficulty": 1,
+    "facts": ["The Great Wall of China is very, very long."]
+  },
+  {
+    "code": "JP",
+    "name": "Japan",
+    "nameFr": "Japon",
+    "capital": "Tokyo",
+    "continent": "Asia",
+    "difficulty": 1,
+    "facts": ["Japan is famous for cherry blossoms in spring."]
+  },
+  {
+    "code": "IN",
+    "name": "India",
+    "nameFr": "Inde",
+    "capital": "New Delhi",
+    "continent": "Asia",
+    "difficulty": 1,
+    "facts": ["The Taj Mahal is a beautiful white building in India."]
+  },
+  {
+    "code": "AU",
+    "name": "Australia",
+    "nameFr": "Australie",
+    "capital": "Canberra",
+    "continent": "Oceania",
+    "difficulty": 1,
+    "facts": ["Kangaroos and koalas live in Australia."]
+  },
+  {
+    "code": "EG",
+    "name": "Egypt",
+    "nameFr": "Égypte",
+    "capital": "Cairo",
+    "capitalFr": "Le Caire",
+    "continent": "Africa",
+    "difficulty": 1,
+    "facts": ["The Pyramids and the Sphinx are in Egypt."]
+  },
+  {
+    "code": "ZA",
+    "name": "South Africa",
+    "nameFr": "Afrique du Sud",
+    "capital": "Pretoria",
+    "continent": "Africa",
+    "difficulty": 1,
+    "facts": ["Lions, elephants, and zebras live in South Africa."]
+  },
+  {
+    "code": "KE",
+    "name": "Kenya",
+    "capital": "Nairobi",
+    "continent": "Africa",
+    "difficulty": 2,
+    "facts": ["Kenya is famous for safaris and wild animals."]
+  },
+  {
+    "code": "NG",
+    "name": "Nigeria",
+    "nameFr": "Nigéria",
+    "capital": "Abuja",
+    "continent": "Africa",
+    "difficulty": 2,
+    "facts": ["Nigeria has more people than any other African country."]
+  },
+  {
+    "code": "GH",
+    "name": "Ghana",
+    "capital": "Accra",
+    "continent": "Africa",
+    "difficulty": 2,
+    "facts": ["Ghana is on the warm coast of West Africa."]
+  },
+  {
+    "code": "SA",
+    "name": "Saudi Arabia",
+    "nameFr": "Arabie saoudite",
+    "capital": "Riyadh",
+    "capitalFr": "Riyad",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["Saudi Arabia has huge sandy deserts."]
+  },
+  {
+    "code": "TR",
+    "name": "Turkey",
+    "nameFr": "Turquie",
+    "capital": "Ankara",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["Turkey sits on two continents: Europe and Asia."]
+  },
+  {
+    "code": "GR",
+    "name": "Greece",
+    "nameFr": "Grèce",
+    "capital": "Athens",
+    "capitalFr": "Athènes",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Greece has many beautiful islands."]
+  },
+  {
+    "code": "SE",
+    "name": "Sweden",
+    "nameFr": "Suède",
+    "capital": "Stockholm",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Sweden has long, snowy winters."]
+  },
+  {
+    "code": "NO",
+    "name": "Norway",
+    "nameFr": "Norvège",
+    "capital": "Oslo",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Norway has deep sea valleys called fjords."]
+  },
+  {
+    "code": "CH",
+    "name": "Switzerland",
+    "nameFr": "Suisse",
+    "capital": "Bern",
+    "capitalFr": "Berne",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Switzerland has tall, snowy mountains called the Alps."]
+  },
+  {
+    "code": "IE",
+    "name": "Ireland",
+    "nameFr": "Irlande",
+    "capital": "Dublin",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Ireland is a green island with lots of rain."]
+  },
+  {
+    "code": "NZ",
+    "name": "New Zealand",
+    "nameFr": "Nouvelle-Zélande",
+    "capital": "Wellington",
+    "continent": "Oceania",
+    "difficulty": 2,
+    "facts": ["New Zealand has a special bird called the kiwi."]
+  },
+  {
+    "code": "BE",
+    "name": "Belgium",
+    "nameFr": "Belgique",
+    "capital": "Brussels",
+    "capitalFr": "Bruxelles",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Belgium is famous for chocolate and waffles."]
+  },
+  {
+    "code": "AT",
+    "name": "Austria",
+    "nameFr": "Autriche",
+    "capital": "Vienna",
+    "capitalFr": "Vienne",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Austria has beautiful mountains for skiing."]
+  },
+  {
+    "code": "PL",
+    "name": "Poland",
+    "nameFr": "Pologne",
+    "capital": "Warsaw",
+    "capitalFr": "Varsovie",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Poland is in the center of Europe."]
+  },
+  {
+    "code": "DK",
+    "name": "Denmark",
+    "nameFr": "Danemark",
+    "capital": "Copenhagen",
+    "capitalFr": "Copenhague",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Denmark is the home of LEGO bricks."]
+  },
+  {
+    "code": "FI",
+    "name": "Finland",
+    "nameFr": "Finlande",
+    "capital": "Helsinki",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Finland has thousands of lakes."]
+  },
+  {
+    "code": "IS",
+    "name": "Iceland",
+    "nameFr": "Islande",
+    "capital": "Reykjavik",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Iceland has volcanoes and hot springs."]
+  },
+  {
+    "code": "CZ",
+    "name": "Czechia",
+    "nameFr": "Tchéquie",
+    "capital": "Prague",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Czechia has a famous old city called Prague."]
+  },
+  {
+    "code": "HU",
+    "name": "Hungary",
+    "nameFr": "Hongrie",
+    "capital": "Budapest",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["The Danube River flows through Budapest."]
+  },
+  {
+    "code": "UA",
+    "name": "Ukraine",
+    "capital": "Kyiv",
+    "capitalFr": "Kiev",
+    "continent": "Europe",
+    "difficulty": 2,
+    "facts": ["Ukraine has wide fields where lots of wheat grows."]
+  },
+  {
+    "code": "ID",
+    "name": "Indonesia",
+    "nameFr": "Indonésie",
+    "capital": "Jakarta",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["Indonesia is made of thousands of islands."]
+  },
+  {
+    "code": "TH",
+    "name": "Thailand",
+    "nameFr": "Thaïlande",
+    "capital": "Bangkok",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["Thailand is famous for golden temples."]
+  },
+  {
+    "code": "VN",
+    "name": "Vietnam",
+    "capital": "Hanoi",
+    "capitalFr": "Hanoï",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["Vietnam has green rice fields shaped like stairs."]
+  },
+  {
+    "code": "KR",
+    "name": "South Korea",
+    "nameFr": "Corée du Sud",
+    "capital": "Seoul",
+    "capitalFr": "Séoul",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["South Korea is famous for pop music called K-pop."]
+  },
+  {
+    "code": "PH",
+    "name": "Philippines",
+    "capital": "Manila",
+    "capitalFr": "Manille",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["The Philippines has more than 7,000 islands."]
+  },
+  {
+    "code": "PK",
+    "name": "Pakistan",
+    "capital": "Islamabad",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["Pakistan has some of the tallest mountains on Earth."]
+  },
+  {
+    "code": "BD",
+    "name": "Bangladesh",
+    "capital": "Dhaka",
+    "capitalFr": "Dacca",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["Bangladesh has many big rivers."]
+  },
+  {
+    "code": "IL",
+    "name": "Israel",
+    "nameFr": "Israël",
+    "capital": "Jerusalem",
+    "capitalFr": "Jérusalem",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["The Dead Sea in Israel is so salty you can float on it."]
+  },
+  {
+    "code": "AE",
+    "name": "United Arab Emirates",
+    "nameFr": "Émirats arabes unis",
+    "capital": "Abu Dhabi",
+    "capitalFr": "Abou Dabi",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["The world's tallest building is in Dubai."]
+  },
+  {
+    "code": "IR",
+    "name": "Iran",
+    "capital": "Tehran",
+    "capitalFr": "Téhéran",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["Iran is famous for beautiful woven carpets."]
+  },
+  {
+    "code": "MA",
+    "name": "Morocco",
+    "nameFr": "Maroc",
+    "capital": "Rabat",
+    "continent": "Africa",
+    "difficulty": 2,
+    "facts": ["Morocco has busy markets called souks."]
+  },
+  {
+    "code": "ET",
+    "name": "Ethiopia",
+    "nameFr": "Éthiopie",
+    "capital": "Addis Ababa",
+    "capitalFr": "Addis-Abeba",
+    "continent": "Africa",
+    "difficulty": 2,
+    "facts": ["Coffee was first discovered in Ethiopia."]
+  },
+  {
+    "code": "TZ",
+    "name": "Tanzania",
+    "nameFr": "Tanzanie",
+    "capital": "Dodoma",
+    "continent": "Africa",
+    "difficulty": 2,
+    "facts": ["Mount Kilimanjaro, Africa's tallest mountain, is in Tanzania."]
+  },
+  {
+    "code": "CO",
+    "name": "Colombia",
+    "nameFr": "Colombie",
+    "capital": "Bogotá",
+    "capitalFr": "Bogota",
+    "continent": "South America",
+    "difficulty": 2,
+    "facts": ["Colombia grows a lot of coffee."]
+  },
+  {
+    "code": "CL",
+    "name": "Chile",
+    "nameFr": "Chili",
+    "capital": "Santiago",
+    "continent": "South America",
+    "difficulty": 2,
+    "facts": ["Chile is a very long, thin country."]
+  },
+  {
+    "code": "PE",
+    "name": "Peru",
+    "nameFr": "Pérou",
+    "capital": "Lima",
+    "continent": "South America",
+    "difficulty": 2,
+    "facts": ["The ancient city of Machu Picchu is in Peru."]
+  },
+  {
+    "code": "VE",
+    "name": "Venezuela",
+    "capital": "Caracas",
+    "continent": "South America",
+    "difficulty": 2,
+    "facts": ["The tallest waterfall in the world, Angel Falls, is in Venezuela."]
+  },
+  {
+    "code": "CU",
+    "name": "Cuba",
+    "capital": "Havana",
+    "capitalFr": "La Havane",
+    "continent": "North America",
+    "difficulty": 2,
+    "facts": ["Cuba is a large island in the Caribbean Sea."]
+  },
+  {
+    "code": "JM",
+    "name": "Jamaica",
+    "nameFr": "Jamaïque",
+    "capital": "Kingston",
+    "continent": "North America",
+    "difficulty": 2,
+    "facts": ["Jamaica is the home of reggae music."]
+  },
+  {
+    "code": "SG",
+    "name": "Singapore",
+    "nameFr": "Singapour",
+    "capital": "Singapore",
+    "capitalFr": "Singapour",
+    "continent": "Asia",
+    "difficulty": 2,
+    "facts": ["Singapore is a city that is also a whole country."]
+  }
+]

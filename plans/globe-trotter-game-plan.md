@@ -24,12 +24,12 @@ existing SFX (`correct`, `incorrect`, `celebrate`, `click`).
 
 ### Learning modes (all four, per the requested scope)
 
-| Mode                 | Prompt                                  | Answer options                          |
-| -------------------- | --------------------------------------- | --------------------------------------- |
-| Guess the Capital    | Country name + flag                     | 4 capital cities                        |
-| Identify the Flag    | A flag (or a country name)              | 4 countries (or 4 flags)                |
-| Fun Fact Challenge   | A kid-friendly fact ("This country …")  | 4 countries, or a true/false statement  |
-| Find the Continent   | Country name + flag                     | 6 continents (icon + name)              |
+| Mode               | Prompt                                 | Answer options                         |
+| ------------------ | -------------------------------------- | -------------------------------------- |
+| Guess the Capital  | Country name + flag                    | 4 capital cities                       |
+| Identify the Flag  | A flag (or a country name)             | 4 countries (or 4 flags)               |
+| Fun Fact Challenge | A kid-friendly fact ("This country …") | 4 countries, or a true/false statement |
+| Find the Continent | Country name + flag                    | 6 continents (icon + name)             |
 
 ---
 
@@ -40,11 +40,11 @@ capitals and facts require reading, the tiny tier is intentionally constrained
 to visual matching (this matches the known weak fit for ages 3–5 with
 text-heavy geography content).
 
-| Tier                | Modes enabled                          | Country pool                  | Rounds | Fail state            | Extras                                  |
-| ------------------- | -------------------------------------- | ----------------------------- | ------ | --------------------- | --------------------------------------- |
-| `tiny` (3–5)        | Identify the Flag, Find the Continent  | ~20 most famous (difficulty 1)| 6      | None (encourage-only) | Background music, larger tap targets    |
-| `junior` (6–8)      | Capital, Flag, Continent               | ~80 (difficulty ≤ 3)          | 8      | None                  | Optional speed bonus                    |
-| `explorer` (9–12)   | All four modes incl. Fun Facts         | Full ~195 (difficulty ≤ 5)    | 10–12  | None (count-up timer) | `GameTimer` count-up, progressive diff. |
+| Tier              | Modes enabled                         | Country pool                   | Rounds | Fail state            | Extras                                  |
+| ----------------- | ------------------------------------- | ------------------------------ | ------ | --------------------- | --------------------------------------- |
+| `tiny` (3–5)      | Identify the Flag, Find the Continent | ~20 most famous (difficulty 1) | 6      | None (encourage-only) | Background music, larger tap targets    |
+| `junior` (6–8)    | Capital, Flag, Continent              | ~80 (difficulty ≤ 3)           | 8      | None                  | Optional speed bonus                    |
+| `explorer` (9–12) | All four modes incl. Fun Facts        | Full ~195 (difficulty ≤ 5)     | 10–12  | None (count-up timer) | `GameTimer` count-up, progressive diff. |
 
 `config.difficulty` (1–5) further filters the pool depth within a tier and makes
 distractors harder (e.g. same-continent capitals, look-alike flags). No
@@ -69,15 +69,12 @@ Each entry:
 
 ```jsonc
 {
-  "code": "FR",            // ISO 3166-1 alpha-2 — drives the flag asset path
+  "code": "FR", // ISO 3166-1 alpha-2 — drives the flag asset path
   "name": "France",
   "capital": "Paris",
-  "continent": "Europe",   // Africa | Asia | Europe | North America | South America | Oceania
-  "difficulty": 1,         // 1 (very famous) … 5 (obscure)
-  "facts": [
-    "The Eiffel Tower is in France.",
-    "People in France speak French."
-  ]
+  "continent": "Europe", // Africa | Asia | Europe | North America | South America | Oceania
+  "difficulty": 1, // 1 (very famous) … 5 (obscure)
+  "facts": ["The Eiffel Tower is in France.", "People in France speak French."],
 }
 ```
 
@@ -249,14 +246,14 @@ only), `PauseMenu`, `InstructionBubble` (mode instructions), `IconImage`
 
 ## 10. Risks & open decisions
 
-| Item | Risk / Decision | Mitigation / Recommendation |
-| ---- | --------------- | --------------------------- |
+| Item                        | Risk / Decision                                                 | Mitigation / Recommendation                                                                                       |
+| --------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | Fact authoring (~400 facts) | Largest effort; accuracy & age-appropriateness must be verified | Restrict facts to explorer pool; concise, verifiable, no politics/conflict; data-integrity test enforces presence |
-| French translation depth | Translating ~195 country/capital names + facts doubles content | **Recommend:** fully translate famous pool; English fallback for explorer long-tail (data model supports `*Fr`) |
-| Flag assets & offline | ~400 KB of SVGs could blow the SW precache budget | Precache famous-pool flags only; runtime CacheFirst for the rest |
-| Tiny tier fit (3–5) | Capitals/facts need reading; weak fit confirmed at scoping | Tiny limited to visual Flag + Continent matching, infinite lives, music |
-| Bundle budget (100 KB gz) | Inlining ~195 countries + facts could exceed game chunk | Tiered JSON, lazy-load explorer data; flags are `/public` (no bundle cost); verify with `size:check` |
-| Continent mode UX | An interactive SVG world map is out of scope for v1 | v1 = 6 labelled continent `OptionButton`s with icons; interactive map noted as a future enhancement |
+| French translation depth    | Translating ~195 country/capital names + facts doubles content  | **Recommend:** fully translate famous pool; English fallback for explorer long-tail (data model supports `*Fr`)   |
+| Flag assets & offline       | ~400 KB of SVGs could blow the SW precache budget               | Precache famous-pool flags only; runtime CacheFirst for the rest                                                  |
+| Tiny tier fit (3–5)         | Capitals/facts need reading; weak fit confirmed at scoping      | Tiny limited to visual Flag + Continent matching, infinite lives, music                                           |
+| Bundle budget (100 KB gz)   | Inlining ~195 countries + facts could exceed game chunk         | Tiered JSON, lazy-load explorer data; flags are `/public` (no bundle cost); verify with `size:check`              |
+| Continent mode UX           | An interactive SVG world map is out of scope for v1             | v1 = 6 labelled continent `OptionButton`s with icons; interactive map noted as a future enhancement               |
 
 ---
 

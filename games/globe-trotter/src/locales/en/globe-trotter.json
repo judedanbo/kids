@@ -1,0 +1,23 @@
+{
+  "title": "Globe Trotter",
+  "instruction": "Travel the world! Answer questions about countries, capitals, flags, and continents.",
+  "instructionTiny": "Let's look at flags and find where countries are!",
+  "letsGo": "Let's Go!",
+  "prompt.flag": "Which country has this flag?",
+  "prompt.fact": "Which country is this about?",
+  "prompt.capital": "What is the capital of {{country}}?",
+  "prompt.continent": "Which continent is {{country}} in?",
+  "flagOf": "Flag of {{country}}",
+  "answers": "Answer choices",
+  "correct": "That's right!",
+  "incorrect": "Not quite!",
+  "next": "Next",
+  "questionOf": "Question {{current}} of {{total}}",
+  "celebrationTitle": "World Explorer!",
+  "continent.africa": "Africa",
+  "continent.asia": "Asia",
+  "continent.europe": "Europe",
+  "continent.northAmerica": "North America",
+  "continent.southAmerica": "South America",
+  "continent.oceania": "Oceania"
+}
