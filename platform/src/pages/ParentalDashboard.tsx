@@ -5,7 +5,7 @@ import { usePlatform } from '../context/PlatformContext';
 import { AdultGate } from '../components/AdultGate';
 import { PinEntry } from '../components/PinEntry';
 import { TypedConfirmModal } from '../components/TypedConfirmModal';
-import type { AnalyticsEvent, UserProfile } from '@kids-games-zone/shared';
+import type { AnalyticsEvent, UserProfile, GameProgress } from '@kids-games-zone/shared';
 import styles from './ParentalDashboard.module.css';
 
 type GateState = 'adult_gate' | 'pin_entry' | 'dashboard';
@@ -119,7 +119,7 @@ function Dashboard({
   const maxTime = Math.max(...dailyPlayTime.map(([, t]) => t), 1);
 
   // Game progress table
-  const gameProgress = Object.values(profile.progress);
+  const gameProgress = Object.values<GameProgress>(profile.progress);
 
   // --- Profile management ---
   // Reset and restore use window.confirm (non-destructive / reversible).

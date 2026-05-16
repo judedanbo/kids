@@ -5,7 +5,7 @@ import { useAgeTier, FeatureFlagContext, IconImage } from '@kids-games-zone/shar
 import { usePlatform } from '../context/PlatformContext';
 import { GameCard } from '../components/GameCard/GameCard';
 import { getDailyChallenge } from '../services/dailyChallenge';
-import type { GameManifest, SkillCategory } from '@kids-games-zone/shared';
+import type { GameManifest, SkillCategory, GameProgress } from '@kids-games-zone/shared';
 import styles from './Hub.module.css';
 
 export default function Hub() {
@@ -60,7 +60,7 @@ export default function Hub() {
   // Recent games (last 3 played)
   const recentGames = useMemo(() => {
     if (!profile) return [];
-    const progressEntries = Object.entries(profile.progress);
+    const progressEntries = Object.entries<GameProgress>(profile.progress);
     if (progressEntries.length === 0) return [];
 
     return progressEntries

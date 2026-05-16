@@ -1,4 +1,10 @@
-import type { Reward, UserProfile, GameResult, GameManifest } from '@kids-games-zone/shared';
+import type {
+  Reward,
+  UserProfile,
+  GameResult,
+  GameManifest,
+  GameProgress,
+} from '@kids-games-zone/shared';
 import { REWARD_CATALOG } from '../config/rewardCatalog';
 
 /**
@@ -57,7 +63,9 @@ export function evaluateRewards(
 }
 
 function checkCompletion(profile: UserProfile, threshold: number): boolean {
-  const gamesPlayed = Object.values(profile.progress).filter((p) => p.totalAttempts > 0).length;
+  const gamesPlayed = Object.values<GameProgress>(profile.progress).filter(
+    (p) => p.totalAttempts > 0,
+  ).length;
   return gamesPlayed >= threshold;
 }
 
@@ -121,7 +129,9 @@ export function getRewardProgress(
 
   switch (reward.criteria.type) {
     case 'completion': {
-      const gamesPlayed = Object.values(profile.progress).filter((p) => p.totalAttempts > 0).length;
+      const gamesPlayed = Object.values<GameProgress>(profile.progress).filter(
+        (p) => p.totalAttempts > 0,
+      ).length;
       return `${gamesPlayed} / ${reward.criteria.threshold} games completed`;
     }
     case 'time':
