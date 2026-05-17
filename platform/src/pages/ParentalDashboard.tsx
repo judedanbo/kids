@@ -5,6 +5,7 @@ import { usePlatform } from '../context/PlatformContext';
 import { AdultGate } from '../components/AdultGate';
 import { PinEntry } from '../components/PinEntry';
 import { TypedConfirmModal } from '../components/TypedConfirmModal';
+import { ParentalConfig } from '../components/ParentalConfig/ParentalConfig';
 import type { AnalyticsEvent, UserProfile, GameProgress } from '@kids-games-zone/shared';
 import styles from './ParentalDashboard.module.css';
 
@@ -83,6 +84,7 @@ function Dashboard({
   const { t } = useTranslation('common');
   const { state } = usePlatform();
   const allProfiles = state.profiles;
+  const [tab, setTab] = useState<'activity' | 'config' | 'profiles'>('activity');
   // Activity summary
   const today = new Date().toISOString().slice(0, 10);
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -216,6 +218,25 @@ function Dashboard({
         </button>
       </header>
 
+      <div className={styles.tabs} role="tablist" aria-label={t('parental.title')}>
+        {(['activity', 'config', 'profiles'] as const).map((id) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            id={`parental-tab-${id}`}
+            aria-selected={tab === id}
+            aria-controls={`parental-panel-${id}`}
+            className={`${styles.tab} ${tab === id ? styles.tabActive : ''}`}
+            onClick={() => setTab(id)}
+          >
+            {t(`parental.tab.${id}`)}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'activity' && (
+        <div role="tabpanel" id="parental-panel-activity" aria-labelledby="parental-tab-activity">
       {/* Activity Summary */}
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{t('parental.activitySummary')}</h2>
@@ -299,7 +320,24 @@ function Dashboard({
           </div>
         )}
       </section>
+        </div>
+      )}
 
+      {tab === 'config' && (
+        <div role="tabpanel" id="parental-panel-config" aria-labelledby="parental-tab-config">
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>{t('parental.config.title')}</h2>
+            <ParentalConfig />
+          </section>
+        </div>
+      )}
+
+      {tab === 'profiles' && (
+        <div
+          role="tabpanel"
+          id="parental-panel-profiles"
+          aria-labelledby="parental-tab-profiles"
+        >
       {/* Profiles */}
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{t('parental.profiles.title')}</h2>
@@ -374,6 +412,8 @@ function Dashboard({
           </table>
         </div>
       </section>
+        </div>
+      )}
 
       {/* Typed-confirmation modals for destructive actions */}
       {pending?.kind === 'delete' && (
