@@ -29,6 +29,8 @@ export default [
         navigator: 'readonly',
         fetch: 'readonly',
         URL: 'readonly',
+        Blob: 'readonly',
+        File: 'readonly',
         HTMLElement: 'readonly',
         HTMLInputElement: 'readonly',
         HTMLButtonElement: 'readonly',

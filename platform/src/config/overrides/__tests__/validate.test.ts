@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import type { GameManifest } from '@kids-games-zone/shared';
-import { validateConfigOverride } from '../validate';
+import { validateConfigOverride, validateStore } from '../validate';
 import type { ConfigValidationContext } from '../types';
 
 const manifest: GameManifest = {
@@ -107,5 +107,32 @@ describe('validateConfigOverride', () => {
     const r = validateConfigOverride({ games: { 'math-adventure': {} } }, ctx);
     expect(r.ok).toBe(true);
     if (r.ok) expect(r.value.games).toEqual({ 'math-adventure': {} });
+  });
+});
+
+describe('validateStore', () => {
+  it('accepts a valid store and prefixes scope errors', () => {
+    const ok = validateStore(
+      {
+        version: 1,
+        global: { games: { 'math-adventure': { enabled: false } } },
+        perProfile: { kid1: { rewards: { 'speed-demon': { enabled: false } } } },
+      },
+      ctx,
+    );
+    expect(ok.ok).toBe(true);
+
+    const bad = validateStore(
+      { version: 1, global: {}, perProfile: { kid1: { games: { nope: {} } } } },
+      ctx,
+    );
+    expect(bad.ok).toBe(false);
+    if (!bad.ok) expect(bad.errors.join()).toMatch(/kid1: Unknown game "nope"/);
+  });
+
+  it('rejects a bad version or non-object', () => {
+    expect(validateStore({ version: 99, global: {}, perProfile: {} }, ctx).ok).toBe(false);
+    expect(validateStore('nope', ctx).ok).toBe(false);
+    expect(validateStore({ version: 1, perProfile: 'x' }, ctx).ok).toBe(false);
   });
 });

@@ -1,10 +1,12 @@
-import type {
-  ConfigOverride,
-  ConfigValidationContext,
-  FeatureOverride,
-  GameOverride,
-  RewardOverride,
-  ValidationResult,
+import {
+  CONFIG_OVERRIDE_VERSION,
+  type ConfigOverride,
+  type ConfigOverrideStore,
+  type ConfigValidationContext,
+  type FeatureOverride,
+  type GameOverride,
+  type RewardOverride,
+  type ValidationResult,
 } from './types';
 
 const MAX_AGE = 18;
@@ -172,6 +174,61 @@ export function validateConfigOverride(
         if (typeof raw.enabled === 'boolean') rewards[id] = { enabled: raw.enabled };
       }
       value.rewards = rewards;
+    }
+  }
+
+  if (errors.length > 0) return { ok: false, errors };
+  return { ok: true, value };
+}
+
+export type StoreValidationResult =
+  | { ok: true; value: ConfigOverrideStore }
+  | { ok: false; errors: string[] };
+
+/**
+ * Validate a full exported/imported store: the version must match and every
+ * scope (global + each profile) must pass validateConfigOverride. Errors are
+ * prefixed with the scope they came from.
+ */
+export function validateStore(
+  input: unknown,
+  ctx: ConfigValidationContext,
+): StoreValidationResult {
+  if (!isPlainObject(input)) {
+    return { ok: false, errors: ['Import must be a JSON object.'] };
+  }
+  if (input.version !== CONFIG_OVERRIDE_VERSION) {
+    return {
+      ok: false,
+      errors: [`Unsupported config version (expected ${CONFIG_OVERRIDE_VERSION}).`],
+    };
+  }
+  if (input.perProfile !== undefined && !isPlainObject(input.perProfile)) {
+    return { ok: false, errors: ['"perProfile" must be an object.'] };
+  }
+
+  const errors: string[] = [];
+  const value: ConfigOverrideStore = {
+    version: CONFIG_OVERRIDE_VERSION,
+    global: {},
+    perProfile: {},
+  };
+
+  const globalResult = validateConfigOverride(input.global ?? {}, ctx);
+  if (globalResult.ok) {
+    value.global = globalResult.value;
+  } else {
+    errors.push(...globalResult.errors.map((e) => `global: ${e}`));
+  }
+
+  for (const [profileId, override] of Object.entries(
+    (input.perProfile as Record<string, unknown>) ?? {},
+  )) {
+    const result = validateConfigOverride(override, ctx);
+    if (result.ok) {
+      value.perProfile[profileId] = result.value;
+    } else {
+      errors.push(...result.errors.map((e) => `${profileId}: ${e}`));
     }
   }
 

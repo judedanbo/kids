@@ -6,6 +6,8 @@ import { AdultGate } from '../components/AdultGate';
 import { PinEntry } from '../components/PinEntry';
 import { TypedConfirmModal } from '../components/TypedConfirmModal';
 import { ParentalConfig } from '../components/ParentalConfig/ParentalConfig';
+import { useConfigOverrides } from '../context/ConfigOverrideContext';
+import { removeProfileOverrides } from '../config/overrides/store';
 import type { AnalyticsEvent, UserProfile, GameProgress } from '@kids-games-zone/shared';
 import styles from './ParentalDashboard.module.css';
 
@@ -83,6 +85,7 @@ function Dashboard({
 }) {
   const { t } = useTranslation('common');
   const { state } = usePlatform();
+  const { setStore: setConfigStore } = useConfigOverrides();
   const allProfiles = state.profiles;
   const [tab, setTab] = useState<'activity' | 'config' | 'profiles'>('activity');
   // Activity summary
@@ -183,6 +186,7 @@ function Dashboard({
       } else {
         await storageManager.purgeProfile(p.id);
         dispatch({ type: 'PURGE_PROFILE', payload: { profileId: p.id } });
+        setConfigStore((prev) => removeProfileOverrides(prev, p.id));
       }
       setPending(null);
     } catch (err) {
