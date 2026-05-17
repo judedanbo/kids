@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback, useRef, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGameLifecycle, FeatureFlagContext } from '@kids-games-zone/shared';
 import { usePlatform } from '../context/PlatformContext';
+import { useConfigOverrides } from '../context/ConfigOverrideContext';
+import { clampDifficulty } from '../config/overrides/merge';
 import { loadGame } from '../services/gameLoader';
 import { evaluateRewards } from '../services/rewards';
 import { calculateNextDifficulty } from '../services/difficulty';
@@ -22,6 +24,7 @@ const TIME_CHECK_INTERVAL = 30_000; // 30 seconds
 function GameSession({ plugin, gameId }: { plugin: GamePlugin; gameId: string }) {
   const navigate = useNavigate();
   const { state, dispatch, storageManager, audioManager } = usePlatform();
+  const { getGameConstraint, isRewardEnabled } = useConfigOverrides();
   const [score, setScore] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [newlyUnlockedRewards, setNewlyUnlockedRewards] = useState<Reward[]>([]);
@@ -35,6 +38,11 @@ function GameSession({ plugin, gameId }: { plugin: GamePlugin; gameId: string })
 
   const lifecycle = useGameLifecycle(plugin);
 
+  const effectiveDifficulty = useCallback(
+    (raw: number) => (manifest ? clampDifficulty(raw, getGameConstraint(manifest)) : raw),
+    [manifest, getGameConstraint],
+  );
+
   // Start session and game lifecycle
   useEffect(() => {
     if (!manifest || !profile) return;
@@ -46,7 +54,7 @@ function GameSession({ plugin, gameId }: { plugin: GamePlugin; gameId: string })
       await lifecycle.load();
 
       const config: GameConfig = {
-        difficulty: profile!.progress[manifest!.id]?.difficulty ?? 1,
+        difficulty: effectiveDifficulty(profile!.progress[manifest!.id]?.difficulty ?? 1),
         profile: profile!,
         settings: {
           soundEnabled: profile!.preferences.sfxVolume > 0,
@@ -69,6 +77,7 @@ function GameSession({ plugin, gameId }: { plugin: GamePlugin; gameId: string })
     manifest,
     profile,
     dispatch,
+    effectiveDifficulty,
     state.settings.backgroundMusicEnabled,
     state.settings.musicDuringGameplay,
   ]);
@@ -225,7 +234,12 @@ function GameSession({ plugin, gameId }: { plugin: GamePlugin; gameId: string })
         },
       };
 
-      const rewards = evaluateRewards(updatedProfile, result, state.gameRegistry);
+      const rewards = evaluateRewards(
+        updatedProfile,
+        result,
+        state.gameRegistry,
+        isRewardEnabled,
+      );
       if (rewards.length > 0) {
         setNewlyUnlockedRewards(rewards);
         for (const reward of rewards) {
@@ -242,7 +256,7 @@ function GameSession({ plugin, gameId }: { plugin: GamePlugin; gameId: string })
         }
       }
     },
-    [profile, gameId, dispatch, storageManager, state.gameRegistry],
+    [profile, gameId, dispatch, storageManager, state.gameRegistry, isRewardEnabled],
   );
 
   const handleExit = useCallback(() => {
@@ -394,7 +408,7 @@ function GameSession({ plugin, gameId }: { plugin: GamePlugin; gameId: string })
       )}
       <GameComponent
         config={{
-          difficulty: profile.progress[gameId]?.difficulty ?? 1,
+          difficulty: effectiveDifficulty(profile.progress[gameId]?.difficulty ?? 1),
           profile,
           settings: {
             soundEnabled: profile.preferences.sfxVolume > 0,

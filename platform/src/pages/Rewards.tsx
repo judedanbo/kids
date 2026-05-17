@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { IconImage } from '@kids-games-zone/shared';
 import { usePlatform } from '../context/PlatformContext';
+import { useConfigOverrides } from '../context/ConfigOverrideContext';
 import { REWARD_CATALOG } from '../config/rewardCatalog';
 import { getRewardProgress } from '../services/rewards';
 import { RewardCard } from '../components/RewardCard/RewardCard';
@@ -8,12 +9,14 @@ import styles from './Rewards.module.css';
 
 export function Rewards() {
   const { state } = usePlatform();
+  const { isRewardEnabled } = useConfigOverrides();
   const { t } = useTranslation('common');
   const profile = state.currentProfile;
 
+  const visibleRewards = REWARD_CATALOG.filter((reward) => isRewardEnabled(reward.id));
   const unlockedIds = new Set(profile?.rewards.map((r) => r.id) ?? []);
-  const unlockedCount = unlockedIds.size;
-  const totalCount = REWARD_CATALOG.length;
+  const unlockedCount = visibleRewards.filter((reward) => unlockedIds.has(reward.id)).length;
+  const totalCount = visibleRewards.length;
 
   if (!profile) {
     return (
@@ -63,7 +66,7 @@ export function Rewards() {
       )}
 
       <ul aria-label="Your rewards" className={styles.grid}>
-        {REWARD_CATALOG.map((reward) => {
+        {visibleRewards.map((reward) => {
           const unlocked = unlockedIds.has(reward.id);
           const matchedReward = unlocked
             ? (profile.rewards.find((r) => r.id === reward.id) ?? reward)

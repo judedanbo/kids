@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAgeTier, FeatureFlagContext, IconImage } from '@kids-games-zone/shared';
 import { usePlatform } from '../context/PlatformContext';
+import { useConfigOverrides } from '../context/ConfigOverrideContext';
 import { GameCard } from '../components/GameCard/GameCard';
 import { getDailyChallenge } from '../services/dailyChallenge';
 import type { GameManifest, SkillCategory, GameProgress } from '@kids-games-zone/shared';
@@ -14,6 +15,7 @@ export default function Hub() {
   const { t } = useTranslation('common');
   const ageTier = useAgeTier();
   const { flags } = useContext(FeatureFlagContext);
+  const { getGameConstraint } = useConfigOverrides();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [musicPaused, setMusicPaused] = useState(false);
@@ -25,12 +27,13 @@ export default function Hub() {
   const ageFilteredGames = useMemo(() => {
     if (!profile) return [];
     return state.gameRegistry.filter((game) => {
-      const inAgeRange = game.ageRange[0] <= profile.age && profile.age <= game.ageRange[1];
+      const { ageRange } = getGameConstraint(game);
+      const inAgeRange = ageRange[0] <= profile.age && profile.age <= ageRange[1];
       const flag = flags[`game.${game.id}`];
       const flagEnabled = !flag || flag.enabled;
       return inAgeRange && flagEnabled;
     });
-  }, [profile, state.gameRegistry, flags]);
+  }, [profile, state.gameRegistry, flags, getGameConstraint]);
 
   // Get available skill categories from filtered games
   const skillCategories = useMemo(() => {

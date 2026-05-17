@@ -2,9 +2,9 @@ import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { FeatureFlagProvider } from '@kids-games-zone/shared';
 import type { FeatureFlags } from '@kids-games-zone/shared';
 import { PlatformProvider } from './context/PlatformContext';
+import { ConfigOverrideProvider } from './context/ConfigOverrideContext';
 import { IndexedDBStorageManager } from './services/storage';
 import featureFlags from './config/featureFlags.json';
 import { RealAudioManager } from './services/audio-manager';
@@ -40,9 +40,9 @@ createRoot(document.getElementById('root')!).render(
         audioManager={audioManager}
         gameRegistry={gameRegistry}
       >
-        <FeatureFlagProvider flags={featureFlags as FeatureFlags} profileId={null}>
+        <ConfigOverrideProvider defaultFlags={featureFlags as FeatureFlags}>
           <App />
-        </FeatureFlagProvider>
+        </ConfigOverrideProvider>
       </PlatformProvider>
     </BrowserRouter>
   </StrictMode>,
