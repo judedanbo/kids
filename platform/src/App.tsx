@@ -5,8 +5,6 @@ import { AgeTierProvider } from '@kids-games-zone/shared';
 import { NavBar } from './components/NavBar/NavBar';
 import { OfflineBanner } from './components/OfflineBanner/OfflineBanner';
 import { LoadingSpinner } from './components/LoadingSpinner/LoadingSpinner';
-import { Rewards } from './pages/Rewards';
-import { Settings } from './pages/Settings';
 import { usePlatform } from './context/PlatformContext';
 import { SUPPORTED_LANGUAGES } from './config/languages';
 import type { AgeTier } from '@kids-games-zone/shared';
@@ -14,6 +12,12 @@ import type { AgeTier } from '@kids-games-zone/shared';
 const Hub = lazy(() => import('./pages/Hub'));
 const ProfileSelect = lazy(() => import('./pages/ProfileSelect'));
 const GameWrapper = lazy(() => import('./pages/GameWrapper'));
+const Rewards = lazy(() =>
+  import('./pages/Rewards').then((m) => ({ default: m.Rewards })),
+);
+const Settings = lazy(() =>
+  import('./pages/Settings').then((m) => ({ default: m.Settings })),
+);
 const ParentalDashboard = lazy(() => import('./pages/ParentalDashboard'));
 
 function getAgeTier(age: number | undefined): AgeTier {
