@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter platform dev",
-    "build": "pnpm --filter platform build",
+    "build": "pnpm --filter @kids-games-zone/shared build && pnpm --filter platform build",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "typecheck": "pnpm -r --parallel run typecheck",
     "test": "pnpm -r run test",
