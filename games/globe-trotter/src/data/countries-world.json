@@ -1,0 +1,1188 @@
+[
+  {
+    "code": "HR",
+    "name": "Croatia",
+    "nameFr": "Croatie",
+    "capital": "Zagreb",
+    "continent": "Europe",
+    "difficulty": 3,
+    "facts": ["Croatia has a long coast on the Adriatic Sea."]
+  },
+  {
+    "code": "RS",
+    "name": "Serbia",
+    "nameFr": "Serbie",
+    "capital": "Belgrade",
+    "continent": "Europe",
+    "difficulty": 3,
+    "facts": ["Serbia is in the middle of southeast Europe."]
+  },
+  {
+    "code": "RO",
+    "name": "Romania",
+    "nameFr": "Roumanie",
+    "capital": "Bucharest",
+    "capitalFr": "Bucarest",
+    "continent": "Europe",
+    "difficulty": 3,
+    "facts": ["Romania has the Carpathian Mountains and old castles."]
+  },
+  {
+    "code": "BG",
+    "name": "Bulgaria",
+    "nameFr": "Bulgarie",
+    "capital": "Sofia",
+    "continent": "Europe",
+    "difficulty": 3,
+    "facts": ["Bulgaria grows roses to make sweet-smelling oil."]
+  },
+  {
+    "code": "SK",
+    "name": "Slovakia",
+    "nameFr": "Slovaquie",
+    "capital": "Bratislava",
+    "continent": "Europe",
+    "difficulty": 3,
+    "facts": ["Slovakia has many caves and mountains."]
+  },
+  {
+    "code": "SI",
+    "name": "Slovenia",
+    "nameFr": "Slovénie",
+    "capital": "Ljubljana",
+    "continent": "Europe",
+    "difficulty": 3,
+    "facts": ["Slovenia has a pretty lake with an island and a church."]
+  },
+  {
+    "code": "EE",
+    "name": "Estonia",
+    "nameFr": "Estonie",
+    "capital": "Tallinn",
+    "continent": "Europe",
+    "difficulty": 4,
+    "facts": ["Estonia is on the Baltic Sea."]
+  },
+  {
+    "code": "LV",
+    "name": "Latvia",
+    "nameFr": "Lettonie",
+    "capital": "Riga",
+    "continent": "Europe",
+    "difficulty": 4,
+    "facts": ["Latvia is covered with green forests."]
+  },
+  {
+    "code": "LT",
+    "name": "Lithuania",
+    "nameFr": "Lituanie",
+    "capital": "Vilnius",
+    "continent": "Europe",
+    "difficulty": 4,
+    "facts": ["Lithuania is famous for golden amber from the sea."]
+  },
+  {
+    "code": "BY",
+    "name": "Belarus",
+    "nameFr": "Biélorussie",
+    "capital": "Minsk",
+    "continent": "Europe",
+    "difficulty": 4,
+    "facts": ["Belarus has large forests where bison live."]
+  },
+  {
+    "code": "LU",
+    "name": "Luxembourg",
+    "capital": "Luxembourg",
+    "continent": "Europe",
+    "difficulty": 4,
+    "facts": ["Luxembourg is one of the smallest countries in Europe."]
+  },
+  {
+    "code": "MT",
+    "name": "Malta",
+    "nameFr": "Malte",
+    "capital": "Valletta",
+    "capitalFr": "La Valette",
+    "continent": "Europe",
+    "difficulty": 4,
+    "facts": ["Malta is a tiny island country in the Mediterranean Sea."]
+  },
+  {
+    "code": "CY",
+    "name": "Cyprus",
+    "nameFr": "Chypre",
+    "capital": "Nicosia",
+    "capitalFr": "Nicosie",
+    "continent": "Europe",
+    "difficulty": 4,
+    "facts": ["Cyprus is a sunny island in the Mediterranean Sea."]
+  },
+  {
+    "code": "AL",
+    "name": "Albania",
+    "nameFr": "Albanie",
+    "capital": "Tirana",
+    "continent": "Europe",
+    "difficulty": 4,
+    "facts": ["Albania has mountains and a sunny seacoast."]
+  },
+  {
+    "code": "BA",
+    "name": "Bosnia and Herzegovina",
+    "nameFr": "Bosnie-Herzégovine",
+    "capital": "Sarajevo",
+    "continent": "Europe",
+    "difficulty": 4,
+    "facts": ["Bosnia and Herzegovina has green mountains and rivers."]
+  },
+  {
+    "code": "MK",
+    "name": "North Macedonia",
+    "nameFr": "Macédoine du Nord",
+    "capital": "Skopje",
+    "continent": "Europe",
+    "difficulty": 5,
+    "facts": ["North Macedonia has one of the oldest lakes on Earth."]
+  },
+  {
+    "code": "ME",
+    "name": "Montenegro",
+    "nameFr": "Monténégro",
+    "capital": "Podgorica",
+    "continent": "Europe",
+    "difficulty": 5,
+    "facts": ["Montenegro's name means 'black mountain'."]
+  },
+  {
+    "code": "MD",
+    "name": "Moldova",
+    "nameFr": "Moldavie",
+    "capital": "Chișinău",
+    "capitalFr": "Chisinau",
+    "continent": "Europe",
+    "difficulty": 5,
+    "facts": ["Moldova has many farms and vineyards."]
+  },
+  {
+    "code": "XK",
+    "name": "Kosovo",
+    "capital": "Pristina",
+    "continent": "Europe",
+    "difficulty": 5,
+    "facts": ["Kosovo is one of the youngest countries in Europe."]
+  },
+  {
+    "code": "LI",
+    "name": "Liechtenstein",
+    "capital": "Vaduz",
+    "continent": "Europe",
+    "difficulty": 5,
+    "facts": ["Liechtenstein is a tiny country in the Alps."]
+  },
+  {
+    "code": "MC",
+    "name": "Monaco",
+    "capital": "Monaco",
+    "continent": "Europe",
+    "difficulty": 5,
+    "facts": ["Monaco is one of the smallest countries in the world."]
+  },
+  {
+    "code": "SM",
+    "name": "San Marino",
+    "nameFr": "Saint-Marin",
+    "capital": "San Marino",
+    "capitalFr": "Saint-Marin",
+    "continent": "Europe",
+    "difficulty": 5,
+    "facts": ["San Marino is a tiny country inside Italy."]
+  },
+  {
+    "code": "AD",
+    "name": "Andorra",
+    "nameFr": "Andorre",
+    "capital": "Andorra la Vella",
+    "capitalFr": "Andorre-la-Vieille",
+    "continent": "Europe",
+    "difficulty": 5,
+    "facts": ["Andorra is a small country high in the Pyrenees mountains."]
+  },
+  {
+    "code": "VA",
+    "name": "Vatican City",
+    "nameFr": "Cité du Vatican",
+    "capital": "Vatican City",
+    "capitalFr": "Cité du Vatican",
+    "continent": "Europe",
+    "difficulty": 5,
+    "facts": ["Vatican City is the smallest country in the world."]
+  },
+  {
+    "code": "DZ",
+    "name": "Algeria",
+    "nameFr": "Algérie",
+    "capital": "Algiers",
+    "capitalFr": "Alger",
+    "continent": "Africa",
+    "difficulty": 3,
+    "facts": ["Algeria is the largest country in Africa."]
+  },
+  {
+    "code": "TN",
+    "name": "Tunisia",
+    "nameFr": "Tunisie",
+    "capital": "Tunis",
+    "continent": "Africa",
+    "difficulty": 3,
+    "facts": ["Tunisia has both sandy desert and a sunny seacoast."]
+  },
+  {
+    "code": "LY",
+    "name": "Libya",
+    "nameFr": "Libye",
+    "capital": "Tripoli",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Most of Libya is hot, sandy desert."]
+  },
+  {
+    "code": "SD",
+    "name": "Sudan",
+    "nameFr": "Soudan",
+    "capital": "Khartoum",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["The Nile River flows through Sudan."]
+  },
+  {
+    "code": "SN",
+    "name": "Senegal",
+    "nameFr": "Sénégal",
+    "capital": "Dakar",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Senegal is the most western country in Africa."]
+  },
+  {
+    "code": "CI",
+    "name": "Ivory Coast",
+    "nameFr": "Côte d'Ivoire",
+    "capital": "Yamoussoukro",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Ivory Coast grows more cocoa than any other country."]
+  },
+  {
+    "code": "CM",
+    "name": "Cameroon",
+    "nameFr": "Cameroun",
+    "capital": "Yaoundé",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Cameroon has rainforests, mountains, and beaches."]
+  },
+  {
+    "code": "UG",
+    "name": "Uganda",
+    "nameFr": "Ouganda",
+    "capital": "Kampala",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Mountain gorillas live in the forests of Uganda."]
+  },
+  {
+    "code": "ZW",
+    "name": "Zimbabwe",
+    "capital": "Harare",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Victoria Falls, a giant waterfall, is in Zimbabwe."]
+  },
+  {
+    "code": "ZM",
+    "name": "Zambia",
+    "nameFr": "Zambie",
+    "capital": "Lusaka",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Zambia shares the huge Victoria Falls with Zimbabwe."]
+  },
+  {
+    "code": "MZ",
+    "name": "Mozambique",
+    "capital": "Maputo",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Mozambique has a long coast on the Indian Ocean."]
+  },
+  {
+    "code": "AO",
+    "name": "Angola",
+    "capital": "Luanda",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Angola is on the Atlantic coast of Africa."]
+  },
+  {
+    "code": "MG",
+    "name": "Madagascar",
+    "capital": "Antananarivo",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Madagascar is a big island off the coast of Africa."]
+  },
+  {
+    "code": "MY",
+    "name": "Malaysia",
+    "nameFr": "Malaisie",
+    "capital": "Kuala Lumpur",
+    "continent": "Asia",
+    "difficulty": 3,
+    "facts": ["Malaysia has tall twin towers in its capital city."]
+  },
+  {
+    "code": "MM",
+    "name": "Myanmar",
+    "nameFr": "Birmanie",
+    "capital": "Naypyidaw",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Myanmar has thousands of golden temples."]
+  },
+  {
+    "code": "KH",
+    "name": "Cambodia",
+    "nameFr": "Cambodge",
+    "capital": "Phnom Penh",
+    "continent": "Asia",
+    "difficulty": 4,
+    "facts": ["The huge temple of Angkor Wat is in Cambodia."]
+  },
+  {
+    "code": "LK",
+    "name": "Sri Lanka",
+    "capital": "Sri Jayawardenepura Kotte",
+    "continent": "Asia",
+    "difficulty": 4,
+    "facts": ["Sri Lanka is a teardrop-shaped island in the Indian Ocean."]
+  },
+  {
+    "code": "NP",
+    "name": "Nepal",
+    "nameFr": "Népal",
+    "capital": "Kathmandu",
+    "capitalFr": "Katmandou",
+    "continent": "Asia",
+    "difficulty": 3,
+    "facts": ["Mount Everest, the tallest mountain, is in Nepal."]
+  },
+  {
+    "code": "AF",
+    "name": "Afghanistan",
+    "capital": "Kabul",
+    "capitalFr": "Kaboul",
+    "continent": "Asia",
+    "difficulty": 4,
+    "facts": ["Afghanistan has tall, rocky mountains."]
+  },
+  {
+    "code": "KZ",
+    "name": "Kazakhstan",
+    "capital": "Astana",
+    "continent": "Asia",
+    "difficulty": 4,
+    "facts": ["Kazakhstan is the largest landlocked country on Earth."]
+  },
+  {
+    "code": "UZ",
+    "name": "Uzbekistan",
+    "nameFr": "Ouzbékistan",
+    "capital": "Tashkent",
+    "capitalFr": "Tachkent",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Uzbekistan was on the old Silk Road trading route."]
+  },
+  {
+    "code": "JO",
+    "name": "Jordan",
+    "nameFr": "Jordanie",
+    "capital": "Amman",
+    "continent": "Asia",
+    "difficulty": 4,
+    "facts": ["The ancient stone city of Petra is in Jordan."]
+  },
+  {
+    "code": "LB",
+    "name": "Lebanon",
+    "nameFr": "Liban",
+    "capital": "Beirut",
+    "capitalFr": "Beyrouth",
+    "continent": "Asia",
+    "difficulty": 4,
+    "facts": ["Lebanon has a famous cedar tree on its flag."]
+  },
+  {
+    "code": "OM",
+    "name": "Oman",
+    "capital": "Muscat",
+    "capitalFr": "Mascate",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Oman has deserts, mountains, and a long coast."]
+  },
+  {
+    "code": "QA",
+    "name": "Qatar",
+    "capital": "Doha",
+    "continent": "Asia",
+    "difficulty": 4,
+    "facts": ["Qatar is a small country on a desert peninsula."]
+  },
+  {
+    "code": "KW",
+    "name": "Kuwait",
+    "nameFr": "Koweït",
+    "capital": "Kuwait City",
+    "capitalFr": "Koweït",
+    "continent": "Asia",
+    "difficulty": 4,
+    "facts": ["Kuwait is a small, hot country by the sea."]
+  },
+  {
+    "code": "IQ",
+    "name": "Iraq",
+    "nameFr": "Irak",
+    "capital": "Baghdad",
+    "capitalFr": "Bagdad",
+    "continent": "Asia",
+    "difficulty": 3,
+    "facts": ["Two great rivers, the Tigris and Euphrates, flow through Iraq."]
+  },
+  {
+    "code": "EC",
+    "name": "Ecuador",
+    "nameFr": "Équateur",
+    "capital": "Quito",
+    "continent": "South America",
+    "difficulty": 3,
+    "facts": ["The equator line runs through Ecuador."]
+  },
+  {
+    "code": "BO",
+    "name": "Bolivia",
+    "nameFr": "Bolivie",
+    "capital": "Sucre",
+    "continent": "South America",
+    "difficulty": 4,
+    "facts": ["Bolivia has the world's largest salt flat, like a giant mirror."]
+  },
+  {
+    "code": "PY",
+    "name": "Paraguay",
+    "capital": "Asunción",
+    "capitalFr": "Asuncion",
+    "continent": "South America",
+    "difficulty": 5,
+    "facts": ["Paraguay is a landlocked country in South America."]
+  },
+  {
+    "code": "UY",
+    "name": "Uruguay",
+    "capital": "Montevideo",
+    "continent": "South America",
+    "difficulty": 4,
+    "facts": ["Uruguay is one of the smaller countries in South America."]
+  },
+  {
+    "code": "GT",
+    "name": "Guatemala",
+    "capital": "Guatemala City",
+    "capitalFr": "Guatemala",
+    "continent": "North America",
+    "difficulty": 4,
+    "facts": ["Guatemala has volcanoes and ancient Maya temples."]
+  },
+  {
+    "code": "HN",
+    "name": "Honduras",
+    "capital": "Tegucigalpa",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["Honduras has rainforests and coral reefs."]
+  },
+  {
+    "code": "SV",
+    "name": "El Salvador",
+    "nameFr": "Salvador",
+    "capital": "San Salvador",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["El Salvador is the smallest country in Central America."]
+  },
+  {
+    "code": "NI",
+    "name": "Nicaragua",
+    "capital": "Managua",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["Nicaragua has the largest lake in Central America."]
+  },
+  {
+    "code": "CR",
+    "name": "Costa Rica",
+    "capital": "San José",
+    "continent": "North America",
+    "difficulty": 3,
+    "facts": ["Costa Rica is famous for rainforests and friendly sloths."]
+  },
+  {
+    "code": "PA",
+    "name": "Panama",
+    "capital": "Panama City",
+    "capitalFr": "Panama",
+    "continent": "North America",
+    "difficulty": 3,
+    "facts": ["The Panama Canal lets ships cross between two oceans."]
+  },
+  {
+    "code": "DO",
+    "name": "Dominican Republic",
+    "nameFr": "République dominicaine",
+    "capital": "Santo Domingo",
+    "capitalFr": "Saint-Domingue",
+    "continent": "North America",
+    "difficulty": 4,
+    "facts": ["The Dominican Republic shares an island with Haiti."]
+  },
+  {
+    "code": "HT",
+    "name": "Haiti",
+    "nameFr": "Haïti",
+    "capital": "Port-au-Prince",
+    "continent": "North America",
+    "difficulty": 4,
+    "facts": ["Haiti shares an island with the Dominican Republic."]
+  },
+  {
+    "code": "TT",
+    "name": "Trinidad and Tobago",
+    "nameFr": "Trinité-et-Tobago",
+    "capital": "Port of Spain",
+    "capitalFr": "Port-d'Espagne",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["Trinidad and Tobago is famous for steel drum music."]
+  },
+  {
+    "code": "BS",
+    "name": "Bahamas",
+    "capital": "Nassau",
+    "continent": "North America",
+    "difficulty": 4,
+    "facts": ["The Bahamas is a chain of about 700 islands."]
+  },
+  {
+    "code": "BB",
+    "name": "Barbados",
+    "nameFr": "Barbade",
+    "capital": "Bridgetown",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["Barbados is a small Caribbean island."]
+  },
+  {
+    "code": "GE",
+    "name": "Georgia",
+    "nameFr": "Géorgie",
+    "capital": "Tbilisi",
+    "capitalFr": "Tbilissi",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Georgia sits between the Black Sea and tall mountains."]
+  },
+  {
+    "code": "AM",
+    "name": "Armenia",
+    "nameFr": "Arménie",
+    "capital": "Yerevan",
+    "capitalFr": "Erevan",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Armenia is a small mountain country."]
+  },
+  {
+    "code": "AZ",
+    "name": "Azerbaijan",
+    "nameFr": "Azerbaïdjan",
+    "capital": "Baku",
+    "capitalFr": "Bakou",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Azerbaijan is by the Caspian Sea."]
+  },
+  {
+    "code": "TM",
+    "name": "Turkmenistan",
+    "nameFr": "Turkménistan",
+    "capital": "Ashgabat",
+    "capitalFr": "Achgabat",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Most of Turkmenistan is desert."]
+  },
+  {
+    "code": "KG",
+    "name": "Kyrgyzstan",
+    "nameFr": "Kirghizistan",
+    "capital": "Bishkek",
+    "capitalFr": "Bichkek",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Kyrgyzstan is full of tall snowy mountains."]
+  },
+  {
+    "code": "TJ",
+    "name": "Tajikistan",
+    "nameFr": "Tadjikistan",
+    "capital": "Dushanbe",
+    "capitalFr": "Douchanbé",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Most of Tajikistan is covered by mountains."]
+  },
+  {
+    "code": "MN",
+    "name": "Mongolia",
+    "nameFr": "Mongolie",
+    "capital": "Ulaanbaatar",
+    "capitalFr": "Oulan-Bator",
+    "continent": "Asia",
+    "difficulty": 4,
+    "facts": ["Mongolia has wide grasslands and the Gobi Desert."]
+  },
+  {
+    "code": "BH",
+    "name": "Bahrain",
+    "nameFr": "Bahreïn",
+    "capital": "Manama",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Bahrain is a small island country in the Persian Gulf."]
+  },
+  {
+    "code": "BT",
+    "name": "Bhutan",
+    "nameFr": "Bhoutan",
+    "capital": "Thimphu",
+    "capitalFr": "Thimphou",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Bhutan is a small kingdom high in the Himalayas."]
+  },
+  {
+    "code": "MV",
+    "name": "Maldives",
+    "capital": "Malé",
+    "continent": "Asia",
+    "difficulty": 4,
+    "facts": ["The Maldives is made of tiny low islands in the ocean."]
+  },
+  {
+    "code": "BN",
+    "name": "Brunei",
+    "capital": "Bandar Seri Begawan",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Brunei is a small country on the island of Borneo."]
+  },
+  {
+    "code": "LA",
+    "name": "Laos",
+    "capital": "Vientiane",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Laos is a landlocked country with many rivers."]
+  },
+  {
+    "code": "BW",
+    "name": "Botswana",
+    "capital": "Gaborone",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Botswana has a huge swamp where many animals live."]
+  },
+  {
+    "code": "NA",
+    "name": "Namibia",
+    "nameFr": "Namibie",
+    "capital": "Windhoek",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Namibia has giant orange sand dunes."]
+  },
+  {
+    "code": "RW",
+    "name": "Rwanda",
+    "capital": "Kigali",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["Rwanda is called the 'Land of a Thousand Hills'."]
+  },
+  {
+    "code": "BI",
+    "name": "Burundi",
+    "capital": "Gitega",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Burundi is a small country with green hills."]
+  },
+  {
+    "code": "MW",
+    "name": "Malawi",
+    "capital": "Lilongwe",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Lake Malawi has more kinds of fish than any other lake."]
+  },
+  {
+    "code": "ML",
+    "name": "Mali",
+    "capital": "Bamako",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["The Sahara Desert covers much of Mali."]
+  },
+  {
+    "code": "NE",
+    "name": "Niger",
+    "capital": "Niamey",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Most of Niger is covered by the Sahara Desert."]
+  },
+  {
+    "code": "TD",
+    "name": "Chad",
+    "nameFr": "Tchad",
+    "capital": "N'Djamena",
+    "capitalFr": "N'Djaména",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Chad has a big lake it is named after."]
+  },
+  {
+    "code": "MR",
+    "name": "Mauritania",
+    "nameFr": "Mauritanie",
+    "capital": "Nouakchott",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Most of Mauritania is the Sahara Desert."]
+  },
+  {
+    "code": "SO",
+    "name": "Somalia",
+    "nameFr": "Somalie",
+    "capital": "Mogadishu",
+    "capitalFr": "Mogadiscio",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Somalia has the longest coast on mainland Africa."]
+  },
+  {
+    "code": "ER",
+    "name": "Eritrea",
+    "nameFr": "Érythrée",
+    "capital": "Asmara",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Eritrea is on the Red Sea coast."]
+  },
+  {
+    "code": "DJ",
+    "name": "Djibouti",
+    "capital": "Djibouti",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Djibouti has a salt lake lower than the sea."]
+  },
+  {
+    "code": "GA",
+    "name": "Gabon",
+    "capital": "Libreville",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Most of Gabon is covered by rainforest."]
+  },
+  {
+    "code": "CG",
+    "name": "Republic of the Congo",
+    "nameFr": "République du Congo",
+    "capital": "Brazzaville",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["The Congo River flows past its capital."]
+  },
+  {
+    "code": "CD",
+    "name": "DR Congo",
+    "nameFr": "RD Congo",
+    "capital": "Kinshasa",
+    "continent": "Africa",
+    "difficulty": 4,
+    "facts": ["DR Congo has the second-largest rainforest in the world."]
+  },
+  {
+    "code": "BJ",
+    "name": "Benin",
+    "nameFr": "Bénin",
+    "capital": "Porto-Novo",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Benin has villages built on water on stilts."]
+  },
+  {
+    "code": "TG",
+    "name": "Togo",
+    "capital": "Lomé",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Togo is a thin country in West Africa."]
+  },
+  {
+    "code": "BF",
+    "name": "Burkina Faso",
+    "capital": "Ouagadougou",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Burkina Faso is a landlocked country in West Africa."]
+  },
+  {
+    "code": "GN",
+    "name": "Guinea",
+    "nameFr": "Guinée",
+    "capital": "Conakry",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Big rivers in West Africa start in Guinea."]
+  },
+  {
+    "code": "SL",
+    "name": "Sierra Leone",
+    "capital": "Freetown",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Sierra Leone has rainforests and sandy beaches."]
+  },
+  {
+    "code": "LR",
+    "name": "Liberia",
+    "nameFr": "Libéria",
+    "capital": "Monrovia",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Liberia is one of the oldest republics in Africa."]
+  },
+  {
+    "code": "GM",
+    "name": "Gambia",
+    "nameFr": "Gambie",
+    "capital": "Banjul",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["The Gambia is the smallest country on mainland Africa."]
+  },
+  {
+    "code": "CV",
+    "name": "Cape Verde",
+    "nameFr": "Cap-Vert",
+    "capital": "Praia",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Cape Verde is a group of islands off West Africa."]
+  },
+  {
+    "code": "LS",
+    "name": "Lesotho",
+    "capital": "Maseru",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Lesotho is a country completely inside South Africa."]
+  },
+  {
+    "code": "SZ",
+    "name": "Eswatini",
+    "capital": "Mbabane",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Eswatini is one of the smallest countries in Africa."]
+  },
+  {
+    "code": "KM",
+    "name": "Comoros",
+    "nameFr": "Comores",
+    "capital": "Moroni",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Comoros is a group of islands in the Indian Ocean."]
+  },
+  {
+    "code": "SC",
+    "name": "Seychelles",
+    "capital": "Victoria",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Seychelles is a group of islands with giant tortoises."]
+  },
+  {
+    "code": "MU",
+    "name": "Mauritius",
+    "nameFr": "Maurice",
+    "capital": "Port Louis",
+    "capitalFr": "Port-Louis",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["The dodo bird once lived only on Mauritius."]
+  },
+  {
+    "code": "GW",
+    "name": "Guinea-Bissau",
+    "nameFr": "Guinée-Bissau",
+    "capital": "Bissau",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Guinea-Bissau has many small islands."]
+  },
+  {
+    "code": "GQ",
+    "name": "Equatorial Guinea",
+    "nameFr": "Guinée équatoriale",
+    "capital": "Malabo",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["Equatorial Guinea has its capital on an island."]
+  },
+  {
+    "code": "ST",
+    "name": "São Tomé and Príncipe",
+    "nameFr": "Sao Tomé-et-Principe",
+    "capital": "São Tomé",
+    "capitalFr": "Sao Tomé",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["São Tomé and Príncipe is a tiny island country."]
+  },
+  {
+    "code": "CF",
+    "name": "Central African Republic",
+    "nameFr": "République centrafricaine",
+    "capital": "Bangui",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["The Central African Republic has rainforests and savannas."]
+  },
+  {
+    "code": "SS",
+    "name": "South Sudan",
+    "nameFr": "Soudan du Sud",
+    "capital": "Juba",
+    "capitalFr": "Djouba",
+    "continent": "Africa",
+    "difficulty": 5,
+    "facts": ["South Sudan is the world's youngest country."]
+  },
+  {
+    "code": "FJ",
+    "name": "Fiji",
+    "nameFr": "Fidji",
+    "capital": "Suva",
+    "continent": "Oceania",
+    "difficulty": 4,
+    "facts": ["Fiji is made of more than 300 islands."]
+  },
+  {
+    "code": "PG",
+    "name": "Papua New Guinea",
+    "nameFr": "Papouasie-Nouvelle-Guinée",
+    "capital": "Port Moresby",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["Papua New Guinea has hundreds of different languages."]
+  },
+  {
+    "code": "WS",
+    "name": "Samoa",
+    "capital": "Apia",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["Samoa is a group of islands in the Pacific Ocean."]
+  },
+  {
+    "code": "TO",
+    "name": "Tonga",
+    "capital": "Nukuʻalofa",
+    "capitalFr": "Nuku'alofa",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["Tonga is a kingdom of islands in the Pacific."]
+  },
+  {
+    "code": "VU",
+    "name": "Vanuatu",
+    "capital": "Port Vila",
+    "capitalFr": "Port-Vila",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["Vanuatu has active volcanoes you can see glowing."]
+  },
+  {
+    "code": "SB",
+    "name": "Solomon Islands",
+    "nameFr": "Îles Salomon",
+    "capital": "Honiara",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["The Solomon Islands have rainforests and coral reefs."]
+  },
+  {
+    "code": "KI",
+    "name": "Kiribati",
+    "capital": "Tarawa",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["Kiribati is made of low islands spread across the Pacific."]
+  },
+  {
+    "code": "TV",
+    "name": "Tuvalu",
+    "capital": "Funafuti",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["Tuvalu is one of the smallest countries in the world."]
+  },
+  {
+    "code": "NR",
+    "name": "Nauru",
+    "capital": "Yaren",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["Nauru is the smallest island country in the world."]
+  },
+  {
+    "code": "PW",
+    "name": "Palau",
+    "nameFr": "Palaos",
+    "capital": "Ngerulmud",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["Palau has a lake full of harmless golden jellyfish."]
+  },
+  {
+    "code": "MH",
+    "name": "Marshall Islands",
+    "nameFr": "Îles Marshall",
+    "capital": "Majuro",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["The Marshall Islands are rings of coral in the Pacific."]
+  },
+  {
+    "code": "FM",
+    "name": "Micronesia",
+    "nameFr": "Micronésie",
+    "capital": "Palikir",
+    "continent": "Oceania",
+    "difficulty": 5,
+    "facts": ["Micronesia is made of hundreds of small islands."]
+  },
+  {
+    "code": "BZ",
+    "name": "Belize",
+    "capital": "Belmopan",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["Belize has the second-largest coral reef in the world."]
+  },
+  {
+    "code": "GY",
+    "name": "Guyana",
+    "capital": "Georgetown",
+    "continent": "South America",
+    "difficulty": 5,
+    "facts": ["Guyana has one of the world's largest single-drop waterfalls."]
+  },
+  {
+    "code": "SR",
+    "name": "Suriname",
+    "capital": "Paramaribo",
+    "continent": "South America",
+    "difficulty": 5,
+    "facts": ["Suriname is the smallest country in South America."]
+  },
+  {
+    "code": "AG",
+    "name": "Antigua and Barbuda",
+    "nameFr": "Antigua-et-Barbuda",
+    "capital": "Saint John's",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["Antigua and Barbuda is said to have a beach for every day of the year."]
+  },
+  {
+    "code": "LC",
+    "name": "Saint Lucia",
+    "nameFr": "Sainte-Lucie",
+    "capital": "Castries",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["Saint Lucia has two pointed mountains called the Pitons."]
+  },
+  {
+    "code": "GD",
+    "name": "Grenada",
+    "nameFr": "Grenade",
+    "capital": "Saint George's",
+    "capitalFr": "Saint-Georges",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["Grenada is called the 'Spice Island' for its nutmeg."]
+  },
+  {
+    "code": "DM",
+    "name": "Dominica",
+    "nameFr": "Dominique",
+    "capital": "Roseau",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["Dominica is called the 'Nature Island' for its rainforests."]
+  },
+  {
+    "code": "KN",
+    "name": "Saint Kitts and Nevis",
+    "nameFr": "Saint-Christophe-et-Niévès",
+    "capital": "Basseterre",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["Saint Kitts and Nevis is the smallest country in the Americas."]
+  },
+  {
+    "code": "VC",
+    "name": "Saint Vincent and the Grenadines",
+    "nameFr": "Saint-Vincent-et-les-Grenadines",
+    "capital": "Kingstown",
+    "continent": "North America",
+    "difficulty": 5,
+    "facts": ["This country is made of one main island and many tiny ones."]
+  },
+  {
+    "code": "TL",
+    "name": "Timor-Leste",
+    "nameFr": "Timor oriental",
+    "capital": "Dili",
+    "continent": "Asia",
+    "difficulty": 5,
+    "facts": ["Timor-Leste is one of the youngest countries in Asia."]
+  }
+]

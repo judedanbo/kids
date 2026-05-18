@@ -609,7 +609,11 @@ Phases are sequential. However, within each phase, the lettered sub-tasks (A, B,
 
 These are not part of the initial build but are noted for planning purposes:
 
-- **Phase 7:** Additional games (Spelling Bee, Sudoku Lite, Drawing/Coloring)
+- **Phase 7:** Additional games (Spelling Bee, Safety Scout, More or Less, Globe Trotter ✅ added, Sudoku Lite, Drawing/Coloring)
+  - **Globe Trotter** — geography quiz (countries, capitals, flags, continents, fun
+    facts). All three tiers, four modes, ~192 countries. Shipped behind the
+    `game.globe-trotter` feature flag (`status: beta`, `enabled: false`). See
+    `plans/globe-trotter-game-plan.md`.
 - **Phase 8:** Cloud sync (optional, requires parental consent flow)
 - **Phase 9:** Gamepad / Switch access input support
 - **Phase 10:** PDF progress report export from parental dashboard

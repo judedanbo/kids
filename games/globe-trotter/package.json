@@ -1,0 +1,19 @@
+{
+  "name": "@kids-games-zone/globe-trotter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-i18next": ">=16.0.0",
+    "focus-trap-react": "^10.0.0",
+    "@kids-games-zone/shared": "workspace:*"
+  }
+}
