@@ -1,0 +1,3 @@
+name = "kids"
+pages_build_output_dir = "platform/dist"
+compatibility_date = "2026-05-18"
