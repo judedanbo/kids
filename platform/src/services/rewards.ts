@@ -14,6 +14,7 @@ export function evaluateRewards(
   profile: UserProfile,
   result: GameResult,
   gameRegistry: GameManifest[],
+  isRewardEnabled: (rewardId: string) => boolean = () => true,
 ): Reward[] {
   const unlockedIds = new Set(profile.rewards.map((r) => r.id));
   const now = new Date().toISOString();
@@ -21,6 +22,7 @@ export function evaluateRewards(
 
   for (const reward of REWARD_CATALOG) {
     if (unlockedIds.has(reward.id)) continue;
+    if (!isRewardEnabled(reward.id)) continue;
 
     let earned = false;
 
